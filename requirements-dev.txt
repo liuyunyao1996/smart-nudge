@@ -1,0 +1,2 @@
+# Offline P0 contract validation only; no Azure or model SDK yet.
+jsonschema==4.26.0

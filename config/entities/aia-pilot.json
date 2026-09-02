@@ -1,0 +1,49 @@
+{
+  "version": "0.1.0",
+  "status": "public_source_seed_pending_domain_review",
+  "researched_on": "2026-09-02",
+  "scope_note": "仅用于检索消歧与初始业务映射，不是完整股权结构或法律合规判断；未核实的直接持股比例保持未知。",
+  "references": [
+    {"reference_id": "aia-group", "url": "https://www.aia.com/en/media-centre/press-releases/2026/aia-group-press-release-20260820", "supports": "集团名称与公开市场范围"},
+    {"reference_id": "aia-hk", "url": "https://www.aia.com.hk/en/privacy-statement-main/personal-information-collection-statement-aiahk", "supports": "香港分支以 AIA International Limited 名义经营；其与集团关系"},
+    {"reference_id": "aia-cn", "url": "https://www.aia.com.cn/zh-cn/gongkaixinxipilou/jibenxinxi/gongsizhiligaiyao", "supports": "友邦人寿名称及由友邦保险有限公司全资设立", "verification_limit": "本次工具只从官方页面的搜索摘要取得相关表述；页面提取未呈现该段，需在 P2 复核原文。"},
+    {"reference_id": "aia-my", "url": "https://www.aia.com.my/en/about-aia/aia-subsidiaries/about-aia-bhd.html", "supports": "AIA Bhd. 为马来西亚经营实体并属于 AIA Group"},
+    {"reference_id": "aia-my-takaful", "url": "https://www.aia.com.my/en/about-aia/aia-subsidiaries/about-aia-public-takaful-bhd.html", "supports": "AIA PUBLIC Takaful 由 AIA Bhd.、Public Bank、Public Islamic Bank 共同持有"},
+    {"reference_id": "aia-my-general", "url": "https://www.aia.com.my/en/about-aia/aia-subsidiaries/about-aia-general-berhad.html", "supports": "AIA General Berhad 名称及属于 AIA Bhd. 的关系"}
+  ],
+  "entities": [
+    {"entity_id": "aia-group", "name": "AIA Group Limited", "entity_type": "group", "aliases": ["友邦保险控股有限公司", "AIA Group"], "market_ids": [], "reference_ids": ["aia-group"]},
+    {"entity_id": "aia-international", "name": "AIA International Limited", "entity_type": "legal_entity", "aliases": ["友邦保險（國際）有限公司"], "market_ids": ["HK", "MO"], "reference_ids": ["aia-hk"]},
+    {"entity_id": "aia-company", "name": "友邦保险有限公司", "entity_type": "legal_entity", "aliases": [], "market_ids": ["HK"], "reference_ids": ["aia-cn"]},
+    {"entity_id": "aia-china-life", "name": "友邦人寿保险有限公司", "entity_type": "legal_entity", "aliases": ["友邦人寿"], "market_ids": ["CN"], "reference_ids": ["aia-cn"]},
+    {"entity_id": "aia-bhd", "name": "AIA Bhd.", "entity_type": "legal_entity", "aliases": ["AIA Bhd"], "market_ids": ["MY"], "reference_ids": ["aia-my"]},
+    {"entity_id": "aia-public-takaful", "name": "AIA PUBLIC Takaful Bhd.", "entity_type": "legal_entity", "aliases": ["AIA PUBLIC Takaful"], "market_ids": ["MY"], "reference_ids": ["aia-my-takaful"]},
+    {"entity_id": "aia-general", "name": "AIA General Berhad", "entity_type": "legal_entity", "aliases": [], "market_ids": ["MY"], "reference_ids": ["aia-my-general"]},
+    {"entity_id": "public-bank", "name": "Public Bank Berhad", "entity_type": "legal_entity", "aliases": ["PBB"], "market_ids": ["MY"], "reference_ids": ["aia-my-takaful"]},
+    {"entity_id": "public-islamic-bank", "name": "Public Islamic Bank Berhad", "entity_type": "legal_entity", "aliases": [], "market_ids": ["MY"], "reference_ids": ["aia-my-takaful"]},
+    {"entity_id": "aia-hk-business", "name": "AIA 香港业务视图", "entity_type": "business_view", "aliases": ["AIA Hong Kong", "友邦香港"], "market_ids": ["HK"], "reference_ids": ["aia-hk"]},
+    {"entity_id": "aia-cn-business", "name": "AIA 中国内地业务视图", "entity_type": "business_view", "aliases": ["AIA China", "友邦中国"], "market_ids": ["CN"], "reference_ids": ["aia-cn"]},
+    {"entity_id": "aia-my-business", "name": "AIA 马来西亚业务视图", "entity_type": "business_view", "aliases": ["AIA Malaysia"], "market_ids": ["MY"], "reference_ids": ["aia-my", "aia-my-takaful", "aia-my-general"]}
+  ],
+  "relationships": [
+    {"from": "aia-international", "to": "aia-group", "type": "wholly_owned_group_member", "reference_ids": ["aia-hk"]},
+    {"from": "aia-china-life", "to": "aia-company", "type": "wholly_owned_subsidiary", "reference_ids": ["aia-cn"]},
+    {"from": "aia-bhd", "to": "aia-group", "type": "group_member", "reference_ids": ["aia-my"]},
+    {"from": "aia-general", "to": "aia-bhd", "type": "part_of", "reference_ids": ["aia-my-general"]},
+    {"from": "aia-public-takaful", "to": "aia-bhd", "type": "jointly_owned_by", "reference_ids": ["aia-my-takaful"]},
+    {"from": "aia-public-takaful", "to": "public-bank", "type": "jointly_owned_by", "reference_ids": ["aia-my-takaful"]},
+    {"from": "aia-public-takaful", "to": "public-islamic-bank", "type": "jointly_owned_by", "reference_ids": ["aia-my-takaful"]},
+    {"from": "aia-hk-business", "to": "aia-international", "type": "business_view_of", "reference_ids": ["aia-hk"]},
+    {"from": "aia-cn-business", "to": "aia-china-life", "type": "business_view_of", "reference_ids": ["aia-cn"]},
+    {"from": "aia-my-business", "to": "aia-bhd", "type": "business_view_includes", "reference_ids": ["aia-my"]},
+    {"from": "aia-my-business", "to": "aia-public-takaful", "type": "business_view_includes", "reference_ids": ["aia-my-takaful"]},
+    {"from": "aia-my-business", "to": "aia-general", "type": "business_view_includes", "reference_ids": ["aia-my-general"]}
+  ],
+  "resolution_rules": [
+    "AIA、友邦、PBB 等简写不能单独确定法律实体；结合市场、官方域名、产品和原文名称。",
+    "AIA Hong Kong 和 AIA Macau 不能在未确认适用范围时互换。",
+    "business_view 是应用检索视图，不是新法律实体，也不自动等于官方报告分部。",
+    "jointly_owned_by 仅表示公开的共同持有关系，不推断控制权、会计合并或 IFRS 合营分类。",
+    "Prudential 等竞争者别名需在 P2 核实候选名单后加入；暂不以模糊名称自动匹配。"
+  ]
+}
