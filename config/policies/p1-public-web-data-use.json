@@ -1,0 +1,80 @@
+{
+  "policy_version": "1.0.0",
+  "reviewed_at": "2026-09-03",
+  "status": "engineering_guardrail_pending_organizational_legal_approval",
+  "query_policy": {
+    "public_topics_only": true,
+    "prohibited_inputs": [
+      "credentials",
+      "confidential_or_internal_information",
+      "personal_data_not_already_intentionally_public",
+      "customer_or_employee_identifiers"
+    ],
+    "reason": "Bing queries and tool parameters leave the Azure compliance and geographic boundary."
+  },
+  "bing_grounding": {
+    "raw_tool_output_available_to_developer": false,
+    "persist_raw_response": false,
+    "persist_generated_answer": "copyright_permitted_approved_integrated_work_product_only",
+    "persist_references": "exact_unmodified_and_adjacent_to_the_output",
+    "use_for_model_training": false,
+    "use_for_model_evaluation": false,
+    "use_as_crawl_seed_or_link_index": false,
+    "build_search_output_database": false
+  },
+  "official_source": {
+    "search_snippet_counts_as_original": false,
+    "preferred_access_order": [
+      "official_api_or_feed",
+      "publisher_html_or_document",
+      "manual_browser_review",
+      "alternate_first_party_publication"
+    ],
+    "on_robots_or_access_denial": "stop_without_bypass",
+    "default_retention": "approved_metadata_only",
+    "excerpt_requires": "documented_permission_or_license",
+    "fulltext_requires": "documented_permission_or_license"
+  },
+  "local_probe_audit": {
+    "persistence": "explicit_only",
+    "allowed_fields": [
+      "ok",
+      "check",
+      "code",
+      "message",
+      "request_id",
+      "response_id",
+      "status",
+      "usage",
+      "output_structure",
+      "observed_search_calls",
+      "citations",
+      "factual_verification"
+    ],
+    "forbidden_fields": [
+      "output_text",
+      "raw_response",
+      "tool_output",
+      "search_snippets",
+      "page_content"
+    ]
+  },
+  "publisher_overrides": {
+    "www.ia.org.hk": {
+      "automated_content_access": "disabled_pending_explicit_permission_or_verified_publisher_path",
+      "denied_access_action": "manual_review_or_alternate_first_party_source",
+      "retention": "approved_metadata_only",
+      "excerpt_retention": "prior_written_consent_required",
+      "fulltext_retention": "prior_written_consent_required",
+      "hyperlinking": "allowed_subject_to_publisher_hyperlink_policy",
+      "policy_url": "https://www.ia.org.hk/en/policies/policies.html"
+    }
+  },
+  "authoritative_sources": [
+    "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/bing-tools",
+    "https://www.microsoft.com/en-us/bing/apis/grounding-legal-enterprise",
+    "https://www.microsoft.com/licensing/faqs/123",
+    "https://www.ia.org.hk/en/policies/policies.html",
+    "https://www.ia.org.hk/en/disclaimer/disclaimer.html"
+  ]
+}

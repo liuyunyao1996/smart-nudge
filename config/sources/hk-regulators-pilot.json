@@ -1,0 +1,29 @@
+{
+  "instance_name": "hk-financial-regulators-test",
+  "scope_evidence": "user_supplied_2026-09-03",
+  "cloud_configuration_read_back": false,
+  "expected_source_hosts": [
+    "www.ia.org.hk",
+    "www.hkma.gov.hk",
+    "www.sfc.hk",
+    "apps.sfc.hk",
+    "www.fstb.gov.hk",
+    "www.gov.hk"
+  ],
+  "blocked_rules": null,
+  "include_subpages_settings": null,
+  "reviewed_publisher_policies": [
+    {
+      "host": "www.ia.org.hk",
+      "reviewed_at": "2026-09-03",
+      "automated_content_access": "disabled_pending_explicit_permission_or_verified_publisher_path",
+      "denied_access_action": "manual_review_or_alternate_first_party_source",
+      "retention": "approved_metadata_only",
+      "excerpt_retention": "prior_written_consent_required",
+      "fulltext_retention": "prior_written_consent_required",
+      "hyperlinking": "allowed_subject_to_publisher_hyperlink_policy",
+      "policy_url": "https://www.ia.org.hk/en/policies/policies.html"
+    }
+  ],
+  "notes": "User supplied six website URLs as the current scope. Blocked rules and include-subpages switches were not supplied. Exact-host validation checks returned citations only; this is not proof of complete coverage or a cloud configuration update. Only the Insurance Authority publisher policy has been reviewed for the P1 pilot; the other hosts remain pending P2 review."
+}

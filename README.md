@@ -2,13 +2,15 @@
 
 面向 AIA 集团 CEO 的公开 Web 情报研究 Agent POC。
 
-当前交付：P0 监控定义、输出契约和离线校验。P1 所需项目、模型部署及 Bing 连接／配置标识已齐，但本机认证、模型调用和真实搜索尚未验证，Agent 编排及领域 Skills 执行尚未实现。定时、对话、推送和前端不在当前 scope。
+当前交付：P0 监控定义、输出契约和离线校验；P1 已在保守边界下完成本机认证、GPT-5-mini 模型调用、香港 Bing Custom Search、原生引用解析，以及官方原文访问与数据留存策略。六站来源登记册、Agent 编排及领域 Skills 执行尚未实现。定时、对话、推送和前端不在当前 scope。
 
-**换设备继续工作：先读 [当前进度与交接说明](docs/HANDOFF.md)。** 非敏感连接参数见 [.env.example](.env.example)；这不是已接通的运行配置，Azure 登录须在新设备单独完成。
+**换设备继续工作：先读 [当前进度与交接说明](docs/HANDOFF.md)。** 非敏感连接参数见 [.env.example](.env.example)；实际加载根目录 `.env`，新设备须重新安装依赖并单独完成 Azure 登录。
 
 ## 项目文档
 
 - [当前进度、连接信息与下一步](docs/HANDOFF.md)
+- [P1 实测结果、命令与限制](docs/P1_VALIDATION.md)
+- [P1 官方原文访问方案与数据留存边界](docs/P1_ACCESS_RETENTION.md)
 - [实施计划](docs/IMPLEMENTATION_PLAN.md)
 - [P0 业务与输出规范](docs/P0_SPEC.md)
 - [AIA CEO Watch Profile](config/watch_profiles/aia-group-ceo.json)
@@ -33,10 +35,22 @@ python -m venv .venv
 .\.venv\Scripts\python.exe scripts/validate_p0.py --result examples/intelligence-result.synthetic.json
 ```
 
-安装依赖需要网络；验证和测试本身离线运行，不读取 Azure 密钥、不执行搜索、不修改云资源。
+安装依赖需要网络；以上验证和测试本身离线运行，不读取 Azure 密钥、不执行搜索、不修改云资源。
 
 通过这些检查只表示契约一致，**不是**搜索质量、事实准确率或专家认可。示例均为显式标识的合成数据，不能作为真实情报使用。
 
+## P1 本机验证
+
+首次配置时，将 `.env.example` 复制为 `.env`，已有 `.env` 不要覆盖。完成 `az login` 后，在项目根目录执行：
+
+```powershell
+.\.venv\Scripts\python.exe scripts/smoke_foundry.py --check auth
+.\.venv\Scripts\python.exe scripts/smoke_foundry.py --check model
+.\.venv\Scripts\python.exe scripts/smoke_foundry.py --check search
+```
+
+`auth` 只验证 Python 凭据；`model` 和 `search` 各发起一次真实 Responses 请求，产生模型／搜索用量。搜索模式使用已登记的六个香港来源检查原生引用。默认不重试、不创建托管 Agent、不写响应文件；`search` 只打印安全审计元数据和原生引用，不打印 Bing 生成的回答正文。`ok: true` 仅表示接入检查通过，不表示事实核验或覆盖率通过。参数和限制见 [P1 验证记录](docs/P1_VALIDATION.md)，数据边界见 [P1 访问与留存说明](docs/P1_ACCESS_RETENTION.md)。
+
 ## Git 迁移注意事项
 
-不要上传 `.env`、`.venv`、Azure 登录缓存、数据库或 `.tmp`。`.env.example` 只包含用户提供的非敏感资源标识，不含密钥；如仓库将公开，先确认是否保留这些具体标识。此次交接未执行 Git add、commit 或 push，提交检查与新设备恢复步骤见 [交接说明](docs/HANDOFF.md#5-git-提交与迁移检查)。
+不要上传 `.env`、`.venv`、Azure 登录缓存、数据库或 `.tmp`。`.env.example` 只包含用户提供的非敏感资源标识，不含密钥；如仓库将公开，先确认是否保留这些具体标识。P0 提交 `2916e38` 在上次任务中已推送到 `develop`；本次 P1 变更尚未提交或推送。迁移步骤见 [交接说明](docs/HANDOFF.md)。

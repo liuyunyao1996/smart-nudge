@@ -1,10 +1,10 @@
 # Smart Nudge：AIA CEO Web Intelligence Agent 实施计划
 
-版本：v1.2
+版本：v1.4
 
-日期：2026-09-02
+日期：2026-09-03
 
-状态：P0 配置与契约已交付，业务口径待复核；P1 连接标识已齐、认证待验证，运行实现未开始；P2–P7 尚未实施
+状态：P0 配置与契约已交付，业务口径待复核；P1 已在保守访问与留存边界下完成工程验收，组织法律／隐私批准仍是生产门槛；P2–P7 尚未实施（已有六个香港来源主机名的验证配置，并非完整来源登记册）
 
 依据：当前对话确认的 scope 与 Agent 设计讨论
 
@@ -44,7 +44,7 @@
 
 已知条件来自用户说明：Foundry Project 和 GPT-5-mini Agent 已创建；Web Search 已验证；Bing Custom Search 已配置香港监管机构来源。这些验证说明原有托管 Agent 路径可用，不等于本地系统的直接调用路径已经接通。后续复用底层模型部署和搜索配置，不继承该托管 Agent 的指令、工具绑定或会话。本计划不重复 Portal 配置教程，也不默认修改这些云资源。
 
-最新接入状态（2026-09-02）：用户已提供 Project endpoint、模型部署名称、完整 Bing 项目连接 ID 和 configuration 名称，非敏感值保存于 [连接参数示例](../.env.example)。用户尚未在本机运行门户模型示例；当前设备的命令路径及常见目录未发现 Azure CLI，项目虚拟环境尚未安装 Azure／OpenAI SDK。本机认证及真实调用未验证。换设备交接与下一步见 [HANDOFF](HANDOFF.md)。
+最新接入状态（2026-09-03）：Azure CLI 2.90.0 已安装并登录，订阅正确且为 Enabled。Python `AzureCliCredential` 认证通过，使用项目 `/openai/v1/responses` 直接调用 `gpt-5-mini` 成功；绑定现有 Bing configuration 的一次搜索也已成功，观察到完成的 `bing_custom_search_preview_call` 和范围内的原生 URL citation。运行使用 Azure Identity + HTTPX REST，已固定依赖版本。非敏感值保存于 [连接参数示例](../.env.example)，`.env` 加载已实现。直接访问返回的保监局原文时 Web 读取工具得到 HTTP 403，因此未将该目标原文标为核验通过；策略要求停止而非绕过，并只保留元数据和链接。P1 工程验收已完成，能力证据见 [P1 验证记录](P1_VALIDATION.md)，访问与留存决策见 [P1 访问和留存说明](P1_ACCESS_RETENTION.md)，换设备步骤见 [HANDOFF](HANDOFF.md)。
 
 暂定设计假设：
 
@@ -105,7 +105,7 @@
 - **默认接入路径**：通过 Foundry Project 的 Responses 入口，在请求中指定模型部署 `model`、本地组装的指令与输入，以及所需 `tools`；不使用 `agent_reference`，也不读取 Portal Agent 来继承其工具配置。
 - **搜索配置绑定**：按当前官方接口，将 `bing_custom_search_preview` 的搜索配置绑定到 `project_connection_id` 与 `instance_name`。这些是搜索连接与配置标识，不是 Agent 标识。模型不会因同属一个 Project 就自动使用 Portal Agent 的 configuration。
 - **权限与观测边界**：按角色授予必要工具；供应商内部搜索过程不保证逐步可控或可观测，也不保证返回原始搜索结果或网页全文。原生引用、数据获取与留存限制仍然适用。
-- **兼容性门槛**：上述直接请求方式以 [Microsoft Foundry Bing 工具文档](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/bing-tools) 为依据，必须在 P1 验证本项目实际支持情况。若不支持，记录限制并讨论替代方案，不静默改成调用现有托管 Agent。
+- **兼容性门槛**：上述直接请求方式以 [Microsoft Foundry Bing 工具文档](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/bing-tools) 为依据；P1 已验证本项目支持该组合。未来变更模型、区域或 API 版本时须重新验证；若不支持，记录限制并讨论替代方案，不静默改成调用现有托管 Agent。
 
 ## 4. 分阶段实施与验收
 
@@ -132,6 +132,8 @@
 - 未获确认的业务偏好明确标为假设；不把公开推断写成 AIA 内部事实。
 
 ### P1：本地模型调用与现有 Bing 配置绑定验证
+
+进度（2026-09-03）：**工程验收完成**。未获批准的正文获取、批量留存、索引和模型训练／评测路径已禁用；组织法律／隐私批准仍是生产门槛。详见 [P1 验证记录](P1_VALIDATION.md)和[P1 访问与留存说明](P1_ACCESS_RETENTION.md)。
 
 所需连接信息：
 
@@ -392,7 +394,7 @@ P0–P6 完成且验收通过后，应能够用一条本地命令，对明确范
 
 完整社媒覆盖不是 P0–P6 的隐含承诺；P7 按授权条件单独验收。整个当前阶段都不包含定时、对话、前端或推送实现。
 
-下一步：按 [HANDOFF](HANDOFF.md) 在目标设备恢复并验证 P0 环境，安装／确认 Azure CLI，完成本机登录及不暴露 token 的令牌获取检查。随后实现 P1，验证直接模型调用、现有 Bing configuration 的显式绑定和原生引用能力。连接标识已提供，无需再次索取或取得托管 Agent 标识；P0 业务假设仍需复核。不要在此之前批量扩展云资源、接入付费渠道或实现全部领域 Skills。
+下一步：按 [HANDOFF](HANDOFF.md) 从 P2 来源登记册开始，为六个香港试点来源逐站记录获准访问方法、robots／条款、正文权限、失败回退和人工复核路径。随后实现 P3 首个监管 Skill 和 P4 研究—分析—核验闭环。连接标识已提供，无需再次索取或取得托管 Agent 标识；P0 业务假设仍需复核。不要批量扩展云资源、接入付费渠道或提前实现全部领域 Skills。
 
 ## 9. 实施时需重新核对的官方参考
 
