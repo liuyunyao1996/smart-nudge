@@ -19,7 +19,8 @@
 
 - P0 contracts and synthetic fixtures are complete; the synthetic cases still require domain-expert review and are not gold labels.
 - P1 is engineering-complete under the deny-by-default policy in `docs/P1_ACCESS_RETENTION.md`; organizational legal/privacy approval remains a production gate.
-- Resume with the P2 source registry and approved-access capability matrix, then build the first P3 regulatory skill and the P4 research-analysis-verification loop.
+- P2 source registry, approved-access capability matrix, guarded fetcher, and HTML/PDF/API extraction are engineering-complete; organizational approval remains a production gate.
+- Resume with the first P3 regulatory skill, then build the P4 research-analysis-verification loop.
 - Treat `docs/HANDOFF.md` as the detailed living status record and update it after material milestones.
 
 ## Safety and verification
@@ -29,6 +30,7 @@
 - Do not repeat live model or search probes merely to re-confirm recorded success; they may incur usage. Run them only when needed and authorized by the task.
 - Offline baseline checks:
   - `.\.venv\Scripts\python.exe scripts\validate_p0.py`
+  - `.\.venv\Scripts\python.exe scripts\validate_sources.py`
   - `.\.venv\Scripts\python.exe -m unittest discover -s tests -v`
   - `.\.venv\Scripts\python.exe -m pip check`
 - Preserve unrelated user changes. Review `git diff` before committing, and never commit or push unless requested.

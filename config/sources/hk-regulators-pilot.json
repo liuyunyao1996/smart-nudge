@@ -25,5 +25,5 @@
       "policy_url": "https://www.ia.org.hk/en/policies/policies.html"
     }
   ],
-  "notes": "User supplied six website URLs as the current scope. Blocked rules and include-subpages switches were not supplied. Exact-host validation checks returned citations only; this is not proof of complete coverage or a cloud configuration update. Only the Insurance Authority publisher policy has been reviewed for the P1 pilot; the other hosts remain pending P2 review."
+  "notes": "User supplied six website URLs as the Bing configuration scope. Blocked rules and include-subpages switches were not supplied, and the cloud configuration was not read back. P2 access and rights decisions for all six hosts now live in source-registry.json; this file remains only the P1 Bing-scope record and is not proof of complete coverage or a cloud configuration update."
 }
