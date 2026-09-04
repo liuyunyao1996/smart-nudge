@@ -2,7 +2,7 @@
 
 面向 AIA 集团 CEO 的公开 Web 情报研究 Agent POC。
 
-当前交付：P0 监控定义和输出契约；P1 Foundry／Bing 接入与保守留存策略；P2 三市场 Source Registry、安全原文读取和定位解析；P3 首个 `regulatory-change` Skill、通用 Loader 和受控输出契约。该 Skill 仍待领域批准，研究—分析—核验编排尚未实现。定时、对话、推送和前端不在当前 scope。
+当前交付：P0 监控定义和输出契约；P1 Foundry／Bing 接入与保守留存策略；P2 三市场 Source Registry、安全原文读取和定位解析；P3 首个 `regulatory-change` Skill；P4-A 有界的合成监管研究—分析—核验闭环。Skill 仍待领域批准，真实研究角色和生产闭环尚未实现。定时、对话、推送和前端不在当前 scope。
 
 **换设备继续工作：先读 [当前进度与交接说明](docs/HANDOFF.md)。** 非敏感连接参数见 [.env.example](.env.example)；实际加载根目录 `.env`，新设备须重新安装依赖并单独完成 Azure 登录。
 
@@ -13,6 +13,7 @@
 - [P1 官方原文访问方案与数据留存边界](docs/P1_ACCESS_RETENTION.md)
 - [P2 来源登记册、访问矩阵与获取边界](docs/P2_SOURCE_REGISTRY.md)
 - [P3 首个监管 Skill、Loader 与评审流程](docs/P3_SKILLS.md)
+- [P4-A 离线监管研究闭环](docs/P4A_OFFLINE_RESEARCH.md)
 - [实施计划](docs/IMPLEMENTATION_PLAN.md)
 - [P0 业务与输出规范](docs/P0_SPEC.md)
 - [AIA CEO Watch Profile](config/watch_profiles/aia-group-ceo.json)
@@ -30,6 +31,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe scripts/validate_p0.py
 .\.venv\Scripts\python.exe scripts/validate_sources.py
 .\.venv\Scripts\python.exe scripts/validate_skills.py
+.\.venv\Scripts\python.exe scripts/validate_research.py
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
@@ -41,7 +43,7 @@ python -m venv .venv
 
 安装依赖需要网络；以上验证和测试本身离线运行，不读取 Azure 密钥、不执行搜索、不修改云资源。
 
-通过这些检查只表示契约、来源策略和版本化 Skill 的结构一致，**不是**实时连通性、搜索质量、事实准确率、持续覆盖、法律意见或专家认可。草稿 Skill 默认拒绝生产加载；示例均为显式标识的合成数据，不能作为真实情报使用。
+通过这些检查只表示契约、来源策略、版本化 Skill 和离线控制流一致，**不是**实时连通性、搜索质量、事实准确率、持续覆盖、法律意见或专家认可。草稿 Skill 默认拒绝生产加载；P4-A 只接受 `.example` 合成证据，不能作为真实情报使用。
 
 ## P1 本机验证
 
@@ -57,4 +59,4 @@ python -m venv .venv
 
 ## Git 迁移注意事项
 
-不要上传 `.env`、`.venv`、Azure 登录缓存、数据库或 `.tmp`。`.env.example` 只包含用户提供的非敏感资源标识，不含密钥；如仓库将公开，先确认是否保留这些具体标识。P0、P1、P2 已推送到 `develop`；当前 P3 工作树是否已提交以 `git status` 和提交日志为准。迁移步骤见 [交接说明](docs/HANDOFF.md)。
+不要上传 `.env`、`.venv`、Azure 登录缓存、数据库或 `.tmp`。`.env.example` 只包含用户提供的非敏感资源标识，不含密钥；如仓库将公开，先确认是否保留这些具体标识。P0–P3 已推送到 `develop`；当前 P4-A 工作树是否已提交以 `git status` 和提交日志为准。迁移步骤见 [交接说明](docs/HANDOFF.md)。

@@ -1,10 +1,10 @@
 # Smart Nudge：当前进度与跨设备交接
 
-更新日期：2026-09-03（Asia/Shanghai）。P3 首个 `regulatory-change` Skill、通用 Loader、输出契约和合成案例已完成工程实现，见 [P3 Skills](P3_SKILLS.md)；Skill 仍待领域复核并默认拒绝生产加载，P2 组织审批也仍是生产门槛。
+更新日期：2026-09-04（Asia/Shanghai）。P4-A 已完成严格限于合成数据的监管研究—分析—核验闭环，见 [P4-A 离线研究闭环](P4A_OFFLINE_RESEARCH.md)；真实研究角色尚未实现，P3 Skill 仍待领域复核，P2 组织审批仍是生产门槛。
 
 ## 1. 从这里继续
 
-项目面向 AIA 集团 CEO，仅研究公开 Web 信息：决定搜什么、如何搜索和补搜、证据是否足够、如何总结与取舍。P0、P1、P2 及 P3 首个监管 Skill 工程切片已交付：独立官方原文访问与 Bing 明确分流，读取器仅接受登记且获准的精确公开路径，Skill 只从版本控制的本地文件加载。下一步用监管 Skill 实现第一条 P4 研究闭环。
+项目面向 AIA 集团 CEO，仅研究公开 Web 信息：决定搜什么、如何搜索和补搜、证据是否足够、如何总结与取舍。P0–P3 及 P4-A 离线闭环已交付：来源边界拒绝优先，Skill 只从版本控制的本地文件加载，控制器按覆盖计划和预算停止，并重新核验证据关系。下一步实现 P4-B 请求／响应适配，先用模拟传输验证，不重复付费探测。
 
 先阅读本文，再阅读 [实施计划](IMPLEMENTATION_PLAN.md) 和 [P0 Spec](P0_SPEC.md)。不要重新从 Portal 创建资源或恢复历史版本中的定时、对话、推送需求。
 
@@ -31,11 +31,13 @@
 - 2026-09-03：完成 P2 Source Registry、三市场一手来源能力矩阵、安全原文读取器及 HTML／PDF／JSON／RSS 定位解析；香港试点六个主机名全部登记，获准路径与人工路径明确分离。新增 28 项回归测试，当前合计 106 项离线测试。
 - P2 登记册含 9 个来源组：6 个允许低频自动访问，3 个仅限人工复核。保监局、FSTB、BNM 新闻正文和 AIA 主站没有被误标为可自动抓取。
 - 2026-09-03：完成 P3 首个 `regulatory-change` Skill、通用 Loader、专用输出 Schema、确定性验证和 3 个合成案例；新增 19 项测试，当前合计 125 项离线测试。Skill 状态仍为 `draft_pending_domain_review`，默认不加载。
+- 2026-09-04：完成 P4-A 合成监管研究闭环：请求／预算契约、六语言覆盖规划、三个角色接口、按事件最多两轮补搜、ResearchRole 查询计数信任边界、事件级 claim/evidence 归属、稳定监管文书身份与最早 first-seen 归并、一手原文身份推导、claim 状态重算、安全失败输出及 3 个闭环案例。三轮 Bugbot 共七项发现已修复并加入回归测试；新增 33 项测试，当前合计 158 项离线测试。
 
 尚未完成：
 
 - P0 业务偏好和案例的领域专家审核；20 个案例不是已批准金标准，也未作为 Agent 评测执行。
-- P3 其余领域／共用 Skills 及首个监管 Skill 的领域专家批准；P4 通用研究 CLI、Agent 编排、数据库、研究闭环及综合评测。
+- P3 其余领域／共用 Skills 及首个监管 Skill 的领域专家批准；P4-B 真实 Foundry/Bing 研究角色、真实来源转换和完整端到端运行。
+- 数据库、跨运行事件历史、幂等恢复、通用研究 CLI 及综合评测。
 - 保监局、FSTB、BNM 新闻正文和 AIA 主站的明确自动访问／留存授权；当前保留人工复核或开放发现状态。
 - 其余目标市场、当地 AIA 经营实体来源和社媒接入；Blocked 规则与 Include subpages 开关未取得，也未回读云端配置。
 
@@ -91,7 +93,7 @@ https://liuyunyao1996-5895-resource.openai.azure.com/openai/v1
 
 已知资源标识不属于密码，但可能暴露环境结构。如果准备公开仓库，先评估并替换具体账号资源标识。不要上传任何 key、token、密码、完整认证调试日志或 Azure 登录缓存。
 
-## 4. 在新设备恢复并推进 P4
+## 4. 在新设备恢复并推进 P4-B
 
 ### A. 恢复 P0 环境
 
@@ -105,6 +107,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe scripts/validate_p0.py
 .\.venv\Scripts\python.exe scripts/validate_sources.py
 .\.venv\Scripts\python.exe scripts/validate_skills.py
+.\.venv\Scripts\python.exe scripts/validate_research.py
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 .\.venv\Scripts\python.exe -m pip check
 ```
@@ -117,11 +120,12 @@ python3 -m venv .venv
 .venv/bin/python scripts/validate_p0.py
 .venv/bin/python scripts/validate_sources.py
 .venv/bin/python scripts/validate_skills.py
+.venv/bin/python scripts/validate_research.py
 .venv/bin/python -m unittest discover -s tests -v
 .venv/bin/python -m pip check
 ```
 
-预期：P0、P2、P3 校验 PASS、125 项测试通过、依赖无冲突。这只验证离线契约、模拟接入行为和策略护栏，不验证新设备云权限、实时来源连通性、检索质量、事实或领域批准。
+预期：P0、P2、P3、P4-A 校验 PASS、158 项测试通过、依赖无冲突。这只验证离线契约、模拟接入行为和策略护栏，不验证新设备云权限、实时来源连通性、检索质量、事实或领域批准。
 
 需要本地配置时，先确认 `.env` 不存在，再手动复制 `.env.example` 为 `.env`；已有文件不要覆盖。已实现并测试显式配置加载，默认不使用 `.env.example` 作为隐式回退。
 
@@ -144,7 +148,7 @@ az account get-access-token --scope "https://ai.azure.com/.default" --query expi
 
 登录状态留在本机，新设备需重新认证；不要通过 Git 搬迁 `.azure` 缓存。当前项目级 `.gitignore` 不能控制用户目录中的缓存。
 
-### C. P1／P2／P3 首个切片与 P4 下一步
+### C. P1–P3、P4-A 与 P4-B 下一步
 
 当前认证、直接模型、Bing 工具调用及引用结构已通过，不需要在本机重复成功请求。可运行 `scripts/smoke_foundry.py --check auth|model|search`（从三者中选择一个）；`model` 和 `search` 会产生真实用量。完整记录见 [P1_VALIDATION](P1_VALIDATION.md)。访问与留存边界已写入 [P1_ACCESS_RETENTION](P1_ACCESS_RETENTION.md)，不是从零重做接入或条款调研。
 
@@ -159,11 +163,11 @@ az account get-access-token --scope "https://ai.azure.com/.default" --query expi
 7. 增加无配置、认证失败、权限不足、工具不支持、无结果、无引用、超时和限流的明确错误路径；记录请求标识及可观测用量，不记录密钥。
 8. P1 能力记录已形成：搜索 CLI 只输出白名单审计字段与原生引用，不保存回答正文或原始工具输出；未获批准的抓取、索引和评测路径保持禁用。
 
-P2 已将来源边界固化在登记册和安全读取器。P3 已把监管研究问题、多语言查询模板、提取字段、证据门槛、禁止推断、升级规则和三类案例固化在 `config/skills/regulatory-change.json`，并由通用 Loader、Schema 和确定性规则校验；完整说明见 [P3 Skills](P3_SKILLS.md)。下一步按计划实现 P4 监管研究闭环，把候选 claim 关联到 URL 和定位证据，再进行补搜、核验、预算与停止决策，而非立即加入调度、聊天或通知。
+P2 已将来源边界固化在登记册和安全读取器。P3 已固化首个监管 Skill。P4-A 已用 `.example` 合成证据打通覆盖规划、初扫、补搜、分析、claim/evidence 核验、取舍、停止和 P0 输出，并拒绝真实 URL、真实来源标签及超预算批次；完整说明见 [P4-A 离线研究闭环](P4A_OFFLINE_RESEARCH.md)。下一步实现 P4-B 请求／响应适配，先使用模拟 Foundry 传输，不立即加入数据库、调度、聊天或通知。
 
 ## 5. Git 提交与迁移检查
 
-P0 提交 `2916e38`、P1 提交 `a6d6274` 和 P2 提交 `4a47b98` 已推送到 `origin/develop`。当前 P3 Skill、Loader、Schema、案例、测试及文档修改尚未执行 `git add`、`commit` 或 `push`；迁移前须先提交并同步这些变更。
+P0 提交 `2916e38`、P1 提交 `a6d6274`、P2 提交 `4a47b98` 和 P3 提交 `f5a8526` 已推送到 `origin/develop`。当前 P4-A 控制器、请求契约、策略、案例、测试及文档修改尚未执行 `git add`、`commit` 或 `push`；迁移前须先提交并同步这些变更。
 
 `.gitignore` 排除 `.venv`、Python 缓存、`.env`、数据库、运行数据，并新增根目录 `.tmp` 和 `.azure` 排除项。原有 `.tmp` 内容未查看、修改或删除；该忽略规则不等于审查其中内容。`.env.example` 明确保留为可跟踪文件。
 
@@ -181,7 +185,7 @@ git diff --cached
 
 ## 6. 可交给新设备上助手的接续说明
 
-> 请先读取 README.md、docs/HANDOFF.md、docs/P3_SKILLS.md、docs/P2_SOURCE_REGISTRY.md、docs/P1_VALIDATION.md、docs/P1_ACCESS_RETENTION.md、docs/IMPLEMENTATION_PLAN.md、docs/P0_SPEC.md 和 .env.example。P0、P1、P2 及 P3 首个监管 Skill 工程切片已交付，当前总计 125 项离线测试；P2 组织审批和 P3 领域批准仍是生产门槛，草稿 Skill 默认不加载。新设备重建环境并单独登录，需要时运行对应探针；不要重复创建资源或付费验证。接下来用监管 Skill 实现 P4 第一条研究闭环。Agent 编排由本地实现，不调用 Portal 托管 Agent，不索取 Agent ID，不自动修改云资源。不得扩展到定时、对话、推送、前端；不得索取或提交密钥。
+> 请先读取 README.md、docs/HANDOFF.md、docs/P4A_OFFLINE_RESEARCH.md、docs/P3_SKILLS.md、docs/P2_SOURCE_REGISTRY.md、docs/P1_VALIDATION.md、docs/P1_ACCESS_RETENTION.md、docs/IMPLEMENTATION_PLAN.md、docs/P0_SPEC.md 和 .env.example。P0–P3 及 P4-A 合成监管闭环已交付，当前总计 158 项离线测试；P2 组织审批和 P3 领域批准仍是生产门槛，草稿 Skill 默认不加载。新设备重建环境并单独登录；不要重复创建资源或付费验证。接下来实现 P4-B 请求／响应适配，先使用模拟传输，只有确有需要并获用户授权才做真实调用。Agent 编排由本地实现，不调用 Portal 托管 Agent，不索取 Agent ID，不自动修改云资源。不得扩展到定时、对话、推送、前端；不得索取或提交密钥。
 
 ## 7. 实施时核对的官方资料
 

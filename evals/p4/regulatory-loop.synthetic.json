@@ -1,0 +1,246 @@
+{
+  "fixture_version": "0.1.0",
+  "data_kind": "synthetic",
+  "annotation_status": "draft_pending_domain_review",
+  "execution_status": "offline_contract_only",
+  "notice": "Every publisher, instrument, claim, URL and result in this file is fictional. The fixture is not real intelligence, legal advice, model evaluation data, or a domain-approved gold label.",
+  "cases": [
+    {
+      "case_id": "P4A-01-supported-final-rule",
+      "request": {
+        "schema_version": "0.1.0",
+        "mode": "offline_synthetic",
+        "run_id": "p4a-synthetic-supported-001",
+        "request_key": "p4a-hk-final-rule-supported",
+        "as_of": "2026-09-03T09:00:00+08:00",
+        "window": {"start": "2026-08-01T00:00:00+08:00", "end": "2026-09-03T09:00:00+08:00", "timezone": "Asia/Hong_Kong"},
+        "scope": {"market_ids": ["HK"], "topic_id": "regulatory-change", "event_type": "final_rule", "source_classes": ["official"]},
+        "budget": {"max_followup_rounds_per_event": 2, "max_queries": 6, "max_evidence_records": 10},
+        "allow_draft_skills": true
+      },
+      "rounds": [
+        {
+          "queries_executed": 2,
+          "coverage_updates": [
+            {"market_id": "HK", "source_class": "official", "languages_checked": ["zh-Hant", "en"], "status": "checked", "detail": "Synthetic official coverage completed in both required languages; no live search occurred."}
+          ],
+          "discoveries": [
+            {
+              "candidate": {
+                "skill_id": "regulatory-change",
+                "skill_version": "0.1.0",
+                "topic_id": "regulatory-change",
+                "event_type": "final_rule",
+                "market_id": "HK",
+                "issuer": "Fictional Hong Kong Insurance Authority",
+                "document_title": "Synthetic Final Rule on Sales Disclosure",
+                "document_status": "final_rule",
+                "jurisdiction": "Hong Kong",
+                "instrument_id": "SYN-P4A-RULE-001",
+                "publication_date": "2026-09-01",
+                "effective_date": "2027-01-01",
+                "consultation_deadline": null,
+                "transition_period": {"start_date": "2026-09-01", "end_date": "2026-12-31", "description": "Synthetic transition period before commencement."},
+                "affected_entities": ["fictional authorized long-term insurers"],
+                "affected_products": ["fictional in-scope long-term insurance products"],
+                "affected_channels": ["fictional advised sales channel"],
+                "obligation_changes": [
+                  {
+                    "subject": "fictional authorized long-term insurers",
+                    "action": "must provide",
+                    "object": "a synthetic pre-sale disclosure",
+                    "timing": "before the fictional sales process is completed",
+                    "exception_notes": ["Only fictional products listed in the synthetic schedule are in scope."],
+                    "basis_claim_ids": ["claim-p4a-status", "claim-p4a-duty"]
+                  }
+                ],
+                "change_from_prior_rule": "The fictional final rule makes the synthetic disclosure mandatory for the defined channel.",
+                "exceptions": ["Products outside the fictional schedule are not shown as in scope."],
+                "business_impacts": [
+                  {
+                    "area": "distribution",
+                    "conditional": true,
+                    "assessment": "If an AIA operating entity and its products fall within the fictional scope, the sales workflow may require review before commencement.",
+                    "basis_claim_ids": ["claim-p4a-duty"],
+                    "unknowns": ["Actual AIA entity, product, channel and readiness are not established by the synthetic public evidence."]
+                  }
+                ],
+                "evidence_assessment": {"state": "primary_supported", "primary_document_obtained": true, "supporting_claim_ids": ["claim-p4a-status", "claim-p4a-duty"], "conflicts": []},
+                "unknowns": ["Actual AIA applicability and implementation readiness require internal assessment."],
+                "recommended_disposition": "proceed_to_verification",
+                "aia_financial_impact_quantification": null
+              },
+              "evidence": [
+                {
+                  "evidence_id": "e-p4a-primary-rule",
+                  "url": "https://fictional-regulator.example/rules/syn-p4a-001",
+                  "title": "Synthetic Final Rule on Sales Disclosure",
+                  "publisher": "Fictional Hong Kong Insurance Authority",
+                  "document_role": "primary_document",
+                  "source_class": "official",
+                  "origin": "synthetic",
+                  "origin_group_id": "synthetic-rule-release-001",
+                  "published_at": "2026-09-01T09:00:00+08:00",
+                  "available_at": "2026-09-01T09:00:00+08:00",
+                  "retrieved_at": "2026-09-03T08:45:00+08:00",
+                  "retention": "synthetic",
+                  "excerpt": "Synthetic fixture text: a final rule and fictional disclosure duty.",
+                  "native_citation": null
+                }
+              ],
+              "claims": [
+                {
+                  "claim_id": "claim-p4a-status",
+                  "statement": "Synthetic fact: the fictional authority published a final rule on 1 September 2026.",
+                  "kind": "fact",
+                  "verification": "unverified",
+                  "supports": [
+                    {"evidence_id": "e-p4a-primary-rule", "relation": "supports", "locator": "paragraph:1", "checked_by": "fixture_author", "note": "Synthetic primary text supports only publication and final-rule status."}
+                  ]
+                },
+                {
+                  "claim_id": "claim-p4a-duty",
+                  "statement": "Synthetic fact: the fictional rule states a pre-sale disclosure duty for its defined scope.",
+                  "kind": "fact",
+                  "verification": "unverified",
+                  "supports": [
+                    {"evidence_id": "e-p4a-primary-rule", "relation": "supports", "locator": "paragraph:2", "checked_by": "fixture_author", "note": "Synthetic primary text supports the stated fictional duty and scope."}
+                  ]
+                }
+              ],
+              "event": {"event_id": "event-p4a-rule-001", "entity_ids": ["aia-hk-business"], "first_seen_at": "2026-09-03T08:45:00+08:00", "change_type": "new", "previous_event_id": null},
+              "presentation": {
+                "finding_id": "finding-p4a-rule-001",
+                "headline": "Synthetic final disclosure rule has a future commencement date",
+                "what_changed": "A fictional final rule adds a synthetic sales-disclosure duty.",
+                "why_aia": "If the fictional scope covers an AIA operating entity and product, the relevant sales workflow may require review.",
+                "importance": "high",
+                "importance_reason": "The fictional duty affects a defined sales process and has a stated transition period.",
+                "executive_questions": ["Which fictional products and channels would be in scope if applicability were confirmed?"]
+              }
+            }
+          ]
+        }
+      ],
+      "expected": {"status": "completed", "stop_reason": "sufficient_evidence", "decision": "selected", "queries_executed": 2, "followup_rounds_executed": 0}
+    },
+    {
+      "case_id": "P4A-02-insufficient-consultation",
+      "request": {
+        "schema_version": "0.1.0",
+        "mode": "offline_synthetic",
+        "run_id": "p4a-synthetic-insufficient-001",
+        "request_key": "p4a-cn-consultation-insufficient",
+        "as_of": "2026-09-03T09:00:00+08:00",
+        "window": {"start": "2026-08-01T00:00:00+08:00", "end": "2026-09-03T09:00:00+08:00", "timezone": "Asia/Hong_Kong"},
+        "scope": {"market_ids": ["CN"], "topic_id": "regulatory-change", "event_type": "consultation", "source_classes": ["official"]},
+        "budget": {"max_followup_rounds_per_event": 2, "max_queries": 6, "max_evidence_records": 10},
+        "allow_draft_skills": true
+      },
+      "rounds": [
+        {
+          "queries_executed": 2,
+          "coverage_updates": [
+            {"market_id": "CN", "source_class": "official", "languages_checked": ["zh-Hans", "en"], "status": "checked", "detail": "Synthetic official discovery coverage completed, but the fictional original instrument was unavailable by the cutoff."}
+          ],
+          "discoveries": [
+            {
+              "candidate": {
+                "skill_id": "regulatory-change",
+                "skill_version": "0.1.0",
+                "topic_id": "regulatory-change",
+                "event_type": "consultation",
+                "market_id": "CN",
+                "issuer": "Fictional Mainland Financial Authority",
+                "document_title": "Unverified synthetic consultation title from an official index",
+                "document_status": "unknown",
+                "jurisdiction": "China mainland",
+                "instrument_id": null,
+                "publication_date": null,
+                "effective_date": null,
+                "consultation_deadline": null,
+                "transition_period": null,
+                "affected_entities": [],
+                "affected_products": [],
+                "affected_channels": [],
+                "obligation_changes": [],
+                "change_from_prior_rule": null,
+                "exceptions": [],
+                "business_impacts": [],
+                "evidence_assessment": {"state": "insufficient", "primary_document_obtained": false, "supporting_claim_ids": ["claim-p4a-index-signal"], "conflicts": []},
+                "unknowns": ["The fictional Chinese original was not obtained by the cutoff.", "Status, scope, dates, duties and exceptions remain unverified."],
+                "recommended_disposition": "watch",
+                "aia_financial_impact_quantification": null
+              },
+              "evidence": [
+                {
+                  "evidence_id": "e-p4a-official-index",
+                  "url": "https://fictional-mainland-regulator.example/index/syn-consultation",
+                  "title": "Synthetic official index entry",
+                  "publisher": "Fictional Mainland Financial Authority",
+                  "document_role": "discovery_signal",
+                  "source_class": "official",
+                  "origin": "synthetic",
+                  "origin_group_id": "synthetic-index-entry-001",
+                  "published_at": null,
+                  "available_at": "2026-09-02T12:00:00+08:00",
+                  "retrieved_at": "2026-09-03T08:40:00+08:00",
+                  "retention": "synthetic",
+                  "excerpt": "Synthetic fixture signal without the original instrument.",
+                  "native_citation": null
+                }
+              ],
+              "claims": [
+                {
+                  "claim_id": "claim-p4a-index-signal",
+                  "statement": "Synthetic observation: an official index appears to reference a consultation, but the instrument is unavailable.",
+                  "kind": "observation",
+                  "verification": "supported",
+                  "supports": [
+                    {"evidence_id": "e-p4a-official-index", "relation": "context_only", "locator": "paragraph:1", "checked_by": "fixture_author", "note": "The index is a discovery signal and does not support status, duties, scope or dates."}
+                  ]
+                }
+              ],
+              "event": {"event_id": "event-p4a-consultation-001", "entity_ids": ["aia-cn-business"], "first_seen_at": "2026-09-03T08:40:00+08:00", "change_type": "new", "previous_event_id": null},
+              "presentation": {
+                "finding_id": "finding-p4a-consultation-001",
+                "headline": "Synthetic consultation signal lacks the applicable original instrument",
+                "what_changed": "An official index produced a fictional consultation signal, but no regulatory change is established.",
+                "why_aia": "The item could matter only if the original confirms applicability to relevant mainland insurance activities.",
+                "importance": "high",
+                "importance_reason": "The potential scope is material, while the governing facts remain unknown.",
+                "executive_questions": ["Can the fictional original be obtained and its applicability verified?"]
+              }
+            }
+          ]
+        },
+        {"queries_executed": 1, "coverage_updates": [], "discoveries": []}
+      ],
+      "expected": {"status": "completed", "stop_reason": "no_new_independent_information", "decision": "watch", "queries_executed": 3, "followup_rounds_executed": 1}
+    },
+    {
+      "case_id": "P4A-03-required-source-unavailable",
+      "request": {
+        "schema_version": "0.1.0",
+        "mode": "offline_synthetic",
+        "run_id": "p4a-synthetic-source-gap-001",
+        "request_key": "p4a-my-implementation-source-gap",
+        "as_of": "2026-09-03T09:00:00+08:00",
+        "window": {"start": "2026-08-01T00:00:00+08:00", "end": "2026-09-03T09:00:00+08:00", "timezone": "Asia/Hong_Kong"},
+        "scope": {"market_ids": ["MY"], "topic_id": "regulatory-change", "event_type": "implementation_update", "source_classes": ["official"]},
+        "budget": {"max_followup_rounds_per_event": 2, "max_queries": 4, "max_evidence_records": 5},
+        "allow_draft_skills": true
+      },
+      "rounds": [
+        {
+          "queries_executed": 1,
+          "coverage_updates": [
+            {"market_id": "MY", "source_class": "official", "languages_checked": ["en"], "status": "unavailable", "detail": "Synthetic required Malay-language source path was unavailable; no live request occurred."}
+          ],
+          "discoveries": []
+        }
+      ],
+      "expected": {"status": "partial", "stop_reason": "required_source_unavailable", "decision": null, "queries_executed": 1, "followup_rounds_executed": 0}
+    }
+  ]
+}
