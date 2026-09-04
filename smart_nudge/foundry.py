@@ -161,6 +161,17 @@ class FoundryAdapter:
             raise ProbeError("invalid_request", "The mocked research payload must be an object.")
         return self._request(payload, "mocked_research")
 
+    def execute_mocked_verification(self, payload):
+        """Execute an original-source verification payload only through a mock transport."""
+        if not isinstance(self.transport, httpx.MockTransport):
+            raise ProbeError(
+                "mock_transport_required",
+                "P4-B verification execution is disabled unless an httpx.MockTransport is supplied.",
+            )
+        if not isinstance(payload, dict):
+            raise ProbeError("invalid_request", "The mocked verification payload must be an object.")
+        return self._request(payload, "mocked_verification")
+
     def _request(self, payload, check):
         token = get_cli_token(self.credential)
         try:

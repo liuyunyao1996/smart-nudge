@@ -291,11 +291,18 @@ class ApprovedSourceClient:
     """Fetch only allowlisted sources, validating DNS and every redirect hop."""
 
     def __init__(self, registry: SourceRegistry, *, client: httpx.Client | None = None,
-                 resolver: Callable[[str, int], Iterable[str]] | None = None):
+                 resolver: Callable[[str, int], Iterable[str]] | None = None,
+                 clock: Callable[[], datetime] | None = None):
         self.registry = registry
         self.client = client or httpx.Client(trust_env=False)
         self._owns_client = client is None
         self.resolver = resolver or _default_resolver
+        self.clock = clock or (lambda: datetime.now(timezone.utc))
+
+    @property
+    def uses_mock_transport(self) -> bool:
+        """Expose only whether the injected HTTP client is safely mocked."""
+        return isinstance(self.client._transport, httpx.MockTransport)
 
     def close(self) -> None:
         if self._owns_client:
@@ -371,10 +378,15 @@ class ApprovedSourceClient:
                 raise SourceFetchError("network_failure", "Approved source request failed or timed out.") from None
 
             body = b"".join(chunks)
+            retrieved_at = self.clock()
+            if retrieved_at.utcoffset() is None:
+                raise SourceFetchError(
+                    "invalid_clock", "Approved-source retrieval requires a timezone-aware clock."
+                )
             return FetchedSource(
                 source_id=source_id,
                 url=current_url,
-                retrieved_at=datetime.now(timezone.utc).isoformat(),
+                retrieved_at=retrieved_at.astimezone(timezone.utc).isoformat(),
                 acquisition_method=f"direct_{target.method['kind']}",
                 content_type=content_type,
                 content_sha256=sha256(body).hexdigest(),

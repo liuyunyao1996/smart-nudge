@@ -22,7 +22,7 @@ from smart_nudge.skills import SkillBundle, SkillLoader, SkillSelectionError
 from smart_nudge.sources import SourceRegistry
 
 
-CONTROLLER_VERSION = "p4a-controller@0.1.4"
+CONTROLLER_VERSION = "p4a-controller@0.1.5"
 DOCUMENT_ROLES = {"primary_document", "discovery_signal", "context"}
 
 
@@ -212,6 +212,21 @@ class CoveragePlanner:
 
 
 @dataclass(frozen=True)
+class ResearchFollowupBrief:
+    """Bounded event identity and deterministic evidence gaps for one follow-up."""
+
+    event_id: str
+    market_id: str
+    language: str | None
+    issuer: str
+    document_title: str
+    jurisdiction: str
+    instrument_id: str | None
+    discovery_urls: tuple[str, ...]
+    evidence_questions: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class ResearchContext:
     round_index: int
     followup: bool
@@ -221,6 +236,7 @@ class ResearchContext:
     unresolved_event_ids: tuple[str, ...]
     request_key: str
     request_sha256: str
+    followup_briefs: tuple[ResearchFollowupBrief, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -228,6 +244,8 @@ class ResearchBatch:
     queries_executed: int
     coverage_updates: tuple[dict, ...]
     discoveries: tuple[dict, ...]
+    followup_event_ids_attempted: tuple[str, ...] = ()
+    coverage_followup_attempted: bool = False
 
 
 class ResearchRole(Protocol):
@@ -286,7 +304,20 @@ class FixtureResearchRole:
                 or not isinstance(coverage, list) or not isinstance(discoveries, list)
                 or any(not isinstance(item, dict) for item in coverage + discoveries)):
             raise ResearchLoopError("invalid_fixture", "Synthetic round fields are invalid.")
-        return ResearchBatch(queries, tuple(deepcopy(coverage)), tuple(deepcopy(discoveries)))
+        attempted_event_ids = (
+            context.unresolved_event_ids
+            if context.followup and queries > 0
+            else ()
+        )
+        return ResearchBatch(
+            queries,
+            tuple(deepcopy(coverage)),
+            tuple(deepcopy(discoveries)),
+            followup_event_ids_attempted=attempted_event_ids,
+            coverage_followup_attempted=(
+                context.followup and queries > 0 and not attempted_event_ids
+            ),
+        )
 
 
 class RegulatoryAnalysisRole:
@@ -336,12 +367,14 @@ class ContractVerificationRole:
     role_version = "contract-verification@0.1.1"
 
     def __init__(self, *, evidence_policy: str = "synthetic"):
-        if evidence_policy not in {"synthetic", "citation_only"}:
+        if evidence_policy not in {"synthetic", "citation_only", "direct_verification"}:
             raise ValueError("Unknown verification evidence policy.")
         self.evidence_policy = evidence_policy
         self.checked_by = "fixture_author" if evidence_policy == "synthetic" else "verification_agent"
         if evidence_policy == "citation_only":
             self.role_version = "contract-verification-citation-only@0.1.0"
+        elif evidence_policy == "direct_verification":
+            self.role_version = "contract-verification-direct@0.1.0"
 
     def _verified_claims(self, evidence: Mapping[str, dict], claims: Mapping[str, dict]) -> dict[str, dict]:
         verified: dict[str, dict] = {}
@@ -362,6 +395,23 @@ class ContractVerificationRole:
                     item = evidence[link["evidence_id"]]
                     if self.evidence_policy == "citation_only" and link["checked_by"] != "not_checked":
                         raise KeyError
+                    if self.evidence_policy == "direct_verification":
+                        expected_checker = (
+                            "not_checked"
+                            if item.get("origin") == "bing_grounding"
+                            else "verification_agent"
+                        )
+                        if link["checked_by"] != expected_checker:
+                            raise KeyError
+                        if (
+                            link["checked_by"] == "verification_agent"
+                            and link["relation"] in {"supports", "refutes"}
+                            and (
+                                item.get("origin") != "independent_public_source"
+                                or item.get("document_role") != "primary_document"
+                            )
+                        ):
+                            raise KeyError
                     checked = link["checked_by"] == self.checked_by
                     if link["relation"] == "supports" and checked and item["source_class"] == "official":
                         checked_support = True
@@ -393,29 +443,50 @@ class ContractVerificationRole:
                     raise ResearchLoopError("offline_boundary", "P4-A accepts only synthetic official evidence.")
                 if host != "example" and not host.endswith(".example"):
                     raise ResearchLoopError("offline_boundary", "P4-A synthetic evidence must use a reserved .example URL.")
-            elif (item.get("origin") != "bing_grounding"
-                  or item.get("retention") != "approved_metadata_only"
-                  or item.get("source_class") != "official"
-                  or not isinstance(item.get("native_citation"), dict)
-                  or item.get("excerpt") is not None
-                  or item.get("document_role") != "discovery_signal"
-                  or parsed is None
-                  or parsed.scheme != "https"
-                  or parsed.username is not None
-                  or parsed.password is not None
-                  or not host
-                  or host == "example"
-                  or host.endswith(".example")
-                  or item["native_citation"].get("type") != "url_citation"
-                  or item["native_citation"].get("url") != item.get("url")
-                  or type(item["native_citation"].get("start_index")) is not int
-                  or type(item["native_citation"].get("end_index")) is not int
-                  or not (0 <= item["native_citation"]["start_index"]
-                          < item["native_citation"]["end_index"])):
-                raise ResearchLoopError(
-                    "citation_boundary",
-                    "Mocked Foundry verification accepts only metadata-only native citation signals.",
+            else:
+                citation_valid = not (
+                    item.get("origin") != "bing_grounding"
+                    or item.get("retention") != "approved_metadata_only"
+                    or item.get("source_class") != "official"
+                    or not isinstance(item.get("native_citation"), dict)
+                    or item.get("excerpt") is not None
+                    or item.get("document_role") != "discovery_signal"
+                    or parsed is None
+                    or parsed.scheme != "https"
+                    or parsed.username is not None
+                    or parsed.password is not None
+                    or not host
+                    or host == "example"
+                    or host.endswith(".example")
+                    or item["native_citation"].get("type") != "url_citation"
+                    or item["native_citation"].get("url") != item.get("url")
+                    or type(item["native_citation"].get("start_index")) is not int
+                    or type(item["native_citation"].get("end_index")) is not int
+                    or not (0 <= item["native_citation"]["start_index"]
+                            < item["native_citation"]["end_index"])
                 )
+                direct_valid = not (
+                    item.get("origin") != "independent_public_source"
+                    or item.get("retention") not in {"approved_metadata_only", "approved_excerpt"}
+                    or item.get("source_class") != "official"
+                    or item.get("native_citation") is not None
+                    or item.get("document_role") not in {"primary_document", "context"}
+                    or item.get("excerpt") is not None
+                    or parsed is None
+                    or parsed.scheme != "https"
+                    or parsed.username is not None
+                    or parsed.password is not None
+                    or not host
+                    or host == "example"
+                    or host.endswith(".example")
+                )
+                if not citation_valid and (
+                    self.evidence_policy != "direct_verification" or not direct_valid
+                ):
+                    raise ResearchLoopError(
+                        "citation_boundary",
+                        "Verification accepts only native citation signals and controlled direct evidence.",
+                    )
         verified_claims = self._verified_claims(evidence, claims)
         events: list[dict] = []
         findings: list[dict] = []
@@ -746,6 +817,81 @@ class ResearchController:
                 raise ResearchLoopError("coverage_contract", "Coverage update is invalid or outside the plan.") from None
             current.update(languages_checked=list(languages), status=status, detail=detail)
 
+    @staticmethod
+    def _followup_brief(event_id: str, discovery: dict) -> ResearchFollowupBrief:
+        """Derive fixed evidence questions without copying free-form unknowns into queries."""
+        try:
+            candidate = discovery["candidate"]
+            if discovery["event"]["event_id"] != event_id:
+                raise KeyError
+            market_id = candidate["market_id"]
+            language = discovery.get("research_context", {}).get("language")
+            issuer = candidate["issuer"]
+            document_title = candidate["document_title"]
+            jurisdiction = candidate["jurisdiction"]
+            instrument_id = candidate["instrument_id"]
+            assessment = candidate["evidence_assessment"]
+            discovery_urls = tuple(sorted({
+                item["url"]
+                for item in discovery["evidence"]
+                if isinstance(item.get("url"), str) and item["url"]
+            }))
+            if (
+                not all(isinstance(value, str) and value.strip() for value in (
+                    event_id, market_id, issuer, document_title, jurisdiction
+                ))
+                or instrument_id is not None
+                and (not isinstance(instrument_id, str) or not instrument_id.strip())
+                or language is not None
+                and (not isinstance(language, str) or not language.strip())
+                or not discovery_urls
+            ):
+                raise KeyError
+        except (KeyError, TypeError):
+            raise ResearchLoopError(
+                "followup_contract",
+                "An unresolved event cannot be converted into a bounded follow-up brief.",
+            ) from None
+
+        questions: list[str] = []
+        if not assessment.get("primary_document_obtained"):
+            questions.append("original_instrument")
+        if candidate.get("document_status") == "unknown":
+            questions.append("legal_status")
+        if instrument_id is None:
+            questions.append("instrument_identifier")
+        if candidate.get("publication_date") is None:
+            questions.append("publication_history")
+        if (
+            candidate.get("effective_date") is None
+            or candidate.get("transition_period") is None
+            or candidate.get("document_status") == "consultation"
+            and candidate.get("consultation_deadline") is None
+        ):
+            questions.append("effective_and_transition_timing")
+        if not candidate.get("affected_entities"):
+            questions.append("applicability_scope")
+        if candidate.get("change_from_prior_rule") is None:
+            questions.append("prior_baseline")
+        if assessment.get("state") == "conflicted" or assessment.get("conflicts"):
+            questions.append("conflict_resolution")
+        if "original_instrument" in questions:
+            questions.append("annexes_amendments_corrections")
+        if not questions:
+            questions.append("unresolved_material_claims")
+
+        return ResearchFollowupBrief(
+            event_id=event_id,
+            market_id=market_id,
+            language=language,
+            issuer=issuer,
+            document_title=document_title,
+            jurisdiction=jurisdiction,
+            instrument_id=instrument_id,
+            discovery_urls=discovery_urls,
+            evidence_questions=tuple(questions),
+        )
+
     def run(self, request_document: dict) -> ResearchOutcome:
         request = ResearchRequest.validate(request_document, self.root)
         try:
@@ -803,6 +949,19 @@ class ResearchController:
                 if not followup_event_ids and not coverage_followup:
                     stop_reason = "budget_exhausted"
                     break
+            try:
+                followup_briefs = tuple(
+                    self._followup_brief(event_id, discoveries[event_id])
+                    for event_id in followup_event_ids
+                )
+            except (KeyError, ResearchLoopError) as exc:
+                stop_reason = "technical_failure"
+                technical_error = (
+                    f"{exc.code}: {exc}"
+                    if isinstance(exc, ResearchLoopError)
+                    else "followup_contract: An unresolved event is missing from the research state."
+                )
+                break
             context = ResearchContext(
                 round_index=round_index,
                 followup=round_index > 0,
@@ -812,6 +971,7 @@ class ResearchController:
                 unresolved_event_ids=followup_event_ids,
                 request_key=request.request_key,
                 request_sha256=request.content_sha256,
+                followup_briefs=followup_briefs,
             )
             try:
                 batch = self.research_role.research(context)
@@ -823,6 +983,21 @@ class ResearchController:
                 if batch.queries_executed > context.remaining_queries:
                     stop_reason = "budget_exhausted"
                     break
+                attempted_event_ids = batch.followup_event_ids_attempted
+                if (
+                    not isinstance(attempted_event_ids, tuple)
+                    or any(not isinstance(item, str) or not item for item in attempted_event_ids)
+                    or len(attempted_event_ids) != len(set(attempted_event_ids))
+                    or set(attempted_event_ids) - set(followup_event_ids)
+                    or type(batch.coverage_followup_attempted) is not bool
+                    or batch.coverage_followup_attempted and not coverage_followup
+                    or round_index == 0
+                    and (attempted_event_ids or batch.coverage_followup_attempted)
+                ):
+                    raise ResearchLoopError(
+                        "followup_contract",
+                        "The research role reported invalid follow-up accounting.",
+                    )
                 if round_index > 0:
                     try:
                         returned_existing_events = {
@@ -837,6 +1012,11 @@ class ResearchController:
                             "followup_budget",
                             "The research role returned an event outside its remaining follow-up budget.",
                         )
+                    if returned_existing_events - set(attempted_event_ids):
+                        raise ResearchLoopError(
+                            "followup_contract",
+                            "The research role returned an event it did not report attempting.",
+                        )
                 staged_discoveries = deepcopy(discoveries)
                 raw_evidence, raw_claims, new_events = self._merge_discoveries(
                     staged_discoveries, batch.discoveries
@@ -848,9 +1028,9 @@ class ResearchController:
                 queries_used += batch.queries_executed
                 rounds_used += 1
                 if round_index > 0:
-                    for event_id in followup_event_ids:
+                    for event_id in attempted_event_ids:
                         event_followups_used[event_id] = event_followups_used.get(event_id, 0) + 1
-                    if coverage_followup:
+                    if batch.coverage_followup_attempted:
                         coverage_followups_used += 1
                 discoveries = staged_discoveries
                 new_origins, _ = self._merge_evidence(evidence, raw_evidence)
@@ -863,6 +1043,8 @@ class ResearchController:
                     "round_index": round_index,
                     "followup": round_index > 0,
                     "queries_executed": batch.queries_executed,
+                    "followup_events_attempted": len(attempted_event_ids),
+                    "coverage_followup_attempted": batch.coverage_followup_attempted,
                     "new_origin_groups": len(new_origins),
                     "new_claims": new_claims,
                     "new_events": new_events,

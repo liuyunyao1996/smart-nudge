@@ -141,6 +141,27 @@ class ApprovedSourceClientTests(unittest.TestCase):
         self.assertNotIn("body", reference)
         datetime.fromisoformat(reference["retrieved_at"])
 
+    def test_fetch_uses_injected_timezone_aware_clock(self):
+        instant = datetime(2026, 9, 4, 1, 2, 3, tzinfo=timezone.utc)
+        guarded = ApprovedSourceClient(
+            self.registry,
+            client=response_for(b'{"result": []}'),
+            resolver=PUBLIC_DNS,
+            clock=lambda: instant,
+        )
+        self.assertEqual(instant.isoformat(), guarded.fetch(self.url).retrieved_at)
+
+    def test_fetch_rejects_naive_injected_clock(self):
+        guarded = ApprovedSourceClient(
+            self.registry,
+            client=response_for(b'{"result": []}'),
+            resolver=PUBLIC_DNS,
+            clock=lambda: datetime(2026, 9, 4, 1, 2, 3),
+        )
+        with self.assertRaises(SourceFetchError) as error:
+            guarded.fetch(self.url)
+        self.assertEqual("invalid_clock", error.exception.code)
+
     def test_private_dns_resolution_is_blocked_before_request(self):
         calls = []
 

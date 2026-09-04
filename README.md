@@ -2,7 +2,7 @@
 
 面向 AIA 集团 CEO 的公开 Web 情报研究 Agent POC。
 
-当前交付：P0 监控定义和输出契约；P1 Foundry／Bing 接入与保守留存策略；P2 三市场 Source Registry、安全原文读取和定位解析；P3 首个 `regulatory-change` Skill；P4-A 有界的合成监管研究—分析—核验闭环；P4-B 初扫请求构造、mocked transport 执行、受控响应转换及模拟闭环。Skill 仍待领域批准，事件级补搜、原文核验和真实研究闭环尚未实现。定时、对话、推送和前端不在当前 scope。
+当前交付：P0 监控定义和输出契约；P1 Foundry／Bing 接入与保守留存策略；P2 三市场 Source Registry、安全原文读取和定位解析；P3 首个 `regulatory-change` Skill；P4-A 有界的合成监管研究—分析—核验闭环；P4-B 初扫、事件级补搜、获准精确 URL 原文读取及 locator-bound 核验均已在 mocked transports 下接入闭环。Skill 仍待领域批准，真实研究运行和显式 live transport 边界尚未实现。定时、对话、推送和前端不在当前 scope。
 
 **换设备继续工作：先读 [当前进度与交接说明](docs/HANDOFF.md)。** 非敏感连接参数见 [.env.example](.env.example)；实际加载根目录 `.env`，新设备须重新安装依赖并单独完成 Azure 登录。
 

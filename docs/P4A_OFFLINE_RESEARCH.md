@@ -88,16 +88,16 @@ P4-A 只接受：
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-当前 P4-A 有 33 项专项测试；加上后续 P4-B 模拟适配器测试，全仓库合计 177 项离线测试。
+当前 P4-A 有 33 项专项测试；加上后续 P4-B 模拟适配器及其他边界测试，全仓库合计 195 项离线测试。
 
 ## 下一步
 
-P4-B 的初扫请求构造、模拟传输执行、响应转换与控制器接入已经完成，见 [P4-B Foundry/Bing 模拟适配器](P4B_REQUEST_CONSTRUCTION.md)。后续继续保持先离线、后授权实测：
+P4-B 的初扫、事件级补搜、独立原文核验、模拟传输执行、响应转换与控制器接入已经完成，见 [P4-B Foundry/Bing 模拟适配器](P4B_REQUEST_CONSTRUCTION.md)。后续继续保持先离线、后授权实测：
 
 1. 已把 coverage task 和 Skill 查询模板转换为有预算的 Foundry/Bing 请求，并保持监管查询不强制 AIA。
-2. 已只接收原生 URL citation，形成 metadata-only、`not_checked` 的 evidence 与 claim 草稿；P2 原文引用仍待独立获取和核验。
+2. 已只接收原生 URL citation，形成 metadata-only、`not_checked` 的 evidence 与 claim 草稿；获准原文必须经 P2 读取器独立获取并由 locator-bound 核验结果另行形成 direct evidence。
 3. 已将模型输出限制在受控 JSON Schema，并在进入控制器前校验；原始回答和工具输出不得进入数据库或评测集。
 4. 已覆盖无结果、无引用、来源越界、限流、超时、未知执行状态和可能重复计费的失败路径。
-5. 下一步构造事件级补搜并编排获准的 P2 原文读取；完成后再由用户单独授权一次小规模真实运行，不得为重复确认 P1 成功而调用。
+5. 下一步构造默认关闭、显式启用的手动运行／live transport 边界；只有用户单独授权且组织门槛允许时才做一次小规模真实运行，不得为重复确认 P1 成功而调用。
 
-P4-A 尚未实现真实检索、自动原文读取编排、数据库、跨运行历史、幂等恢复、通用 CLI 或其余领域 Skills。
+P4-A 尚未实现真实检索／真实原文读取、数据库、跨运行历史、幂等恢复、通用 CLI 或其余领域 Skills；自动原文编排当前只在 mock 下完成。

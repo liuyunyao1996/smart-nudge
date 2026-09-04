@@ -23,6 +23,7 @@ from smart_nudge.research import (
     CoveragePlanner,
     ResearchContext,
     ResearchController,
+    ResearchFollowupBrief,
     ResearchLoopError,
     ResearchRequest,
 )
@@ -294,6 +295,111 @@ class FoundryResearchRequestTests(unittest.TestCase):
             )
         self.assertEqual("followup_context_required", error.exception.code)
 
+    def followup_brief(self, *, instrument_id="MOCK-2026-01"):
+        document = signal_document()
+        document["signals"][0]["instrument_id"] = instrument_id
+        discovery = self.convert(
+            completed_response(document, url=document["signals"][0]["claims"][0]["citation_urls"][0])
+        ).discoveries[0]
+        candidate = discovery["candidate"]
+        return ResearchFollowupBrief(
+            event_id=discovery["event"]["event_id"],
+            market_id=candidate["market_id"],
+            language=discovery["research_context"]["language"],
+            issuer=candidate["issuer"],
+            document_title=candidate["document_title"],
+            jurisdiction=candidate["jurisdiction"],
+            instrument_id=candidate["instrument_id"],
+            discovery_urls=tuple(item["url"] for item in discovery["evidence"]),
+            evidence_questions=(
+                "original_instrument",
+                "effective_and_transition_timing",
+                "prior_baseline",
+            ),
+        )
+
+    def test_builds_narrow_event_followup_bound_to_issuer_and_questions(self):
+        brief = self.followup_brief()
+        requests = self.builder.build_followup(
+            self.request,
+            self.context(
+                round_index=1,
+                followup=True,
+                unresolved_event_ids=(brief.event_id,),
+                followup_briefs=(brief,),
+            ),
+            self.bundles,
+        )
+        self.assertEqual(1, len(requests))
+        built = requests[0]
+        self.assertEqual("event_followup", built.request_kind)
+        self.assertEqual(brief.event_id, built.target_event_id)
+        self.assertEqual(("hk-hkma-publications",), built.source_ids)
+        self.assertIn('"MOCK-2026-01"', built.query_text)
+        self.assertIn('"Mock regulatory instrument for transport testing"', built.query_text)
+        self.assertIn("prior rule", built.query_text)
+        self.assertNotIn("after:", built.query_text)
+        self.assertIn("event-specific", built.payload["instructions"])
+        self.assertIn("prior_baseline", built.payload["input"])
+        self.assertEqual(brief.evidence_questions, built.evidence_questions)
+        self.assertNotIn("query_text", built.audit_record())
+
+    def test_followup_briefs_must_match_the_budgeted_event_ids(self):
+        brief = self.followup_brief()
+        changed = ResearchFollowupBrief(
+            **{**brief.__dict__, "event_id": "reg-another-event"}
+        )
+        with self.assertRaises(FoundryResearchRequestError) as error:
+            self.builder.build_followup(
+                self.request,
+                self.context(
+                    round_index=1,
+                    followup=True,
+                    unresolved_event_ids=(brief.event_id,),
+                    followup_briefs=(changed,),
+                ),
+                self.bundles,
+            )
+        self.assertEqual("invalid_followup_context", error.exception.code)
+
+    def test_followup_response_is_pinned_to_the_existing_event(self):
+        brief = self.followup_brief(instrument_id=None)
+        built = self.builder.build_followup(
+            self.request,
+            self.context(
+                round_index=1,
+                followup=True,
+                unresolved_event_ids=(brief.event_id,),
+                followup_briefs=(brief,),
+            ),
+            self.bundles,
+        )[0]
+        document = signal_document()
+        url = document["signals"][0]["claims"][0]["citation_urls"][0]
+        result = self.converter.convert(
+            built,
+            completed_response(document, url=url),
+            {"status": "completed"},
+            self.request,
+            self.bundles["HK"],
+            observed_at=NOW,
+        )
+        self.assertEqual(brief.event_id, result.discoveries[0]["event"]["event_id"])
+        self.assertEqual("MOCK-2026-01", result.discoveries[0]["candidate"]["instrument_id"])
+
+        changed = signal_document()
+        changed["signals"][0]["document_title"] = "A different instrument"
+        with self.assertRaises(FoundryResearchResponseError) as error:
+            self.converter.convert(
+                built,
+                completed_response(changed, url=url),
+                {"status": "completed"},
+                self.request,
+                self.bundles["HK"],
+                observed_at=NOW,
+            )
+        self.assertEqual("followup_event_mismatch", error.exception.code)
+
     def test_tampered_template_and_bing_scope_are_rejected(self):
         changed_plan = {**self.plan, "tasks": [dict(task) for task in self.plan["tasks"]]}
         changed_plan["tasks"][0]["query_templates"] = ["AIA {term}"]
@@ -513,6 +619,66 @@ class FoundryResearchRequestTests(unittest.TestCase):
         self.assertEqual("unverified", outcome.result["claims"][0]["verification"])
         self.assertEqual(2, len(role.audit_records))
         self.assertNotIn("secret-test-token", json.dumps(role.audit_records))
+
+    def test_mocked_controller_uses_one_event_specific_followup(self):
+        document = request_document()
+        document["budget"]["max_followup_rounds_per_event"] = 1
+        document["as_of"] = NOW.isoformat()
+        request = ResearchRequest.validate(document, ROOT)
+        initial_url = "https://www.hkma.gov.hk/eng/news-and-media/press-releases/2026/mock"
+        followup_url = "https://www.hkma.gov.hk/eng/key-functions/banking-stability/mock-rule"
+        calls = []
+
+        def handler(http_request):
+            payload = json.loads(http_request.content)
+            calls.append(payload)
+            if "event-specific" in payload["instructions"]:
+                return httpx.Response(
+                    200,
+                    json=completed_response(signal_document(followup_url), url=followup_url),
+                    headers={"apim-request-id": "req_followup"},
+                )
+            if "language: en;" in payload["input"]:
+                body = completed_response(signal_document(initial_url), url=initial_url)
+            else:
+                body = completed_response(
+                    {"schema_version": "0.1.0", "coverage_status": "checked", "signals": []}
+                )
+            return httpx.Response(200, json=body, headers={"apim-request-id": "req_initial"})
+
+        credential = Mock()
+        credential.get_token.return_value = SimpleNamespace(
+            token="secret-test-token", expires_on=2000000000
+        )
+        role = MockedFoundryResearchRole(
+            self.builder,
+            FoundryAdapter(
+                FoundryConfig(ENDPOINT, "gpt-5-mini"),
+                credential=credential,
+                transport=httpx.MockTransport(handler),
+            ),
+            request,
+            self.bundles,
+            clock=lambda: NOW,
+        )
+        outcome = ResearchController(
+            ROOT,
+            role,
+            verification_role=ContractVerificationRole(evidence_policy="citation_only"),
+            clock=lambda: NOW,
+        ).run(document)
+        self.assertEqual(3, len(calls))
+        followups = [item for item in calls if "event-specific" in item["instructions"]]
+        self.assertEqual(1, len(followups))
+        self.assertIn("original_instrument", followups[0]["input"])
+        search = followups[0]["tools"][0]["bing_custom_search_preview"]["search_configurations"][0]
+        self.assertEqual("en-HK", search["market"])
+        self.assertEqual(3, outcome.budget_usage["queries_executed"])
+        self.assertEqual(1, outcome.budget_usage["followup_rounds_executed"])
+        event_id = outcome.result["events"][0]["event_id"]
+        self.assertEqual({event_id: 1}, outcome.budget_usage["event_followup_rounds"])
+        self.assertEqual(2, len(outcome.result["evidence"]))
+        self.assertEqual("watch", outcome.result["findings"][0]["decision"])
 
     def test_timeout_rate_limit_and_unknown_execution_preserve_attempted_budget(self):
         document = request_document()
