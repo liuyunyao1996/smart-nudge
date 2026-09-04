@@ -22,7 +22,7 @@
 - P2 source registry, approved-access capability matrix, guarded fetcher, and HTML/PDF/API extraction are engineering-complete; organizational approval remains a production gate.
 - The first P3 `regulatory-change` skill, generic loader, output contract, and synthetic fixtures are engineering-complete but remain draft pending domain review; draft loading must be explicit.
 - P4-A offline regulatory research-analysis-verification is engineering-complete with synthetic-only evidence, bounded follow-ups, deterministic verification, and P0-valid output.
-- Resume with P4-B request/response adapter construction under mocked transports; run a live model/search request only when specifically needed and authorized.
+- P4-B initial Foundry/Bing adapter is complete under `httpx.MockTransport`: bounded request construction, strict response conversion, citation-only drafts, safe failure accounting, and a mocked controller loop. Resume with event-specific follow-up construction and approved original-source verification; run a live model/search request only when specifically needed and authorized.
 - Treat `docs/HANDOFF.md` as the detailed living status record and update it after material milestones.
 
 ## Safety and verification

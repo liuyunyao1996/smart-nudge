@@ -88,11 +88,11 @@ class BingConfig:
             raise ProbeError("configuration", "Source scope must contain explicit lowercase hostnames.")
         return cls(connection, instance, tuple(hosts))
 
-    def tool(self):
+    def tool(self, *, count=3, market="en-US", set_lang="en"):
         return {"type": "bing_custom_search_preview", "bing_custom_search_preview": {
             "search_configurations": [{"project_connection_id": self.connection_id,
-                                       "instance_name": self.instance_name, "count": 3,
-                                       "market": "en-US", "set_lang": "en"}]}}
+                                       "instance_name": self.instance_name, "count": count,
+                                       "market": market, "set_lang": set_lang}]}}
 
 
 def get_cli_token(credential=None):
@@ -149,6 +149,17 @@ class FoundryAdapter:
         }
         body, summary = self._request(payload, "search")
         return inspect_search(body, summary, bing.source_hosts)
+
+    def execute_mocked_research(self, payload):
+        """Execute a research payload only through an explicit mock transport."""
+        if not isinstance(self.transport, httpx.MockTransport):
+            raise ProbeError(
+                "mock_transport_required",
+                "P4-B research execution is disabled unless an httpx.MockTransport is supplied.",
+            )
+        if not isinstance(payload, dict):
+            raise ProbeError("invalid_request", "The mocked research payload must be an object.")
+        return self._request(payload, "mocked_research")
 
     def _request(self, payload, check):
         token = get_cli_token(self.credential)

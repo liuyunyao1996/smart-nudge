@@ -9,6 +9,7 @@ from __future__ import annotations
 from copy import deepcopy
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from hashlib import sha256
 from pathlib import Path
 from typing import Callable, Mapping, Protocol
 import json
@@ -21,17 +22,17 @@ from smart_nudge.skills import SkillBundle, SkillLoader, SkillSelectionError
 from smart_nudge.sources import SourceRegistry
 
 
-CONTROLLER_VERSION = "p4a-controller@0.1.3"
-CHECKED_BY = "fixture_author"
+CONTROLLER_VERSION = "p4a-controller@0.1.4"
 DOCUMENT_ROLES = {"primary_document", "discovery_signal", "context"}
 
 
 class ResearchLoopError(RuntimeError):
     """A curated orchestration failure that does not expose evidence content."""
 
-    def __init__(self, code: str, message: str):
+    def __init__(self, code: str, message: str, *, queries_consumed: int = 0):
         super().__init__(message)
         self.code = code
+        self.queries_consumed = queries_consumed
 
 
 def _unique_pairs(pairs):
@@ -143,6 +144,13 @@ class ResearchRequest:
     def max_evidence(self) -> int:
         return self.document["budget"]["max_evidence_records"]
 
+    @property
+    def content_sha256(self) -> str:
+        encoded = json.dumps(
+            self.document, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+        return sha256(encoded).hexdigest()
+
 
 @dataclass(frozen=True)
 class CoveragePlan:
@@ -211,6 +219,8 @@ class ResearchContext:
     remaining_evidence_records: int
     coverage_plan: dict
     unresolved_event_ids: tuple[str, ...]
+    request_key: str
+    request_sha256: str
 
 
 @dataclass(frozen=True)
@@ -325,8 +335,15 @@ class ContractVerificationRole:
 
     role_version = "contract-verification@0.1.1"
 
-    @staticmethod
-    def _verified_claims(evidence: Mapping[str, dict], claims: Mapping[str, dict]) -> dict[str, dict]:
+    def __init__(self, *, evidence_policy: str = "synthetic"):
+        if evidence_policy not in {"synthetic", "citation_only"}:
+            raise ValueError("Unknown verification evidence policy.")
+        self.evidence_policy = evidence_policy
+        self.checked_by = "fixture_author" if evidence_policy == "synthetic" else "verification_agent"
+        if evidence_policy == "citation_only":
+            self.role_version = "contract-verification-citation-only@0.1.0"
+
+    def _verified_claims(self, evidence: Mapping[str, dict], claims: Mapping[str, dict]) -> dict[str, dict]:
         verified: dict[str, dict] = {}
         for claim_id, original in claims.items():
             claim = deepcopy(original)
@@ -343,7 +360,9 @@ class ContractVerificationRole:
             for link in links:
                 try:
                     item = evidence[link["evidence_id"]]
-                    checked = link["checked_by"] == CHECKED_BY
+                    if self.evidence_policy == "citation_only" and link["checked_by"] != "not_checked":
+                        raise KeyError
+                    checked = link["checked_by"] == self.checked_by
                     if link["relation"] == "supports" and checked and item["source_class"] == "official":
                         checked_support = True
                     if link["relation"] == "refutes" and checked:
@@ -362,15 +381,41 @@ class ContractVerificationRole:
     ) -> dict:
         for item in evidence.values():
             try:
-                host = (urlsplit(item.get("url", "")).hostname or "").lower().rstrip(".")
+                parsed = urlsplit(item.get("url", ""))
+                host = (parsed.hostname or "").lower().rstrip(".")
             except ValueError:
+                parsed = None
                 host = ""
-            if (item.get("origin") != "synthetic" or item.get("retention") != "synthetic"
-                    or item.get("source_class") != "official" or item.get("native_citation") is not None
-                    or item.get("document_role") not in DOCUMENT_ROLES):
-                raise ResearchLoopError("offline_boundary", "P4-A accepts only synthetic official evidence.")
-            if host != "example" and not host.endswith(".example"):
-                raise ResearchLoopError("offline_boundary", "P4-A synthetic evidence must use a reserved .example URL.")
+            if self.evidence_policy == "synthetic":
+                if (item.get("origin") != "synthetic" or item.get("retention") != "synthetic"
+                        or item.get("source_class") != "official" or item.get("native_citation") is not None
+                        or item.get("document_role") not in DOCUMENT_ROLES):
+                    raise ResearchLoopError("offline_boundary", "P4-A accepts only synthetic official evidence.")
+                if host != "example" and not host.endswith(".example"):
+                    raise ResearchLoopError("offline_boundary", "P4-A synthetic evidence must use a reserved .example URL.")
+            elif (item.get("origin") != "bing_grounding"
+                  or item.get("retention") != "approved_metadata_only"
+                  or item.get("source_class") != "official"
+                  or not isinstance(item.get("native_citation"), dict)
+                  or item.get("excerpt") is not None
+                  or item.get("document_role") != "discovery_signal"
+                  or parsed is None
+                  or parsed.scheme != "https"
+                  or parsed.username is not None
+                  or parsed.password is not None
+                  or not host
+                  or host == "example"
+                  or host.endswith(".example")
+                  or item["native_citation"].get("type") != "url_citation"
+                  or item["native_citation"].get("url") != item.get("url")
+                  or type(item["native_citation"].get("start_index")) is not int
+                  or type(item["native_citation"].get("end_index")) is not int
+                  or not (0 <= item["native_citation"]["start_index"]
+                          < item["native_citation"]["end_index"])):
+                raise ResearchLoopError(
+                    "citation_boundary",
+                    "Mocked Foundry verification accepts only metadata-only native citation signals.",
+                )
         verified_claims = self._verified_claims(evidence, claims)
         events: list[dict] = []
         findings: list[dict] = []
@@ -427,7 +472,7 @@ class ContractVerificationRole:
             all_have_primary_support = all(
                 any(
                     link["relation"] == "supports"
-                    and link["checked_by"] == CHECKED_BY
+                    and link["checked_by"] == self.checked_by
                     and evidence[link["evidence_id"]]["document_role"] == "primary_document"
                     and evidence[link["evidence_id"]]["publisher"] == candidate["issuer"]
                     for link in claim["supports"]
@@ -449,7 +494,7 @@ class ContractVerificationRole:
                 decision_reason = "The regulatory skill marked the item outside the actionable scope."
             elif evidence_status == "primary_supported" and recommendation == "proceed_to_verification":
                 decision, decision_code = "selected", "select_verified_material"
-                decision_reason = "The stated regulatory facts have checked synthetic primary support; business impact remains conditional."
+                decision_reason = "The stated regulatory facts have checked primary support; business impact remains conditional."
             elif evidence_status == "conflicted":
                 decision, decision_code = "watch", "watch_conflicting_evidence"
                 decision_reason = "Checked evidence conflicts, so the item remains under review."
@@ -765,6 +810,8 @@ class ResearchController:
                 remaining_evidence_records=request.max_evidence - len(evidence),
                 coverage_plan=plan.record(),
                 unresolved_event_ids=followup_event_ids,
+                request_key=request.request_key,
+                request_sha256=request.content_sha256,
             )
             try:
                 batch = self.research_role.research(context)
@@ -822,6 +869,9 @@ class ResearchController:
                     "unresolved_events": len(verified["unresolved_event_ids"]),
                 })
             except ResearchLoopError as exc:
+                if (type(exc.queries_consumed) is int and exc.queries_consumed > 0
+                        and exc.queries_consumed <= context.remaining_queries):
+                    queries_used += exc.queries_consumed
                 stop_reason = "technical_failure"
                 technical_error = f"{exc.code}: {exc}"
                 break
