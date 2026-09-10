@@ -274,6 +274,13 @@ class FoundryResearchRequestTests(unittest.TestCase):
         built = self.builder.build_initial(
             self.request, self.context(), self.bundles
         )[0]
+        self.assertIn("YYYY-MM-DD", built.payload["instructions"])
+        self.assertIn(
+            "YYYY-MM-DD",
+            built.payload["text"]["format"]["schema"]["$defs"]["nullableDate"][
+                "description"
+            ],
+        )
         changed = built.payload
         changed["model"] = "mutated"
         self.assertEqual("gpt-5-mini", built.payload["model"])
@@ -483,6 +490,22 @@ class FoundryResearchRequestTests(unittest.TestCase):
         self.assertEqual("unverified", claim["verification"])
         self.assertEqual("signal_only", discovery["candidate"]["evidence_assessment"]["state"])
         self.assertFalse(discovery["candidate"]["evidence_assessment"]["primary_document_obtained"])
+
+    def test_iso_datetime_date_is_normalized_but_localized_date_is_rejected(self):
+        url = "https://www.hkma.gov.hk/eng/news-and-media/press-releases/2026/mock"
+        document = signal_document(url)
+        document["signals"][0]["publication_date"] = "2026-09-03T08:15:00+08:00"
+        result = self.convert(completed_response(document, url=url))
+        self.assertEqual(
+            "2026-09-03", result.discoveries[0]["candidate"]["publication_date"]
+        )
+        self.assertEqual(1, result.audit["date_fields_normalized"])
+
+        invalid = signal_document(url)
+        invalid["signals"][0]["publication_date"] = "03/09/2026"
+        with self.assertRaises(FoundryResearchResponseError) as error:
+            self.convert(completed_response(invalid, url=url))
+        self.assertEqual("response_schema", error.exception.code)
 
     def test_signal_without_native_citations_fails_closed(self):
         with self.assertRaises(FoundryResearchResponseError) as error:

@@ -2,7 +2,7 @@
 
 面向 AIA 集团 CEO 的公开 Web 情报研究 Agent POC。
 
-当前交付：P0 监控定义和输出契约；P1 Foundry／Bing 接入与保守留存策略；P2 三市场 Source Registry、安全原文读取和定位解析；P3 首个 `regulatory-change` Skill；P4-A 有界的合成监管研究—分析—核验闭环；P4-B 初扫、事件级补搜、获准精确 URL 原文读取及 locator-bound 核验均已在 mocked transports 下接入闭环。Skill 仍待领域批准，真实研究运行和显式 live transport 边界尚未实现。定时、对话、推送和前端不在当前 scope。
+当前交付：P0 监控定义和输出契约；P1 Foundry／Bing 接入与保守留存策略；P2 三市场 Source Registry、安全原文读取和定位解析；P3 首个 `regulatory-change` Skill；P4-A 有界的合成监管研究—分析—核验闭环；P4-B mocked 与 live transport；P4-C 非生产 manual-live result 契约和完整 discovery → source fetch → verification → analysis → P0 控制器。2026-09-10 已完成一次最小真实 Foundry/Bing discovery 兼容性运行；完整 live 控制器已在离线 happy path 下通过，下一次真实端到端验收仍需新的短时一次性授权。生产审批、持久化及跨运行能力未完成。定时、对话、推送和前端不在当前 scope。
 
 **换设备继续工作：先读 [当前进度与交接说明](docs/HANDOFF.md)。** 非敏感连接参数见 [.env.example](.env.example)；实际加载根目录 `.env`，新设备须重新安装依赖并单独完成 Azure 登录。
 
@@ -14,7 +14,8 @@
 - [P2 来源登记册、访问矩阵与获取边界](docs/P2_SOURCE_REGISTRY.md)
 - [P3 首个监管 Skill、Loader 与评审流程](docs/P3_SKILLS.md)
 - [P4-A 离线监管研究闭环](docs/P4A_OFFLINE_RESEARCH.md)
-- [P4-B Foundry/Bing 模拟适配器](docs/P4B_REQUEST_CONSTRUCTION.md)
+- [P4-B Foundry/Bing 模拟适配器与手动 live 边界](docs/P4B_REQUEST_CONSTRUCTION.md)
+- [P4-C Manual-live 完整控制器](docs/P4C_MANUAL_LIVE_CONTROLLER.md)
 - [实施计划](docs/IMPLEMENTATION_PLAN.md)
 - [P0 业务与输出规范](docs/P0_SPEC.md)
 - [AIA CEO Watch Profile](config/watch_profiles/aia-group-ceo.json)

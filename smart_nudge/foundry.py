@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from hashlib import sha256
 import json
 import logging
 import os
@@ -13,6 +14,8 @@ from azure.core.exceptions import ClientAuthenticationError
 from azure.identity import AzureCliCredential, CredentialUnavailableError
 from dotenv import dotenv_values
 import httpx
+
+from smart_nudge.live_run import ManualLiveRunSession
 
 
 SCOPE = "https://ai.azure.com/.default"
@@ -172,6 +175,147 @@ class FoundryAdapter:
             raise ProbeError("invalid_request", "The mocked verification payload must be an object.")
         return self._request(payload, "mocked_verification")
 
+    def execute_live_research(
+        self,
+        payload,
+        session: ManualLiveRunSession,
+        bing: BingConfig,
+        *,
+        request_key,
+        request_sha256,
+        source_ids,
+        query_cost=1,
+    ):
+        """Execute one explicitly authorized live Bing research attempt."""
+        self._require_live_transport()
+        self._require_live_session(session)
+        self._validate_live_payload(payload, requires_search=True, bing=bing)
+        attempt = session.authorize(
+            channel="foundry_bing_research",
+            request_key=request_key,
+            request_sha256=request_sha256,
+            source_ids=source_ids,
+            query_cost=query_cost,
+            payload_sha256=_payload_sha256(payload),
+        )
+        body, summary = self._request(payload, "live_research")
+        return body, {**summary, "live_run": attempt}
+
+    def execute_live_verification(
+        self,
+        payload,
+        session: ManualLiveRunSession,
+        *,
+        request_key,
+        request_sha256,
+        source_ids,
+        query_cost=1,
+    ):
+        """Execute one explicitly authorized live source-verification attempt."""
+        self._require_live_transport()
+        self._require_live_session(session)
+        self._validate_live_payload(payload, requires_search=False)
+        attempt = session.authorize(
+            channel="foundry_source_verification",
+            request_key=request_key,
+            request_sha256=request_sha256,
+            source_ids=source_ids,
+            query_cost=query_cost,
+            payload_sha256=_payload_sha256(payload),
+        )
+        body, summary = self._request(payload, "live_verification")
+        return body, {**summary, "live_run": attempt}
+
+    def _require_live_transport(self):
+        if self.transport is not None:
+            raise ProbeError(
+                "live_transport_required",
+                "Manual live execution requires the default verified HTTPS transport; injected transports are not accepted.",
+            )
+
+    @staticmethod
+    def _require_live_session(session):
+        if type(session) is not ManualLiveRunSession:
+            raise ProbeError(
+                "live_authorization_required",
+                "Manual live execution requires a session created by the checked authorization loader.",
+            )
+
+    def _validate_live_payload(self, payload, *, requires_search, bing=None):
+        if not isinstance(payload, dict):
+            raise ProbeError("invalid_request", "The live Foundry payload must be an object.")
+        common_keys = {
+            "model",
+            "instructions",
+            "input",
+            "reasoning",
+            "max_output_tokens",
+            "parallel_tool_calls",
+            "text",
+            "store",
+        }
+        expected_keys = common_keys | ({"tools", "tool_choice"} if requires_search else set())
+        text_format = payload.get("text", {}).get("format") if isinstance(payload.get("text"), dict) else None
+        if (
+            set(payload) != expected_keys
+            or payload.get("model") != self.config.model
+            or payload.get("store") is not False
+            or not isinstance(payload.get("instructions"), str)
+            or not payload["instructions"].strip()
+            or not isinstance(payload.get("input"), str)
+            or not payload["input"].strip()
+            or type(payload.get("max_output_tokens")) is not int
+            or not 1 <= payload["max_output_tokens"] <= 2400
+            or payload.get("reasoning") != {"effort": "low"}
+            or payload.get("parallel_tool_calls") is not False
+            or not isinstance(text_format, dict)
+            or text_format.get("type") != "json_schema"
+            or text_format.get("strict") is not True
+            or not isinstance(text_format.get("name"), str)
+            or not text_format["name"]
+            or not isinstance(text_format.get("schema"), dict)
+        ):
+            raise ProbeError(
+                "invalid_request",
+                "The live Foundry payload violates the manual-run boundary.",
+            )
+        tools = payload.get("tools")
+        if requires_search:
+            preview = tools[0].get("bing_custom_search_preview") if (
+                isinstance(tools, list)
+                and len(tools) == 1
+                and isinstance(tools[0], dict)
+            ) else None
+            configurations = preview.get("search_configurations") if isinstance(preview, dict) else None
+            configuration = configurations[0] if isinstance(configurations, list) and len(configurations) == 1 else None
+            if (
+                type(bing) is not BingConfig
+                or not isinstance(tools, list)
+                or len(tools) != 1
+                or not isinstance(tools[0], dict)
+                or set(tools[0]) != {"type", "bing_custom_search_preview"}
+                or tools[0].get("type") != "bing_custom_search_preview"
+                or payload.get("tool_choice") != "required"
+                or not isinstance(preview, dict)
+                or set(preview) != {"search_configurations"}
+                or not isinstance(configuration, dict)
+                or set(configuration) != {
+                    "project_connection_id", "instance_name", "count", "market", "set_lang"
+                }
+                or configuration.get("project_connection_id") != bing.connection_id
+                or configuration.get("instance_name") != bing.instance_name
+                or type(configuration.get("count")) is not int
+                or not 1 <= configuration["count"] <= 7
+                or not isinstance(configuration.get("market"), str)
+                or not configuration["market"]
+                or not isinstance(configuration.get("set_lang"), str)
+                or not configuration["set_lang"]
+            ):
+                raise ProbeError(
+                    "invalid_request",
+                    "Live research requires exactly one configured Bing Custom Search tool.",
+                )
+
     def _request(self, payload, check):
         token = get_cli_token(self.credential)
         try:
@@ -225,6 +369,16 @@ def text_parts(body):
             for part_index, part in enumerate(content):
                 if isinstance(part, dict) and part.get("type") == "output_text" and isinstance(part.get("text"), str):
                     yield item_index, part_index, part
+
+
+def _payload_sha256(payload):
+    try:
+        encoded = json.dumps(
+            payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+    except (TypeError, ValueError):
+        raise ProbeError("invalid_request", "The live Foundry payload is not valid JSON.") from None
+    return sha256(encoded).hexdigest()
 
 
 def inspect_search(body, summary, source_hosts):

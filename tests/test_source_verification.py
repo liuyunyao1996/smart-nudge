@@ -1,7 +1,7 @@
 """P4-B independent-source verification tests; all transports are mocked."""
 
 from copy import deepcopy
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -289,7 +289,9 @@ class SourceVerificationTests(unittest.TestCase):
             )
         self.assertEqual("verification_contract", error.exception.code)
 
-    def composed_role(self, source_handler, verification_handler, *, signal=None):
+    def composed_role(
+        self, source_handler, verification_handler, *, signal=None, source_clock=None
+    ):
         signal = signal or signal_document(HKMA_URL)
         verification_calls = []
 
@@ -349,12 +351,42 @@ class SourceVerificationTests(unittest.TestCase):
             self.registry,
             client=httpx.Client(transport=httpx.MockTransport(recorded_source_handler)),
             resolver=PUBLIC_DNS,
-            clock=lambda: NOW,
+            clock=source_clock or (lambda: NOW),
         )
         role = MockedVerifiedResearchRole(
             ROOT, discovery_role, source_client, adapter, self.request
         )
         return role, source_calls, verification_calls
+
+    def test_historical_source_retrieved_after_cutoff_is_rejected(self):
+        role, source_calls, verification_calls = self.composed_role(
+            lambda request: httpx.Response(
+                200,
+                content=b"<html><body><p>Late official text.</p></body></html>",
+                headers={"content-type": "text/html"},
+                request=request,
+            ),
+            lambda payload: self.fail(
+                "post-cutoff source must not be sent for verification"
+            ),
+            source_clock=lambda: NOW + timedelta(seconds=1),
+        )
+        outcome = ResearchController(
+            ROOT,
+            role,
+            verification_role=ContractVerificationRole(
+                evidence_policy="direct_verification"
+            ),
+            clock=lambda: NOW,
+        ).run(self.document)
+        self.assertEqual(1, len(source_calls))
+        self.assertEqual([], verification_calls)
+        audit = next(
+            item for item in role.audit_records if item["stage"] == "source_verification"
+        )
+        self.assertEqual("unavailable", audit["status"])
+        self.assertEqual("post_cutoff_source", audit["code"])
+        self.assertEqual("watch", outcome.result["findings"][0]["decision"])
 
     def test_direct_original_support_promotes_the_event(self):
         html = (

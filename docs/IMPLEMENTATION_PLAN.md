@@ -237,7 +237,7 @@
 
 ### P4：研究、研判、核验的完整闭环
 
-状态（2026-09-04）：P4-A 已完成合成数据下的覆盖规划、三个逻辑角色接口、有界补搜、事件轮次归并、证据状态重算、停止决策和 P0-valid 输出，见 [P4A_OFFLINE_RESEARCH](P4A_OFFLINE_RESEARCH.md)。P4-B 已完成初扫与事件级补搜请求构造、`httpx.MockTransport` 执行、Structured Outputs 本地／API 双层 Schema、原生 citation 转换、安全逐事件计费，并在 mocked HTTP／model transports 下接入 P2 精确 URL 原文读取和 locator-bound 核验，见 [P4B_REQUEST_CONSTRUCTION](P4B_REQUEST_CONSTRUCTION.md)；显式 live transport 边界和真实端到端运行尚未实现，因此完整 P4 尚未关闭。
+状态（2026-09-10）：P4-A 已完成合成数据下的覆盖规划、三个逻辑角色接口、有界补搜、事件轮次归并、证据状态重算、停止决策和 P0-valid 输出，见 [P4A_OFFLINE_RESEARCH](P4A_OFFLINE_RESEARCH.md)。P4-B 已完成初扫与事件级补搜请求构造、`httpx.MockTransport` 执行、Structured Outputs 本地／API 双层 Schema、原生 citation 转换、安全逐事件计费，并在 mocked HTTP／model transports 下接入 P2 精确 URL 原文读取和 locator-bound 核验；也已交付非生产 manual-live request、短时授权、discovery／verification 角色和显式 CLI，完成一次最小真实 Foundry/Bing discovery 兼容性运行，见 [P4B_REQUEST_CONSTRUCTION](P4B_REQUEST_CONSTRUCTION.md)。P4-C 已交付正式 live result 契约、完整 manual-live 控制器及有合格原生 citation 的离线端到端验收，见 [P4C_MANUAL_LIVE_CONTROLLER](P4C_MANUAL_LIVE_CONTROLLER.md)。持久化仍不在当前范围内，下一项验收是新的短时一次性授权下的真实完整控制器运行。
 
 任务：
 
@@ -400,7 +400,7 @@ P0–P6 完成且验收通过后，应能够用一条本地命令，对明确范
 
 完整社媒覆盖不是 P0–P6 的隐含承诺；P7 按授权条件单独验收。整个当前阶段都不包含定时、对话、前端或推送实现。
 
-下一步：按 [HANDOFF](HANDOFF.md)、[P4-A 离线闭环](P4A_OFFLINE_RESEARCH.md) 和 [P4-B 模拟适配器](P4B_REQUEST_CONSTRUCTION.md)，构造默认关闭、显式启用且可审计的手动运行／live transport 边界，继续保留 mock dry-run 路径与硬预算。只有确有需要、经用户授权且 P2 组织门槛允许时，才做一次小规模真实运行。连接标识已提供，无需再次索取托管 Agent 标识；P0 业务假设、P2 组织审批和 P3 领域方法仍需复核。不要批量扩展云资源、接入付费渠道或一次实现全部领域 Skills。
+下一步：按 [HANDOFF](HANDOFF.md)、[P4-B 模拟适配器与手动 live 边界](P4B_REQUEST_CONSTRUCTION.md) 和 [P4-C Manual-live 完整控制器](P4C_MANUAL_LIVE_CONTROLLER.md)，在用户对具体短时一次性授权再次确认后，执行一次真实“发现 → 原文读取 → 核验 → 分析 → P0 输出”验收；继续保留 mock dry-run 路径与硬预算。一次最小真实连接验证已经完成，不为重复确认而再次产生用量。连接标识已提供，无需再次索取托管 Agent 标识；本次组织／领域批准只按用户指示作为非生产 PoC 假设，生产审批仍需正式完成。不要批量扩展云资源、接入付费渠道或一次实现全部领域 Skills。
 
 ## 9. 实施时需重新核对的官方参考
 

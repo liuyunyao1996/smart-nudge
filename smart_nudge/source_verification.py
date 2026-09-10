@@ -1,4 +1,4 @@
-"""Mock-only independent source retrieval and claim verification for P4-B.
+"""Independent source retrieval and claim verification for P4-B.
 
 Search citations remain discovery provenance.  This module may fetch only the
 exact cited URL through the P2 allowlist, keeps extracted text in memory, and
@@ -20,7 +20,15 @@ import httpx
 from jsonschema import Draft202012Validator, FormatChecker
 
 from smart_nudge.foundry import FoundryAdapter, ProbeError, safe_identifier, text_parts
-from smart_nudge.foundry_research import MockedFoundryResearchRole
+from smart_nudge.foundry_research import (
+    LiveFoundryResearchRole,
+    MockedFoundryResearchRole,
+)
+from smart_nudge.live_run import (
+    LiveRunBoundaryError,
+    ManualLiveRunSession,
+    ManualLiveSourceClient,
+)
 from smart_nudge.research import ResearchBatch, ResearchContext, ResearchLoopError, ResearchRequest, read_json
 from smart_nudge.sources import (
     ApprovedSourceClient,
@@ -33,6 +41,7 @@ from smart_nudge.sources import (
 
 
 ROLE_VERSION = "mocked-original-source-verification@0.1.0"
+LIVE_ROLE_VERSION = "manual-live-original-source-verification@0.1.0"
 REQUEST_VERSION = "source-verification-request@0.1.0"
 MAX_SEGMENTS = 24
 MAX_SEGMENT_CHARS = 1200
@@ -361,25 +370,19 @@ class SourceVerificationResponseConverter:
         )
 
 
-class MockedVerifiedResearchRole:
-    """Compose mocked Bing discovery with mocked independent source verification."""
-
-    role_version = ROLE_VERSION
+class _VerifiedResearchRole:
+    """Shared discovery/source/verification composition without transport choice."""
 
     def __init__(
         self,
         repository_root: str | Path,
-        discovery_role: MockedFoundryResearchRole,
-        source_client: ApprovedSourceClient,
+        discovery_role,
+        source_client,
         verification_adapter: FoundryAdapter,
         request: ResearchRequest,
+        *,
+        role_version: str,
     ):
-        if not isinstance(discovery_role, MockedFoundryResearchRole):
-            raise ValueError("P4-B source verification requires the mocked discovery role.")
-        if not source_client.uses_mock_transport:
-            raise ValueError("P4-B source retrieval requires an httpx.MockTransport.")
-        if not isinstance(verification_adapter.transport, httpx.MockTransport):
-            raise ValueError("P4-B verification requires an httpx.MockTransport.")
         if (
             discovery_role.request.request_key != request.request_key
             or discovery_role.request.content_sha256 != request.content_sha256
@@ -395,7 +398,7 @@ class MockedVerifiedResearchRole:
         )
         self.converter = SourceVerificationResponseConverter(self.root)
         self.role_version = (
-            f"{ROLE_VERSION}[{discovery_role.role_version},{self.builder.role_version}]"
+            f"{role_version}[{discovery_role.role_version},{self.builder.role_version}]"
         )
         self.audit_records: tuple[dict, ...] = ()
         self._attempted_targets: set[tuple[str, str]] = set()
@@ -470,18 +473,19 @@ class MockedVerifiedResearchRole:
                     continue
 
                 try:
-                    fetched = self.source_client.fetch(url)
-                    retrieved_at = datetime.fromisoformat(
-                        fetched.retrieved_at.replace("Z", "+00:00")
-                    )
-                    cutoff = datetime.fromisoformat(
-                        self.request.as_of.replace("Z", "+00:00")
-                    )
-                    if retrieved_at > cutoff:
-                        raise SourceFetchError(
-                            "post_cutoff_source",
-                            "Original source was retrieved after the request cutoff.",
+                    fetched = self._fetch_source(url)
+                    if self.request.document.get("mode") != "manual_live":
+                        retrieved_at = datetime.fromisoformat(
+                            fetched.retrieved_at.replace("Z", "+00:00")
                         )
+                        cutoff = datetime.fromisoformat(
+                            self.request.as_of.replace("Z", "+00:00")
+                        )
+                        if retrieved_at > cutoff:
+                            raise SourceFetchError(
+                                "post_cutoff_source",
+                                "Original source was retrieved after the historical cutoff.",
+                            )
                     extracted = extract_document(fetched)
                     if not extracted.segments:
                         raise SourceFetchError(
@@ -532,9 +536,7 @@ class MockedVerifiedResearchRole:
                 queries += 1
                 verification_slots -= 1
                 try:
-                    body, summary = self.verification_adapter.execute_mocked_verification(
-                        built.payload
-                    )
+                    body, summary = self._execute_verification(built)
                     decision = self.converter.convert(built, body, summary)
                 except ProbeError as exc:
                     audit.update(
@@ -678,3 +680,103 @@ class MockedVerifiedResearchRole:
         else:
             assessment["state"] = "signal_only"
             candidate["recommended_disposition"] = "watch"
+
+    def _fetch_source(self, url: str) -> FetchedSource:
+        raise NotImplementedError
+
+    def _execute_verification(self, built: SourceVerificationRequest):
+        raise NotImplementedError
+
+
+class MockedVerifiedResearchRole(_VerifiedResearchRole):
+    """Compose mocked Bing discovery with mocked independent source verification."""
+
+    def __init__(
+        self,
+        repository_root: str | Path,
+        discovery_role: MockedFoundryResearchRole,
+        source_client: ApprovedSourceClient,
+        verification_adapter: FoundryAdapter,
+        request: ResearchRequest,
+    ):
+        if not isinstance(discovery_role, MockedFoundryResearchRole):
+            raise ValueError("P4-B source verification requires the mocked discovery role.")
+        if not source_client.uses_mock_transport:
+            raise ValueError("P4-B source retrieval requires an httpx.MockTransport.")
+        if not isinstance(verification_adapter.transport, httpx.MockTransport):
+            raise ValueError("P4-B verification requires an httpx.MockTransport.")
+        super().__init__(
+            repository_root,
+            discovery_role,
+            source_client,
+            verification_adapter,
+            request,
+            role_version=ROLE_VERSION,
+        )
+
+    def _fetch_source(self, url: str) -> FetchedSource:
+        return self.source_client.fetch(url)
+
+    def _execute_verification(self, built: SourceVerificationRequest):
+        return self.verification_adapter.execute_mocked_verification(built.payload)
+
+
+class LiveVerifiedResearchRole(_VerifiedResearchRole):
+    """Compose live discovery with authorized exact-source verification."""
+
+    def __init__(
+        self,
+        repository_root: str | Path,
+        discovery_role: LiveFoundryResearchRole,
+        source_client: ManualLiveSourceClient,
+        verification_adapter: FoundryAdapter,
+        request: ResearchRequest,
+        session: ManualLiveRunSession,
+    ):
+        if type(discovery_role) is not LiveFoundryResearchRole:
+            raise ValueError("Manual-live verification requires the live discovery role.")
+        if type(source_client) is not ManualLiveSourceClient:
+            raise ValueError("Manual-live verification requires the authorized P2 source client.")
+        if type(session) is not ManualLiveRunSession:
+            raise ValueError("Manual-live verification requires a checked live-run session.")
+        if discovery_role.session is not session or source_client.session is not session:
+            raise ValueError("Every live channel must share one authorization session.")
+        if verification_adapter.transport is not None:
+            raise ValueError("Manual-live verification requires the default Foundry HTTPS transport.")
+        if verification_adapter.config != discovery_role.adapter.config:
+            raise ValueError("Discovery and verification must use the same Foundry config.")
+        super().__init__(
+            repository_root,
+            discovery_role,
+            source_client,
+            verification_adapter,
+            request,
+            role_version=LIVE_ROLE_VERSION,
+        )
+        self.session = session
+
+    def research(self, context: ResearchContext) -> ResearchBatch:
+        queries_before = self.session.queries_attempted
+        try:
+            return super().research(context)
+        except LiveRunBoundaryError as exc:
+            raise ResearchLoopError(
+                f"live_{exc.code}",
+                str(exc),
+                queries_consumed=(
+                    self.session.queries_attempted - queries_before
+                ),
+            ) from None
+
+    def _fetch_source(self, url: str) -> FetchedSource:
+        return self.source_client.fetch(url)
+
+    def _execute_verification(self, built: SourceVerificationRequest):
+        return self.verification_adapter.execute_live_verification(
+            built.payload,
+            self.session,
+            request_key=self.request.request_key,
+            request_sha256=self.request.content_sha256,
+            source_ids=(built.source_id,),
+            query_cost=1,
+        )

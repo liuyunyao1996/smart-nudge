@@ -304,6 +304,11 @@ class ApprovedSourceClient:
         """Expose only whether the injected HTTP client is safely mocked."""
         return isinstance(self.client._transport, httpx.MockTransport)
 
+    @property
+    def uses_default_transport(self) -> bool:
+        """True only for the internally created, policy-controlled HTTPS client."""
+        return self._owns_client and not self.uses_mock_transport
+
     def close(self) -> None:
         if self._owns_client:
             self.client.close()

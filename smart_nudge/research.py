@@ -1,7 +1,8 @@
-"""P4-A offline research-analysis-verification orchestration.
+"""P4 research-analysis-verification orchestration core.
 
-This module is intentionally synthetic-only. It has no network, credential,
-source-fetch, model, persistence, or cloud-resource capability.
+The base controller remains synthetic-only and this module has no network,
+credential, source-fetch, model, persistence, or cloud-resource capability.
+Explicit live composition is defined behind the manual-live boundary.
 """
 
 from __future__ import annotations
@@ -641,6 +642,10 @@ class ResearchOutcome:
 class ResearchController:
     """Bounded offline controller for one regulatory event type."""
 
+    controller_version = CONTROLLER_VERSION
+    data_kind = "synthetic"
+    execution_label = "Offline research"
+
     def __init__(
         self,
         repository_root: str | Path,
@@ -659,6 +664,19 @@ class ResearchController:
         self.verification_role = verification_role or ContractVerificationRole()
         self.clock = clock or (lambda: datetime.now(timezone.utc))
         self.assets = load_assets()
+
+    def _validate_request_document(self, request_document: dict) -> ResearchRequest:
+        return ResearchRequest.validate(request_document, self.root)
+
+    def _result_contract_errors(
+        self, result: dict, request: ResearchRequest
+    ) -> list[str]:
+        return validate_result(result, self.assets)
+
+    def _result_as_of(self, request: ResearchRequest, generated: datetime) -> str:
+        """Return the evidence cutoff represented by the completed result."""
+
+        return request.as_of
 
     @staticmethod
     def _merge_evidence(target: dict[str, dict], items: list[dict] | tuple[dict, ...]) -> tuple[set[str], int]:
@@ -893,7 +911,7 @@ class ResearchController:
         )
 
     def run(self, request_document: dict) -> ResearchOutcome:
-        request = ResearchRequest.validate(request_document, self.root)
+        request = self._validate_request_document(request_document)
         try:
             bundles = {
                 market_id: self.skill_loader.select(
@@ -912,7 +930,7 @@ class ResearchController:
                 **deepcopy(cell),
                 "languages_checked": [],
                 "status": "not_attempted",
-                "detail": "Offline research has not checked this planned cell.",
+                "detail": f"{self.execution_label} has not checked this planned cell.",
             }
             for cell in plan.cells
         }
@@ -1059,7 +1077,10 @@ class ResearchController:
                 break
             except Exception:
                 stop_reason = "technical_failure"
-                technical_error = "unexpected_failure: Offline research role failed without exposing raw content."
+                technical_error = (
+                    f"unexpected_failure: {self.execution_label} role failed without "
+                    "exposing raw content."
+                )
                 break
 
             unavailable = any(item["status"] == "unavailable" for item in coverage_state.values())
@@ -1085,6 +1106,7 @@ class ResearchController:
         if generated < _parse_timestamp(request.as_of):
             raise ResearchLoopError("invalid_clock", "Controller clock cannot precede the request cutoff.")
         generated_at = generated.isoformat()
+        result_as_of = self._result_as_of(request, generated)
 
         coverage = [
             {
@@ -1104,7 +1126,10 @@ class ResearchController:
             final_claims: list[dict] = []
             final_events: list[dict] = []
             final_findings: list[dict] = []
-            errors = [technical_error or "technical_failure: Offline research failed."]
+            errors = [
+                technical_error
+                or f"technical_failure: {self.execution_label} failed."
+            ]
         else:
             status = "completed" if coverage_complete and stop_reason in {
                 "sufficient_evidence", "no_new_independent_information"
@@ -1119,10 +1144,13 @@ class ResearchController:
             final_findings = verified["findings"]
             errors = [] if status == "completed" else [
                 {
-                    "budget_exhausted": "Configured offline research budget ended before all evidence questions and coverage were resolved.",
+                    "budget_exhausted": f"Configured {self.execution_label.lower()} budget ended before all evidence questions and coverage were resolved.",
                     "required_source_unavailable": "A required official-source coverage cell was unavailable.",
                     "no_new_independent_information": "Research stopped without new independent information while coverage remained incomplete.",
-                }.get(stop_reason, "Offline research ended with an explicit coverage gap.")
+                }.get(
+                    stop_reason,
+                    f"{self.execution_label} ended with an explicit coverage gap.",
+                )
             ]
 
         skill_versions = sorted({
@@ -1132,7 +1160,7 @@ class ResearchController:
         })
         result = {
             "schema_version": "0.1.0",
-            "data_kind": "synthetic",
+            "data_kind": self.data_kind,
             "profile_id": self.assets["profile"]["profile_id"],
             "profile_version": self.assets["profile"]["version"],
             "taxonomy_version": self.assets["taxonomy"]["version"],
@@ -1141,7 +1169,7 @@ class ResearchController:
             "run": {
                 "run_id": request.run_id,
                 "request_key": request.request_key,
-                "as_of": request.as_of,
+                "as_of": result_as_of,
                 "generated_at": generated_at,
                 "window": deepcopy(request.document["window"]),
                 "scope": {
@@ -1153,7 +1181,7 @@ class ResearchController:
                 "stop_reason": stop_reason,
                 "errors": errors,
                 "agent_versions": [
-                    CONTROLLER_VERSION,
+                    self.controller_version,
                     self.research_role.role_version,
                     self.analysis_role.role_version,
                     self.verification_role.role_version,
@@ -1166,18 +1194,24 @@ class ResearchController:
             "findings": final_findings,
             "coverage": coverage,
         }
-        contract_errors = validate_result(result, self.assets)
+        contract_errors = self._result_contract_errors(result, request)
         if contract_errors:
             result["run"].update(
                 status="failed",
                 stop_reason="technical_failure",
-                errors=[f"result_contract: P4-A result failed P0 validation: {contract_errors[0]}"],
+                errors=[
+                    "result_contract: Research result failed its contract: "
+                    f"{contract_errors[0]}"
+                ],
             )
             for key in ("evidence", "claims", "events", "findings"):
                 result[key] = []
-            remaining_errors = validate_result(result, self.assets)
+            remaining_errors = self._result_contract_errors(result, request)
             if remaining_errors:
-                raise ResearchLoopError("result_contract", "P4-A could not construct a safe failed result.")
+                raise ResearchLoopError(
+                    "result_contract",
+                    "The controller could not construct a safe failed result.",
+                )
         return ResearchOutcome(
             result=result,
             coverage_plan=plan.record(),

@@ -1,10 +1,10 @@
 # Smart Nudge：当前进度与跨设备交接
 
-更新日期：2026-09-04（Asia/Shanghai）。P4-A 已完成严格限于合成数据的监管研究—分析—核验闭环；P4-B 已完成不联网的初扫、事件级补搜、获准精确 URL 原文读取、locator-bound 核验和模拟控制器闭环，见 [P4-B 模拟适配器](P4B_REQUEST_CONSTRUCTION.md)。真实研究运行和显式 live transport 边界尚未实现；P3 Skill 仍待领域复核，P2 组织审批仍是生产门槛。
+更新日期：2026-09-10（Asia/Shanghai）。P4-A 已完成严格限于合成数据的监管研究—分析—核验闭环；P4-B 已完成 mocked 与 live transport、短时一次性授权和角色组合；P4-C 已完成非生产 manual-live result 契约与完整控制器的离线端到端验收，见 [P4-C Manual-live 完整控制器](P4C_MANUAL_LIVE_CONTROLLER.md)。在用户明确授权并将组织／领域审批视为仅适用于 PoC 的已通过假设后，已完成一次最小真实 Foundry/Bing discovery 兼容性运行。下一步是真实端到端验收；生产审批、持久化和跨运行能力仍未完成。
 
 ## 1. 从这里继续
 
-项目面向 AIA 集团 CEO，仅研究公开 Web 信息：决定搜什么、如何搜索和补搜、证据是否足够、如何总结与取舍。P0–P3 及 P4-A 离线闭环已交付：来源边界拒绝优先，Skill 只从版本控制的本地文件加载，控制器按覆盖计划和预算停止，并重新核验证据关系。P4-B 已把覆盖任务、固定 Skill 模板及事件证据缺口转换为有预算的 Foundry/Bing 初扫／补搜请求，并在 mock 中接入 P2 精确 URL 原文读取和独立核验；下一步构造显式启用的手动运行／live transport 边界，但在授权和组织门槛满足前不执行真实请求。
+项目面向 AIA 集团 CEO，仅研究公开 Web 信息：决定搜什么、如何搜索和补搜、证据是否足够、如何总结与取舍。P0–P3 及 P4-A 离线闭环已交付：来源边界拒绝优先，Skill 只从版本控制的本地文件加载，控制器按覆盖计划和预算停止，并重新核验证据关系。P4-B 已把覆盖任务、固定 Skill 模板及事件证据缺口转换为有预算的 Foundry/Bing 初扫／补搜请求，并接入 P2 精确 URL 原文读取和独立核验；P4-C 将同一逻辑接入只接受 manual-live request／authorization／live role 的控制器，输出 `data_kind: live` 的 P0-valid 结果。下一步是在新的短时一次性授权下运行这个完整控制器，而不是重复 discovery-only 兼容性调用。
 
 先阅读本文，再阅读 [实施计划](IMPLEMENTATION_PLAN.md) 和 [P0 Spec](P0_SPEC.md)。不要重新从 Portal 创建资源或恢复历史版本中的定时、对话、推送需求。
 
@@ -36,18 +36,24 @@
 - 2026-09-04：完成 P4-B 模拟适配器：只有显式 `httpx.MockTransport` 才能执行研究请求；模型输出使用 Azure-compatible `text.format` Structured Outputs，并由更严格的本地 Schema 再校验。只把范围内原生 URL citation 转为 metadata-only、`not_checked` 草稿，Bing attribution 和正文 URL 不会晋升为证据；无结果、无引用、越界来源、超时、限流、未知状态和已尝试查询计费均有确定路径。控制器上下文与请求摘要绑定，事件型 mock 已接入控制器并只能形成 `watch/unverifiable`。P4-B 测试现为 19 项，全仓库合计 177 项。
 - 2026-09-04：完成 P4-B 事件级补搜：控制器从结构化候选推导固定证据问题，不复制自由文本 unknowns；每事件每轮最多一个查询，锁定发布机构、P2 来源、稳定事件身份和首次发现语言，第二轮才轮换本地语言。响应最多返回同一事件的一个信号，不能改变已知身份或借补搜新增另一事件；实际尝试事件与覆盖复查分开计账。新增 4 项测试，P4-B 合计 23 项，全仓库合计 181 项。
 - 2026-09-04：完成 P4-B 独立原文核验模拟闭环：只对 Bing 原生 citation 的精确 URL 走 P2 allowlist，逐跳校验重定向并仅在内存提取 HTML/PDF/API 文本；manual-only、401/403/429、空正文及策略拒绝均明确降级，不绕过访问控制。核验请求无工具、`store=false`、正文和 claims 有界，响应必须覆盖全部 claim 并引用真实提供的 locator；只有发布机构、标题和原始文书角色一致时才形成 direct primary evidence，且与 Bing discovery 共用 origin group，避免伪造独立来源。重复重定向到同一内容只核验一次；正文、模型原文和 token 均不进入审计。新增 12 项 P4-B 测试和 2 项 P2 时钟边界测试，P4-B 合计 35 项，全仓库合计 195 项。
+- 2026-09-10：完成手动 live transport 授权边界。checked-in policy 仅对 `poc_non_production` 标记为 `approved_for_manual_live`，仍须另行提供最长 60 分钟、绑定请求哈希／P2 source IDs／query 与 evidence 预算、零自动重试的授权文件；缺少任一条件即拒绝。Foundry research／verification 和 P2 精确 URL 读取均在 I/O 前原子计费；live 拒绝注入 transport，mock 与 live API 分离；审计不保留审批文本、prompt、查询、模型／网页正文或凭据。新增 12 项离线测试。
+- 2026-09-10：完成独立 manual-live request Schema、Skill bundle 摘要绑定、`LiveFoundryResearchRole`、`LiveVerifiedResearchRole` 和显式 `--execute-live` CLI；CLI 在外部 I/O 前原子写入只含安全元数据的一次性授权收据，同一 authorization ID 跨进程不能重复使用。新增 5 项离线测试，全仓库合计 212 项。用户明确授权一次最小非生产 PoC：请求 `manual-live-poc-20260910-01` 成功连接现有 Foundry 模型部署与 Bing Custom Search，Responses 状态为 `completed`；一个受控模型请求内观察到 2 次 Bing 工具调用，总用量 3,533 tokens。响应没有范围内原生 URL citation／候选，因此结果按设计降级为 `unavailable`，没有执行原文读取或核验，也没有形成 P0 情报结果。审计记录 request/response ID、用量、计数和哈希；原始模型／工具内容未持久化。第一次沙箱内尝试在取得 Azure token 前因本机 Azure cache 写权限失败，未到达云端；随后在获准的沙箱外路径执行成功，未自动重试。该次测试使用的临时 request／authorization 已删除；一次性收据机制在测试后补入，供后续授权使用。
+- 2026-09-10：完成 P4-C manual-live 完整控制器。新增专用 live result Schema 与请求绑定校验；基础 `ResearchController` 保持 synthetic 默认，`ManualLiveResearchController` 只接受共享同一授权会话的 `LiveVerifiedResearchRole` 并固定 direct verification。手动 CLI 升级为 discovery、官方 URL 读取、locator 核验、analysis、停止和 P0 输出的完整闭环。新增一个无网络 happy-path 测试：双语 discovery、一次原文读取和一次 verification 共计 3 个 Foundry 预算单位，产出 `data_kind: live`、`selected`、`sufficient_evidence` 的 P0-valid 结果；伪造 synthetic 类型或篡改 request key 均拒绝。加上后续历史 cutoff 与日期格式回归测试，全仓库合计 215 项离线测试。
+- 2026-09-10：用户授权请求 `manual-live-poc-20260910T064031Z` 以 `max_queries=3`、`max_evidence=1` 执行第一次完整控制器真实验收。一个 Foundry research 请求返回后，转换器因把正常网络返回时间误当成历史回放 cutoff 而保守失败，记录 `response_post_cutoff_evidence`；会话只消费 1 个 query 尝试，没有原文读取或 verification，一次性授权已消费且未重试。随后离线修复时间语义：历史／mock 仍拒绝 cutoff 后响应，manual-live result 的 `as_of` 则推进到控制器完成时，允许保留真实 discovery／retrieval 时间；延迟型完整 mock 回归通过。另确认 1 条 discovery citation 本身占用 1 个 evidence record，因此要容纳同一 URL 的独立原文证据，下一次完整验收需 `max_evidence=2`。
+- 2026-09-10：用户以 `max_queries=3`、`max_evidence=2` 授权请求 `manual-live-poc-20260910T065905Z` 重试。香港双语 discovery 共消费 2 个 Foundry 尝试，真实响应通过了修复后的时间边界，但其中一个候选的 `publication_date` 未满足本地严格 date 格式，控制器以 `response_response_schema` 保守失败；没有原文读取或 verification，第 3 个 query 未使用，一次性授权未重试。随后离线增强日期契约：prompt 与 Azure Schema description 明确只允许 `null` 或 `YYYY-MM-DD`；转换器只把可严格解析的 ISO 8601 datetime 确定性降为 date，并在安全审计中记录归一化字段数量，仍拒绝本地化、模糊或部分日期。
 
 尚未完成：
 
 - P0 业务偏好和案例的领域专家审核；20 个案例不是已批准金标准，也未作为 Agent 评测执行。
-- P3 其余领域／共用 Skills 及首个监管 Skill 的领域专家批准；P4-B 显式 live transport 边界、真实 Foundry/Bing 研究角色和完整端到端运行。
+- P3 其余领域／共用 Skills；首个监管 Skill 在文件中仍是 draft，用户授权的领域批准假设只适用于本次非生产 PoC，尚未转为生产批准状态。
+- 使用新的短时一次性授权重试完整 live 控制器验收；建议 `max_queries=3`、`max_evidence=2`。真实 Bing 必须返回范围内原生 citation 才能进入原文读取和 verification，否则输出明确 coverage gap。
 - 数据库、跨运行事件历史、幂等恢复、通用研究 CLI 及综合评测。
 - 保监局、FSTB、BNM 新闻正文和 AIA 主站的明确自动访问／留存授权；当前保留人工复核或开放发现状态。
 - 其余目标市场、当地 AIA 经营实体来源和社媒接入；Blocked 规则与 Include subpages 开关未取得，也未回读云端配置。
 
 中国内地实体治理关系的一项来源当前只取得官方搜索摘要，原文核验缺口已写入实体配置；后续不能把它当作已完成原文核验的生产依据。
 
-本项目已发起两次真实 Responses 请求（纯模型一次、Bing 搜索一次），累计 2754 token。已获得真实搜索回答及原生引用，但没有生成经过研究、分析、核验闭环的正式情报。请求标识、用量和限制见 [P1 验证记录](P1_VALIDATION.md)。
+本项目已发起六次真实 Responses 请求：P1 纯模型一次、P1 Bing 搜索一次、P4-B manual-live discovery 一次，以及两次 P4-C 完整控制器尝试中的 1 次和 2 次 discovery。前三次可观测累计用量为 6,287 tokens；后三次因在转换审计形成前被本地契约拒绝，未保留可安全报告的 token 用量。P1 搜索曾获得原生引用；P4-B 响应未返回可接受引用，两次 P4-C 尝试分别暴露时间与日期格式兼容问题。尚未生成经过 live 研究、原文读取、分析和核验闭环的正式情报。P1 请求标识、用量和限制见 [P1 验证记录](P1_VALIDATION.md)，P4-B／P4-C 记录见本文里程碑和对应阶段文档。
 
 ## 3. 已提供的连接信息
 
@@ -129,7 +135,7 @@ python3 -m venv .venv
 .venv/bin/python -m pip check
 ```
 
-预期：P0、P2、P3、P4-A 校验 PASS、195 项测试通过、依赖无冲突。这只验证离线契约、请求／响应转换、模拟搜索／原文／核验行为和策略护栏，不验证新设备云权限、实时来源连通性、检索质量、事实或领域批准。
+预期：P0、P2、P3、P4-A 校验 PASS、215 项测试通过、依赖无冲突。这只验证离线契约、请求／响应转换、完整 manual-live 控制器的模拟搜索／原文／核验行为、live 授权边界和策略护栏，不验证新设备云权限、实时来源连通性、检索质量、事实或生产审批。
 
 需要本地配置时，先确认 `.env` 不存在，再手动复制 `.env.example` 为 `.env`；已有文件不要覆盖。已实现并测试显式配置加载，默认不使用 `.env.example` 作为隐式回退。
 
@@ -152,7 +158,7 @@ az account get-access-token --scope "https://ai.azure.com/.default" --query expi
 
 登录状态留在本机，新设备需重新认证；不要通过 Git 搬迁 `.azure` 缓存。当前项目级 `.gitignore` 不能控制用户目录中的缓存。
 
-### C. P1–P3、P4-A 与 P4-B 下一步
+### C. P1–P3、P4-A、P4-B 与 P4-C 下一步
 
 当前认证、直接模型、Bing 工具调用及引用结构已通过，不需要在本机重复成功请求。可运行 `scripts/smoke_foundry.py --check auth|model|search`（从三者中选择一个）；`model` 和 `search` 会产生真实用量。完整记录见 [P1_VALIDATION](P1_VALIDATION.md)。访问与留存边界已写入 [P1_ACCESS_RETENTION](P1_ACCESS_RETENTION.md)，不是从零重做接入或条款调研。
 
@@ -167,11 +173,11 @@ az account get-access-token --scope "https://ai.azure.com/.default" --query expi
 7. 增加无配置、认证失败、权限不足、工具不支持、无结果、无引用、超时和限流的明确错误路径；记录请求标识及可观测用量，不记录密钥。
 8. P1 能力记录已形成：搜索 CLI 只输出白名单审计字段与原生引用，不保存回答正文或原始工具输出；未获批准的抓取、索引和评测路径保持禁用。
 
-P2 已将来源边界固化在登记册和安全读取器。P3 已固化首个监管 Skill。P4-A 已用 `.example` 合成证据打通覆盖规划、初扫、补搜、分析、claim/evidence 核验、取舍、停止和 P0 输出，并拒绝真实 URL、真实来源标签及超预算批次；完整说明见 [P4-A 离线研究闭环](P4A_OFFLINE_RESEARCH.md)。P4-B 初扫、事件级补搜及独立原文核验的模拟适配器已经完成；下一步构造默认关闭、显式启用的手动运行／live transport 边界，不立即加入数据库、调度、聊天或通知。
+P2 已将来源边界固化在登记册和安全读取器。P3 已固化首个监管 Skill。P4-A 已用 `.example` 合成证据打通覆盖规划、初扫、补搜、分析、claim/evidence 核验、取舍、停止和 P0 输出，并拒绝真实 URL、真实来源标签及超预算批次；完整说明见 [P4-A 离线研究闭环](P4A_OFFLINE_RESEARCH.md)。P4-B mocked 适配器、manual-live request／授权／角色和最小真实 discovery 已完成。P4-C 又交付了正式 live result 契约和完整 manual-live 控制器，并以 mock 打通“发现 → 原文读取 → 核验 → 分析 → P0 输出”，见 [P4-C Manual-live 完整控制器](P4C_MANUAL_LIVE_CONTROLLER.md)。下一步只是在确有验收需要且用户重新确认短时一次性授权后，运行一次真实完整控制器；不立即加入数据库、调度、聊天或通知，也不为重复确认连接而再次调用付费服务。
 
 ## 5. Git 提交与迁移检查
 
-P0 提交 `2916e38`、P1 提交 `a6d6274`、P2 提交 `4a47b98`、P3 提交 `f5a8526`、P4-A 提交 `cd624b9`、P4-B 初扫模拟适配器提交 `226ce35`，以及 P4-B 事件级补搜／独立原文核验提交 `55713db` 已推送到 `origin/develop`。记录本次交接时工作区干净，本地 `develop` 与 `origin/develop` 同步。
+P0 提交 `2916e38`、P1 提交 `a6d6274`、P2 提交 `4a47b98`、P3 提交 `f5a8526`、P4-A 提交 `cd624b9`、P4-B 初扫模拟适配器提交 `226ce35`，以及 P4-B 事件级补搜／独立原文核验提交 `55713db` 已推送到 `origin/develop`。`7303b40` 更新了跨设备交接记录。当前 manual-live request／授权／角色／完整控制器／CLI、PoC policy、测试及文档变更尚未提交；本地 `develop` 仍指向 `origin/develop`，不要覆盖这些工作区变更。
 
 `.gitignore` 排除 `.venv`、Python 缓存、`.env`、数据库、运行数据，并新增根目录 `.tmp` 和 `.azure` 排除项。原有 `.tmp` 内容未查看、修改或删除；该忽略规则不等于审查其中内容。`.env.example` 明确保留为可跟踪文件。
 
@@ -189,7 +195,7 @@ git diff --cached
 
 ## 6. 可交给新设备上助手的接续说明
 
-> 请先读取 README.md、docs/HANDOFF.md、docs/P4A_OFFLINE_RESEARCH.md、docs/P4B_REQUEST_CONSTRUCTION.md、docs/P3_SKILLS.md、docs/P2_SOURCE_REGISTRY.md、docs/P1_VALIDATION.md、docs/P1_ACCESS_RETENTION.md、docs/IMPLEMENTATION_PLAN.md、docs/P0_SPEC.md 和 .env.example。P0–P3、P4-A 合成监管闭环及 P4-B 初扫／事件级补搜／独立原文核验模拟适配器已交付，当前总计 195 项离线测试；P2 组织审批和 P3 领域批准仍是生产门槛，草稿 Skill 默认不加载。新设备重建环境并单独登录；不要重复创建资源或付费验证。接下来构造默认关闭、显式启用的手动运行／live transport 边界；只有确有需要、经用户授权且组织门槛允许时才做真实调用。Agent 编排由本地实现，不调用 Portal 托管 Agent，不索取 Agent ID，不自动修改云资源。不得扩展到定时、对话、推送、前端；不得索取或提交密钥。
+> 请先读取 README.md、docs/HANDOFF.md、docs/P4A_OFFLINE_RESEARCH.md、docs/P4B_REQUEST_CONSTRUCTION.md、docs/P4C_MANUAL_LIVE_CONTROLLER.md、docs/P3_SKILLS.md、docs/P2_SOURCE_REGISTRY.md、docs/P1_VALIDATION.md、docs/P1_ACCESS_RETENTION.md、docs/IMPLEMENTATION_PLAN.md、docs/P0_SPEC.md 和 .env.example。P0–P3、P4-A 合成监管闭环、P4-B 模拟闭环及 P4-C manual-live result／完整控制器／CLI 已交付，当前总计 215 项离线测试；一次最小真实 Foundry/Bing discovery 已成功完成，两次完整控制器真实尝试分别暴露了已离线修复的 live cutoff 和日期格式问题，不要为确认连接重复产生用量。用户将组织／领域审批视为仅适用于 PoC 的已通过假设，生产门槛没有因此移除，草稿 Skill 的生产默认仍不加载。下一步只在用户对新的 `max_queries=3`、`max_evidence=2` 短时一次性授权再次确认时，重试真实完整控制器；Agent 编排由本地实现，不调用 Portal 托管 Agent，不索取 Agent ID，不自动修改云资源。不得扩展到定时、对话、推送、前端；不得索取或提交密钥。
 
 ## 7. 实施时核对的官方资料
 

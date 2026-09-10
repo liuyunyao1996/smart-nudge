@@ -1,6 +1,6 @@
-# P4-B Foundry/Bing 模拟适配器
+# P4-B Foundry/Bing 模拟适配器与手动 live 边界
 
-更新日期：2026-09-04（Asia/Shanghai）。本阶段实现初扫、事件级补搜、获准精确 URL 原文读取和 locator-bound 核验的 mocked transport 闭环；不读取 `.env`、不获取真实 Azure 凭据、不发起网络请求，也不创建或修改云资源。
+更新日期：2026-09-10（Asia/Shanghai）。本阶段已实现初扫、事件级补搜、获准精确 URL 原文读取和 locator-bound 核验的 mocked transport 闭环，并增加非生产 manual-live request、显式短时授权、discovery／verification 角色和手动 CLI。用户将组织／领域审批视为仅适用于 PoC 的已通过假设，并明确授权后，已完成一次最小真实 Foundry/Bing discovery 兼容性运行；没有创建或修改云资源，也没有持久化 prompt、原始模型／工具输出或凭据。
 
 ## 已实现
 
@@ -33,19 +33,43 @@
 
 请求构造器返回不可变的 `FoundryResearchRequest` 元数据；`payload` 每次返回独立副本。调用方可以记录 `audit_record()`，但不得把私有 payload、后续原始模型回答或工具输出当作审计记录持久化。
 
+## 手动 live transport 边界
+
+`smart_nudge.live_run` 提供运行级授权与预算会话，`FoundryAdapter` 提供受该会话约束的 research／verification 单次执行入口，`ManualLiveSourceClient` 在 P2 精确 URL 读取前执行相同授权和 evidence 计费。`smart_nudge.manual_research` 定义独立的 manual-live request，固定非生产 PoC 标记并校验 Skill bundle SHA-256。`LiveFoundryResearchRole` 和 `LiveVerifiedResearchRole` 复用已经测试的请求转换与核验规则，但只能走默认验证 TLS 的真实 transport。
+
+当前 checked-in `config/policies/p4-manual-live-run.json` 仅对 `poc_non_production` 标记为 `approved_for_manual_live`。它记录用户允许本次 PoC 假设组织／领域门槛已通过，并不代表生产批准；policy 本身仍不能触发外部 I/O，每次实际运行还必须提供与精确请求哈希绑定的短时授权，并显式传入 `--execute-live`。CLI 会在外部 I/O 前原子创建 `.tmp/manual-live-authorizations/` 下的一次性消费收据；同一 authorization ID 再次运行会拒绝，收据只含授权／请求哈希、ID 和时间。
+
+边界具有以下性质：
+
+- 缺少授权文件、策略未获批、授权未生效或已过期时全部拒绝；单次授权最长 60 分钟。
+- authorization ID 必须一次性使用；本地原子收据防止同一工作区内并发或跨进程重放。生产仍需把这类消费记录放入受控持久化存储，不能依赖可删除的 `.tmp` 目录。
+- 授权绑定一个 `request_key`、一个规范请求 SHA-256、明确 P2 source IDs、查询上限和 evidence 上限。
+- 组织审批与领域审批引用是授权 Schema 的必填字段，但授权文件本身不能打开 checked-in 禁用策略。
+- 每个外部动作在 I/O 前原子计费；失败、超时或状态未知不退回预算，自动重试固定为零。`max_queries` 计的是 Foundry Responses research／verification 尝试数；一个 Responses 请求内部由模型触发的原生 Bing 调用数在返回后另行审计，不能由这个本地计数器事前精确限制。
+- live Foundry 入口拒绝任何注入 transport，只允许默认验证 TLS 的 HTTPS transport；mock 路径继续使用原有专用方法，二者不能混用。
+- live research 再次固定模型、`store=false`、单个 Bing Custom Search 工具、connection ID、instance、单次 count 上限及无托管 Agent／会话字段；verification 不得携带工具。
+- live 原文读取仍必须通过 P2 allowlist、自动访问状态、DNS／SSRF、重定向、类型和大小护栏。
+- 审计保存授权／请求／payload 哈希、source IDs、通道、时点和已尝试预算，不保存审批文本、prompt、查询、响应正文、网页正文或凭据。
+
+`scripts/run_live_poc.py` 最初只用于显式 discovery 兼容性验证；P4-C 已将它升级为完整 manual-live 运行器。它加载 request 和授权，选择绑定摘要的 Skill，并在同一有预算会话中执行 discovery、精确 URL 原文读取、verification、analysis、停止决策和 P0-valid live 输出；它仍不会写入数据库。完整边界与离线验收见 [P4-C Manual-live 完整控制器](P4C_MANUAL_LIVE_CONTROLLER.md)。本次已记录的真实响应没有合格候选，所以当时没有实际调用原文读取或核验。
+
 请求字段形态依据 Microsoft Foundry 的 [Grounding with Bing Search 工具说明](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/bing-tools) 和 [项目级 Responses REST 参考](https://learn.microsoft.com/rest/api/aifoundry/project/responses)。这只说明构造与文档及既有 P1 实测形态一致，不代表本阶段重新验证了云端兼容性。
 
 ## 验证
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest tests.test_foundry_research -v
+.\.venv\Scripts\python.exe -m unittest tests.test_live_run -v
+.\.venv\Scripts\python.exe -m unittest tests.test_manual_research -v
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-当前 P4-B 有 35 项测试，全仓库合计 195 项离线测试。测试使用假 token 与 `httpx.MockTransport`，没有真实认证或网络调用。覆盖正常信号、零结果、无原生引用、正文生成 URL、越界来源、Bing attribution、JSON/Schema 错误、工具未完成、限流、超时、未知执行状态、请求摘要绑定、预算保留、事件补搜身份锁定、manual-only、访问拒绝、空原文、冲突、标题不匹配、伪造 checked context／locator、重定向别名去重以及完整模拟控制器闭环。
+当前全仓库合计 215 项离线测试。测试使用假 token、方法 patch 或 `httpx.MockTransport`，覆盖 PoC policy、显式授权 Schema、manual-live request 与 Skill 摘要绑定、有效期、来源／请求绑定、授权快照不可变、跨进程一次性消费、原子预算、审计最小化、Bing 身份固定、失败仍计费、CLI 二次确认、完整 live 结果契约、历史 cutoff 防回退，以及 mock／live transport 隔离。
+
+同日执行了一次单独授权的真实兼容性运行 `manual-live-poc-20260910-01`：一个 Foundry Responses 请求成功完成，在响应结构中观察到 2 次 Bing 工具调用，总用量 3,533 tokens。没有返回可接受的范围内原生 URL citation 或候选，coverage 因此保守标记为 `unavailable`，没有继续原文读取／核验。这证明当前模型部署、项目连接、Bing configuration 和新 live discovery 路径可协同执行，不证明搜索覆盖率、事实准确性或完整闭环验收通过。
 
 ## 下一步
 
-1. 构造默认关闭、必须显式启用且可审计的手动运行／live transport 边界，同时保留完全 mock 的 dry-run 测试路径。
-2. 明确一次真实运行的预算、截止时间、允许来源和失败后不自动重试规则；P2 组织审批和 P3 领域批准仍是生产门槛。
-3. 只有用户单独授权且组织门槛允许时，才执行一次小规模真实运行并检查真实响应兼容性；不得为重复确认历史成功而调用。
+1. 正式 live result Schema、完整控制器和“有合格原生 citation”的 mock 编排验收已由 P4-C 完成。
+2. 后续维护继续先走 mock dry-run，确认同一授权会话的 query／evidence 计费、失败降级和结果契约；不要为了重复证明连接而调用真实服务。
+3. 只有新端到端验收确有必要、用户再次确认具体短时一次性授权时，才执行下一次真实完整运行。PoC 审批假设不延伸为生产批准。

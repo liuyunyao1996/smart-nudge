@@ -32,7 +32,8 @@
     "nullableText": {"type": ["string", "null"], "minLength": 1, "maxLength": 2000},
     "nullableDate": {
       "type": ["string", "null"],
-      "format": "date"
+      "format": "date",
+      "description": "Use null when unknown; otherwise use one exact Gregorian calendar date in YYYY-MM-DD form, never a timestamp, partial date, approximate date, or localized date."
     },
     "citationUrls": {
       "type": "array",
