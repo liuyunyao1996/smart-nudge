@@ -21,7 +21,7 @@
 5. 控制器以 `sufficient_evidence` 停止，输出 `data_kind: live` 且通过 P0 和 manual-live 双重结果契约。
 6. 会话账本记录 3 次 Foundry 尝试（2 次 discovery、1 次 verification）和 1 次 source evidence fetch；伪装成 synthetic 或篡改 request key 的结果均被拒绝。
 
-当前全仓库有 215 项离线测试。happy path 现在显式模拟 discovery、原文读取和控制器完成依次晚于请求 `as_of`，证明真实网络延迟不会再被误判为历史 cutoff 违规；独立回归测试同时保证离线历史来源仍不能越过原始 cutoff。它仍不证明真实 Bing 一定返回候选、真实来源一定允许自动读取，也不证明模型核验的事实质量。
+当前全仓库有 220 项离线测试。happy path 现在显式模拟 discovery、原文读取和控制器完成依次晚于请求 `as_of`，证明真实网络延迟不会再被误判为历史 cutoff 违规；独立回归测试同时保证离线历史来源仍不能越过原始 cutoff。它仍不证明真实 Bing 一定返回候选、真实来源一定允许自动读取，也不证明模型核验的事实质量。
 
 ## 第一次完整控制器真实尝试
 
@@ -36,6 +36,22 @@
 随后离线增强日期兼容边界：prompt 和发给 Azure 的 Schema description 均明确日期只能是 `null` 或精确 `YYYY-MM-DD`；对可严格解析的 ISO 8601 datetime，转换器只确定性保留其日期部分并审计归一化字段数量。本地化、模糊或部分日期仍被拒绝。
 
 ## 下一次真实验收
+
+先在仓库根目录执行一条完整准备命令：
+
+```powershell
+.\.venv\Scripts\python.exe scripts\prepare_live_poc.py --max-queries 3 --max-evidence 2
+```
+
+`scripts/prepare_live_poc.py` 不联网，也不读取 `.env`。它默认建立香港 `regulatory-change/final_rule` 最近 7 天的 request，自动绑定当前草稿 Skill bundle 摘要，从离线 Coverage Plan 推导 P2 trusted-registry source IDs，并生成与规范 request SHA-256 精确绑定、45 分钟有效、零自动重试的一次性 authorization。两个 JSON 文件先经过正式 request、Skill、source 和 authorization policy 校验，再原子写入 `.tmp/manual-live-runs/<run_id>/`；已有 `run_id` 不会被覆盖。
+
+成功输出含 `run_command`，形式如下；只有显式执行它才会读取 `.env`、消费 authorization 并产生真实模型／Bing 用量：
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_live_poc.py --request ".tmp\manual-live-runs\<run_id>\request.json" --authorization ".tmp\manual-live-runs\<run_id>\authorization.json" --execute-live | Tee-Object -FilePath ".tmp\manual-live-runs\<run_id>\result.json"
+```
+
+若 45 分钟内未运行、authorization 已消费或需要改变窗口／预算，应重新执行准备命令生成新 ID，不能修改或重放旧文件。可用 `--help` 查看市场、事件类型、窗口、预算、审批引用和有效期参数；输出目录被限制在仓库 `.tmp` 下。
 
 修复后的下一次真实运行需要一份新的短时一次性授权，预算至少覆盖香港双语 discovery、一个 discovery citation、一个独立原文 evidence 和一次 verification（建议 `max_queries: 3`、`max_evidence_records: 2`、零自动重试）。成功标准不是“HTTP 200”，而是以下二者之一：
 

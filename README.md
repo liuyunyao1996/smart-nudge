@@ -59,6 +59,16 @@ python -m venv .venv
 
 `auth` 只验证 Python 凭据；`model` 和 `search` 各发起一次真实 Responses 请求，产生模型／搜索用量。搜索模式使用已登记的六个香港来源检查原生引用。默认不重试、不创建托管 Agent、不写响应文件；`search` 只打印安全审计元数据和原生引用，不打印 Bing 生成的回答正文。`ok: true` 仅表示接入检查通过，不表示事实核验或覆盖率通过。参数和限制见 [P1 验证记录](docs/P1_VALIDATION.md)，数据边界见 [P1 访问与留存说明](docs/P1_ACCESS_RETENTION.md)。
 
+## P4-C 完整运行准备
+
+在项目根目录执行以下一条命令，即可离线生成新的 request、Skill 摘要、规范请求哈希、可信来源范围和 45 分钟一次性 authorization：
+
+```powershell
+.\.venv\Scripts\python.exe scripts\prepare_live_poc.py --max-queries 3 --max-evidence 2
+```
+
+默认范围是香港、`regulatory-change/final_rule`、最近 7 天和零自动重试。准备结果写入被 Git 忽略的 `.tmp/manual-live-runs/<run_id>/`；命令本身不读取 `.env`、不访问 Azure、不产生模型／Bing 用量，也不消费 authorization。成功输出中的 `run_command` 才是实际联网命令；复制执行后，完整 JSON 结果会同时显示在终端并写入同目录的 `result.json`。authorization 过期或用过后必须重新准备，不能重放。完整边界见 [P4-C Manual-live 完整控制器](docs/P4C_MANUAL_LIVE_CONTROLLER.md)。
+
 ## Git 迁移注意事项
 
-不要上传 `.env`、`.venv`、Azure 登录缓存、数据库或 `.tmp`。`.env.example` 只包含用户提供的非敏感资源标识，不含密钥；如仓库将公开，先确认是否保留这些具体标识。P0–P3 已推送到 `develop`；当前 P4-A 工作树是否已提交以 `git status` 和提交日志为准。迁移步骤见 [交接说明](docs/HANDOFF.md)。
+不要上传 `.env`、`.venv`、Azure 登录缓存、数据库或 `.tmp`。`.env.example` 只包含用户提供的非敏感资源标识，不含密钥；如仓库将公开，先确认是否保留这些具体标识。P0–P4-C 完整控制器已推送到 `develop`；后续工作是否已提交以 `git status` 和提交日志为准。迁移步骤见 [交接说明](docs/HANDOFF.md)。

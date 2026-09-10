@@ -1,6 +1,6 @@
 # Smart Nudge：当前进度与跨设备交接
 
-更新日期：2026-09-10（Asia/Shanghai）。P4-A 已完成严格限于合成数据的监管研究—分析—核验闭环；P4-B 已完成 mocked 与 live transport、短时一次性授权和角色组合；P4-C 已完成非生产 manual-live result 契约与完整控制器的离线端到端验收，见 [P4-C Manual-live 完整控制器](P4C_MANUAL_LIVE_CONTROLLER.md)。在用户明确授权并将组织／领域审批视为仅适用于 PoC 的已通过假设后，已完成一次最小真实 Foundry/Bing discovery 兼容性运行。下一步是真实端到端验收；生产审批、持久化和跨运行能力仍未完成。
+更新日期：2026-09-10（Asia/Shanghai）。P4-A 已完成严格限于合成数据的监管研究—分析—核验闭环；P4-B 已完成 mocked 与 live transport、短时一次性授权和角色组合；P4-C 已完成非生产 manual-live result 契约与完整控制器的离线端到端验收，见 [P4-C Manual-live 完整控制器](P4C_MANUAL_LIVE_CONTROLLER.md)。在用户明确授权并将组织／领域审批视为仅适用于 PoC 的已通过假设后，已完成一次最小真实 Foundry/Bing discovery 兼容性运行，并已补齐不联网的一键运行准备命令。下一步是用新生成的短时授权执行真实端到端验收；生产审批、持久化和跨运行能力仍未完成。
 
 ## 1. 从这里继续
 
@@ -41,6 +41,7 @@
 - 2026-09-10：完成 P4-C manual-live 完整控制器。新增专用 live result Schema 与请求绑定校验；基础 `ResearchController` 保持 synthetic 默认，`ManualLiveResearchController` 只接受共享同一授权会话的 `LiveVerifiedResearchRole` 并固定 direct verification。手动 CLI 升级为 discovery、官方 URL 读取、locator 核验、analysis、停止和 P0 输出的完整闭环。新增一个无网络 happy-path 测试：双语 discovery、一次原文读取和一次 verification 共计 3 个 Foundry 预算单位，产出 `data_kind: live`、`selected`、`sufficient_evidence` 的 P0-valid 结果；伪造 synthetic 类型或篡改 request key 均拒绝。加上后续历史 cutoff 与日期格式回归测试，全仓库合计 215 项离线测试。
 - 2026-09-10：用户授权请求 `manual-live-poc-20260910T064031Z` 以 `max_queries=3`、`max_evidence=1` 执行第一次完整控制器真实验收。一个 Foundry research 请求返回后，转换器因把正常网络返回时间误当成历史回放 cutoff 而保守失败，记录 `response_post_cutoff_evidence`；会话只消费 1 个 query 尝试，没有原文读取或 verification，一次性授权已消费且未重试。随后离线修复时间语义：历史／mock 仍拒绝 cutoff 后响应，manual-live result 的 `as_of` 则推进到控制器完成时，允许保留真实 discovery／retrieval 时间；延迟型完整 mock 回归通过。另确认 1 条 discovery citation 本身占用 1 个 evidence record，因此要容纳同一 URL 的独立原文证据，下一次完整验收需 `max_evidence=2`。
 - 2026-09-10：用户以 `max_queries=3`、`max_evidence=2` 授权请求 `manual-live-poc-20260910T065905Z` 重试。香港双语 discovery 共消费 2 个 Foundry 尝试，真实响应通过了修复后的时间边界，但其中一个候选的 `publication_date` 未满足本地严格 date 格式，控制器以 `response_response_schema` 保守失败；没有原文读取或 verification，第 3 个 query 未使用，一次性授权未重试。随后离线增强日期契约：prompt 与 Azure Schema description 明确只允许 `null` 或 `YYYY-MM-DD`；转换器只把可严格解析的 ISO 8601 datetime 确定性降为 date，并在安全审计中记录归一化字段数量，仍拒绝本地化、模糊或部分日期。
+- 2026-09-10：新增 `scripts/prepare_live_poc.py` 一键离线准备命令。它默认生成香港最近 7 天、`max_queries=3`、`max_evidence=2`、45 分钟有效的 request／authorization；自动绑定当前 Skill bundle SHA-256、规范 request SHA-256 和 Coverage Plan 推导的 P2 trusted source IDs，在正式校验通过后原子写入 `.tmp/manual-live-runs/<run_id>/`。准备阶段不读取 `.env`、不联网、不消费 authorization，拒绝写到 `.tmp` 外、使用危险目录名或覆盖已有 run。新增 5 项离线测试，全仓库合计 220 项。
 
 尚未完成：
 
@@ -135,7 +136,7 @@ python3 -m venv .venv
 .venv/bin/python -m pip check
 ```
 
-预期：P0、P2、P3、P4-A 校验 PASS、215 项测试通过、依赖无冲突。这只验证离线契约、请求／响应转换、完整 manual-live 控制器的模拟搜索／原文／核验行为、live 授权边界和策略护栏，不验证新设备云权限、实时来源连通性、检索质量、事实或生产审批。
+预期：P0、P2、P3、P4-A 校验 PASS、220 项测试通过、依赖无冲突。这只验证离线契约、请求／响应转换、完整 manual-live 控制器的模拟搜索／原文／核验行为、live 授权边界和策略护栏，不验证新设备云权限、实时来源连通性、检索质量、事实或生产审批。
 
 需要本地配置时，先确认 `.env` 不存在，再手动复制 `.env.example` 为 `.env`；已有文件不要覆盖。已实现并测试显式配置加载，默认不使用 `.env.example` 作为隐式回退。
 
@@ -177,7 +178,7 @@ P2 已将来源边界固化在登记册和安全读取器。P3 已固化首个�
 
 ## 5. Git 提交与迁移检查
 
-P0 提交 `2916e38`、P1 提交 `a6d6274`、P2 提交 `4a47b98`、P3 提交 `f5a8526`、P4-A 提交 `cd624b9`、P4-B 初扫模拟适配器提交 `226ce35`，以及 P4-B 事件级补搜／独立原文核验提交 `55713db` 已推送到 `origin/develop`。`7303b40` 更新了跨设备交接记录。当前 manual-live request／授权／角色／完整控制器／CLI、PoC policy、测试及文档变更尚未提交；本地 `develop` 仍指向 `origin/develop`，不要覆盖这些工作区变更。
+P0 提交 `2916e38`、P1 提交 `a6d6274`、P2 提交 `4a47b98`、P3 提交 `f5a8526`、P4-A 提交 `cd624b9`、P4-B 初扫模拟适配器提交 `226ce35`、P4-B 事件级补搜／独立原文核验提交 `55713db`、交接提交 `7303b40`，以及 P4-C 完整 manual-live 控制器提交 `e140cff` 已推送到 `origin/develop`。当前一键运行准备命令、测试和文档是基于该提交的新工作区变更，尚未提交。
 
 `.gitignore` 排除 `.venv`、Python 缓存、`.env`、数据库、运行数据，并新增根目录 `.tmp` 和 `.azure` 排除项。原有 `.tmp` 内容未查看、修改或删除；该忽略规则不等于审查其中内容。`.env.example` 明确保留为可跟踪文件。
 
@@ -195,7 +196,7 @@ git diff --cached
 
 ## 6. 可交给新设备上助手的接续说明
 
-> 请先读取 README.md、docs/HANDOFF.md、docs/P4A_OFFLINE_RESEARCH.md、docs/P4B_REQUEST_CONSTRUCTION.md、docs/P4C_MANUAL_LIVE_CONTROLLER.md、docs/P3_SKILLS.md、docs/P2_SOURCE_REGISTRY.md、docs/P1_VALIDATION.md、docs/P1_ACCESS_RETENTION.md、docs/IMPLEMENTATION_PLAN.md、docs/P0_SPEC.md 和 .env.example。P0–P3、P4-A 合成监管闭环、P4-B 模拟闭环及 P4-C manual-live result／完整控制器／CLI 已交付，当前总计 215 项离线测试；一次最小真实 Foundry/Bing discovery 已成功完成，两次完整控制器真实尝试分别暴露了已离线修复的 live cutoff 和日期格式问题，不要为确认连接重复产生用量。用户将组织／领域审批视为仅适用于 PoC 的已通过假设，生产门槛没有因此移除，草稿 Skill 的生产默认仍不加载。下一步只在用户对新的 `max_queries=3`、`max_evidence=2` 短时一次性授权再次确认时，重试真实完整控制器；Agent 编排由本地实现，不调用 Portal 托管 Agent，不索取 Agent ID，不自动修改云资源。不得扩展到定时、对话、推送、前端；不得索取或提交密钥。
+> 请先读取 README.md、docs/HANDOFF.md、docs/P4A_OFFLINE_RESEARCH.md、docs/P4B_REQUEST_CONSTRUCTION.md、docs/P4C_MANUAL_LIVE_CONTROLLER.md、docs/P3_SKILLS.md、docs/P2_SOURCE_REGISTRY.md、docs/P1_VALIDATION.md、docs/P1_ACCESS_RETENTION.md、docs/IMPLEMENTATION_PLAN.md、docs/P0_SPEC.md 和 .env.example。P0–P3、P4-A 合成监管闭环、P4-B 模拟闭环及 P4-C manual-live result／完整控制器／CLI 已交付，当前总计 220 项离线测试；一次最小真实 Foundry/Bing discovery 已成功完成，两次完整控制器真实尝试分别暴露了已离线修复的 live cutoff 和日期格式问题，不要为确认连接重复产生用量。一键准备命令已可生成经 Skill／source／policy 校验的短时 request 和 authorization，且准备本身不联网。用户将组织／领域审批视为仅适用于 PoC 的已通过假设，生产门槛没有因此移除，草稿 Skill 的生产默认仍不加载。下一步只在用户对新生成的 `max_queries=3`、`max_evidence=2` 短时一次性授权再次确认时，执行输出中的 `run_command`；Agent 编排由本地实现，不调用 Portal 托管 Agent，不索取 Agent ID，不自动修改云资源。不得扩展到定时、对话、推送、前端；不得索取或提交密钥。
 
 ## 7. 实施时核对的官方资料
 
