@@ -1,3 +1,2 @@
-# Runtime dependencies plus offline contract/probe regression tests.
+# Runtime dependencies; the test suite uses Python's standard unittest module.
 -r requirements.txt
-jsonschema==4.26.0

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smart-nudge.local/schemas/poc-summary-response.schema.json",
+  "title": "Smart Nudge executive summary response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "title", "executive_summary", "items"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "title": {"$ref": "#/$defs/text"},
+    "executive_summary": {"$ref": "#/$defs/text"},
+    "items": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/item"}
+    }
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1, "maxLength": 2000},
+    "ids": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^src-[a-f0-9]{12}$"}
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_item_ids", "headline", "summary", "why_it_matters_to_aia"],
+      "properties": {
+        "source_item_ids": {"$ref": "#/$defs/ids"},
+        "headline": {"$ref": "#/$defs/text"},
+        "summary": {"$ref": "#/$defs/text"},
+        "why_it_matters_to_aia": {"$ref": "#/$defs/text"}
+      }
+    }
+  }
+}
