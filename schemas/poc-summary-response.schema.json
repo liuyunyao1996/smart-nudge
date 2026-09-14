@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["schema_version", "title", "executive_summary", "items"],
   "properties": {
-    "schema_version": {"const": "1.0.0"},
+    "schema_version": {"const": "1.1.0"},
     "title": {"$ref": "#/$defs/text"},
     "executive_summary": {"$ref": "#/$defs/text"},
     "items": {
@@ -27,12 +27,15 @@
     "item": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["source_item_ids", "headline", "summary", "why_it_matters_to_aia"],
+      "required": ["source_item_ids", "headline", "summary", "why_it_matters_to_aia", "attention_level", "signal_type", "attention_reason"],
       "properties": {
         "source_item_ids": {"$ref": "#/$defs/ids"},
         "headline": {"$ref": "#/$defs/text"},
         "summary": {"$ref": "#/$defs/text"},
-        "why_it_matters_to_aia": {"$ref": "#/$defs/text"}
+        "why_it_matters_to_aia": {"$ref": "#/$defs/text"},
+        "attention_level": {"enum": ["high", "medium", "low"]},
+        "signal_type": {"enum": ["final_rule", "enforcement", "consultation", "guidance", "informational"]},
+        "attention_reason": {"$ref": "#/$defs/text"}
       }
     }
   }

@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["schema_version", "rule_id", "version", "name", "bing", "search", "summarization"],
   "properties": {
-    "schema_version": {"const": "1.0.0"},
+    "schema_version": {"const": "1.1.0"},
     "rule_id": {"$ref": "#/$defs/id"},
     "version": {"$ref": "#/$defs/version"},
     "name": {"$ref": "#/$defs/text"},
@@ -45,12 +45,13 @@
     "summarization": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["output_language", "audience", "max_items", "ranking_rules", "writing_rules"],
+      "required": ["output_language", "audience", "max_items", "ranking_rules", "attention_rules", "writing_rules"],
       "properties": {
         "output_language": {"$ref": "#/$defs/text"},
         "audience": {"$ref": "#/$defs/text"},
         "max_items": {"type": "integer", "minimum": 1, "maximum": 5},
         "ranking_rules": {"$ref": "#/$defs/texts"},
+        "attention_rules": {"$ref": "#/$defs/texts"},
         "writing_rules": {"$ref": "#/$defs/texts"}
       }
     }

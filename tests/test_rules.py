@@ -34,7 +34,9 @@ class RulePackTests(unittest.TestCase):
             with self.subTest(filename=filename):
                 rule = RulePack.load(ROOT / "config" / "rules" / filename, ROOT)
                 queries = rule.render_queries(rule.default_topic, date(2026, 9, 13), 30)
+                self.assertEqual(rule.version, "1.1.0")
                 self.assertEqual(rule.document["bing"]["instance_name"], expected["instance"])
+                self.assertGreaterEqual(len(rule.document["summarization"]["attention_rules"]), 3)
                 self.assertEqual(len(rule.allowed_hosts), expected["hosts"])
                 self.assertEqual([query.query_id for query in queries], expected["queries"])
 

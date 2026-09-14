@@ -1,12 +1,12 @@
 {
   "schema_version": "1.0.0",
-  "run_id": "poc-20260914T033025Z-660bb0",
+  "run_id": "poc-20260914T081406Z-ece840",
   "status": "completed",
-  "generated_at": "2026-09-14T03:31:03.870261+00:00",
+  "generated_at": "2026-09-14T08:14:36.224841+00:00",
   "rule": {
     "rule_id": "macao-regulatory-pulse",
-    "version": "1.0.0",
-    "sha256": "02bb92f745f17e28937817b105dd6f5896f0227dfd8bb03b4632dded91cdb65b"
+    "version": "1.1.0",
+    "sha256": "69ad28b2bf45b34748abf9c55d158b7dffef1e9b1103fced58f9693890d5fbd7"
   },
   "topic": "Macao insurance and financial-services regulation and supervision",
   "window": {
@@ -19,38 +19,38 @@
       "query_id": "en",
       "language": "English",
       "status": "succeeded",
-      "coverage_status": "partial",
+      "coverage_status": "checked",
       "items_accepted": 2,
-      "request_id": "7dc2646d-a723-4d44-82ba-42ada37a8761",
-      "response_id": "resp_0fc0b1e99f0f3a44016aa76a553e088196be7eecac5f878ea0",
+      "request_id": "4deeef5f-5f0a-4740-84a8-e55f478e1a9b",
+      "response_id": "resp_022aac96144c7ffe016aa7acd0a9a4819580c3bb0f5e1f0c86",
       "usage": {
-        "input_tokens": 17044,
-        "output_tokens": 1154,
-        "total_tokens": 18198
+        "input_tokens": 12057,
+        "output_tokens": 1070,
+        "total_tokens": 13127
       }
     },
     {
       "query_id": "zh-hant",
       "language": "Traditional Chinese",
       "status": "succeeded",
-      "coverage_status": "unavailable",
+      "coverage_status": "partial",
       "items_accepted": 0,
-      "request_id": "33c77c97-6fb9-4e2d-9f78-6078dfb1d974",
-      "response_id": "resp_0424fa58c3e8bef6016aa76a6f3c088194a494e98939d2eecf",
+      "request_id": "3344a66b-4785-422b-bc21-1613bc53bdf7",
+      "response_id": "resp_0226b6b5a7a76f39016aa7ace1a5ac81909b957da7967bb8e6",
       "usage": {
-        "input_tokens": 8162,
-        "output_tokens": 619,
-        "total_tokens": 8781
+        "input_tokens": 9222,
+        "output_tokens": 529,
+        "total_tokens": 9751
       }
     }
   ],
   "items": [
     {
       "source_item_id": "src-347907fcf591",
-      "title": "未獲許可從事借貸活動 (Unauthorised lending activity)",
+      "title": "未獲許可從事借貸活動 (Unauthorised entities offering lending)",
       "publisher": "Monetary Authority of Macao (AMCM)",
       "published_date": "2026-09-11",
-      "grounded_note": "Public statement warning that lending companies from neighbouring jurisdictions have been soliciting Macao residents via social platforms without authorization. Reiterates legal basis (Law No. 13/2023 on the financial system), warns that conducting financial activities without a licence is a serious administrative offence with fines (MOP 500,000–5,000,000; up to MOP 10,000,000 if stability/market order is seriously affected).",
+      "grounded_note": "Public notice (Chinese page) from AMCM warning that nearby-region lending companies soliciting Macao residents via social media are not licensed to carry out financial activities in the Macao SAR; reminds public to use AMCM‑listed licensed institutions and cites penalties under Law No. 13/2023 (financial system legal framework).",
       "query_ids": [
         "en"
       ],
@@ -60,16 +60,16 @@
       "source_links": [
         {
           "url": "https://www.amcm.gov.mo/zh-hant/news-notice/statement/detail/20260911/1427",
-          "title": "未獲許可從事借貸活動 (Unauthorised lending activity)"
+          "title": "未獲許可從事借貸活動 (Unauthorised entities offering lending)"
         }
       ]
     },
     {
       "source_item_id": "src-942d5754a313",
-      "title": "銀行及支付機構短訊不得含超連結 金管局籲市民提防勿點擊 (Banks and payment institutions’ SMS must not contain hyperlinks — AMCM warns public not to click)",
+      "title": "銀行及支付機構短訊不得含超連結 金管局籲市民提防勿點擊 (Banks and payment institutions: SMS must not contain hyperlinks — AMCM warns public not to click)",
       "publisher": "Monetary Authority of Macao (AMCM)",
       "published_date": "2026-09-10",
-      "grounded_note": "Public notice reminding the public of AMCM’s requirement that banks and payment institutions must not embed hyperlinks in SMS messages. Explains recent phishing incidents where clicking links led users to fake sites and loss of sensitive credentials; provides advice and enforcement reminder and signposts reporting channels (Judiciary Police fraud hotline and other contacts).",
+      "grounded_note": "AMCM statement (Chinese page) advising the public about phishing via SMS with hyperlinks; reiterates AMCM requirement that banks and payment institutions must not embed links in SMS and advises steps for consumers (contact institution, consult Judiciary Police anti‑fraud tools/hotlines).",
       "query_ids": [
         "en"
       ],
@@ -79,7 +79,7 @@
       "source_links": [
         {
           "url": "https://www.amcm.gov.mo/zh-hant/news-notice/statement/detail/20260910_2/1425",
-          "title": "銀行及支付機構短訊不得含超連結 金管局籲市民提防勿點擊 (Banks and payment institutions’ SMS must not contain hyperlinks — AMCM warns public not to click)"
+          "title": "銀行及支付機構短訊不得含超連結 金管局籲市民提防勿點擊 (Banks and payment institutions: SMS must not contain hyperlinks — AMCM warns public not to click)"
         }
       ]
     }

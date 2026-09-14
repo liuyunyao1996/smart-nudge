@@ -1,12 +1,12 @@
 {
-  "schema_version": "1.0.0",
-  "run_id": "poc-20260914T032839Z-3e333d",
-  "status": "partial",
-  "generated_at": "2026-09-14T03:29:47.889137+00:00",
+  "schema_version": "1.1.0",
+  "run_id": "poc-20260914T081023Z-f3ea54",
+  "status": "completed",
+  "generated_at": "2026-09-14T08:11:35.438869+00:00",
   "rule": {
     "rule_id": "hk-regulatory-pulse",
-    "version": "1.0.0",
-    "sha256": "5e2dd302c36e7c137e3c094e0d6b812c36fc219e065a5c4a3e2aa9b3335617a3"
+    "version": "1.1.0",
+    "sha256": "ea8d4addd63baa753bddcf31281b96eefed190f61e5d41a89ab254f1e92ab23d"
   },
   "topic": "Hong Kong insurance and financial-services regulation and supervision",
   "window": {
@@ -16,102 +16,139 @@
   },
   "coverage": {
     "queries_requested": 2,
-    "queries_succeeded": 1,
-    "queries_failed": 1
+    "queries_succeeded": 2,
+    "queries_failed": 0
   },
   "title": "Smart Nudge executive summary response",
-  "executive_summary": "This briefing highlights four recent Hong Kong supervisory and policy publication indexes or listings (Aug–Sep 2026) that are relevant to AIA’s Hong Kong and regional oversight. Items are ranked by likely direct operational or compliance impact for insurers and intermediaries, and by recency. For each item I first state what the source listing or page shows (grounded factual note), then separately outline why the development may matter to AIA (conditional implications). The factual notes are taken from the supplied grounded notes and are not an exhaustive representation of underlying documents.",
+  "executive_summary": "Five Hong Kong regulatory developments in the recent window that could affect insurance operations, distribution, licensing, technology and sustainable-finance positioning. Highest immediate relevance is an Insurance Authority enforcement operation affecting licensing education recognition. Other items include HKMA activity on generative AI and the Hong Kong sustainable-finance taxonomy, and SFC circular/index items that may touch distribution or back-office processes. Summaries below state the fact first, then conditional implications for AIA.",
   "items": [
     {
       "rank": 1,
-      "headline": "Insurance Authority — updated 2026 regulatory circulars list (page last updated 2026-08-31)",
-      "summary": "The Insurance Authority (Hong Kong) page for regulatory circulars shows an updated 2026 list and indicates the page’s last update as 2026-08-31. The page aggregates circulars and recent regulatory matters intended for insurers and insurance intermediaries.",
-      "why_it_matters_to_aia": "An updated IA circulars index is a primary channel through which binding guidance, operational requirements, or compliance expectations are communicated to authorised insurers and intermediaries. AIA should (i) verify whether any newly listed circulars introduce changes to conduct, distribution, reporting, or capital-related requirements affecting Hong Kong operations or appointed intermediaries; (ii) check deadlines or transitional arrangements referenced by any newly listed circulars; and (iii) cascade any required actions to local compliance, distribution, and operations teams. Given the potential for direct regulatory obligations, treat newly listed circulars as high priority for legal and regulatory review.",
-      "published_date": "2026-08-31",
+      "headline": "Insurance Authority and Hong Kong Police joint enforcement operation targeting suspected fraudulent exam practices (27 Aug 2026)",
+      "summary": "Factual: The Insurance Authority (IA) and Hong Kong Police conducted a joint enforcement operation concerning an examination centre suspected of facilitating fraudulent practices related to the FLMI qualification. The IA announced it has suspended recognition of FLMI for licensing education requirements and will review affected licence applications.",
+      "why_it_matters_to_aia": "Conditional implications: If AIA employs or recruits staff whose licensing or promotion depends on the FLMI qualification, the suspension and the IA’s review could affect existing or pending licence applications and internal competency records. AIA should assess whether employee or distributor training, credentialing, or licensing submissions reference FLMI and prepare to validate alternative qualifications or provide remedial training if required. The development may also prompt broader review of recruitment and compliance controls around recognised qualifications.",
+      "attention_level": "high",
+      "signal_type": "enforcement",
+      "attention_reason": "An enforcement action with direct relevance to licensing and recognised qualifications for insurance personnel.",
+      "published_date": "2026-08-28",
       "publishers": [
-        "保險業監管局 (Insurance Authority, 香港)"
+        "Insurance Authority (IA)"
       ],
       "source_links": [
         {
-          "url": "https://www.ia.org.hk/tc/legislative_framework/circulars/reg_matters/circulars_on_regulatory_matters_2026.html",
-          "title": "監管通訊 — 有關規管的通函（2026 列表，最後更新 2026-08-31）"
+          "url": "https://www.ia.org.hk/en/infocenter/press_releases/20260828.html",
+          "title": "Joint operation conducted by Insurance Authority and Hong Kong Police Force against suspected fraudulent practices of examination centre"
         }
       ],
       "source_item_ids": [
-        "src-364082c92509"
+        "src-4d37201779b8"
       ]
     },
     {
       "rank": 2,
-      "headline": "Insurance Authority — master directory of circulars and guidance (general index)",
-      "summary": "The IA’s master index page lists historical circulars and guidance, including 2026-related links, and shows a page update marker (noted as 2026-02-06 on the supplied note). This index is the entry point to individual IA circulars and guidance documents.",
-      "why_it_matters_to_aia": "The IA master directory is the authoritative navigation point to locate the full text of individual circulars and guidance. AIA’s regulatory, legal, and compliance teams should use this index to retrieve and review any circulations referenced in the updated 2026 list, confirm the operative text and timelines, and maintain an auditable record of applicable guidance for Hong Kong entities and appointed intermediaries.",
-      "published_date": null,
+      "headline": "HKMA announces first cohort of GenA.I. Sandbox++ (27 Aug 2026)",
+      "summary": "Factual: The Hong Kong Monetary Authority (HKMA) announced the inaugural cohort for its GenA.I. Sandbox++, describing participants, objectives and links with other regulators and industry work on agentic A.I. in financial services.",
+      "why_it_matters_to_aia": "Conditional implications: The initiative signals regulatory engagement on agentic and generative AI applications in finance. For AIA, this increases the importance of assessing model governance, vendor oversight, product controls and risk frameworks for AI-driven customer interactions or advice. Participation, observation or liaison with regulators may help anticipate supervisory expectations; absent participation, AIA should ensure internal pilots align with emerging regulatory themes.",
+      "attention_level": "medium",
+      "signal_type": "guidance",
+      "attention_reason": "Regulatory programme shaping supervisory expectations for agentic AI that may affect operational and governance controls.",
+      "published_date": "2026-08-27",
       "publishers": [
-        "保險業監管局 (Insurance Authority, 香港)"
+        "Hong Kong Monetary Authority (HKMA)"
       ],
       "source_links": [
         {
-          "url": "https://www.ia.org.hk/tc/legislative_framework/circulars/circulars_on_regulatory_matters.html",
-          "title": "通函總目錄 — 有關規管的通函（監管通函總頁）"
+          "url": "https://www.hkma.gov.hk/eng/news-and-media/press-releases/2026/08/20260827-3/",
+          "title": "HKMA — First cohort of GenA.I. Sandbox++ announced"
         }
       ],
       "source_item_ids": [
-        "src-a326eb951878"
+        "src-74e83c55f1a4"
       ]
     },
     {
       "rank": 3,
-      "headline": "Hong Kong Monetary Authority — latest news/announcements page (page snapshot dated 2026-09-11)",
-      "summary": "The HKMA ‘latest news’/newsroom area contains multiple items with a page snapshot showing entries dated 2026-09-11 (for example, a government announcement on silver bond subscription results is shown in the page summary). This page is the HKMA’s official channel for policy, regulatory announcements and news releases; some content was noted as subject to robots restrictions during retrieval although a page summary included the news item.",
-      "why_it_matters_to_aia": "HKMA announcements can affect macroprudential settings, liquidity, market infrastructure, and government bond issuance—factors that influence asset-liability management, investment strategy, and capital planning. AIA’s asset management and treasury teams should monitor relevant HKMA releases for developments that could affect liquidity, yield curves, or issuance that are used in portfolio or ALM modelling. If an announcement contains measures with direct insurer implications (e.g., market operations or systemic measures), coordinate with regional regulatory affairs and risk teams to assess operational or reporting impacts.",
-      "published_date": "2026-09-11",
+      "headline": "HKMA launches public consultation on Phase 2B prototype of Hong Kong Taxonomy for Sustainable Finance (7 Sep 2026)",
+      "summary": "Factual: The Hong Kong Monetary Authority (HKMA) launched a public consultation on the Phase 2B prototype of the Hong Kong Taxonomy for Sustainable Finance on 7 September 2026.",
+      "why_it_matters_to_aia": "Conditional implications: A taxonomy shapes how economic activities are classified for sustainable-investment reporting and product development. For AIA’s asset management, product labelling, sustainability disclosures and client offerings, changes in taxonomy definitions could affect portfolio alignment, investment selection processes and investor communications. AIA may consider reviewing investment policies and whether to respond to the consultation or adjust internal taxonomies and reporting approaches in light of possible future regulatory expectations.",
+      "attention_level": "medium",
+      "signal_type": "consultation",
+      "attention_reason": "A consultation that could materially influence sustainable-finance classification, reporting and product alignment.",
+      "published_date": "2026-09-07",
       "publishers": [
-        "香港金融管理局 (Hong Kong Monetary Authority, HKMA)"
+        "Hong Kong Monetary Authority (HKMA)"
       ],
       "source_links": [
         {
-          "url": "https://www.hkma.gov.hk/gb_chi/",
-          "title": "最新消息 / 新聞稿（示例：2026‑09‑11）"
+          "url": "https://www.hkma.gov.hk/eng/news-and-media/press-releases/2026/09/20260907-3/",
+          "title": "HKMA launches public consultation on Phase 2B prototype of Hong Kong Taxonomy for Sustainable Finance"
         }
       ],
       "source_item_ids": [
-        "src-d554f1a4ba3c"
+        "src-fc293c82d117"
       ]
     },
     {
       "rank": 4,
-      "headline": "FSTB Financial Services Branch — public consultations / policy papers listing (includes 2026 consultations)",
-      "summary": "The Financial Services and the Treasury Bureau (Financial Services Branch) maintains a page listing public consultations and policy papers; the supplied note indicates multiple 2026 consultations are listed, including proposals related to virtual asset service provider regulation.",
-      "why_it_matters_to_aia": "FSTB consultations signal potential future legislative or regulatory changes that could affect market structure, intermediary activities, or product propositions (for example, virtual asset service provider regulation could influence distribution or product development if firms consider digital asset exposures). AIA should track consultations relevant to insurance and distribution, determine whether to submit industry responses (via regulatory affairs / government relations), and consider strategic implications for product design, customer communications, and distributor oversight if proposals progress to legislation or subordinate regulation.",
-      "published_date": null,
+      "headline": "SFC e-Distribution / Circulars index lists multiple recent circulars (20 Aug–4 Sep 2026)",
+      "summary": "Factual: The Securities and Futures Commission (SFC) e-Distribution circulars index lists multiple circulars dated within the window (for example, 20 Aug on simplified e-Direct Debit arrangements; 31 Aug on settlement thresholds; 3–4 Sep circulars). The index points to individual circular pages for full text and targeted recipients.",
+      "why_it_matters_to_aia": "Conditional implications: Specific circulars may affect intermediated distribution, settlement or operational arrangements used by AIA’s asset management or securities activities. Relevant teams should open and review any circulars that apply to licensed entities or service providers used by AIA to confirm whether operational changes, cutover dates or client-facing process updates are needed.",
+      "attention_level": "medium",
+      "signal_type": "informational",
+      "attention_reason": "Multiple operational circulars affecting market processes and potential distributor/settlement arrangements that merit targeted review.",
+      "published_date": "2026-09-04",
       "publishers": [
-        "Financial Services and the Treasury Bureau (FSTB), 政府財經事務及庫務局（金融服務分部）"
+        "Securities and Futures Commission (SFC)"
       ],
       "source_links": [
         {
-          "url": "https://www.fstb.gov.hk/fsb/en/publication/consult/consult-policy.html",
-          "title": "Public consultations / policy papers — Financial Services Branch (consultation 列表，含 2026 文件)"
+          "url": "https://www.sfc.hk/edistributionWeb/gateway/TC/circular/",
+          "title": "SFC — e-Distribution / Circulars index (items dated 20 Aug, 31 Aug, 3 Sep, 4 Sep 2026 listed)"
         }
       ],
       "source_item_ids": [
-        "src-f19cd8119380"
+        "src-f00655693232"
+      ]
+    },
+    {
+      "rank": 5,
+      "headline": "SFC circular catalogue entry regarding Hong Kong securities industry development seminar (4 Sep 2026)",
+      "summary": "Factual: The SFC’s circular/catalogue lists a communication dated 4 September 2026 related to a Hong Kong securities industry development seminar. This entry appears in the SFC’s official circular list (Traditional Chinese page).",
+      "why_it_matters_to_aia": "Conditional implications: The seminar notice may reflect regulatory outreach or industry engagement topics of interest to distribution or capital-markets teams. Consider monitoring seminar materials or engagement outcomes for relevant themes, but the catalogue entry itself does not establish regulatory obligations.",
+      "attention_level": "low",
+      "signal_type": "informational",
+      "attention_reason": "An informational catalogue entry about a seminar with no immediate regulatory obligation identified.",
+      "published_date": "2026-09-04",
+      "publishers": [
+        "證券及期貨事務監察委員會 (SFC)"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.sfc.hk/TC/Regulatory-functions/Products/Circulars",
+          "title": "通函 / 通告目錄條目：致持牌法團、獲證監會發牌的虛擬資產服務提供者及有聯繫實體的通函（2026年9月4日 — 香港證券業發展研討會）"
+        }
+      ],
+      "source_item_ids": [
+        "src-3936a5b78818"
       ]
     }
   ],
   "summarization": {
     "status": "succeeded",
-    "request_id": "8173b492-f1af-44ad-9b4e-6cdf57abb8c3",
-    "response_id": "resp_07b1f3ce8e6b3a6e016aa76a211a348195b38ba4dba5c7af9b",
+    "request_id": "66366c43-6536-4540-a884-f89401e385c7",
+    "response_id": "resp_0d59e3a182fec9c1016aa7ac2793d08197bd26c1a47266c43f",
     "usage": {
-      "input_tokens": 1127,
-      "output_tokens": 1220,
-      "total_tokens": 2347
+      "input_tokens": 1318,
+      "output_tokens": 1694,
+      "total_tokens": 3012
     }
   },
   "warnings": [
-    "Search en failed: incomplete_response.",
-    "Search zh-hant normalized an unrecognized publication date to null."
+    "Search en dropped item 2 because it had no native in-scope citation.",
+    "Search zh-hant dropped item 1 because it had no native in-scope citation.",
+    "Search zh-hant dropped item 2 because it had no native in-scope citation.",
+    "Search zh-hant dropped item 3 because it had no native in-scope citation.",
+    "Search zh-hant dropped item 4 because it had no native in-scope citation."
   ],
   "disclaimer": "This briefing is based on Bing-grounded public information from the configured official websites. It has not been independently verified against downloaded original text.",
   "raw_response_retained": false

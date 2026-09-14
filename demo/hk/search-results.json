@@ -1,12 +1,12 @@
 {
   "schema_version": "1.0.0",
-  "run_id": "poc-20260914T032839Z-3e333d",
-  "status": "partial",
-  "generated_at": "2026-09-14T03:29:35.863904+00:00",
+  "run_id": "poc-20260914T081023Z-f3ea54",
+  "status": "completed",
+  "generated_at": "2026-09-14T08:11:17.504834+00:00",
   "rule": {
     "rule_id": "hk-regulatory-pulse",
-    "version": "1.0.0",
-    "sha256": "5e2dd302c36e7c137e3c094e0d6b812c36fc219e065a5c4a3e2aa9b3335617a3"
+    "version": "1.1.0",
+    "sha256": "ea8d4addd63baa753bddcf31281b96eefed190f61e5d41a89ab254f1e92ab23d"
   },
   "topic": "Hong Kong insurance and financial-services regulation and supervision",
   "window": {
@@ -18,50 +18,58 @@
     {
       "query_id": "en",
       "language": "English",
-      "status": "failed",
-      "code": "incomplete_response"
+      "status": "succeeded",
+      "coverage_status": "checked",
+      "items_accepted": 4,
+      "request_id": "fc516a08-e021-4f4c-984e-8c9d556e068c",
+      "response_id": "resp_016eca8afc537f57016aa7abf6fc78819094d09f16a0dac25e",
+      "usage": {
+        "input_tokens": 13413,
+        "output_tokens": 1679,
+        "total_tokens": 15092
+      }
     },
     {
       "query_id": "zh-hant",
       "language": "Traditional Chinese",
       "status": "succeeded",
-      "coverage_status": "partial",
-      "items_accepted": 4,
-      "request_id": "e960561e-4673-4b05-9acb-71d286d5cba1",
-      "response_id": "resp_0fd3f5d44bcf2019016aa76a0a8ed881968745ff5a9487e8e3",
+      "coverage_status": "checked",
+      "items_accepted": 1,
+      "request_id": "6a25d1ef-af1c-4d90-98d3-79b43b2e5115",
+      "response_id": "resp_094fd867c13ae852016aa7ac113de081968cc6c07f242f7f4b",
       "usage": {
-        "input_tokens": 9155,
-        "output_tokens": 1918,
-        "total_tokens": 11073
+        "input_tokens": 12275,
+        "output_tokens": 1833,
+        "total_tokens": 14108
       }
     }
   ],
   "items": [
     {
-      "source_item_id": "src-d554f1a4ba3c",
-      "title": "最新消息 / 新聞稿（示例：2026‑09‑11）",
-      "publisher": "香港金融管理局 (Hong Kong Monetary Authority, HKMA)",
-      "published_date": "2026-09-11",
-      "grounded_note": "香港金管局網站之繁體中文新聞與最新動向區在 2026‑09‑11 發布多項消息（頁面摘要顯示該日期的新聞標題，例如政府公布銀色債券認購結果等）。該頁為金管局對外發布政策、監管公告與新聞稿的官方渠道。注意：hkma.gov.hk 部分內容在本次機器檢索時受 robots 限制，但頁面摘要顯示該新聞條目（已包含在金管局網站的最新動向清單內）。",
+      "source_item_id": "src-fc293c82d117",
+      "title": "HKMA launches public consultation on Phase 2B prototype of Hong Kong Taxonomy for Sustainable Finance",
+      "publisher": "Hong Kong Monetary Authority (HKMA)",
+      "published_date": "2026-09-07",
+      "grounded_note": "HKMA launched a public consultation on the Phase 2B prototype of the Hong Kong Taxonomy for Sustainable Finance on 7 Sep 2026 (consultation period noted on the HKMA page).",
       "query_ids": [
-        "zh-hant"
+        "en"
       ],
       "languages": [
-        "Traditional Chinese"
+        "English"
       ],
       "source_links": [
         {
-          "url": "https://www.hkma.gov.hk/gb_chi/",
-          "title": "最新消息 / 新聞稿（示例：2026‑09‑11）"
+          "url": "https://www.hkma.gov.hk/eng/news-and-media/press-releases/2026/09/20260907-3/",
+          "title": "HKMA launches public consultation on Phase 2B prototype of Hong Kong Taxonomy for Sustainable Finance"
         }
       ]
     },
     {
-      "source_item_id": "src-364082c92509",
-      "title": "監管通訊 — 有關規管的通函（2026 列表，最後更新 2026-08-31）",
-      "publisher": "保險業監管局 (Insurance Authority, 香港)",
-      "published_date": "2026-08-31",
-      "grounded_note": "保險業監管局在「有關規管的通函」頁面更新了 2026 年度的通函清單（頁面顯示最後更新日期為 2026‑08‑31）。該頁匯總監管通函及最近的規管事項，為保險中介人與獲授權保險人提供官方通告入口。 (來源頁面為繁體中文「有關規管的通函 — 2026」索引)。",
+      "source_item_id": "src-3936a5b78818",
+      "title": "通函 / 通告目錄條目：致持牌法團、獲證監會發牌的虛擬資產服務提供者及有聯繫實體的通函（2026年9月4日 — 香港證券業發展研討會）",
+      "publisher": "證券及期貨事務監察委員會 (SFC)",
+      "published_date": "2026-09-04",
+      "grounded_note": "SFC 在其通函/通告目錄中列有 2026-09-04 發出的通函，內容與香港證券業發展研討會相關（通函在通函清單以該日期條目顯示）。此為官方通函目錄紀錄（繁體中文頁面）。",
       "query_ids": [
         "zh-hant"
       ],
@@ -70,53 +78,75 @@
       ],
       "source_links": [
         {
-          "url": "https://www.ia.org.hk/tc/legislative_framework/circulars/reg_matters/circulars_on_regulatory_matters_2026.html",
-          "title": "監管通訊 — 有關規管的通函（2026 列表，最後更新 2026-08-31）"
+          "url": "https://www.sfc.hk/TC/Regulatory-functions/Products/Circulars",
+          "title": "通函 / 通告目錄條目：致持牌法團、獲證監會發牌的虛擬資產服務提供者及有聯繫實體的通函（2026年9月4日 — 香港證券業發展研討會）"
         }
       ]
     },
     {
-      "source_item_id": "src-a326eb951878",
-      "title": "通函總目錄 — 有關規管的通函（監管通函總頁）",
-      "publisher": "保險業監管局 (Insurance Authority, 香港)",
-      "published_date": null,
-      "grounded_note": "保險業監管局的通函總目錄頁列出並分類歷年向業界發出的通函與指引（含 2026 年相關連結），並標示該頁的最近一次頁面更新時間（顯示 2026‑02‑06 作為舊版頁面更新標記）。該總目錄是查找個別通函與指引文件的入口。",
+      "source_item_id": "src-f00655693232",
+      "title": "SFC — e-Distribution / Circulars index (items dated 20 Aug, 31 Aug, 3 Sep, 4 Sep 2026 listed)",
+      "publisher": "Securities and Futures Commission (SFC)",
+      "published_date": "2026-09-04",
+      "grounded_note": "SFC’s e-Distribution circulars index lists multiple circulars within the requested window (for example: 20 Aug 2026 circular to licensed corporations on simplified e-Direct Debit arrangements; 31 Aug 2026 circular to licensed corporations on settlement thresholds; 3 Sep and 4 Sep circulars to licensees) — use the index to open the individual circular pages for full text and targeted recipients.",
       "query_ids": [
-        "zh-hant"
+        "en"
       ],
       "languages": [
-        "Traditional Chinese"
+        "English"
       ],
       "source_links": [
         {
-          "url": "https://www.ia.org.hk/tc/legislative_framework/circulars/circulars_on_regulatory_matters.html",
-          "title": "通函總目錄 — 有關規管的通函（監管通函總頁）"
+          "url": "https://www.sfc.hk/edistributionWeb/gateway/TC/circular/",
+          "title": "SFC — e-Distribution / Circulars index (items dated 20 Aug, 31 Aug, 3 Sep, 4 Sep 2026 listed)"
         }
       ]
     },
     {
-      "source_item_id": "src-f19cd8119380",
-      "title": "Public consultations / policy papers — Financial Services Branch (consultation 列表，含 2026 文件)",
-      "publisher": "Financial Services and the Treasury Bureau (FSTB), 政府財經事務及庫務局（金融服務分部）",
-      "published_date": null,
-      "grounded_note": "FSTB 的諮詢／政策文件目錄頁顯示 2026 年刊登的多項諮詢（包括與虛擬資產服務提供者監管相關的立法建議等）。該頁為官方諮詢文件與政策討論的集中列示位置，含可點入之個別諮詢案。",
+      "source_item_id": "src-4d37201779b8",
+      "title": "Joint operation conducted by Insurance Authority and Hong Kong Police Force against suspected fraudulent practices of examination centre",
+      "publisher": "Insurance Authority (IA)",
+      "published_date": "2026-08-28",
+      "grounded_note": "IA announced a joint enforcement operation with the Hong Kong Police Force on 27 Aug 2026 targeting an examination centre suspected of facilitating fraudulent practices related to the FLMI qualification; IA said it has suspended recognition of FLMI for licensing education requirements and will review affected licence applications.",
       "query_ids": [
-        "zh-hant"
+        "en"
       ],
       "languages": [
-        "Traditional Chinese"
+        "English"
       ],
       "source_links": [
         {
-          "url": "https://www.fstb.gov.hk/fsb/en/publication/consult/consult-policy.html",
-          "title": "Public consultations / policy papers — Financial Services Branch (consultation 列表，含 2026 文件)"
+          "url": "https://www.ia.org.hk/en/infocenter/press_releases/20260828.html",
+          "title": "Joint operation conducted by Insurance Authority and Hong Kong Police Force against suspected fraudulent practices of examination centre"
+        }
+      ]
+    },
+    {
+      "source_item_id": "src-74e83c55f1a4",
+      "title": "HKMA — First cohort of GenA.I. Sandbox++ announced",
+      "publisher": "Hong Kong Monetary Authority (HKMA)",
+      "published_date": "2026-08-27",
+      "grounded_note": "HKMA announced the first cohort of its GenA.I. Sandbox++ on 27 Aug 2026; the release describes participation, objectives and links HKMA work with other regulators and industry on agentic A.I. in financial services.",
+      "query_ids": [
+        "en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.hkma.gov.hk/eng/news-and-media/press-releases/2026/08/20260827-3/",
+          "title": "HKMA — First cohort of GenA.I. Sandbox++ announced"
         }
       ]
     }
   ],
   "warnings": [
-    "Search en failed: incomplete_response.",
-    "Search zh-hant normalized an unrecognized publication date to null."
+    "Search en dropped item 2 because it had no native in-scope citation.",
+    "Search zh-hant dropped item 1 because it had no native in-scope citation.",
+    "Search zh-hant dropped item 2 because it had no native in-scope citation.",
+    "Search zh-hant dropped item 3 because it had no native in-scope citation.",
+    "Search zh-hant dropped item 4 because it had no native in-scope citation."
   ],
   "raw_response_retained": false
 }

@@ -1,12 +1,12 @@
 {
   "schema_version": "1.0.0",
-  "run_id": "poc-20260914T033143Z-df8234",
+  "run_id": "poc-20260914T081456Z-7f2a57",
   "status": "completed",
-  "generated_at": "2026-09-14T03:32:13.606007+00:00",
+  "generated_at": "2026-09-14T08:15:44.114107+00:00",
   "rule": {
     "rule_id": "cn-mainland-regulatory-pulse",
-    "version": "1.0.0",
-    "sha256": "66450b4ed0eb14a8223705e31d92257d0f844e5a872e6b096c68fcd75aef132a"
+    "version": "1.1.0",
+    "sha256": "27417104bdd964f954976a9076bae4c509ba29d14a41672446e5bf276fef55f0"
   },
   "topic": "Mainland China insurance and financial-services regulation and supervision",
   "window": {
@@ -19,14 +19,14 @@
       "query_id": "en",
       "language": "English",
       "status": "succeeded",
-      "coverage_status": "unavailable",
-      "items_accepted": 0,
-      "request_id": "621945cd-a223-4d9a-94bf-5f538ad53b59",
-      "response_id": "resp_08f9f9f2f1c40dba016aa76aa194ac8190bb64b8c4dddf7eec",
+      "coverage_status": "partial",
+      "items_accepted": 4,
+      "request_id": "b70b8ffb-bc2a-42ab-9546-cd46da5d4e13",
+      "response_id": "resp_0792911efa1a3f67016aa7ad032dac8194a18ddee9b2d9a827",
       "usage": {
-        "input_tokens": 8991,
-        "output_tokens": 517,
-        "total_tokens": 9508
+        "input_tokens": 8106,
+        "output_tokens": 1269,
+        "total_tokens": 9375
       }
     },
     {
@@ -35,22 +35,41 @@
       "status": "succeeded",
       "coverage_status": "checked",
       "items_accepted": 3,
-      "request_id": "ca5dee75-6bab-4603-8f75-2bea5e0f02fe",
-      "response_id": "resp_03b973080e6c68ae016aa76aad2498819688b3b07c83927499",
+      "request_id": "6b5b1b19-8d2d-441b-9868-2ab361471771",
+      "response_id": "resp_0347edf98463c6b8016aa7ad16f4048196b599f73f01822e76",
       "usage": {
-        "input_tokens": 8790,
-        "output_tokens": 1165,
-        "total_tokens": 9955
+        "input_tokens": 19204,
+        "output_tokens": 1495,
+        "total_tokens": 20699
       }
     }
   ],
   "items": [
     {
-      "source_item_id": "src-4deb73460635",
-      "title": "国家金融监督管理总局就《中华人民共和国保险法（修订草案征求意见稿）》公开征求意见的通知",
+      "source_item_id": "src-4eef34cf1c22",
+      "title": "国家金融监督管理总局就《银行保险机构信息披露管理办法（征求意见稿）》公开征求意见",
       "publisher": "国家金融监督管理总局 (NFRA)",
       "published_date": "2026-09-04",
-      "grounded_note": "金融监管总局于2026-09-04在其官网发布通知，公开征求对《中华人民共和国保险法（修订草案征求意见稿）》的社会意见；文中明确了提交意见的邮箱、信函地址和截止日期（2026-10-03），并附有征求意见稿及起草说明的附件（PDF）。该项为保险业法律修订的公开征求意见程序性公告，属于监管/立法公开征求意见范畴。",
+      "grounded_note": "金融监管总局于2026-09-04发布《银行保险机构信息披露管理办法（征求意见稿）》并公开征求意见。公告说明该办法旨在统一银行、保险等机构的信息披露标准、强化披露管理与监管手段（含监管问询、行政处罚等），并将根据征求意见情况修订完善后发布实施。",
+      "query_ids": [
+        "zh-hans"
+      ],
+      "languages": [
+        "Simplified Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1270932",
+          "title": "国家金融监督管理总局就《银行保险机构信息披露管理办法（征求意见稿）》公开征求意见"
+        }
+      ]
+    },
+    {
+      "source_item_id": "src-4d0137f02ab0",
+      "title": "国家金融监督管理总局关于《中华人民共和国保险法（修订草案征求意见稿）》公开征求意见的通知",
+      "publisher": "国家金融监督管理总局 (NFRA)",
+      "published_date": "2026-09-04",
+      "grounded_note": "金融监管总局于2026-09-04向社会公开《中华人民共和国保险法（修订草案征求意见稿）》并公布附件（征求意见稿与起草说明），同时列明意见反馈方式与截止日期（意见反馈截止：2026-10-03）。征求稿旨在贯彻中央金融工作部署、完善保险监管法律框架。",
       "query_ids": [
         "zh-hans"
       ],
@@ -60,35 +79,39 @@
       "source_links": [
         {
           "url": "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1270936&itemId=951",
-          "title": "国家金融监督管理总局就《中华人民共和国保险法（修订草案征求意见稿）》公开征求意见的通知"
+          "title": "国家金融监督管理总局关于《中华人民共和国保险法（修订草案征求意见稿）》公开征求意见的通知"
+        },
+        {
+          "url": "https://www.nfra.gov.cn/chinese/docfile/2026/7c3269d4982b47ed9269a71db3830ad4.pdf",
+          "title": "国家金融监督管理总局关于《中华人民共和国保险法（修订草案征求意见稿）》公开征求意见的通知"
         }
       ]
     },
     {
-      "source_item_id": "src-fc9c6d4c572e",
-      "title": "李强签署国务院令 公布《国务院关于修改和废止部分行政法规的决定》（自2026-08-15施行）",
-      "publisher": "中国政府网 (gov.cn)",
-      "published_date": "2026-08-13",
-      "grounded_note": "中国政府网于2026-08-13发布国务院令公告，公布《国务院关于修改和废止部分行政法规的决定》，并指出该决定自2026-08-15起施行。公告说明了对若干行政法规的修改与废止、以及与生态环境法典衔接的调整；虽然该公告涵盖的是行政法规层面的修订清理，其生效日（2026-08-15）落在检索窗口内，属监管/法规层面正式发布并生效的国务院文件公告。",
+      "source_item_id": "src-0be48ee0cc9f",
+      "title": "Ding Xiangqun Meets with Li Mun-bun, Co-Chief Executive of Bank of East Asia",
+      "publisher": "National Financial Regulatory Administration (NFRA)",
+      "published_date": "2026-09-03",
+      "grounded_note": "NFRA published a 3 Sep 2026 news item documenting a meeting between NFRA leadership and the Bank of East Asia co-CEO; the item is on NFRA's official news pages and is relevant as a supervisory engagement (dialogue between regulator and market participant).",
       "query_ids": [
-        "zh-hans"
+        "en"
       ],
       "languages": [
-        "Simplified Chinese"
+        "English"
       ],
       "source_links": [
         {
-          "url": "https://www.gov.cn/yaowen/liebiao/202608/content_7077987.htm",
-          "title": "李强签署国务院令 公布《国务院关于修改和废止部分行政法规的决定》（自2026-08-15施行）"
+          "url": "https://www.nfra.gov.cn/en/view/pages/ItemList.html?itemId=980&itemPId=973&itemPTitle=News+and+Events&itemTitle=News+and+Events&itemUrl=ItemListRightList.html",
+          "title": "Ding Xiangqun Meets with Li Mun-bun, Co-Chief Executive of Bank of East Asia"
         }
       ]
     },
     {
-      "source_item_id": "src-d5d2ccbc0ef5",
-      "title": "国家金融监督管理总局关于《银行保险机构信息披露管理办法（征求意见稿）》公开征求意见",
+      "source_item_id": "src-8da7a2327181",
+      "title": "国家金融监督管理总局发布商品住房开发贷款、个人住房贷款、商业地产贷款、城市更新项目贷款、房地产领域信托业务等管理办法（试行）",
       "publisher": "国家金融监督管理总局 (NFRA)",
-      "published_date": null,
-      "grounded_note": "金融监管总局在其官网列有就《银行保险机构信息披露管理办法（征求意见稿）》公开征求意见的公告及相关答记者问资料，表明正在开展信息披露方面的征求意见工作（页面为总局征求意见/法规栏目汇总条目）。页面内容显示这是针对银行与保险机构信息披露监管规范的征求意见稿发布/配套说明（请参阅原文及附件以获取全文和正式发布日期）。",
+      "published_date": "2026-08-28",
+      "grounded_note": "金融监管总局于2026-08-28会同相关部门印发多项房地产融资管理办法（试行），包括《商品住房开发贷款管理办法（试行）》《个人住房贷款管理办法（试行）》等，明确采取主办银行制、资金封闭管理、差异化审查与期限/用途/担保等具体监管要求，以推动房地产发展新模式并规范相关信贷与信托业务。",
       "query_ids": [
         "zh-hans"
       ],
@@ -97,12 +120,56 @@
       ],
       "source_links": [
         {
-          "url": "https://www.nfra.gov.cn/cn/view/pages/index/index.html",
-          "title": "国家金融监督管理总局关于《银行保险机构信息披露管理办法（征求意见稿）》公开征求意见"
+          "url": "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1270034&itemId=928",
+          "title": "国家金融监督管理总局发布商品住房开发贷款、个人住房贷款、商业地产贷款、城市更新项目贷款、房地产领域信托业务等管理办法（试行）"
+        },
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1270031",
+          "title": "国家金融监督管理总局发布商品住房开发贷款、个人住房贷款、商业地产贷款、城市更新项目贷款、房地产领域信托业务等管理办法（试行）"
+        }
+      ]
+    },
+    {
+      "source_item_id": "src-4d6567b41e02",
+      "title": "SAFE — Selected data spreadsheet (transactions) (file)",
+      "publisher": "State Administration of Foreign Exchange (SAFE)",
+      "published_date": "2026-08-28",
+      "grounded_note": "SAFE published a native-format data file (Excel) on 28 Aug 2026 showing selected transaction-level statistics; the file is hosted on SAFE's official site and contains the numerical tables referenced in SAFE's public releases.",
+      "query_ids": [
+        "en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.safe.gov.cn/big5/big5/www.safe.gov.cn/safe/file/file/20260828/e0eb2768a1804d4e9fa27a3cf417bfb3.xlsx",
+          "title": "SAFE — Selected data spreadsheet (transactions) (file)"
+        }
+      ]
+    },
+    {
+      "source_item_id": "src-b6e3fcd6d2ce",
+      "title": "SAFE Releases Selected Data on Transactions in the Chinese Foreign Exchange Market",
+      "publisher": "State Administration of Foreign Exchange (SAFE)",
+      "published_date": "2026-08-28",
+      "grounded_note": "SAFE published a selected-data release on foreign-exchange market transactions on 28 Aug 2026; the SAFE English homepage lists this item among its Aug 2026 releases (official statistical/market-release format).",
+      "query_ids": [
+        "en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.safe.gov.cn/en/",
+          "title": "SAFE Releases Selected Data on Transactions in the Chinese Foreign Exchange Market"
         }
       ]
     }
   ],
-  "warnings": [],
+  "warnings": [
+    "Merged duplicate search result src-b6e3fcd6d2ce."
+  ],
   "raw_response_retained": false
 }

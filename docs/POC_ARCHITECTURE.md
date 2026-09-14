@@ -10,8 +10,8 @@ JSON Rule Pack
 Foundry Responses web_search + existing Bing Custom Search configuration
     ↓ native in-scope URL citation check and URL deduplication
 Grounded source notes
-    ↓ one no-tool Foundry summarization request
-Top-5 English executive brief
+    ↓ one no-tool Foundry summarization and attention assessment request
+Top-5 English executive brief with compact attention labels
     ↓
 Markdown + JSON
 ```
@@ -38,14 +38,16 @@ Rule Pack 仍定义双语查询、市场、语言和每次最多展示的候选�
 
 摘要请求不携带搜索工具，只接收规范化后的 source notes，且只能通过 `source_item_id` 引用已有输入。模型不生成 URL；最终链接由本地代码重新附加。
 
-输出是面向 AIA Group CEO 的英文 Top-5 简报，包含 headline、summary、why it matters、发布日期、发布者和来源链接。对 AIA 的影响必须使用条件式表达，不能从公开内容虚构实体适用性或量化影响。
+输出是面向 AIA Group CEO 的英文 Top-5 简报，包含 headline、summary、why it matters、发布日期、发布者、来源链接，以及 `High`／`Medium`／`Low` 管理层关注等级、监管信号类型和一句评级理由。关注等级按监管强度、AIA 相关性与紧迫性三项轻量规则生成；不展示虚假精确的数字分数，也不等同于企业风险评级。
+
+`High` 只允许用于模型判定为 `final_rule` 或 `enforcement` 的直接相关事项；本地转换会把其他信号类型的 High 保守降为 Medium 并记录 warning。法律状态、紧迫性或 AIA 适用性不清楚时不得使用 High。评级仍只依据 Bing-grounded source notes，并未独立读取原文。
 
 ## Failure behavior
 
 - 一个语言搜索失败：继续另一个查询，结果为 `partial`。
 - 单条内容无引用、越界或结构无效：只丢弃该条并记录 warning。
 - 有成功搜索但没有合格条目：输出 `empty` 简报，不声称“没有事件发生”，且不调用摘要模型。
-- 摘要失败或返回未知 source ID：用 grounded notes 生成确定性 fallback，结果为 `partial`。
+- 摘要失败或返回未知 source ID：用 grounded notes 生成确定性 fallback，结果为 `partial`；fallback 项标为 `MEDIUM | UNCLASSIFIED`，明确要求人工复核。
 - 两次搜索均失败：不生成 brief，CLI 返回非零状态。
 
 原始 Foundry、Bing 工具输出和访问令牌不会写入产物。`--execute-live` 是唯一联网开关；不带该参数时只离线展示查询计划。

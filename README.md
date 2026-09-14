@@ -7,6 +7,8 @@ Smart Nudge 是一个面向 AIA Group CEO 的公开 Web 情报演示 PoC。它�
 
 当前默认 Rule Pack 搜索最近 30 天的香港保险和金融监管动态，执行一次英文搜索、一次繁体中文搜索和最多一次英文摘要，最终选出不超过 5 条内容。项目不再包含 Verify Agent、独立网页抓取、claim/evidence 状态机或多轮补搜。
 
+每条简报内容同时显示简短的 `Executive Attention Level`（High／Medium／Low）、监管信号类型和一句评级理由。该等级用于帮助管理层排序关注，不代表已经确认的法律适用性、损失概率或正式企业风险评级。
+
 ## Quick start
 
 Python 3.11+：
@@ -59,7 +61,7 @@ python -m venv .venv
 
 - Custom Bing instance 和该地区允许的域名；
 - 搜索主题、窗口、语言、查询模板和包含／排除规则；
-- 摘要受众、语言、Top 5 排序和写作规则。
+- 摘要受众、语言、Top 5 排序、轻量关注等级和写作规则。
 
 ## Evidence boundary
 

@@ -89,9 +89,15 @@ def empty_search_body():
     }
 
 
-def summary_body(source_id):
+def summary_body(
+    source_id,
+    *,
+    attention_level="high",
+    signal_type="final_rule",
+    attention_reason="A final regulatory requirement has direct relevance and merits prompt review.",
+):
     document = {
-        "schema_version": "1.0.0",
+        "schema_version": "1.1.0",
         "title": "Hong Kong Regulatory Pulse",
         "executive_summary": "One potentially relevant official update was identified.",
         "items": [
@@ -100,6 +106,9 @@ def summary_body(source_id):
                 "headline": "Implementation update merits review",
                 "summary": "The authority published an implementation update.",
                 "why_it_matters_to_aia": "AIA may wish to assess whether any regulated operations are in scope.",
+                "attention_level": attention_level,
+                "signal_type": signal_type,
+                "attention_reason": attention_reason,
             }
         ],
     }
@@ -155,8 +164,13 @@ class PipelineTests(unittest.TestCase):
 
         self.assertTrue(run.ok)
         self.assertEqual(run.brief["status"], "completed")
+        self.assertEqual(run.brief["schema_version"], "1.1.0")
         self.assertEqual(len(run.search_results["items"]), 1)
         self.assertEqual(len(run.brief["items"]), 1)
+        self.assertEqual(run.brief["items"][0]["attention_level"], "high")
+        self.assertEqual(run.brief["items"][0]["signal_type"], "final_rule")
+        self.assertIn("**Attention:** HIGH | FINAL RULE", run.markdown)
+        self.assertIn("Attention rationale", run.markdown)
         self.assertIn("Why it matters to AIA", run.markdown)
         self.assertIn(GOOD_URL, run.markdown)
         self.assertEqual(len(adapter.search_payloads), 2)
@@ -184,7 +198,13 @@ class PipelineTests(unittest.TestCase):
             search_schema["properties"]["schema_version"], {"enum": ["1.0.0"]}
         )
         self.assertEqual(
-            summary_schema["properties"]["schema_version"], {"enum": ["1.0.0"]}
+            summary_schema["properties"]["schema_version"], {"enum": ["1.1.0"]}
+        )
+        summary_item = summary_schema["$defs"]["item"]["properties"]
+        self.assertEqual(summary_item["attention_level"]["enum"], ["high", "medium", "low"])
+        self.assertEqual(
+            summary_item["signal_type"]["enum"],
+            ["final_rule", "enforcement", "consultation", "guidance", "informational"],
         )
         self.assertNotIn('"const"', json.dumps(search_schema))
         self.assertNotIn('"const"', json.dumps(summary_schema))
@@ -239,6 +259,26 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(run.brief["status"], "partial")
         self.assertEqual(run.brief["summarization"]["status"], "fallback")
         self.assertEqual(run.brief["items"][0]["headline"], "Capital framework update")
+        self.assertEqual(run.brief["items"][0]["attention_level"], "medium")
+        self.assertEqual(run.brief["items"][0]["signal_type"], "unclassified")
+
+    def test_high_attention_is_downgraded_for_non_binding_signal(self):
+        def make_summary(payload):
+            source_id = json.loads(payload["input"])["source_notes"][0]["source_item_id"]
+            return summary_body(
+                source_id,
+                attention_level="high",
+                signal_type="consultation",
+                attention_reason="A consultation may affect future requirements.",
+            )
+
+        adapter = FakeAdapter([search_body(), empty_search_body()], make_summary)
+        run = self.pipeline(adapter).run()
+
+        self.assertEqual(run.brief["status"], "partial")
+        self.assertEqual(run.brief["items"][0]["attention_level"], "medium")
+        self.assertIn("not a final rule", run.brief["items"][0]["attention_reason"])
+        self.assertTrue(any("downgraded item" in value for value in run.brief["warnings"]))
 
     def test_malformed_item_and_date_do_not_discard_valid_item(self):
         def make_summary(payload):

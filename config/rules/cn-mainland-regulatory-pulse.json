@@ -1,7 +1,7 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "rule_id": "cn-mainland-regulatory-pulse",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "Mainland China Regulatory Pulse",
   "bing": {
     "instance_name": "cn-mainland-financial-regulators-test",
@@ -50,6 +50,13 @@
       "Rank direct implications for insurers, customers, distribution, capital, governance, reporting, cross-border operations, or operating models highest.",
       "Prefer binding or time-sensitive developments over general commentary.",
       "Prefer newer publications when relevance is otherwise similar."
+    ],
+    "attention_rules": [
+      "Assess regulatory strength, direct relevance to AIA, and urgency on an internal 0-2 scale; map totals of 5-6 to high, 3-4 to medium, and 0-2 to low without displaying numeric scores.",
+      "Use high only when the grounded source note establishes a final rule or enforcement action with direct AIA relevance; otherwise use medium or low.",
+      "Use medium for consultations, guidance, or materially relevant developments that require assessment but do not establish an immediate obligation.",
+      "Use low for general informational updates without an identified near-term action.",
+      "If legal status, urgency, or applicability to AIA is unclear, do not use high."
     ],
     "writing_rules": [
       "Use plain executive English and explain the development before its possible relevance to AIA.",

@@ -1,12 +1,12 @@
 {
-  "schema_version": "1.0.0",
-  "run_id": "poc-20260914T033025Z-660bb0",
+  "schema_version": "1.1.0",
+  "run_id": "poc-20260914T081406Z-ece840",
   "status": "completed",
-  "generated_at": "2026-09-14T03:31:14.973402+00:00",
+  "generated_at": "2026-09-14T08:14:45.919733+00:00",
   "rule": {
     "rule_id": "macao-regulatory-pulse",
-    "version": "1.0.0",
-    "sha256": "02bb92f745f17e28937817b105dd6f5896f0227dfd8bb03b4632dded91cdb65b"
+    "version": "1.1.0",
+    "sha256": "69ad28b2bf45b34748abf9c55d158b7dffef1e9b1103fced58f9693890d5fbd7"
   },
   "topic": "Macao insurance and financial-services regulation and supervision",
   "window": {
@@ -19,14 +19,17 @@
     "queries_succeeded": 2,
     "queries_failed": 0
   },
-  "title": "Smart Nudge executive summary response",
-  "executive_summary": "Two recent public notices from the Monetary Authority of Macao (AMCM) in early September 2026 address unauthorized lending solicitations to Macao residents and a prohibition on embedding hyperlinks in SMS from banks and payment institutions. Both touch on consumer protection, market conduct, and operational risk for financial-services firms operating or distributing in Macao. The unauthorized-lending notice reiterates fines and legal exposure for unlicensed activity; the SMS guidance follows phishing incidents and emphasises enforcement and reporting routes. These developments are directly relevant to distribution/marketing practices, customer protection, and operational controls.",
+  "title": "AMCM public notices on unauthorised lending and SMS phishing — executive briefing for AIA CEO",
+  "executive_summary": "In the past week the Monetary Authority of Macao (AMCM) issued two public notices relevant to consumer protection and market conduct: (1) a warning about unauthorised lending solicitations targeting Macao residents and a reminder of penalties under the Financial System Legal Framework (Law No. 13/2023); and (2) an advisory that banks and payment institutions must not include hyperlinks in SMS messages and guidance for consumers on phishing. Both items are operationally relevant to distributors, customer communications, and local conduct risk oversight. Neither notice, on its face, appears to be a uniquely new cross-border regulatory reform, but both merit review by AIA’s Macao-facing business, compliance, and distribution teams to confirm controls, customer messaging, and reporting processes are aligned with AMCM expectations.",
   "items": [
     {
       "rank": 1,
-      "headline": "AMCM warns against unauthorised cross‑border lending solicitations and reiterates fines under Law No. 13/2023",
-      "summary": "The Monetary Authority of Macao published a public statement warning that lending companies from neighbouring jurisdictions have been soliciting Macao residents via social platforms without authorization. The notice restates the legal basis (Law No. 13/2023 on the financial system) and warns that conducting financial activities without a licence is a serious administrative offence, with fines cited in the notice (MOP 500,000–5,000,000; up to MOP 10,000,000 if stability or market order is seriously affected).",
-      "why_it_matters_to_aia": "This highlights heightened supervisory attention on unauthorised distribution of financial products and cross‑border solicitation. For AIA, it is relevant to: distribution oversight (agents or third parties using social platforms), customer protection and complaints risk, and potential reputational exposure if AIA-branded or third‑party offerings are used in unauthorised solicitation. It may warrant a review of marketing controls, third‑party distribution agreements, compliance monitoring for social‑media activity in Macao, and liaison with local counsel or regulator if any suspected incidents arise. The notice does not specify actions against insurers generally; any applicability to AIA entities would need to be confirmed with legal/regulatory counsel.",
+      "headline": "AMCM warns public about unauthorised lending solicitations and cites penalties under Law No. 13/2023",
+      "summary": "Factual: The Monetary Authority of Macao published a Chinese-language public notice alerting residents that lending companies from nearby regions are soliciting Macao residents via social media without Macao licences. The notice reminds the public to use AMCM‑listed licensed institutions and cites potential penalties under Law No. 13/2023 (the financial system legal framework).",
+      "why_it_matters_to_aia": "Implications for AIA: This notice highlights AMCM attention to unauthorised financial solicitations in the Macao market. For AIA entities operating or distributing products in Macao, it signals a supervisory focus on protecting consumers from unlicensed providers and may warrant review of distribution oversight, customer‑facing communications, agent/partner due diligence, and complaint/incident escalation protocols to ensure no indirect association with unauthorised lenders. The notice could also increase local consumer enquiries or complaints that distribution and customer service teams should be prepared to handle.",
+      "attention_level": "medium",
+      "signal_type": "enforcement",
+      "attention_reason": "AMCM invokes penalties under local law and is actively warning the public, creating supervisory focus and potential operational implications for licensed firms in Macao.",
       "published_date": "2026-09-11",
       "publishers": [
         "Monetary Authority of Macao (AMCM)"
@@ -34,7 +37,7 @@
       "source_links": [
         {
           "url": "https://www.amcm.gov.mo/zh-hant/news-notice/statement/detail/20260911/1427",
-          "title": "未獲許可從事借貸活動 (Unauthorised lending activity)"
+          "title": "未獲許可從事借貸活動 (Unauthorised entities offering lending)"
         }
       ],
       "source_item_ids": [
@@ -43,9 +46,12 @@
     },
     {
       "rank": 2,
-      "headline": "AMCM issues reminder: banks and payment institutions must not include hyperlinks in SMS after phishing incidents",
-      "summary": "The AMCM published a public notice reminding the public that banks and payment institutions must not embed hyperlinks in SMS messages. The notice explains recent phishing incidents where recipients who clicked links were taken to fake sites and suffered loss of credentials. It provides consumer advice, enforcement reminders, and signposts reporting channels (including the Judiciary Police fraud hotline and other contacts).",
-      "why_it_matters_to_aia": "This underscores supervisory focus on digital fraud vectors and messaging practices. For AIA, implications include customer communication policies (use of SMS for notifications or marketing), fraud prevention and digital authentication controls, and incident response procedures in Macao. If AIA or distribution partners use SMS to contact customers in Macao, the firm should verify whether current practices align with the AMCM reminder and consider mitigation steps (removing hyperlinks, improving user guidance, coordinating reporting channels). The notice addresses banks and payment institutions specifically; whether the prohibition extends by analogy to insurers or intermediaries is not asserted in the source and would require confirmation from regulators or legal advisers.",
+      "headline": "AMCM advises banks/payment institutions not to include hyperlinks in SMS; issues anti‑phishing guidance",
+      "summary": "Factual: The AMCM issued a Chinese-language statement advising the public about phishing SMS containing hyperlinks and reiterating a requirement that banks and payment institutions must not embed links in SMS. The statement also advises consumers to contact their institution and to use Judiciary Police anti‑fraud resources and hotlines.",
+      "why_it_matters_to_aia": "Implications for AIA: If AIA or its distribution partners use SMS for customer notifications in Macao, this notice suggests a regulator expectation that SMS content avoid embedded hyperlinks and that firms enhance customer‑education on phishing. AIA should confirm SMS templates, vendor practices, and related controls (including approvals and monitoring) meet AMCM expectations, and update incident response and customer guidance materials as needed. This may also affect digital marketing and transactional messaging practices for Macao customers.",
+      "attention_level": "medium",
+      "signal_type": "guidance",
+      "attention_reason": "AMCM sets a specific messaging requirement and directs consumer protections, creating near‑term operational checks for firms that use SMS communications in Macao.",
       "published_date": "2026-09-10",
       "publishers": [
         "Monetary Authority of Macao (AMCM)"
@@ -53,7 +59,7 @@
       "source_links": [
         {
           "url": "https://www.amcm.gov.mo/zh-hant/news-notice/statement/detail/20260910_2/1425",
-          "title": "銀行及支付機構短訊不得含超連結 金管局籲市民提防勿點擊 (Banks and payment institutions’ SMS must not contain hyperlinks — AMCM warns public not to click)"
+          "title": "銀行及支付機構短訊不得含超連結 金管局籲市民提防勿點擊 (Banks and payment institutions: SMS must not contain hyperlinks — AMCM warns public not to click)"
         }
       ],
       "source_item_ids": [
@@ -63,12 +69,12 @@
   ],
   "summarization": {
     "status": "succeeded",
-    "request_id": "78c5d9e1-4b93-41da-b345-d0181586eb6b",
-    "response_id": "resp_0ac98b8ea690658d016aa76a79f5e0819580ec7a8e9007ddc8",
+    "request_id": "2254f148-c46b-4cdd-83bc-0b29d16fe7fd",
+    "response_id": "resp_0b6443f754a2fade016aa7acedc3348197875ca6f140659f02",
     "usage": {
-      "input_tokens": 716,
-      "output_tokens": 823,
-      "total_tokens": 1539
+      "input_tokens": 902,
+      "output_tokens": 1005,
+      "total_tokens": 1907
     }
   },
   "warnings": [],
