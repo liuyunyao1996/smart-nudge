@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "poc-20260914T033143Z-df8234",
+  "status": "completed",
+  "generated_at": "2026-09-14T03:32:13.606007+00:00",
+  "rule": {
+    "rule_id": "cn-mainland-regulatory-pulse",
+    "version": "1.0.0",
+    "sha256": "66450b4ed0eb14a8223705e31d92257d0f844e5a872e6b096c68fcd75aef132a"
+  },
+  "topic": "Mainland China insurance and financial-services regulation and supervision",
+  "window": {
+    "start_date": "2026-08-15",
+    "end_date": "2026-09-14",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "queries": [
+    {
+      "query_id": "en",
+      "language": "English",
+      "status": "succeeded",
+      "coverage_status": "unavailable",
+      "items_accepted": 0,
+      "request_id": "621945cd-a223-4d9a-94bf-5f538ad53b59",
+      "response_id": "resp_08f9f9f2f1c40dba016aa76aa194ac8190bb64b8c4dddf7eec",
+      "usage": {
+        "input_tokens": 8991,
+        "output_tokens": 517,
+        "total_tokens": 9508
+      }
+    },
+    {
+      "query_id": "zh-hans",
+      "language": "Simplified Chinese",
+      "status": "succeeded",
+      "coverage_status": "checked",
+      "items_accepted": 3,
+      "request_id": "ca5dee75-6bab-4603-8f75-2bea5e0f02fe",
+      "response_id": "resp_03b973080e6c68ae016aa76aad2498819688b3b07c83927499",
+      "usage": {
+        "input_tokens": 8790,
+        "output_tokens": 1165,
+        "total_tokens": 9955
+      }
+    }
+  ],
+  "items": [
+    {
+      "source_item_id": "src-4deb73460635",
+      "title": "国家金融监督管理总局就《中华人民共和国保险法（修订草案征求意见稿）》公开征求意见的通知",
+      "publisher": "国家金融监督管理总局 (NFRA)",
+      "published_date": "2026-09-04",
+      "grounded_note": "金融监管总局于2026-09-04在其官网发布通知，公开征求对《中华人民共和国保险法（修订草案征求意见稿）》的社会意见；文中明确了提交意见的邮箱、信函地址和截止日期（2026-10-03），并附有征求意见稿及起草说明的附件（PDF）。该项为保险业法律修订的公开征求意见程序性公告，属于监管/立法公开征求意见范畴。",
+      "query_ids": [
+        "zh-hans"
+      ],
+      "languages": [
+        "Simplified Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1270936&itemId=951",
+          "title": "国家金融监督管理总局就《中华人民共和国保险法（修订草案征求意见稿）》公开征求意见的通知"
+        }
+      ]
+    },
+    {
+      "source_item_id": "src-fc9c6d4c572e",
+      "title": "李强签署国务院令 公布《国务院关于修改和废止部分行政法规的决定》（自2026-08-15施行）",
+      "publisher": "中国政府网 (gov.cn)",
+      "published_date": "2026-08-13",
+      "grounded_note": "中国政府网于2026-08-13发布国务院令公告，公布《国务院关于修改和废止部分行政法规的决定》，并指出该决定自2026-08-15起施行。公告说明了对若干行政法规的修改与废止、以及与生态环境法典衔接的调整；虽然该公告涵盖的是行政法规层面的修订清理，其生效日（2026-08-15）落在检索窗口内，属监管/法规层面正式发布并生效的国务院文件公告。",
+      "query_ids": [
+        "zh-hans"
+      ],
+      "languages": [
+        "Simplified Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.gov.cn/yaowen/liebiao/202608/content_7077987.htm",
+          "title": "李强签署国务院令 公布《国务院关于修改和废止部分行政法规的决定》（自2026-08-15施行）"
+        }
+      ]
+    },
+    {
+      "source_item_id": "src-d5d2ccbc0ef5",
+      "title": "国家金融监督管理总局关于《银行保险机构信息披露管理办法（征求意见稿）》公开征求意见",
+      "publisher": "国家金融监督管理总局 (NFRA)",
+      "published_date": null,
+      "grounded_note": "金融监管总局在其官网列有就《银行保险机构信息披露管理办法（征求意见稿）》公开征求意见的公告及相关答记者问资料，表明正在开展信息披露方面的征求意见工作（页面为总局征求意见/法规栏目汇总条目）。页面内容显示这是针对银行与保险机构信息披露监管规范的征求意见稿发布/配套说明（请参阅原文及附件以获取全文和正式发布日期）。",
+      "query_ids": [
+        "zh-hans"
+      ],
+      "languages": [
+        "Simplified Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/index/index.html",
+          "title": "国家金融监督管理总局关于《银行保险机构信息披露管理办法（征求意见稿）》公开征求意见"
+        }
+      ]
+    }
+  ],
+  "warnings": [],
+  "raw_response_retained": false
+}

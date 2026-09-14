@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "poc-20260914T033143Z-df8234",
+  "status": "completed",
+  "generated_at": "2026-09-14T03:32:24.836345+00:00",
+  "rule": {
+    "rule_id": "cn-mainland-regulatory-pulse",
+    "version": "1.0.0",
+    "sha256": "66450b4ed0eb14a8223705e31d92257d0f844e5a872e6b096c68fcd75aef132a"
+  },
+  "topic": "Mainland China insurance and financial-services regulation and supervision",
+  "window": {
+    "start_date": "2026-08-15",
+    "end_date": "2026-09-14",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "coverage": {
+    "queries_requested": 2,
+    "queries_succeeded": 2,
+    "queries_failed": 0
+  },
+  "title": "Smart Nudge executive summary response",
+  "executive_summary": "Three recent Mainland China regulatory publications or consultations (within the window) may affect insurance legal framework, information-disclosure expectations for banks and insurers, and the broader administrative-regulation landscape. The most time-sensitive item is the NFRA's public consultation on the revised Insurance Law (deadline indicated in the notice). AIA should consider monitoring developments, coordinating legal and regulatory teams, and preparing to engage or assess operational and disclosure impacts.",
+  "items": [
+    {
+      "rank": 1,
+      "headline": "NFRA published a public consultation on the draft amended Insurance Law (notice with submission details and deadline)",
+      "summary": "On 2026-09-04 the National Financial Regulatory Administration (NFRA) posted a notice seeking public comments on the \"Insurance Law of the People's Republic of China (Revised Draft for Solicitation of Opinions)\". The notice included the contact email, postal address for submissions, an explicit submission deadline of 2026-10-03, and attached the draft and drafting explanation (PDF). The item is a procedural public-consultation announcement for a proposed statutory amendment affecting the insurance industry.",
+      "why_it_matters_to_aia": "AIA should treat this as a time-sensitive regulatory development: if the draft proceeds toward enactment it could change the statutory obligations and compliance landscape for insurers in Mainland China. The notice provides a concrete window for stakeholder input; AIA may want to ensure legal/regulatory teams have the draft under review, consider whether to coordinate submissions or industry engagement, and begin preliminary analysis of potential implications for product, governance, reporting, distribution, and cross-border operations. Any action should be based on the draft text and formal outcomes rather than this notice alone.",
+      "published_date": "2026-09-04",
+      "publishers": [
+        "国家金融监督管理总局 (NFRA)"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1270936&itemId=951",
+          "title": "国家金融监督管理总局就《中华人民共和国保险法（修订草案征求意见稿）》公开征求意见的通知"
+        }
+      ],
+      "source_item_ids": [
+        "src-4deb73460635"
+      ]
+    },
+    {
+      "rank": 2,
+      "headline": "NFRA issued a consultation package for draft \"Information Disclosure Management Measures for Bank and Insurance Institutions\"",
+      "summary": "The NFRA's website lists a public consultation notice and accompanying Q&A materials for the draft \"Bank and Insurance Institutions Information Disclosure Management Measures (Draft for Comments)\". The page indicates the regulator is soliciting feedback on disclosure requirements applicable to banks and insurers; the notice appears in the NFRA's consultations/regulations section and references the draft and explanatory materials.",
+      "why_it_matters_to_aia": "Draft disclosure measures could directly affect AIA's reporting and external communications practices in Mainland China, including the scope, frequency, format, or content of required disclosures to regulators and the public. AIA should monitor the formal release of the full text (if not already obtained), assess potential impacts on financial and non-financial reporting processes, and consider whether to provide comments or align internal disclosure controls and templates with anticipated requirements. Any assessments should rely on the final text when published.",
+      "published_date": null,
+      "publishers": [
+        "国家金融监督管理总局 (NFRA)"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/index/index.html",
+          "title": "国家金融监督管理总局关于《银行保险机构信息披露管理办法（征求意见稿）》公开征求意见"
+        }
+      ],
+      "source_item_ids": [
+        "src-d5d2ccbc0ef5"
+      ]
+    },
+    {
+      "rank": 3,
+      "headline": "State Council announced amendments and repeals to certain administrative regulations (effective 2026-08-15)",
+      "summary": "On 2026-08-13 China Government published a State Council order announcing a decision to amend and repeal certain administrative regulations, which the notice states took effect on 2026-08-15. The announcement describes adjustments to multiple administrative regulations, including alignment with the environmental code, and is presented as a formal State Council publication.",
+      "why_it_matters_to_aia": "Although this is a broader administrative-regulation cleanup rather than an insurance-specific measure, changes to administrative regulations can indirectly affect insurers through shifts in regulatory coordination, compliance obligations in cross-sector areas (for example environmental or commercial rules), or administrative procedures. AIA should direct legal and compliance teams to review the specific amended/repealed regulations to identify any provisions that intersect with insurance operations, reporting, or distribution channels in Mainland China.",
+      "published_date": "2026-08-13",
+      "publishers": [
+        "中国政府网 (gov.cn)"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.gov.cn/yaowen/liebiao/202608/content_7077987.htm",
+          "title": "李强签署国务院令 公布《国务院关于修改和废止部分行政法规的决定》（自2026-08-15施行）"
+        }
+      ],
+      "source_item_ids": [
+        "src-fc9c6d4c572e"
+      ]
+    }
+  ],
+  "summarization": {
+    "status": "succeeded",
+    "request_id": "8cb71eb4-fc4d-49b6-9f19-cd7675bf0e40",
+    "response_id": "resp_063d2a3a510ecc8f016aa76abf1dc48193bfff4b526eb0b63f",
+    "usage": {
+      "input_tokens": 973,
+      "output_tokens": 1046,
+      "total_tokens": 2019
+    }
+  },
+  "warnings": [],
+  "disclaimer": "This briefing is based on Bing-grounded public information from the configured official websites. It has not been independently verified against downloaded original text.",
+  "raw_response_retained": false
+}

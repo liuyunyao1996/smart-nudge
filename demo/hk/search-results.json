@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "poc-20260914T032839Z-3e333d",
+  "status": "partial",
+  "generated_at": "2026-09-14T03:29:35.863904+00:00",
+  "rule": {
+    "rule_id": "hk-regulatory-pulse",
+    "version": "1.0.0",
+    "sha256": "5e2dd302c36e7c137e3c094e0d6b812c36fc219e065a5c4a3e2aa9b3335617a3"
+  },
+  "topic": "Hong Kong insurance and financial-services regulation and supervision",
+  "window": {
+    "start_date": "2026-08-15",
+    "end_date": "2026-09-14",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "queries": [
+    {
+      "query_id": "en",
+      "language": "English",
+      "status": "failed",
+      "code": "incomplete_response"
+    },
+    {
+      "query_id": "zh-hant",
+      "language": "Traditional Chinese",
+      "status": "succeeded",
+      "coverage_status": "partial",
+      "items_accepted": 4,
+      "request_id": "e960561e-4673-4b05-9acb-71d286d5cba1",
+      "response_id": "resp_0fd3f5d44bcf2019016aa76a0a8ed881968745ff5a9487e8e3",
+      "usage": {
+        "input_tokens": 9155,
+        "output_tokens": 1918,
+        "total_tokens": 11073
+      }
+    }
+  ],
+  "items": [
+    {
+      "source_item_id": "src-d554f1a4ba3c",
+      "title": "最新消息 / 新聞稿（示例：2026‑09‑11）",
+      "publisher": "香港金融管理局 (Hong Kong Monetary Authority, HKMA)",
+      "published_date": "2026-09-11",
+      "grounded_note": "香港金管局網站之繁體中文新聞與最新動向區在 2026‑09‑11 發布多項消息（頁面摘要顯示該日期的新聞標題，例如政府公布銀色債券認購結果等）。該頁為金管局對外發布政策、監管公告與新聞稿的官方渠道。注意：hkma.gov.hk 部分內容在本次機器檢索時受 robots 限制，但頁面摘要顯示該新聞條目（已包含在金管局網站的最新動向清單內）。",
+      "query_ids": [
+        "zh-hant"
+      ],
+      "languages": [
+        "Traditional Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.hkma.gov.hk/gb_chi/",
+          "title": "最新消息 / 新聞稿（示例：2026‑09‑11）"
+        }
+      ]
+    },
+    {
+      "source_item_id": "src-364082c92509",
+      "title": "監管通訊 — 有關規管的通函（2026 列表，最後更新 2026-08-31）",
+      "publisher": "保險業監管局 (Insurance Authority, 香港)",
+      "published_date": "2026-08-31",
+      "grounded_note": "保險業監管局在「有關規管的通函」頁面更新了 2026 年度的通函清單（頁面顯示最後更新日期為 2026‑08‑31）。該頁匯總監管通函及最近的規管事項，為保險中介人與獲授權保險人提供官方通告入口。 (來源頁面為繁體中文「有關規管的通函 — 2026」索引)。",
+      "query_ids": [
+        "zh-hant"
+      ],
+      "languages": [
+        "Traditional Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ia.org.hk/tc/legislative_framework/circulars/reg_matters/circulars_on_regulatory_matters_2026.html",
+          "title": "監管通訊 — 有關規管的通函（2026 列表，最後更新 2026-08-31）"
+        }
+      ]
+    },
+    {
+      "source_item_id": "src-a326eb951878",
+      "title": "通函總目錄 — 有關規管的通函（監管通函總頁）",
+      "publisher": "保險業監管局 (Insurance Authority, 香港)",
+      "published_date": null,
+      "grounded_note": "保險業監管局的通函總目錄頁列出並分類歷年向業界發出的通函與指引（含 2026 年相關連結），並標示該頁的最近一次頁面更新時間（顯示 2026‑02‑06 作為舊版頁面更新標記）。該總目錄是查找個別通函與指引文件的入口。",
+      "query_ids": [
+        "zh-hant"
+      ],
+      "languages": [
+        "Traditional Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ia.org.hk/tc/legislative_framework/circulars/circulars_on_regulatory_matters.html",
+          "title": "通函總目錄 — 有關規管的通函（監管通函總頁）"
+        }
+      ]
+    },
+    {
+      "source_item_id": "src-f19cd8119380",
+      "title": "Public consultations / policy papers — Financial Services Branch (consultation 列表，含 2026 文件)",
+      "publisher": "Financial Services and the Treasury Bureau (FSTB), 政府財經事務及庫務局（金融服務分部）",
+      "published_date": null,
+      "grounded_note": "FSTB 的諮詢／政策文件目錄頁顯示 2026 年刊登的多項諮詢（包括與虛擬資產服務提供者監管相關的立法建議等）。該頁為官方諮詢文件與政策討論的集中列示位置，含可點入之個別諮詢案。",
+      "query_ids": [
+        "zh-hant"
+      ],
+      "languages": [
+        "Traditional Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fstb.gov.hk/fsb/en/publication/consult/consult-policy.html",
+          "title": "Public consultations / policy papers — Financial Services Branch (consultation 列表，含 2026 文件)"
+        }
+      ]
+    }
+  ],
+  "warnings": [
+    "Search en failed: incomplete_response.",
+    "Search zh-hant normalized an unrecognized publication date to null."
+  ],
+  "raw_response_retained": false
+}

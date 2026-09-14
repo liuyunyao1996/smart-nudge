@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "poc-20260914T033025Z-660bb0",
+  "status": "completed",
+  "generated_at": "2026-09-14T03:31:03.870261+00:00",
+  "rule": {
+    "rule_id": "macao-regulatory-pulse",
+    "version": "1.0.0",
+    "sha256": "02bb92f745f17e28937817b105dd6f5896f0227dfd8bb03b4632dded91cdb65b"
+  },
+  "topic": "Macao insurance and financial-services regulation and supervision",
+  "window": {
+    "start_date": "2026-08-15",
+    "end_date": "2026-09-14",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "queries": [
+    {
+      "query_id": "en",
+      "language": "English",
+      "status": "succeeded",
+      "coverage_status": "partial",
+      "items_accepted": 2,
+      "request_id": "7dc2646d-a723-4d44-82ba-42ada37a8761",
+      "response_id": "resp_0fc0b1e99f0f3a44016aa76a553e088196be7eecac5f878ea0",
+      "usage": {
+        "input_tokens": 17044,
+        "output_tokens": 1154,
+        "total_tokens": 18198
+      }
+    },
+    {
+      "query_id": "zh-hant",
+      "language": "Traditional Chinese",
+      "status": "succeeded",
+      "coverage_status": "unavailable",
+      "items_accepted": 0,
+      "request_id": "33c77c97-6fb9-4e2d-9f78-6078dfb1d974",
+      "response_id": "resp_0424fa58c3e8bef6016aa76a6f3c088194a494e98939d2eecf",
+      "usage": {
+        "input_tokens": 8162,
+        "output_tokens": 619,
+        "total_tokens": 8781
+      }
+    }
+  ],
+  "items": [
+    {
+      "source_item_id": "src-347907fcf591",
+      "title": "未獲許可從事借貸活動 (Unauthorised lending activity)",
+      "publisher": "Monetary Authority of Macao (AMCM)",
+      "published_date": "2026-09-11",
+      "grounded_note": "Public statement warning that lending companies from neighbouring jurisdictions have been soliciting Macao residents via social platforms without authorization. Reiterates legal basis (Law No. 13/2023 on the financial system), warns that conducting financial activities without a licence is a serious administrative offence with fines (MOP 500,000–5,000,000; up to MOP 10,000,000 if stability/market order is seriously affected).",
+      "query_ids": [
+        "en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.amcm.gov.mo/zh-hant/news-notice/statement/detail/20260911/1427",
+          "title": "未獲許可從事借貸活動 (Unauthorised lending activity)"
+        }
+      ]
+    },
+    {
+      "source_item_id": "src-942d5754a313",
+      "title": "銀行及支付機構短訊不得含超連結 金管局籲市民提防勿點擊 (Banks and payment institutions’ SMS must not contain hyperlinks — AMCM warns public not to click)",
+      "publisher": "Monetary Authority of Macao (AMCM)",
+      "published_date": "2026-09-10",
+      "grounded_note": "Public notice reminding the public of AMCM’s requirement that banks and payment institutions must not embed hyperlinks in SMS messages. Explains recent phishing incidents where clicking links led users to fake sites and loss of sensitive credentials; provides advice and enforcement reminder and signposts reporting channels (Judiciary Police fraud hotline and other contacts).",
+      "query_ids": [
+        "en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.amcm.gov.mo/zh-hant/news-notice/statement/detail/20260910_2/1425",
+          "title": "銀行及支付機構短訊不得含超連結 金管局籲市民提防勿點擊 (Banks and payment institutions’ SMS must not contain hyperlinks — AMCM warns public not to click)"
+        }
+      ]
+    }
+  ],
+  "warnings": [],
+  "raw_response_retained": false
+}
