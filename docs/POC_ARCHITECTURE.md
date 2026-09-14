@@ -7,7 +7,7 @@
 ```text
 JSON Rule Pack
     ↓ render two bounded queries
-Foundry + Grounding with Custom Bing Search
+Foundry Responses web_search + existing Bing Custom Search configuration
     ↓ native in-scope URL citation check and URL deduplication
 Grounded source notes
     ↓ one no-tool Foundry summarization request
@@ -26,9 +26,11 @@ Markdown + JSON
 
 ## Search stage
 
-每次查询强制使用 `.env` 指定的 Bing Custom Search project connection 和 Rule Pack 指定的 instance。检索内容被明确视为不可信数据，不能覆盖本地指令。
+每次查询通过 Responses API 的 `web_search` 工具强制使用 `.env` 指定的 Bing Custom Search project connection 和 Rule Pack 指定的 instance。选择该 API surface 是因为当前 GPT-5-mini 支持 `web_search`，但不支持旧的 `bing_custom_search_preview` 工具类型。检索内容被明确视为不可信数据，不能覆盖本地指令。
 
-模型以严格结构返回标题、发布者、可选日期、grounded note 和 citation URLs。本地转换只保留至少有一个 Bing 原生 `https` citation、且 host 在 Rule Pack 允许列表中的条目。citation offset 不可用只形成 warning，不过滤合法 URL；Bing attribution link 不作为来源。跨语言结果按规范 URL 去重。
+Rule Pack 仍定义双语查询、市场、语言和每次最多展示的候选数；`web_search` 不接收旧 Bing 工具的 `count`、`market`、`set_lang` 字段，因此语言和范围约束由预渲染查询、提示、Custom Search instance 与本地过滤共同执行。发给 Structured Outputs 的 schema 会删除 Azure 不支持的约束，并把 `const` 转换为等价的单值 `enum`。
+
+搜索请求固定加入 `include: ["web_search_call.action.sources"]`。模型以严格结构返回标题、发布者、可选日期、grounded note 和 citation URLs；本地转换只保留 citation URL 能规范化匹配 `web_search_call.action.sources` 原生 URL、且 host 在 Rule Pack 允许列表中的条目。`message.content[].annotations` 中的 `url_citation` 只补充标题和 citation offset；annotation 缺失不会使已经通过 action source 匹配的 URL 失效。Bing attribution link 不作为来源，跨语言结果按规范 URL 去重。
 
 该检查只保证来源链接来自预期 Grounding 响应，不判断 grounded note 中每个事实是否被原文逐句支持。
 

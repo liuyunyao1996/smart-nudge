@@ -102,19 +102,12 @@ class BingConfig:
             )
         return cls(connection, instance, rule.allowed_hosts)
 
-    def tool(self, *, count: int, market: str, set_lang: str):
+    def tool(self):
         return {
-            "type": "bing_custom_search_preview",
-            "bing_custom_search_preview": {
-                "search_configurations": [
-                    {
-                        "project_connection_id": self.connection_id,
-                        "instance_name": self.instance_name,
-                        "count": count,
-                        "market": market,
-                        "set_lang": set_lang,
-                    }
-                ]
+            "type": "web_search",
+            "custom_search_configuration": {
+                "project_connection_id": self.connection_id,
+                "instance_name": self.instance_name,
             },
         }
 
@@ -180,7 +173,7 @@ class FoundryAdapter:
             "model", "instructions", "input", "reasoning", "max_output_tokens",
             "parallel_tool_calls", "text", "store",
         }
-        expected = common | ({"tools", "tool_choice"} if search else set())
+        expected = common | ({"tools", "tool_choice", "include"} if search else set())
         text_format = payload.get("text", {}).get("format") if isinstance(payload.get("text"), dict) else None
         if (
             set(payload) != expected
@@ -204,21 +197,23 @@ class FoundryAdapter:
             return
         tools = payload.get("tools")
         tool = tools[0] if isinstance(tools, list) and len(tools) == 1 else None
-        preview = tool.get("bing_custom_search_preview") if isinstance(tool, dict) else None
-        configs = preview.get("search_configurations") if isinstance(preview, dict) else None
-        config = configs[0] if isinstance(configs, list) and len(configs) == 1 else None
+        config = tool.get("custom_search_configuration") if isinstance(tool, dict) else None
         if (
             not isinstance(bing, BingConfig)
             or not isinstance(tool, dict)
-            or tool.get("type") != "bing_custom_search_preview"
+            or set(tool) != {"type", "custom_search_configuration"}
+            or tool.get("type") != "web_search"
             or payload.get("tool_choice") != "required"
+            or payload.get("include") != ["web_search_call.action.sources"]
             or not isinstance(config, dict)
+            or set(config) != {"project_connection_id", "instance_name"}
             or config.get("project_connection_id") != bing.connection_id
             or config.get("instance_name") != bing.instance_name
-            or type(config.get("count")) is not int
-            or not 1 <= config["count"] <= 7
         ):
-            raise ProbeError("invalid_request", "Search requires the configured Bing Custom Search tool.")
+            raise ProbeError(
+                "invalid_request",
+                "Search requires Web Search bound to the configured Bing Custom Search instance.",
+            )
 
     def _request(self, payload, kind):
         token = get_cli_token(self.credential)

@@ -14,7 +14,13 @@ NOW = datetime(2026, 9, 13, 4, 0, tzinfo=timezone.utc)
 GOOD_URL = "https://www.hkma.gov.hk/eng/news-and-media/press-releases/2026/example"
 
 
-def search_body(url=GOOD_URL, *, include_citation=True, title="Capital framework update"):
+def search_body(
+    url=GOOD_URL,
+    *,
+    include_annotation=True,
+    include_action_source=True,
+    title="Capital framework update",
+):
     document = {
         "schema_version": "1.0.0",
         "coverage_status": "checked",
@@ -30,7 +36,7 @@ def search_body(url=GOOD_URL, *, include_citation=True, title="Capital framework
     }
     text = json.dumps(document, ensure_ascii=False)
     annotations = []
-    if include_citation:
+    if include_annotation:
         start = text.index(url)
         annotations.append(
             {"type": "url_citation", "url": url, "title": title, "start_index": start, "end_index": start + len(url)}
@@ -38,7 +44,14 @@ def search_body(url=GOOD_URL, *, include_citation=True, title="Capital framework
     return {
         "status": "completed",
         "output": [
-            {"type": "bing_custom_search_preview_call", "status": "completed"},
+            {
+                "type": "web_search_call",
+                "status": "completed",
+                "action": {
+                    "type": "search",
+                    "sources": ([{"type": "url", "url": url}] if include_action_source else []),
+                },
+            },
             {"type": "message", "role": "assistant", "content": [{"type": "output_text", "text": text, "annotations": annotations}]},
         ],
     }
@@ -66,7 +79,11 @@ def empty_search_body():
     return {
         "status": "completed",
         "output": [
-            {"type": "bing_custom_search_preview_call", "status": "completed"},
+            {
+                "type": "web_search_call",
+                "status": "completed",
+                "action": {"type": "search", "sources": []},
+            },
             {"type": "message", "role": "assistant", "content": [{"type": "output_text", "text": text, "annotations": []}]},
         ],
     }
@@ -145,6 +162,32 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(len(adapter.search_payloads), 2)
         self.assertEqual(len(adapter.summary_payloads), 1)
         self.assertNotIn("tools", adapter.summary_payloads[0])
+        self.assertEqual(
+            adapter.search_payloads[0]["tools"],
+            [
+                {
+                    "type": "web_search",
+                    "custom_search_configuration": {
+                        "project_connection_id": "connection",
+                        "instance_name": "hk-financial-regulators-test",
+                    },
+                }
+            ],
+        )
+        self.assertEqual(
+            adapter.search_payloads[0]["include"],
+            ["web_search_call.action.sources"],
+        )
+        search_schema = adapter.search_payloads[0]["text"]["format"]["schema"]
+        summary_schema = adapter.summary_payloads[0]["text"]["format"]["schema"]
+        self.assertEqual(
+            search_schema["properties"]["schema_version"], {"enum": ["1.0.0"]}
+        )
+        self.assertEqual(
+            summary_schema["properties"]["schema_version"], {"enum": ["1.0.0"]}
+        )
+        self.assertNotIn('"const"', json.dumps(search_schema))
+        self.assertNotIn('"const"', json.dumps(summary_schema))
 
     def test_one_search_failure_produces_partial_brief(self):
         def make_summary(payload):
@@ -158,12 +201,27 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(run.brief["status"], "partial")
         self.assertEqual(run.brief["coverage"]["queries_failed"], 1)
 
-    def test_missing_native_citation_yields_empty_brief_without_summary_call(self):
-        adapter = FakeAdapter([search_body(include_citation=False), empty_search_body()])
+    def test_missing_native_action_source_yields_empty_brief_without_summary_call(self):
+        adapter = FakeAdapter(
+            [search_body(include_action_source=False), empty_search_body()]
+        )
         run = self.pipeline(adapter).run()
         self.assertEqual(run.brief["status"], "empty")
         self.assertEqual(run.brief["items"], [])
         self.assertEqual(adapter.summary_payloads, [])
+
+    def test_action_source_accepts_item_without_message_annotation(self):
+        def make_summary(payload):
+            source_id = json.loads(payload["input"])["source_notes"][0]["source_item_id"]
+            return summary_body(source_id)
+
+        adapter = FakeAdapter(
+            [search_body(include_annotation=False), empty_search_body()], make_summary
+        )
+        run = self.pipeline(adapter).run()
+
+        self.assertTrue(run.ok)
+        self.assertEqual(run.search_results["items"][0]["source_links"][0]["url"], GOOD_URL)
 
     def test_out_of_scope_citation_is_dropped_not_fatal(self):
         adapter = FakeAdapter(

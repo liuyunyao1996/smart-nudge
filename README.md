@@ -2,7 +2,7 @@
 
 Smart Nudge 是一个面向 AIA Group CEO 的公开 Web 情报演示 PoC。它只展示两个核心能力：
 
-1. 按版本化 Rule Pack 使用现有 Azure Foundry Grounding with Custom Bing Search 搜索香港官方站点。
+1. 按版本化 Rule Pack 使用 Foundry Responses API 的 `web_search` 工具，并绑定现有 Bing Custom Search 配置来搜索香港官方站点。
 2. 按同一 Rule Pack 将带原生 URL 引用的搜索内容整理成英文管理层简报。
 
 当前默认 Rule Pack 搜索最近 30 天的香港保险和金融监管动态，执行一次英文搜索、一次繁体中文搜索和最多一次英文摘要，最终选出不超过 5 条内容。项目不再包含 Verify Agent、独立网页抓取、claim/evidence 状态机或多轮补搜。
@@ -46,7 +46,7 @@ python -m venv .venv
 
 ## Configuration
 
-首次使用时手动复制 `.env.example` 为 `.env`；已有 `.env` 不要覆盖。配置只复用现有 Foundry Project、模型部署和 Bing Custom Search connection，不创建或修改云资源，也不需要 Portal Agent ID。
+首次使用时手动复制 `.env.example` 为 `.env`；已有 `.env` 不要覆盖。配置只复用现有 Foundry Project、模型部署和 Bing Custom Search connection，不创建或修改云资源，也不需要 Portal Agent ID。搜索请求使用 GPT-5-mini 支持的 `web_search` API surface，而不是该模型不支持的旧 `bing_custom_search_preview` 工具类型。
 
 默认规则位于 `config/rules/hk-regulatory-pulse.json`。新增 Rule Pack 后可通过 `--rule config/rules/<name>.json` 选择。一个 Rule Pack 同时定义：
 
@@ -56,7 +56,7 @@ python -m venv .venv
 
 ## Evidence boundary
 
-每条进入简报的搜索内容必须至少带一个 Bing 原生 `https` URL citation，且域名属于 Rule Pack 的允许列表。除此之外不做独立原文下载、locator 匹配或 Verify Agent 判断。无引用或越界只丢弃对应条目，不使整轮失败。
+每条进入简报的搜索内容必须至少带一个由 `web_search_call.action.sources` 原生返回的 `https` URL，候选的 `citation_urls` 必须规范化匹配该 URL，且域名属于 Rule Pack 的允许列表。`message.content[].annotations` 中的 `url_citation` 用于补充原生标题和字符偏移。除此之外不做独立原文下载、locator 匹配或 Verify Agent 判断。无引用或越界只丢弃对应条目，不使整轮失败。
 
 因此结果应理解为“带来源链接的 Grounding 内容”，不是已经独立核验的原文结论。每份简报都会显示这一免责声明。原始模型／工具响应不落盘，外部请求不自动重试。
 

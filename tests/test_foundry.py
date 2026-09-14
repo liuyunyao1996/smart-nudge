@@ -84,6 +84,46 @@ class FoundryTests(unittest.TestCase):
         self.assertEqual(audit["request_id"], "req-1")
         self.assertEqual(audit["usage"]["total_tokens"], 14)
 
+    def test_search_requires_web_search_bound_to_custom_configuration(self):
+        payload = summary_payload()
+        payload.update(
+            {
+                "tools": [
+                    {
+                        "type": "web_search",
+                        "custom_search_configuration": {
+                            "project_connection_id": "connection",
+                            "instance_name": "instance",
+                        },
+                    }
+                ],
+                "tool_choice": "required",
+                "include": ["web_search_call.action.sources"],
+            }
+        )
+        bing = BingConfig("connection", "instance", ("www.example.com",))
+        adapter = FoundryAdapter(
+            FoundryConfig(
+                "https://resource.services.ai.azure.com/api/projects/project",
+                "gpt-5-mini",
+            ),
+            credential=_Credential(),
+            transport=httpx.MockTransport(
+                lambda _request: httpx.Response(
+                    200, json={"id": "resp-1", "status": "completed", "output": []}
+                )
+            ),
+        )
+
+        body, _audit = adapter.execute_search(payload, bing)
+
+        self.assertEqual(body["status"], "completed")
+
+        payload.pop("include")
+        with self.assertRaises(ProbeError) as error:
+            adapter.execute_search(payload, bing)
+        self.assertEqual(error.exception.code, "invalid_request")
+
     def test_summary_rejects_search_tools(self):
         payload = summary_payload()
         payload["tools"] = []
