@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0",
+  "rule_id": "macao-regulatory-pulse",
+  "version": "1.0.0",
+  "name": "Macao Regulatory Pulse",
+  "bing": {
+    "instance_name": "macao-financial-regulators-test",
+    "allowed_hosts": [
+      "www.amcm.gov.mo",
+      "cdn.amcm.gov.mo",
+      "bo.dsaj.gov.mo",
+      "www.bo.dsaj.gov.mo"
+    ]
+  },
+  "search": {
+    "default_topic": "Macao insurance and financial-services regulation and supervision",
+    "default_days": 30,
+    "results_per_query": 5,
+    "queries": [
+      {
+        "query_id": "en",
+        "language": "English",
+        "market": "en-MO",
+        "set_lang": "en",
+        "template": "({topic}) (consultation OR circular OR guideline OR enforcement OR implementation OR notice OR law) after:{date_from} before:{date_to}"
+      },
+      {
+        "query_id": "zh-hant",
+        "language": "Traditional Chinese",
+        "market": "zh-MO",
+        "set_lang": "zh-Hant",
+        "template": "({topic}) (諮詢 OR 通告 OR 指引 OR 監管 OR 執法 OR 實施 OR 法律 OR 公報) {date_from} {date_to}"
+      }
+    ],
+    "inclusion_rules": [
+      "Include official publications about insurance or financial regulation, supervision, consultations, enforcement, implementation, customer protection, distribution, capital, governance, reporting, or digital operations.",
+      "Prefer newly published or materially updated items within the requested window.",
+      "Return a concise grounded note for each candidate and preserve native source citations."
+    ],
+    "exclusion_rules": [
+      "Exclude event promotion, training notices, awards, vacancies, and routine republication without a substantive update.",
+      "Do not claim that no event occurred merely because the search returned no result."
+    ]
+  },
+  "summarization": {
+    "output_language": "English",
+    "audience": "AIA Group CEO",
+    "max_items": 5,
+    "ranking_rules": [
+      "Rank direct implications for insurers, customers, distribution, capital, governance, reporting, or operating models highest.",
+      "Prefer binding or time-sensitive developments over general commentary.",
+      "Prefer newer publications when relevance is otherwise similar."
+    ],
+    "writing_rules": [
+      "Use plain executive English and explain the development before its possible relevance to AIA.",
+      "Keep factual source notes separate from conditional implications for AIA.",
+      "Do not invent facts, dates, quantified impacts, source links, or applicability to an AIA entity.",
+      "Use cautious wording when the grounded source note does not establish legal status or applicability."
+    ]
+  }
+}

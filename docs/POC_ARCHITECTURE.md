@@ -1,6 +1,6 @@
 # Smart Nudge PoC architecture
 
-更新日期：2026-09-13（Asia/Shanghai）。
+更新日期：2026-09-14（Asia/Shanghai）。
 
 ## Runtime flow
 
@@ -16,17 +16,17 @@ Top-5 English executive brief
 Markdown + JSON
 ```
 
-默认 Rule Pack 运行英文和繁体中文两个香港查询。每个查询最多请求 5 个结果；摘要阶段最多输出 5 条。因此一次完整运行最多产生 3 个 Foundry Responses 请求，且没有自动重试。
+香港、澳门和中国大陆各有独立 Rule Pack，一次运行只选择一个地区和一个 Custom Bing configuration。每个 Rule Pack 运行两个语言查询，每个查询最多请求 5 个结果；摘要阶段最多输出 5 条。因此一次完整运行仍最多产生 3 个 Foundry Responses 请求，且没有自动重试。
 
 ## Rule Pack
 
-`config/rules/hk-regulatory-pulse.json` 是唯一业务规则入口，包含 `search` 与 `summarization` 两部分。Rule Pack 通过 JSON Schema 和附加模板校验后加载，并在产物中记录 ID、版本及 SHA-256。
+`config/rules/` 下的地区 Rule Pack 是业务规则入口，每份都包含 `bing`、`search` 与 `summarization`。Rule Pack 通过 JSON Schema 和附加模板校验后加载，并在产物中记录 ID、版本及 SHA-256。香港是默认规则；澳门和中国大陆通过 CLI 的 `--rule` 显式选择。
 
 查询模板只允许 `{topic}`、`{date_from}`、`{date_to}` 三个变量。CLI 的 `--topic` 限制为 1–300 个无控制字符文本，`--days` 限制为 1–90。新规则必须放在 `config/rules/` 下。
 
 ## Search stage
 
-每次查询通过 Responses API 的 `web_search` 工具强制使用 `.env` 指定的 Bing Custom Search project connection 和 Rule Pack 指定的 instance。选择该 API surface 是因为当前 GPT-5-mini 支持 `web_search`，但不支持旧的 `bing_custom_search_preview` 工具类型。检索内容被明确视为不可信数据，不能覆盖本地指令。
+每次查询通过 Responses API 的 `web_search` 工具强制使用 `.env` 指定的 Bing Custom Search project connection 和所选 Rule Pack 指定的 configuration/instance。地区切换不需要改写 `.env`。选择该 API surface 是因为当前 GPT-5-mini 支持 `web_search`，但不支持旧的 `bing_custom_search_preview` 工具类型。检索内容被明确视为不可信数据，不能覆盖本地指令。
 
 Rule Pack 仍定义双语查询、市场、语言和每次最多展示的候选数；`web_search` 不接收旧 Bing 工具的 `count`、`market`、`set_lang` 字段，因此语言和范围约束由预渲染查询、提示、Custom Search instance 与本地过滤共同执行。发给 Structured Outputs 的 schema 会删除 Azure 不支持的约束，并把 `const` 转换为等价的单值 `enum`。
 

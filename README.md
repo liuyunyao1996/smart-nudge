@@ -2,7 +2,7 @@
 
 Smart Nudge 是一个面向 AIA Group CEO 的公开 Web 情报演示 PoC。它只展示两个核心能力：
 
-1. 按版本化 Rule Pack 使用 Foundry Responses API 的 `web_search` 工具，并绑定现有 Bing Custom Search 配置来搜索香港官方站点。
+1. 按版本化 Rule Pack 使用 Foundry Responses API 的 `web_search` 工具，并绑定现有 Bing Custom Search configuration 来搜索香港、澳门或中国大陆官方站点。
 2. 按同一 Rule Pack 将带原生 URL 引用的搜索内容整理成英文管理层简报。
 
 当前默认 Rule Pack 搜索最近 30 天的香港保险和金融监管动态，执行一次英文搜索、一次繁体中文搜索和最多一次英文摘要，最终选出不超过 5 条内容。项目不再包含 Verify Agent、独立网页抓取、claim/evidence 状态机或多轮补搜。
@@ -36,6 +36,13 @@ python -m venv .venv
 .\.venv\Scripts\python.exe scripts\run_poc.py --topic "consumer protection and digital distribution" --days 14 --execute-live
 ```
 
+澳门和中国大陆使用独立 Rule Pack、独立运行并分别生成简报。先省略 `--execute-live` 检查查询计划；确认后再为特定运行显式添加该开关：
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_poc.py --rule config/rules/macao-regulatory-pulse.json
+.\.venv\Scripts\python.exe scripts\run_poc.py --rule config/rules/cn-mainland-regulatory-pulse.json
+```
+
 真实运行会把以下文件写入 `.tmp/poc-runs/<run_id>/`：
 
 - `search-results.json`：两次 Grounding 搜索中通过最低引用门槛的规范化内容。
@@ -46,11 +53,11 @@ python -m venv .venv
 
 ## Configuration
 
-首次使用时手动复制 `.env.example` 为 `.env`；已有 `.env` 不要覆盖。配置只复用现有 Foundry Project、模型部署和 Bing Custom Search connection，不创建或修改云资源，也不需要 Portal Agent ID。搜索请求使用 GPT-5-mini 支持的 `web_search` API surface，而不是该模型不支持的旧 `bing_custom_search_preview` 工具类型。
+首次使用时手动复制 `.env.example` 为 `.env`；已有 `.env` 不要覆盖。`.env` 只保存现有 Foundry Project、模型 deployment 和 Bing Custom Search project connection；具体 configuration/instance 名称来自所选 Rule Pack。因此切换地区不需要修改 `.env`，也不创建或修改云资源、不需要 Portal Agent ID。搜索请求使用 GPT-5-mini 支持的 `web_search` API surface，而不是该模型不支持的旧 `bing_custom_search_preview` 工具类型。
 
-默认规则位于 `config/rules/hk-regulatory-pulse.json`。新增 Rule Pack 后可通过 `--rule config/rules/<name>.json` 选择。一个 Rule Pack 同时定义：
+默认规则位于 `config/rules/hk-regulatory-pulse.json`；另有 `macao-regulatory-pulse.json` 和 `cn-mainland-regulatory-pulse.json`。通过 `--rule config/rules/<name>.json` 选择。一个 Rule Pack 同时定义：
 
-- Custom Bing instance 和允许的 HK 域名；
+- Custom Bing instance 和该地区允许的域名；
 - 搜索主题、窗口、语言、查询模板和包含／排除规则；
 - 摘要受众、语言、Top 5 排序和写作规则。
 

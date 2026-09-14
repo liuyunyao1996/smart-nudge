@@ -42,7 +42,6 @@ def summary_payload(model="gpt-5-mini"):
 
 class FoundryTests(unittest.TestCase):
     def test_configuration_binds_bing_to_rule_and_project(self):
-        rule = RulePack.load(ROOT / "config/rules/hk-regulatory-pulse.json", ROOT)
         endpoint = "https://resource.services.ai.azure.com/api/projects/project"
         connection = (
             "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/"
@@ -52,11 +51,20 @@ class FoundryTests(unittest.TestCase):
             "FOUNDRY_PROJECT_ENDPOINT": endpoint,
             "FOUNDRY_MODEL_DEPLOYMENT_NAME": "gpt-5-mini",
             "BING_CUSTOM_SEARCH_PROJECT_CONNECTION_ID": connection,
-            "BING_CUSTOM_SEARCH_INSTANCE_NAME": "hk-financial-regulators-test",
+            "BING_CUSTOM_SEARCH_INSTANCE_NAME": "legacy-value-is-ignored",
         }
         foundry = FoundryConfig.load(ROOT / "missing.env", environ)
-        bing = BingConfig.load(ROOT / "missing.env", rule, foundry, environ)
-        self.assertEqual(bing.allowed_hosts, rule.allowed_hosts)
+        selections = {
+            "hk-regulatory-pulse.json": "hk-financial-regulators-test",
+            "macao-regulatory-pulse.json": "macao-financial-regulators-test",
+            "cn-mainland-regulatory-pulse.json": "cn-mainland-financial-regulators-test",
+        }
+        for filename, instance in selections.items():
+            with self.subTest(filename=filename):
+                rule = RulePack.load(ROOT / "config" / "rules" / filename, ROOT)
+                bing = BingConfig.load(ROOT / "missing.env", rule, foundry, environ)
+                self.assertEqual(bing.instance_name, instance)
+                self.assertEqual(bing.allowed_hosts, rule.allowed_hosts)
 
     def test_summary_request_uses_https_and_returns_safe_audit(self):
         def handler(request):

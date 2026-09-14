@@ -26,7 +26,7 @@ DEFAULT_RULE = ROOT / "config" / "rules" / "hk-regulatory-pulse.json"
 
 def _parser():
     parser = argparse.ArgumentParser(
-        description="Search configured Hong Kong sites and create an English executive brief."
+        description="Search the official sites selected by a Rule Pack and create an English executive brief."
     )
     parser.add_argument("--rule", default=str(DEFAULT_RULE), help="Rule Pack under config/rules.")
     parser.add_argument("--topic", help="Optional natural-language topic override.")
@@ -59,8 +59,8 @@ def _write_atomic(path: Path, content: str):
 def _dry_run(rule: RulePack, topic: str | None, days: int | None) -> dict:
     selected_topic = topic or rule.default_topic
     selected_days = rule.default_days if days is None else days
-    hong_kong_time = timezone(timedelta(hours=8), name="Asia/Hong_Kong")
-    today = datetime.now(timezone.utc).astimezone(hong_kong_time).date()
+    regional_time = timezone(timedelta(hours=8), name="UTC+08:00")
+    today = datetime.now(timezone.utc).astimezone(regional_time).date()
     queries = rule.render_queries(selected_topic, today, selected_days)
     return {
         "ok": True,

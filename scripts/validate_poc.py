@@ -1,5 +1,6 @@
-"""Offline validation for the default Smart Nudge PoC Rule Pack."""
+"""Offline validation for every checked-in Smart Nudge PoC Rule Pack."""
 
+from datetime import date
 from pathlib import Path
 import sys
 
@@ -12,17 +13,20 @@ from smart_nudge.rules import RulePack, RulePackError  # noqa: E402
 
 
 def main() -> int:
-    try:
-        rule = RulePack.load(ROOT / "config/rules/hk-regulatory-pulse.json", ROOT)
-        queries = rule.render_queries(rule.default_topic, __import__("datetime").date.today(), rule.default_days)
-    except RulePackError as exc:
-        print(f"FAIL {exc.code}: {exc}")
-        return 1
-    print(
-        f"PASS rule={rule.rule_id}@{rule.version} queries={len(queries)} "
-        f"max_items={rule.max_items} hosts={len(rule.allowed_hosts)}"
-    )
-    return 0
+    failed = False
+    for path in sorted((ROOT / "config" / "rules").glob("*.json")):
+        try:
+            rule = RulePack.load(path, ROOT)
+            queries = rule.render_queries(rule.default_topic, date.today(), rule.default_days)
+        except RulePackError as exc:
+            print(f"FAIL file={path.name} {exc.code}: {exc}")
+            failed = True
+            continue
+        print(
+            f"PASS rule={rule.rule_id}@{rule.version} queries={len(queries)} "
+            f"max_items={rule.max_items} hosts={len(rule.allowed_hosts)}"
+        )
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":

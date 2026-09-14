@@ -74,7 +74,7 @@ class BingConfig:
     def load(cls, env_file, rule: RulePack, foundry: FoundryConfig, environ=None):
         values = read_settings(env_file, environ)
         connection = (values.get("BING_CUSTOM_SEARCH_PROJECT_CONNECTION_ID") or "").strip()
-        instance = (values.get("BING_CUSTOM_SEARCH_INSTANCE_NAME") or "").strip()
+        instance = rule.document["bing"]["instance_name"]
         match = re.fullmatch(
             r"/subscriptions/[a-fA-F0-9-]{36}/resourceGroups/[a-zA-Z0-9_.-]+/providers/"
             r"Microsoft\.CognitiveServices/accounts/([a-zA-Z0-9-]+)/projects/"
@@ -84,7 +84,7 @@ class BingConfig:
         if not match or not re.fullmatch(r"[a-zA-Z0-9_-]+", instance):
             raise ProbeError(
                 "configuration",
-                "Set the full Bing project connection ID and instance name.",
+                "Set the full Bing project connection ID and a valid Rule Pack instance name.",
             )
         endpoint = urlsplit(foundry.endpoint)
         if (
@@ -94,11 +94,6 @@ class BingConfig:
             raise ProbeError(
                 "configuration",
                 "The Bing connection must belong to the configured Foundry project.",
-            )
-        if instance != rule.document["bing"]["instance_name"]:
-            raise ProbeError(
-                "configuration",
-                "The Rule Pack and environment name different Bing Custom Search instances.",
             )
         return cls(connection, instance, rule.allowed_hosts)
 
