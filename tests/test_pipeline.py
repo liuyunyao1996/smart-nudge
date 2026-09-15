@@ -4,7 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace
 import unittest
 
-from smart_nudge.foundry import BingConfig, ProbeError
+from smart_nudge.foundry import AgentSearchConfig, BingConfig, ProbeError
 from smart_nudge.pipeline import PocPipeline
 from smart_nudge.rules import RulePack
 
@@ -126,10 +126,18 @@ class FakeAdapter:
         self.searches = list(searches)
         self.summary = summary
         self.search_payloads = []
+        self.agent_search_payloads = []
         self.summary_payloads = []
 
     def execute_search(self, payload, _bing):
         self.search_payloads.append(payload)
+        value = self.searches.pop(0)
+        if isinstance(value, Exception):
+            raise value
+        return value, {"request_id": "req-search", "response_id": "resp-search", "usage": {"total_tokens": 10}}
+
+    def execute_agent_search(self, payload, _agent):
+        self.agent_search_payloads.append(payload)
         value = self.searches.pop(0)
         if isinstance(value, Exception):
             raise value
@@ -220,6 +228,51 @@ class PipelineTests(unittest.TestCase):
         run = self.pipeline(adapter).run()
         self.assertEqual(run.brief["status"], "partial")
         self.assertEqual(run.brief["coverage"]["queries_failed"], 1)
+
+    def test_agent_search_is_site_scoped_and_accepts_native_annotations(self):
+        def make_summary(payload):
+            source_id = json.loads(payload["input"])["source_notes"][0]["source_item_id"]
+            return summary_body(source_id)
+
+        agent = AgentSearchConfig("regulatory-web-search", "3", self.rule.allowed_hosts)
+        adapter = FakeAdapter(
+            [search_body(include_action_source=False), empty_search_body()], make_summary
+        )
+        run = PocPipeline(
+            ROOT, self.rule, adapter, agent, clock=lambda: NOW
+        ).run()
+
+        self.assertTrue(run.ok)
+        self.assertEqual(run.search_results["search"]["approach"], "foundry-agent")
+        self.assertEqual(
+            run.search_results["search"]["agent"],
+            {"name": "regulatory-web-search", "version": "3"},
+        )
+        self.assertEqual(len(adapter.agent_search_payloads), 2)
+        payload = adapter.agent_search_payloads[0]
+        self.assertNotIn("model", payload)
+        self.assertNotIn("tools", payload)
+        self.assertEqual(payload["agent_reference"], agent.reference())
+        self.assertEqual(payload["max_tool_calls"], 1)
+        for host in self.rule.allowed_hosts:
+            self.assertIn(f"site:{host}", payload["input"])
+        self.assertEqual(len(run.search_results["items"]), 1)
+        self.assertIn("prompt-based", run.brief["disclaimer"])
+
+    def test_agent_search_drops_off_domain_native_citations(self):
+        agent = AgentSearchConfig("regulatory-web-search", "3", self.rule.allowed_hosts)
+        adapter = FakeAdapter(
+            [search_body("https://example.com/update"), empty_search_body()]
+        )
+        run = PocPipeline(
+            ROOT, self.rule, adapter, agent, clock=lambda: NOW
+        ).run()
+
+        self.assertEqual(run.brief["status"], "empty")
+        self.assertEqual(run.search_results["items"], [])
+        self.assertTrue(
+            any("out-of-scope citation host" in value for value in run.brief["warnings"])
+        )
 
     def test_missing_native_action_source_yields_empty_brief_without_summary_call(self):
         adapter = FakeAdapter(

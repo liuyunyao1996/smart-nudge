@@ -107,6 +107,37 @@ class BingConfig:
         }
 
 
+@dataclass(frozen=True)
+class AgentSearchConfig:
+    name: str
+    version: str
+    allowed_hosts: tuple[str, ...]
+
+    @classmethod
+    def load(cls, env_file, rule: RulePack, environ=None):
+        values = read_settings(env_file, environ)
+        name = (values.get("FOUNDRY_WEB_SEARCH_AGENT_NAME") or "").strip()
+        version = (values.get("FOUNDRY_WEB_SEARCH_AGENT_VERSION") or "").strip()
+        if not re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?", name):
+            raise ProbeError(
+                "configuration",
+                "Set FOUNDRY_WEB_SEARCH_AGENT_NAME to the existing Prompt Agent name.",
+            )
+        if not re.fullmatch(r"[1-9][0-9]{0,9}", version):
+            raise ProbeError(
+                "configuration",
+                "Set FOUNDRY_WEB_SEARCH_AGENT_VERSION to a pinned numeric Agent version.",
+            )
+        return cls(name, version, rule.allowed_hosts)
+
+    def reference(self):
+        return {
+            "type": "agent_reference",
+            "name": self.name,
+            "version": self.version,
+        }
+
+
 def get_cli_token(credential=None):
     logging.getLogger("azure.identity").setLevel(logging.CRITICAL)
     credential = credential or AzureCliCredential(process_timeout=30)
@@ -154,30 +185,35 @@ class FoundryAdapter:
         self.transport = transport
 
     def execute_search(self, payload: dict, bing: BingConfig):
-        self._validate_payload(payload, search=True, bing=bing)
+        self._validate_payload(payload, kind="custom_bing", bing=bing)
+        return self._request(payload, "search")
+
+    def execute_agent_search(self, payload: dict, agent: AgentSearchConfig):
+        self._validate_payload(payload, kind="foundry_agent", agent=agent)
         return self._request(payload, "search")
 
     def execute_summary(self, payload: dict):
-        self._validate_payload(payload, search=False)
+        self._validate_payload(payload, kind="summary")
         return self._request(payload, "summary")
 
-    def _validate_payload(self, payload, *, search: bool, bing=None):
+    def _validate_payload(self, payload, *, kind: str, bing=None, agent=None):
         if not isinstance(payload, dict):
             raise ProbeError("invalid_request", "Foundry payload must be an object.")
         common = {
             "model", "instructions", "input", "reasoning", "max_output_tokens",
             "parallel_tool_calls", "text", "store",
         }
-        expected = common | ({"tools", "tool_choice", "include"} if search else set())
+        expected = {
+            "agent_reference", "input", "tool_choice", "max_tool_calls",
+            "max_output_tokens", "parallel_tool_calls", "text", "store",
+        } if kind == "foundry_agent" else common | (
+            {"tools", "tool_choice", "include"} if kind == "custom_bing" else set()
+        )
         text_format = payload.get("text", {}).get("format") if isinstance(payload.get("text"), dict) else None
         if (
             set(payload) != expected
-            or payload.get("model") != self.config.model
             or payload.get("store") is not False
-            or payload.get("reasoning") != {"effort": "low"}
             or payload.get("parallel_tool_calls") is not False
-            or not isinstance(payload.get("instructions"), str)
-            or not payload["instructions"].strip()
             or not isinstance(payload.get("input"), str)
             or not payload["input"].strip()
             or type(payload.get("max_output_tokens")) is not int
@@ -188,7 +224,27 @@ class FoundryAdapter:
             or not isinstance(text_format.get("schema"), dict)
         ):
             raise ProbeError("invalid_request", "Foundry payload violates the PoC request boundary.")
-        if not search:
+        if kind == "foundry_agent":
+            reference = payload.get("agent_reference")
+            if (
+                not isinstance(agent, AgentSearchConfig)
+                or reference != agent.reference()
+                or payload.get("tool_choice") != "required"
+                or payload.get("max_tool_calls") != 1
+            ):
+                raise ProbeError(
+                    "invalid_request",
+                    "Search requires the pinned Foundry Web Search Prompt Agent.",
+                )
+            return
+        if (
+            payload.get("model") != self.config.model
+            or payload.get("reasoning") != {"effort": "low"}
+            or not isinstance(payload.get("instructions"), str)
+            or not payload["instructions"].strip()
+        ):
+            raise ProbeError("invalid_request", "Foundry payload violates the PoC request boundary.")
+        if kind == "summary":
             return
         tools = payload.get("tools")
         tool = tools[0] if isinstance(tools, list) and len(tools) == 1 else None

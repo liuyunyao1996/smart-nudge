@@ -13,7 +13,13 @@ from uuid import uuid4
 
 from jsonschema import Draft202012Validator, FormatChecker
 
-from smart_nudge.foundry import BingConfig, FoundryAdapter, ProbeError, text_parts
+from smart_nudge.foundry import (
+    AgentSearchConfig,
+    BingConfig,
+    FoundryAdapter,
+    ProbeError,
+    text_parts,
+)
 from smart_nudge.rules import RenderedQuery, RulePack, read_json
 
 
@@ -42,6 +48,14 @@ DISCLAIMER = (
     "This briefing is based on Bing-grounded public information from the configured "
     "official websites. It has not been independently verified against downloaded original text."
 )
+AGENT_DISCLAIMER = (
+    "This briefing is based on general Web Search results returned by the configured "
+    "Foundry Prompt Agent and locally filtered to the Rule Pack's allowed official websites. "
+    "Domain targeting is prompt-based and the content has not been independently verified "
+    "against downloaded original text."
+)
+CUSTOM_BING_APPROACH = "custom-bing"
+FOUNDRY_AGENT_APPROACH = "foundry-agent"
 REGIONAL_TIME = timezone(timedelta(hours=8), name="UTC+08:00")
 
 
@@ -124,14 +138,21 @@ class PocPipeline:
         repository_root: str | Path,
         rule: RulePack,
         adapter: FoundryAdapter,
-        bing: BingConfig,
+        search_config: BingConfig | AgentSearchConfig,
         *,
         clock=None,
     ):
         self.root = Path(repository_root).resolve()
         self.rule = rule
         self.adapter = adapter
-        self.bing = bing
+        self.search_config = search_config
+        self.search_approach = (
+            CUSTOM_BING_APPROACH
+            if isinstance(search_config, BingConfig)
+            else FOUNDRY_AGENT_APPROACH
+            if isinstance(search_config, AgentSearchConfig)
+            else None
+        )
         self.clock = clock or (lambda: datetime.now(timezone.utc))
         self.search_schema = read_json(self.root / "schemas" / "poc-search-response.schema.json")
         self.summary_schema = read_json(self.root / "schemas" / "poc-summary-response.schema.json")
@@ -147,10 +168,15 @@ class PocPipeline:
         self.summary_validator = Draft202012Validator(
             self.summary_schema, format_checker=FormatChecker()
         )
-        if bing.instance_name != rule.document["bing"]["instance_name"]:
+        if self.search_approach is None:
+            raise PocError("configuration", "Unsupported search configuration.")
+        if (
+            isinstance(search_config, BingConfig)
+            and search_config.instance_name != rule.document["bing"]["instance_name"]
+        ):
             raise PocError("configuration", "Bing configuration does not match the Rule Pack.")
-        if tuple(bing.allowed_hosts) != rule.allowed_hosts:
-            raise PocError("configuration", "Bing allowed hosts do not match the Rule Pack.")
+        if tuple(search_config.allowed_hosts) != rule.allowed_hosts:
+            raise PocError("configuration", "Search allowed hosts do not match the Rule Pack.")
 
     def run(self, *, topic: str | None = None, days: int | None = None) -> PocRun:
         started = self._now()
@@ -165,14 +191,22 @@ class PocPipeline:
             "timezone": "Asia/Hong_Kong",
         }
         warnings: list[str] = []
+        if self.search_approach == FOUNDRY_AGENT_APPROACH:
+            warnings.append(
+                "Foundry Agent domain targeting is prompt-based; native citations were locally filtered to the Rule Pack allowlist."
+            )
         query_records: list[dict] = []
         collected: list[dict] = []
 
         for query in queries:
             try:
-                body, audit = self.adapter.execute_search(
-                    self._search_payload(query, topic, window), self.bing
-                )
+                payload = self._search_payload(query, topic, window)
+                if isinstance(self.search_config, BingConfig):
+                    body, audit = self.adapter.execute_search(payload, self.search_config)
+                else:
+                    body, audit = self.adapter.execute_agent_search(
+                        payload, self.search_config
+                    )
                 items, item_warnings, coverage_status = self._convert_search(
                     query, body
                 )
@@ -211,6 +245,7 @@ class PocPipeline:
             "status": search_status,
             "generated_at": self._now().isoformat(),
             "rule": self._rule_record(),
+            "search": self._search_record(),
             "topic": topic,
             "window": window,
             "queries": query_records,
@@ -250,6 +285,7 @@ class PocPipeline:
             "status": "partial" if search_status == "partial" or fallback_used or summary_warnings else "completed",
             "generated_at": self._now().isoformat(),
             "rule": self._rule_record(),
+            "search": self._search_record(),
             "topic": topic,
             "window": window,
             "coverage": {
@@ -262,7 +298,7 @@ class PocPipeline:
             "items": summary["items"],
             "summarization": summary_audit,
             "warnings": warnings,
-            "disclaimer": DISCLAIMER,
+            "disclaimer": self._disclaimer(),
             "raw_response_retained": False,
         }
         return PocRun(search_results, brief, render_markdown(brief))
@@ -279,6 +315,24 @@ class PocPipeline:
             "version": self.rule.version,
             "sha256": self.rule.sha256,
         }
+
+    def _search_record(self) -> dict:
+        record = {"approach": self.search_approach}
+        if isinstance(self.search_config, BingConfig):
+            record["custom_configuration"] = self.search_config.instance_name
+        else:
+            record["agent"] = {
+                "name": self.search_config.name,
+                "version": self.search_config.version,
+            }
+        return record
+
+    def _disclaimer(self) -> str:
+        return (
+            AGENT_DISCLAIMER
+            if self.search_approach == FOUNDRY_AGENT_APPROACH
+            else DISCLAIMER
+        )
 
     def _search_payload(self, query: RenderedQuery, topic: str, window: dict) -> dict:
         search = self.rule.document["search"]
@@ -302,12 +356,49 @@ class PocPipeline:
             f"Window: {window['start_date']} through {window['end_date']}.\n"
             f"Allowed source hosts: {', '.join(self.rule.allowed_hosts)}."
         )
+        if isinstance(self.search_config, AgentSearchConfig):
+            domain_expression = " OR ".join(
+                f"site:{host}" for host in self.rule.allowed_hosts
+            )
+            scoped_query = f"({query.text}) ({domain_expression})"
+            agent_input = "\n".join(
+                [
+                    instructions.replace(
+                        "Use the configured Bing Custom Search tool",
+                        "Use the configured general Web Search tool",
+                    ),
+                    "The site operators and allowed-host list are mandatory soft search constraints.",
+                    "Do not use off-domain information to fill a result quota; return an empty items array instead.",
+                    f"Run this prepared site-scoped query: {scoped_query}",
+                    f"Topic: {topic}",
+                    f"Language: {query.language}",
+                    f"Window: {window['start_date']} through {window['end_date']}.",
+                    f"Allowed source hosts: {', '.join(self.rule.allowed_hosts)}.",
+                ]
+            )
+            return {
+                "agent_reference": self.search_config.reference(),
+                "input": agent_input,
+                "tool_choice": "required",
+                "max_tool_calls": 1,
+                "max_output_tokens": 2400,
+                "parallel_tool_calls": False,
+                "text": {
+                    "format": {
+                        "type": "json_schema",
+                        "name": "smart_nudge_poc_search",
+                        "schema": _azure_schema(self.search_schema),
+                        "strict": True,
+                    }
+                },
+                "store": False,
+            }
         return {
             "model": self.adapter.config.model,
             "instructions": instructions,
             "input": input_text,
             "tools": [
-                self.bing.tool()
+                self.search_config.tool()
             ],
             "tool_choice": "required",
             "include": ["web_search_call.action.sources"],
@@ -441,7 +532,7 @@ class PocPipeline:
                     )
                     continue
                 source_urls.add(canonical)
-        if not saw_source_list:
+        if not saw_source_list and self.search_approach == CUSTOM_BING_APPROACH:
             warnings.append(
                 f"Search {query.query_id} returned no included web search action sources."
             )
@@ -471,6 +562,10 @@ class PocPipeline:
                 "title": _safe_text(annotation.get("title") or "Source"),
             }
 
+        native_urls = source_urls
+        if self.search_approach == FOUNDRY_AGENT_APPROACH:
+            native_urls = source_urls | set(annotation_links)
+
         results: list[dict] = []
         for index, item in enumerate(document["items"], start=1):
             if list(self.search_item_validator.iter_errors(item)):
@@ -479,7 +574,7 @@ class PocPipeline:
             canonical_urls = []
             for url in item["citation_urls"]:
                 canonical = _canonical_url(url)
-                if canonical in source_urls and canonical not in canonical_urls:
+                if canonical in native_urls and canonical not in canonical_urls:
                     canonical_urls.append(canonical)
             if not canonical_urls:
                 warnings.append(f"Search {query.query_id} dropped item {index} because it had no native in-scope citation.")
@@ -651,6 +746,7 @@ class PocPipeline:
             "status": "empty",
             "generated_at": self._now().isoformat(),
             "rule": self._rule_record(),
+            "search": self._search_record(),
             "topic": search_results["topic"],
             "window": deepcopy(search_results["window"]),
             "coverage": {
@@ -666,7 +762,7 @@ class PocPipeline:
             "items": [],
             "summarization": {"status": "not_run", "reason": "no_eligible_items"},
             "warnings": list(search_results["warnings"]),
-            "disclaimer": DISCLAIMER,
+            "disclaimer": self._disclaimer(),
             "raw_response_retained": False,
         }
 

@@ -4,7 +4,13 @@ import unittest
 
 import httpx
 
-from smart_nudge.foundry import BingConfig, FoundryAdapter, FoundryConfig, ProbeError
+from smart_nudge.foundry import (
+    AgentSearchConfig,
+    BingConfig,
+    FoundryAdapter,
+    FoundryConfig,
+    ProbeError,
+)
 from smart_nudge.rules import RulePack
 
 
@@ -41,6 +47,34 @@ def summary_payload(model="gpt-5-mini"):
 
 
 class FoundryTests(unittest.TestCase):
+    def test_agent_configuration_requires_a_pinned_version(self):
+        rule = RulePack.load(ROOT / "config/rules/hk-regulatory-pulse.json", ROOT)
+        agent = AgentSearchConfig.load(
+            ROOT / "missing.env",
+            rule,
+            {
+                "FOUNDRY_WEB_SEARCH_AGENT_NAME": "regulatory-web-search",
+                "FOUNDRY_WEB_SEARCH_AGENT_VERSION": "3",
+            },
+        )
+        self.assertEqual(
+            agent.reference(),
+            {
+                "type": "agent_reference",
+                "name": "regulatory-web-search",
+                "version": "3",
+            },
+        )
+        self.assertEqual(agent.allowed_hosts, rule.allowed_hosts)
+
+        with self.assertRaises(ProbeError) as error:
+            AgentSearchConfig.load(
+                ROOT / "missing.env",
+                rule,
+                {"FOUNDRY_WEB_SEARCH_AGENT_NAME": "regulatory-web-search"},
+            )
+        self.assertEqual(error.exception.code, "configuration")
+
     def test_configuration_binds_bing_to_rule_and_project(self):
         endpoint = "https://resource.services.ai.azure.com/api/projects/project"
         connection = (
@@ -141,6 +175,45 @@ class FoundryTests(unittest.TestCase):
         )
         with self.assertRaises(ProbeError) as error:
             adapter.execute_summary(payload)
+        self.assertEqual(error.exception.code, "invalid_request")
+
+    def test_agent_search_requires_pinned_reference_and_one_tool_call(self):
+        payload = summary_payload()
+        for key in ("model", "instructions", "reasoning"):
+            payload.pop(key)
+        payload.update(
+            {
+                "agent_reference": {
+                    "type": "agent_reference",
+                    "name": "regulatory-web-search",
+                    "version": "3",
+                },
+                "tool_choice": "required",
+                "max_tool_calls": 1,
+            }
+        )
+        agent = AgentSearchConfig(
+            "regulatory-web-search", "3", ("www.example.com",)
+        )
+        adapter = FoundryAdapter(
+            FoundryConfig(
+                "https://resource.services.ai.azure.com/api/projects/project",
+                "gpt-5-mini",
+            ),
+            credential=_Credential(),
+            transport=httpx.MockTransport(
+                lambda _request: httpx.Response(
+                    200, json={"id": "resp-1", "status": "completed", "output": []}
+                )
+            ),
+        )
+
+        body, _audit = adapter.execute_agent_search(payload, agent)
+        self.assertEqual(body["status"], "completed")
+
+        payload["max_tool_calls"] = 2
+        with self.assertRaises(ProbeError) as error:
+            adapter.execute_agent_search(payload, agent)
         self.assertEqual(error.exception.code, "invalid_request")
 
 

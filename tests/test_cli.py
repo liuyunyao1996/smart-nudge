@@ -14,8 +14,20 @@ class CliTests(unittest.TestCase):
         document = json.loads(output.getvalue())
         self.assertEqual(status, 0)
         self.assertEqual(document["mode"], "dry_run")
+        self.assertEqual(document["search_approach"], "custom-bing")
         self.assertEqual(document["live_request_limit"]["total"], 3)
         self.assertEqual(len(document["queries"]), 2)
+
+    def test_agent_search_dry_run_adds_site_scoped_queries(self):
+        output = StringIO()
+        with redirect_stdout(output):
+            status = main(["--search-approach", "foundry-agent"])
+        document = json.loads(output.getvalue())
+        self.assertEqual(status, 0)
+        self.assertEqual(document["search_approach"], "foundry-agent")
+        self.assertEqual(document["live_request_limit"]["max_tool_calls_per_search"], 1)
+        for query in document["queries"]:
+            self.assertIn("site:www.ia.org.hk", query["site_scoped_query"])
 
     def test_region_rule_selection_is_an_offline_three_request_plan(self):
         selections = {

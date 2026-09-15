@@ -16,8 +16,19 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from smart_nudge.foundry import BingConfig, FoundryAdapter, FoundryConfig, ProbeError  # noqa: E402
-from smart_nudge.pipeline import PocError, PocPipeline  # noqa: E402
+from smart_nudge.foundry import (  # noqa: E402
+    AgentSearchConfig,
+    BingConfig,
+    FoundryAdapter,
+    FoundryConfig,
+    ProbeError,
+)
+from smart_nudge.pipeline import (  # noqa: E402
+    CUSTOM_BING_APPROACH,
+    FOUNDRY_AGENT_APPROACH,
+    PocError,
+    PocPipeline,
+)
 from smart_nudge.rules import RulePack, RulePackError  # noqa: E402
 
 
@@ -31,6 +42,12 @@ def _parser():
     parser.add_argument("--rule", default=str(DEFAULT_RULE), help="Rule Pack under config/rules.")
     parser.add_argument("--topic", help="Optional natural-language topic override.")
     parser.add_argument("--days", type=int, help="Optional search window override (1-90).")
+    parser.add_argument(
+        "--search-approach",
+        choices=(CUSTOM_BING_APPROACH, FOUNDRY_AGENT_APPROACH),
+        default=CUSTOM_BING_APPROACH,
+        help="Search backend; the existing Custom Bing approach remains the default.",
+    )
     parser.add_argument(
         "--execute-live",
         action="store_true",
@@ -56,17 +73,24 @@ def _write_atomic(path: Path, content: str):
     temporary.replace(path)
 
 
-def _dry_run(rule: RulePack, topic: str | None, days: int | None) -> dict:
+def _dry_run(
+    rule: RulePack,
+    topic: str | None,
+    days: int | None,
+    search_approach: str,
+) -> dict:
     selected_topic = topic or rule.default_topic
     selected_days = rule.default_days if days is None else days
     regional_time = timezone(timedelta(hours=8), name="UTC+08:00")
     today = datetime.now(timezone.utc).astimezone(regional_time).date()
     queries = rule.render_queries(selected_topic, today, selected_days)
+    domain_expression = " OR ".join(f"site:{host}" for host in rule.allowed_hosts)
     return {
         "ok": True,
         "mode": "dry_run",
         "message": "Configuration is valid. Add --execute-live to issue external requests.",
         "rule": {"rule_id": rule.rule_id, "version": rule.version, "sha256": rule.sha256},
+        "search_approach": search_approach,
         "topic": selected_topic,
         "days": selected_days,
         "allowed_hosts": list(rule.allowed_hosts),
@@ -75,6 +99,11 @@ def _dry_run(rule: RulePack, topic: str | None, days: int | None) -> dict:
             "summarization": 1,
             "total": len(queries) + 1,
             "automatic_retries": 0,
+            **(
+                {"max_tool_calls_per_search": 1}
+                if search_approach == FOUNDRY_AGENT_APPROACH
+                else {}
+            ),
         },
         "queries": [
             {
@@ -82,6 +111,11 @@ def _dry_run(rule: RulePack, topic: str | None, days: int | None) -> dict:
                 "language": query.language,
                 "market": query.market,
                 "query": query.text,
+                **(
+                    {"site_scoped_query": f"({query.text}) ({domain_expression})"}
+                    if search_approach == FOUNDRY_AGENT_APPROACH
+                    else {}
+                ),
             }
             for query in queries
         ],
@@ -93,12 +127,22 @@ def main(argv=None) -> int:
     try:
         rule = RulePack.load(_rule_path(args.rule), ROOT)
         if not args.execute_live:
-            print(json.dumps(_dry_run(rule, args.topic, args.days), ensure_ascii=False, indent=2))
+            print(
+                json.dumps(
+                    _dry_run(rule, args.topic, args.days, args.search_approach),
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
             return 0
 
         foundry = FoundryConfig.load(ROOT / ".env")
-        bing = BingConfig.load(ROOT / ".env", rule, foundry)
-        pipeline = PocPipeline(ROOT, rule, FoundryAdapter(foundry), bing)
+        search_config = (
+            BingConfig.load(ROOT / ".env", rule, foundry)
+            if args.search_approach == CUSTOM_BING_APPROACH
+            else AgentSearchConfig.load(ROOT / ".env", rule)
+        )
+        pipeline = PocPipeline(ROOT, rule, FoundryAdapter(foundry), search_config)
         run = pipeline.run(topic=args.topic, days=args.days)
         run_directory = ROOT / ".tmp" / "poc-runs" / run.search_results["run_id"]
         run_directory.mkdir(parents=True, exist_ok=False)

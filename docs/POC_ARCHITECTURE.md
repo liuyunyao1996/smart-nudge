@@ -16,6 +16,8 @@ Top-5 English executive brief with compact attention labels
 Markdown + JSON
 ```
 
+默认流程保持不变。`--search-approach foundry-agent` 可将搜索阶段替换为同一项目中固定名称和版本的 Prompt Agent；后续规范化、去重、摘要和输出完全共用。
+
 香港、澳门和中国大陆各有独立 Rule Pack，一次运行只选择一个地区和一个 Custom Bing configuration。每个 Rule Pack 运行两个语言查询，每个查询最多请求 5 个结果；摘要阶段最多输出 5 条。因此一次完整运行仍最多产生 3 个 Foundry Responses 请求，且没有自动重试。
 
 ## Rule Pack
@@ -31,6 +33,8 @@ Markdown + JSON
 Rule Pack 仍定义双语查询、市场、语言和每次最多展示的候选数；`web_search` 不接收旧 Bing 工具的 `count`、`market`、`set_lang` 字段，因此语言和范围约束由预渲染查询、提示、Custom Search instance 与本地过滤共同执行。发给 Structured Outputs 的 schema 会删除 Azure 不支持的约束，并把 `const` 转换为等价的单值 `enum`。
 
 搜索请求固定加入 `include: ["web_search_call.action.sources"]`。模型以严格结构返回标题、发布者、可选日期、grounded note 和 citation URLs；本地转换只保留 citation URL 能规范化匹配 `web_search_call.action.sources` 原生 URL、且 host 在 Rule Pack 允许列表中的条目。`message.content[].annotations` 中的 `url_citation` 只补充标题和 citation offset；annotation 缺失不会使已经通过 action source 匹配的 URL 失效。Bing attribution link 不作为来源，跨语言结果按规范 URL 去重。
+
+可选 Agent 路径通过 `agent_reference` 固定 Prompt Agent 名称和版本，每个请求使用 `tool_choice=required` 与 `max_tool_calls=1`。它把 Rule Pack 查询与全部 `site:host` 条件组合，并在提示中重复 allowlist；由于普通 Web Search 不提供 Custom Bing 等价的检索端域名保证，本地只接受原生 URL annotation 或 action source 中属于 allowlist 的 HTTPS URL。站外结果只产生 warning，不进入摘要。
 
 该检查只保证来源链接来自预期 Grounding 响应，不判断 grounded note 中每个事实是否被原文逐句支持。
 
@@ -50,7 +54,7 @@ Rule Pack 仍定义双语查询、市场、语言和每次最多展示的候选�
 - 摘要失败或返回未知 source ID：用 grounded notes 生成确定性 fallback，结果为 `partial`；fallback 项标为 `MEDIUM | UNCLASSIFIED`，明确要求人工复核。
 - 两次搜索均失败：不生成 brief，CLI 返回非零状态。
 
-原始 Foundry、Bing 工具输出和访问令牌不会写入产物。`--execute-live` 是唯一联网开关；不带该参数时只离线展示查询计划。
+原始 Foundry、Bing 工具输出和访问令牌不会写入产物。`--execute-live` 是唯一联网开关；不带该参数时只离线展示查询计划。产物记录所选 search approach；Agent 路径只记录非敏感名称和固定版本，不记录连接凭据。
 
 ## Out of scope
 
