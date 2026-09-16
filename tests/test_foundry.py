@@ -171,7 +171,7 @@ class FoundryTests(unittest.TestCase):
             adapter.execute_summary(payload)
         self.assertEqual(error.exception.code, "invalid_request")
 
-    def test_agent_search_uses_dedicated_endpoint_and_one_tool_call(self):
+    def test_agent_search_uses_dedicated_endpoint_and_bounded_tool_calls(self):
         payload = summary_payload()
         for key in ("model", "instructions", "reasoning", "text"):
             payload.pop(key)
@@ -179,7 +179,8 @@ class FoundryTests(unittest.TestCase):
         payload.update(
             {
                 "tool_choice": "required",
-                "max_tool_calls": 1,
+                "max_tool_calls": 3,
+                "include": ["web_search_call.action.sources"],
             }
         )
         agent = AgentSearchConfig(
@@ -194,6 +195,7 @@ class FoundryTests(unittest.TestCase):
             request_body = json.loads(request.content)
             self.assertNotIn("agent_reference", request_body)
             self.assertNotIn("text", request_body)
+            self.assertEqual(request_body["include"], ["web_search_call.action.sources"])
             return httpx.Response(
                 200, json={"id": "resp-1", "status": "completed", "output": []}
             )
@@ -210,12 +212,27 @@ class FoundryTests(unittest.TestCase):
         body, _audit = adapter.execute_agent_search(payload, agent)
         self.assertEqual(body["status"], "completed")
 
-        payload["max_tool_calls"] = 2
-        with self.assertRaises(ProbeError) as error:
+        for limit in (1, 2):
+            payload["max_tool_calls"] = limit
             adapter.execute_agent_search(payload, agent)
-        self.assertEqual(error.exception.code, "invalid_request")
+        for limit in (0, 4, True, 2.0):
+            with self.subTest(limit=limit):
+                payload["max_tool_calls"] = limit
+                with self.assertRaises(ProbeError) as error:
+                    adapter.execute_agent_search(payload, agent)
+                self.assertEqual(error.exception.code, "invalid_request")
 
-        payload["max_tool_calls"] = 1
+        payload["max_tool_calls"] = 3
+        for include in (None, [], ["web_search_call.results"], ["web_search_call.action.sources", "reasoning.encrypted_content"]):
+            with self.subTest(include=include):
+                payload["include"] = include
+                with self.assertRaises(ProbeError) as error:
+                    adapter.execute_agent_search(payload, agent)
+                self.assertEqual(error.exception.code, "invalid_request")
+        payload.pop("include")
+        with self.assertRaises(ProbeError):
+            adapter.execute_agent_search(payload, agent)
+        payload["include"] = ["web_search_call.action.sources"]
         payload["text"] = {"format": {"type": "json_schema"}}
         with self.assertRaises(ProbeError) as error:
             adapter.execute_agent_search(payload, agent)

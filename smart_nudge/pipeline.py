@@ -13,6 +13,8 @@ from uuid import uuid4
 
 from jsonschema import Draft202012Validator, FormatChecker
 
+from smart_nudge.citation_diagnostics import build_citation_diagnostics
+
 from smart_nudge.foundry import (
     AgentSearchConfig,
     BingConfig,
@@ -56,7 +58,6 @@ AGENT_DISCLAIMER = (
 )
 CUSTOM_BING_APPROACH = "custom-bing"
 FOUNDRY_AGENT_APPROACH = "foundry-agent"
-AGENT_HOSTS_PER_SEARCH = 2
 REGIONAL_TIME = timezone(timedelta(hours=8), name="UTC+08:00")
 
 
@@ -132,17 +133,30 @@ class PocRun:
 
 
 @dataclass(frozen=True)
-class _SearchTask:
+class SearchTask:
     query: RenderedQuery
-    base_query_id: str
+    base_query_ids: tuple[str, ...]
     allowed_hosts: tuple[str, ...]
+    site_id: str | None = None
+    candidate_queries: tuple[str, ...] = ()
 
 
-def agent_host_groups(allowed_hosts) -> tuple[tuple[str, ...], ...]:
-    hosts = tuple(allowed_hosts)
+def build_search_tasks(rule: RulePack, queries, search_approach: str) -> tuple[SearchTask, ...]:
+    queries = tuple(queries)
+    if search_approach == CUSTOM_BING_APPROACH:
+        return tuple(SearchTask(query, (query.query_id,), rule.allowed_hosts) for query in queries)
+    if search_approach != FOUNDRY_AGENT_APPROACH or not queries:
+        raise PocError("configuration", "Invalid search plan.")
+    languages = " / ".join(query.language for query in queries)
     return tuple(
-        hosts[index:index + AGENT_HOSTS_PER_SEARCH]
-        for index in range(0, len(hosts), AGENT_HOSTS_PER_SEARCH)
+        SearchTask(
+            replace(queries[0], query_id=f"site-{site_id}", language=languages),
+            tuple(query.query_id for query in queries),
+            hosts,
+            site_id,
+            tuple(f"({query.text}) site:{hosts[0]}" for query in queries),
+        )
+        for site_id, hosts in rule.agent_sites
     )
 
 
@@ -200,7 +214,7 @@ class PocPipeline:
         topic = topic or self.rule.default_topic
         days = self.rule.default_days if days is None else days
         queries = self.rule.render_queries(topic, local_date, days)
-        search_tasks = self._search_tasks(queries)
+        search_tasks = build_search_tasks(self.rule, queries, self.search_approach)
         run_id = f"poc-{started.strftime('%Y%m%dT%H%M%SZ')}-{uuid4().hex[:6]}"
         window = {
             "start_date": (local_date - timedelta(days=days)).isoformat(),
@@ -217,12 +231,23 @@ class PocPipeline:
 
         for task in search_tasks:
             query = task.query
+            audit = {}
+            search_call_count = None
+            record = {"query_id": query.query_id, "language": query.language}
+            if self.search_approach == FOUNDRY_AGENT_APPROACH:
+                record.update({
+                    "site_id": task.site_id,
+                    "base_query_ids": list(task.base_query_ids),
+                    "target_hosts": list(task.allowed_hosts),
+                    "max_tool_calls": self.rule.agent_max_tool_calls_per_site,
+                })
             try:
                 payload = self._search_payload(
                     query,
                     topic,
                     window,
                     allowed_hosts=task.allowed_hosts,
+                    candidate_queries=task.candidate_queries,
                 )
                 if isinstance(self.search_config, BingConfig):
                     body, audit = self.adapter.execute_search(payload, self.search_config)
@@ -230,6 +255,16 @@ class PocPipeline:
                     body, audit = self.adapter.execute_agent_search(
                         payload, self.search_config
                     )
+                    output = body.get("output")
+                    search_call_count = sum(
+                        isinstance(item, dict) and item.get("type") in _SEARCH_CALL_TYPES
+                        for item in output
+                    ) if isinstance(output, list) else 0
+                record["citation_diagnostics"] = build_citation_diagnostics(
+                    body, task.allowed_hosts, _canonical_url,
+                    use_annotations=self.search_approach == FOUNDRY_AGENT_APPROACH,
+                )
+                record["citation_diagnostics"]["requested_include"] = list(payload["include"])
                 items, item_warnings, coverage_status = self._convert_search(
                     query,
                     body,
@@ -237,32 +272,15 @@ class PocPipeline:
                 )
                 warnings.extend(item_warnings)
                 collected.extend(items)
-                record = {
-                    "query_id": query.query_id,
-                    "language": query.language,
+                record.update({
                     "status": "succeeded",
                     "coverage_status": coverage_status,
                     "items_accepted": len(items),
-                    "request_id": audit.get("request_id"),
-                    "response_id": audit.get("response_id"),
-                    "usage": audit.get("usage", {}),
-                }
-                if self.search_approach == FOUNDRY_AGENT_APPROACH:
-                    record["base_query_id"] = task.base_query_id
-                    record["target_hosts"] = list(task.allowed_hosts)
-                query_records.append(record)
+                })
             except (ProbeError, PocError) as exc:
                 code = exc.code
                 warnings.append(f"Search {query.query_id} failed: {code}.")
-                record = {
-                    "query_id": query.query_id,
-                    "language": query.language,
-                    "status": "failed",
-                    "code": code,
-                }
-                if self.search_approach == FOUNDRY_AGENT_APPROACH:
-                    record["base_query_id"] = task.base_query_id
-                    record["target_hosts"] = list(task.allowed_hosts)
+                record.update({"status": "failed", "code": code})
                 if isinstance(exc, ProbeError):
                     for key in (
                         "http_status",
@@ -272,7 +290,19 @@ class PocPipeline:
                     ):
                         if exc.result.get(key) is not None:
                             record[key] = exc.result[key]
-                query_records.append(record)
+            if audit:
+                record.update({
+                    "request_id": audit.get("request_id"),
+                    "response_id": audit.get("response_id"),
+                    "usage": audit.get("usage", {}),
+                })
+            if search_call_count is not None:
+                record["web_search_calls"] = search_call_count
+            if "citation_diagnostics" in record:
+                record["citation_diagnostics"]["local_validation"] = {
+                    key: record[key] for key in ("status", "code", "items_accepted") if key in record
+                }
+            query_records.append(record)
 
         succeeded = sum(record["status"] == "succeeded" for record in query_records)
         items = self._deduplicate(collected, warnings)
@@ -363,6 +393,7 @@ class PocPipeline:
                 "name": self.search_config.name,
                 "version": self.search_config.version,
             }
+            record["max_tool_calls_per_site"] = self.rule.agent_max_tool_calls_per_site
         return record
 
     def _disclaimer(self) -> str:
@@ -372,25 +403,6 @@ class PocPipeline:
             else DISCLAIMER
         )
 
-    def _search_tasks(self, queries) -> tuple[_SearchTask, ...]:
-        if self.search_approach == CUSTOM_BING_APPROACH:
-            return tuple(
-                _SearchTask(query, query.query_id, self.rule.allowed_hosts)
-                for query in queries
-            )
-        tasks = []
-        groups = agent_host_groups(self.rule.allowed_hosts)
-        for query in queries:
-            for group_index, hosts in enumerate(groups, start=1):
-                tasks.append(
-                    _SearchTask(
-                        replace(query, query_id=f"{query.query_id}-sites-{group_index}"),
-                        query.query_id,
-                        hosts,
-                    )
-                )
-        return tuple(tasks)
-
     def _search_payload(
         self,
         query: RenderedQuery,
@@ -398,6 +410,7 @@ class PocPipeline:
         window: dict,
         *,
         allowed_hosts: tuple[str, ...] | None = None,
+        candidate_queries: tuple[str, ...] = (),
     ) -> dict:
         search = self.rule.document["search"]
         instructions = "\n".join(
@@ -427,7 +440,7 @@ class PocPipeline:
             domain_expression = " OR ".join(
                 f"site:{host}" for host in scoped_hosts
             )
-            scoped_query = f"({query.text}) ({domain_expression})"
+            prepared_queries = candidate_queries or (f"({query.text}) ({domain_expression})",)
             output_schema = json.dumps(
                 self.search_schema,
                 ensure_ascii=False,
@@ -442,21 +455,30 @@ class PocPipeline:
                     ),
                     "The site operators and allowed-host list are mandatory soft search constraints.",
                     "Do not use off-domain information to fill a result quota; return an empty items array instead.",
-                    f"Run this prepared site-scoped query: {scoped_query}",
+                    "Search this one website only; the listed hosts are aliases or subdomains of that same website.",
+                    f"Use at most {self.rule.agent_max_tool_calls_per_site} Web Search tool calls TOTAL for this website across all languages.",
+                    "Suggested initial queries (do not combine them into one large Boolean query):",
+                    *[f"- {prepared_query}" for prepared_query in prepared_queries],
+                    "If the initial searches give insufficient eligible cited results, you may reformulate one query on this same website within the remaining call budget.",
+                    "A reformulated query may simplify keywords or use a listed alternate host, but must preserve the topic, source scope and requested date window.",
+                    "Stop searching when eligible cited results are sufficient; the call budget is a maximum, not a quota.",
                     f"Topic: {topic}",
                     f"Language: {query.language}",
                     f"Window: {window['start_date']} through {window['end_date']}.",
-                    f"Allowed source hosts for this split query: {', '.join(scoped_hosts)}.",
+                    f"Allowed source hosts for this website: {', '.join(scoped_hosts)}.",
                     "Return exactly one JSON object matching the schema below as the entire final response.",
                     "Do not add Markdown fences, commentary, or properties not present in the schema.",
-                    "Every citation_urls entry must remain a native Web Search URL citation in that JSON response.",
+                    "Copy each citation_urls value exactly from an actual Web Search source URL; do not reconstruct paths, remove query parameters, or substitute an index page for a source article.",
+                    "Preserve the native Web Search citation markers associated with those URLs in the response; a plain URL you write yourself is not native citation metadata.",
+                    "If no eligible sourced items are available, return exactly this valid empty envelope: {\"schema_version\":\"1.0.0\",\"coverage_status\":\"unavailable\",\"items\":[]}.",
                     f"JSON Schema: {output_schema}",
                 ]
             )
             return {
                 "input": [{"role": "user", "content": agent_input}],
                 "tool_choice": "required",
-                "max_tool_calls": 1,
+                "max_tool_calls": self.rule.agent_max_tool_calls_per_site,
+                "include": ["web_search_call.action.sources"],
                 "max_output_tokens": 2400,
                 "parallel_tool_calls": False,
                 "store": False,
@@ -580,10 +602,10 @@ class PocPipeline:
         ] if isinstance(output, list) else []
         if not calls:
             raise PocError("search_execution_unverified", "No recognized Bing search call was returned.")
-        if self.search_approach == FOUNDRY_AGENT_APPROACH and len(calls) > 1:
+        if self.search_approach == FOUNDRY_AGENT_APPROACH and len(calls) > self.rule.agent_max_tool_calls_per_site:
             raise PocError(
                 "search_call_limit_exceeded",
-                "The Foundry Agent exceeded the one-call Web Search boundary.",
+                "The Foundry Agent exceeded the per-website Web Search call boundary.",
             )
         if any(item.get("status") != "completed" for item in calls):
             raise PocError("search_incomplete", "A Bing search call did not complete.")

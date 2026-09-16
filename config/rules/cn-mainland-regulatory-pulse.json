@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
   "rule_id": "cn-mainland-regulatory-pulse",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "name": "Mainland China Regulatory Pulse",
   "bing": {
     "instance_name": "cn-mainland-financial-regulators-test",
@@ -16,6 +16,15 @@
     "default_topic": "Mainland China insurance and financial-services regulation and supervision",
     "default_days": 30,
     "results_per_query": 5,
+    "agent": {
+      "max_tool_calls_per_site": 3,
+      "sites": [
+        {"site_id": "nfra", "hosts": ["www.nfra.gov.cn"]},
+        {"site_id": "pbc", "hosts": ["www.pbc.gov.cn"]},
+        {"site_id": "gov", "hosts": ["www.gov.cn"]},
+        {"site_id": "safe", "hosts": ["www.safe.gov.cn"]}
+      ]
+    },
     "queries": [
       {
         "query_id": "en",

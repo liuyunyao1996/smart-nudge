@@ -28,7 +28,7 @@ from smart_nudge.pipeline import (  # noqa: E402
     FOUNDRY_AGENT_APPROACH,
     PocError,
     PocPipeline,
-    agent_host_groups,
+    build_search_tasks,
 )
 from smart_nudge.rules import RulePack, RulePackError  # noqa: E402
 
@@ -85,24 +85,19 @@ def _dry_run(
     regional_time = timezone(timedelta(hours=8), name="UTC+08:00")
     today = datetime.now(timezone.utc).astimezone(regional_time).date()
     queries = rule.render_queries(selected_topic, today, selected_days)
-    host_groups = agent_host_groups(rule.allowed_hosts)
+    tasks = build_search_tasks(rule, queries, search_approach)
     if search_approach == FOUNDRY_AGENT_APPROACH:
         planned_queries = [
             {
-                "query_id": f"{query.query_id}-sites-{group_index}",
-                "base_query_id": query.query_id,
-                "language": query.language,
-                "market": query.market,
-                "query": query.text,
-                "target_hosts": list(hosts),
-                "site_scoped_query": (
-                    f"({query.text}) ("
-                    + " OR ".join(f"site:{host}" for host in hosts)
-                    + ")"
-                ),
+                "query_id": task.query.query_id,
+                "site_id": task.site_id,
+                "base_query_ids": list(task.base_query_ids),
+                "language": task.query.language,
+                "target_hosts": list(task.allowed_hosts),
+                "site_scoped_queries": list(task.candidate_queries),
+                "max_tool_calls": rule.agent_max_tool_calls_per_site,
             }
-            for query in queries
-            for group_index, hosts in enumerate(host_groups, start=1)
+            for task in tasks
         ]
     else:
         planned_queries = [
@@ -129,7 +124,11 @@ def _dry_run(
             "total": len(planned_queries) + 1,
             "automatic_retries": 0,
             **(
-                {"max_tool_calls_per_search": 1}
+                {
+                    "max_tool_calls_per_search": rule.agent_max_tool_calls_per_site,
+                    "web_search_tool_calls": len(tasks) * rule.agent_max_tool_calls_per_site,
+                    "tool_call_limit_guaranteed": False,
+                }
                 if search_approach == FOUNDRY_AGENT_APPROACH
                 else {}
             ),

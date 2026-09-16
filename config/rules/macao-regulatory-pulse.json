@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
   "rule_id": "macao-regulatory-pulse",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "name": "Macao Regulatory Pulse",
   "bing": {
     "instance_name": "macao-financial-regulators-test",
@@ -16,6 +16,13 @@
     "default_topic": "Macao insurance and financial-services regulation and supervision",
     "default_days": 30,
     "results_per_query": 5,
+    "agent": {
+      "max_tool_calls_per_site": 3,
+      "sites": [
+        {"site_id": "amcm", "hosts": ["www.amcm.gov.mo", "cdn.amcm.gov.mo"]},
+        {"site_id": "bo", "hosts": ["bo.dsaj.gov.mo", "www.bo.dsaj.gov.mo"]}
+      ]
+    },
     "queries": [
       {
         "query_id": "en",

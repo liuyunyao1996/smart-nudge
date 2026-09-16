@@ -76,6 +76,19 @@ class RulePack:
         query_ids = [item["query_id"] for item in queries]
         if len(query_ids) != len(set(query_ids)):
             raise RulePackError("invalid_rule", "Rule Pack query IDs must be unique.")
+        agent = document["search"].get("agent")
+        if agent is not None:
+            site_ids = [site["site_id"] for site in agent["sites"]]
+            site_hosts = [host for site in agent["sites"] for host in site["hosts"]]
+            if (
+                len(site_ids) != len(set(site_ids))
+                or len(site_hosts) != len(set(site_hosts))
+                or set(site_hosts) != set(document["bing"]["allowed_hosts"])
+            ):
+                raise RulePackError(
+                    "invalid_rule",
+                    "Agent sites must have unique IDs and partition the allowed hosts exactly once.",
+                )
         expected_fields = {"topic", "date_from", "date_to"}
         for query in queries:
             try:
@@ -120,6 +133,17 @@ class RulePack:
     @property
     def default_days(self) -> int:
         return self.document["search"]["default_days"]
+
+    @property
+    def agent_sites(self) -> tuple[tuple[str, tuple[str, ...]], ...]:
+        agent = self.document["search"].get("agent")
+        if agent is None:
+            return tuple((f"site-{index}", (host,)) for index, host in enumerate(self.allowed_hosts, start=1))
+        return tuple((site["site_id"], tuple(site["hosts"])) for site in agent["sites"])
+
+    @property
+    def agent_max_tool_calls_per_site(self) -> int:
+        return self.document["search"].get("agent", {}).get("max_tool_calls_per_site", 3)
 
     @property
     def max_items(self) -> int:

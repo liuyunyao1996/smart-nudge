@@ -209,7 +209,7 @@ class FoundryAdapter:
         }
         expected = {
             "input", "tool_choice", "max_tool_calls",
-            "max_output_tokens", "parallel_tool_calls", "store",
+            "max_output_tokens", "parallel_tool_calls", "store", "include",
         } if kind == "foundry_agent" else common | (
             {"tools", "tool_choice", "include"} if kind == "custom_bing" else set()
         )
@@ -232,7 +232,9 @@ class FoundryAdapter:
                 or not isinstance(message.get("content"), str)
                 or not message["content"].strip()
                 or payload.get("tool_choice") != "required"
-                or payload.get("max_tool_calls") != 1
+                or type(payload.get("max_tool_calls")) is not int
+                or not 1 <= payload["max_tool_calls"] <= 3
+                or payload.get("include") != ["web_search_call.action.sources"]
             ):
                 raise ProbeError(
                     "invalid_request",
