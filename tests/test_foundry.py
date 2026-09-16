@@ -57,14 +57,8 @@ class FoundryTests(unittest.TestCase):
                 "FOUNDRY_WEB_SEARCH_AGENT_VERSION": "3",
             },
         )
-        self.assertEqual(
-            agent.reference(),
-            {
-                "type": "agent_reference",
-                "name": "regulatory-web-search",
-                "version": "3",
-            },
-        )
+        self.assertEqual(agent.name, "regulatory-web-search")
+        self.assertEqual(agent.version, "3")
         self.assertEqual(agent.allowed_hosts, rule.allowed_hosts)
 
         with self.assertRaises(ProbeError) as error:
@@ -177,17 +171,13 @@ class FoundryTests(unittest.TestCase):
             adapter.execute_summary(payload)
         self.assertEqual(error.exception.code, "invalid_request")
 
-    def test_agent_search_requires_pinned_reference_and_one_tool_call(self):
+    def test_agent_search_uses_dedicated_endpoint_and_one_tool_call(self):
         payload = summary_payload()
-        for key in ("model", "instructions", "reasoning"):
+        for key in ("model", "instructions", "reasoning", "text"):
             payload.pop(key)
+        payload["input"] = [{"role": "user", "content": "Search."}]
         payload.update(
             {
-                "agent_reference": {
-                    "type": "agent_reference",
-                    "name": "regulatory-web-search",
-                    "version": "3",
-                },
                 "tool_choice": "required",
                 "max_tool_calls": 1,
             }
@@ -195,17 +185,26 @@ class FoundryTests(unittest.TestCase):
         agent = AgentSearchConfig(
             "regulatory-web-search", "3", ("www.example.com",)
         )
+        def handler(request):
+            self.assertEqual(
+                request.url.path,
+                "/api/projects/project/agents/regulatory-web-search/endpoint/protocols/openai/responses",
+            )
+            self.assertEqual(request.url.params["api-version"], "v1")
+            request_body = json.loads(request.content)
+            self.assertNotIn("agent_reference", request_body)
+            self.assertNotIn("text", request_body)
+            return httpx.Response(
+                200, json={"id": "resp-1", "status": "completed", "output": []}
+            )
+
         adapter = FoundryAdapter(
             FoundryConfig(
                 "https://resource.services.ai.azure.com/api/projects/project",
                 "gpt-5-mini",
             ),
             credential=_Credential(),
-            transport=httpx.MockTransport(
-                lambda _request: httpx.Response(
-                    200, json={"id": "resp-1", "status": "completed", "output": []}
-                )
-            ),
+            transport=httpx.MockTransport(handler),
         )
 
         body, _audit = adapter.execute_agent_search(payload, agent)
@@ -215,6 +214,41 @@ class FoundryTests(unittest.TestCase):
         with self.assertRaises(ProbeError) as error:
             adapter.execute_agent_search(payload, agent)
         self.assertEqual(error.exception.code, "invalid_request")
+
+        payload["max_tool_calls"] = 1
+        payload["text"] = {"format": {"type": "json_schema"}}
+        with self.assertRaises(ProbeError) as error:
+            adapter.execute_agent_search(payload, agent)
+        self.assertEqual(error.exception.code, "invalid_request")
+
+    def test_service_rejection_keeps_only_safe_error_details(self):
+        adapter = FoundryAdapter(
+            FoundryConfig(
+                "https://resource.services.ai.azure.com/api/projects/project",
+                "gpt-5-mini",
+            ),
+            credential=_Credential(),
+            transport=httpx.MockTransport(
+                lambda _request: httpx.Response(
+                    400,
+                    headers={"x-request-id": "req-safe"},
+                    json={
+                        "error": {
+                            "code": "unsupported_parameter",
+                            "param": "text.format",
+                            "message": "raw service detail must not be exposed",
+                        }
+                    },
+                )
+            ),
+        )
+
+        with self.assertRaises(ProbeError) as error:
+            adapter.execute_summary(summary_payload())
+
+        self.assertEqual(error.exception.result["service_code"], "unsupported_parameter")
+        self.assertEqual(error.exception.result["service_param"], "text.format")
+        self.assertNotIn("raw service detail", json.dumps(error.exception.result))
 
 
 if __name__ == "__main__":

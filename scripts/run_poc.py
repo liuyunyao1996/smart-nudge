@@ -28,6 +28,7 @@ from smart_nudge.pipeline import (  # noqa: E402
     FOUNDRY_AGENT_APPROACH,
     PocError,
     PocPipeline,
+    agent_host_groups,
 )
 from smart_nudge.rules import RulePack, RulePackError  # noqa: E402
 
@@ -84,7 +85,35 @@ def _dry_run(
     regional_time = timezone(timedelta(hours=8), name="UTC+08:00")
     today = datetime.now(timezone.utc).astimezone(regional_time).date()
     queries = rule.render_queries(selected_topic, today, selected_days)
-    domain_expression = " OR ".join(f"site:{host}" for host in rule.allowed_hosts)
+    host_groups = agent_host_groups(rule.allowed_hosts)
+    if search_approach == FOUNDRY_AGENT_APPROACH:
+        planned_queries = [
+            {
+                "query_id": f"{query.query_id}-sites-{group_index}",
+                "base_query_id": query.query_id,
+                "language": query.language,
+                "market": query.market,
+                "query": query.text,
+                "target_hosts": list(hosts),
+                "site_scoped_query": (
+                    f"({query.text}) ("
+                    + " OR ".join(f"site:{host}" for host in hosts)
+                    + ")"
+                ),
+            }
+            for query in queries
+            for group_index, hosts in enumerate(host_groups, start=1)
+        ]
+    else:
+        planned_queries = [
+            {
+                "query_id": query.query_id,
+                "language": query.language,
+                "market": query.market,
+                "query": query.text,
+            }
+            for query in queries
+        ]
     return {
         "ok": True,
         "mode": "dry_run",
@@ -95,9 +124,9 @@ def _dry_run(
         "days": selected_days,
         "allowed_hosts": list(rule.allowed_hosts),
         "live_request_limit": {
-            "search": len(queries),
+            "search": len(planned_queries),
             "summarization": 1,
-            "total": len(queries) + 1,
+            "total": len(planned_queries) + 1,
             "automatic_retries": 0,
             **(
                 {"max_tool_calls_per_search": 1}
@@ -105,20 +134,7 @@ def _dry_run(
                 else {}
             ),
         },
-        "queries": [
-            {
-                "query_id": query.query_id,
-                "language": query.language,
-                "market": query.market,
-                "query": query.text,
-                **(
-                    {"site_scoped_query": f"({query.text}) ({domain_expression})"}
-                    if search_approach == FOUNDRY_AGENT_APPROACH
-                    else {}
-                ),
-            }
-            for query in queries
-        ],
+        "queries": planned_queries,
     }
 
 

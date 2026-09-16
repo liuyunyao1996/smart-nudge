@@ -18,7 +18,7 @@ Markdown + JSON
 
 默认流程保持不变。`--search-approach foundry-agent` 可将搜索阶段替换为同一项目中固定名称和版本的 Prompt Agent；后续规范化、去重、摘要和输出完全共用。
 
-香港、澳门和中国大陆各有独立 Rule Pack，一次运行只选择一个地区和一个 Custom Bing configuration。每个 Rule Pack 运行两个语言查询，每个查询最多请求 5 个结果；摘要阶段最多输出 5 条。因此一次完整运行仍最多产生 3 个 Foundry Responses 请求，且没有自动重试。
+香港、澳门和中国大陆各有独立 Rule Pack，一次运行只选择一个地区和一个 Custom Bing configuration。每个 Rule Pack 定义两个语言查询，每个搜索请求最多返回 5 个候选，摘要阶段最多输出 5 条。默认 Custom Bing 路径最多产生 2 次搜索和 1 次摘要；Agent 路径按每两个允许域名拆分每个语言查询，香港最多产生 6 次搜索和 1 次摘要，澳门或中国大陆最多产生 4 次搜索和 1 次摘要。所有请求均无自动重试。
 
 ## Rule Pack
 
@@ -34,7 +34,7 @@ Rule Pack 仍定义双语查询、市场、语言和每次最多展示的候选�
 
 搜索请求固定加入 `include: ["web_search_call.action.sources"]`。模型以严格结构返回标题、发布者、可选日期、grounded note 和 citation URLs；本地转换只保留 citation URL 能规范化匹配 `web_search_call.action.sources` 原生 URL、且 host 在 Rule Pack 允许列表中的条目。`message.content[].annotations` 中的 `url_citation` 只补充标题和 citation offset；annotation 缺失不会使已经通过 action source 匹配的 URL 失效。Bing attribution link 不作为来源，跨语言结果按规范 URL 去重。
 
-可选 Agent 路径通过 `agent_reference` 固定 Prompt Agent 名称和版本，每个请求使用 `tool_choice=required` 与 `max_tool_calls=1`。它把 Rule Pack 查询与全部 `site:host` 条件组合，并在提示中重复 allowlist；由于普通 Web Search 不提供 Custom Bing 等价的检索端域名保证，本地只接受原生 URL annotation 或 action source 中属于 allowlist 的 HTTPS URL。站外结果只产生 warning，不进入摘要。
+可选 Agent 路径调用 `{project_endpoint}/agents/{name}/endpoint/protocols/openai/responses?api-version=v1`，不向共享 Responses endpoint 发送 `agent_reference`。Portal 中该 endpoint 的 Active version 必须与本地记录版本一致。为了避免单个普通 Web Search 查询同时覆盖过多网站，每个语言查询按 Rule Pack 顺序以两个允许域名为一组拆分为独立请求；每个请求使用 `tool_choice=required` 与 `max_tool_calls=1`，本地还会拒绝包含多个 Web Search call 的响应。Prompt Agent 不接受请求级 `text.format`，因此该路径把搜索 JSON Schema 放入运行时提示，要求只返回一个 JSON 对象，再用同一套严格本地 JSON、schema 和引用校验拒绝不合格输出；这不等同于服务端 Structured Outputs 保证。每个拆分请求只组合当前组的 `site:host` 条件，并在提示中重复该组 allowlist；本地引用过滤也限制为当前组。由于普通 Web Search 不提供 Custom Bing 等价的检索端域名保证，站外或跨组结果只产生 warning，不进入摘要。
 
 该检查只保证来源链接来自预期 Grounding 响应，不判断 grounded note 中每个事实是否被原文逐句支持。
 
@@ -52,7 +52,7 @@ Rule Pack 仍定义双语查询、市场、语言和每次最多展示的候选�
 - 单条内容无引用、越界或结构无效：只丢弃该条并记录 warning。
 - 有成功搜索但没有合格条目：输出 `empty` 简报，不声称“没有事件发生”，且不调用摘要模型。
 - 摘要失败或返回未知 source ID：用 grounded notes 生成确定性 fallback，结果为 `partial`；fallback 项标为 `MEDIUM | UNCLASSIFIED`，明确要求人工复核。
-- 两次搜索均失败：不生成 brief，CLI 返回非零状态。
+- 所有计划内搜索均失败：不生成 brief，CLI 返回非零状态。
 
 原始 Foundry、Bing 工具输出和访问令牌不会写入产物。`--execute-live` 是唯一联网开关；不带该参数时只离线展示查询计划。产物记录所选 search approach；Agent 路径只记录非敏感名称和固定版本，不记录连接凭据。
 

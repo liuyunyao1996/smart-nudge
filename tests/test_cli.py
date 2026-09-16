@@ -25,9 +25,20 @@ class CliTests(unittest.TestCase):
         document = json.loads(output.getvalue())
         self.assertEqual(status, 0)
         self.assertEqual(document["search_approach"], "foundry-agent")
+        self.assertEqual(document["live_request_limit"]["search"], 6)
+        self.assertEqual(document["live_request_limit"]["total"], 7)
         self.assertEqual(document["live_request_limit"]["max_tool_calls_per_search"], 1)
+        self.assertEqual(len(document["queries"]), 6)
+        planned_hosts = []
         for query in document["queries"]:
-            self.assertIn("site:www.ia.org.hk", query["site_scoped_query"])
+            self.assertLessEqual(len(query["target_hosts"]), 2)
+            planned_hosts.extend(query["target_hosts"])
+            for host in query["target_hosts"]:
+                self.assertIn(f"site:{host}", query["site_scoped_query"])
+        self.assertEqual(
+            sorted(planned_hosts),
+            sorted(document["allowed_hosts"] * 2),
+        )
 
     def test_region_rule_selection_is_an_offline_three_request_plan(self):
         selections = {
@@ -55,6 +66,21 @@ class CliTests(unittest.TestCase):
                 )
                 self.assertEqual(len(document["allowed_hosts"]), expected[2])
                 self.assertEqual(document["live_request_limit"]["total"], 3)
+
+    def test_four_host_agent_rules_expand_to_four_search_requests(self):
+        for path in (
+            "config/rules/macao-regulatory-pulse.json",
+            "config/rules/cn-mainland-regulatory-pulse.json",
+        ):
+            with self.subTest(path=path):
+                output = StringIO()
+                with redirect_stdout(output):
+                    status = main(["--rule", path, "--search-approach", "foundry-agent"])
+                document = json.loads(output.getvalue())
+                self.assertEqual(status, 0)
+                self.assertEqual(document["live_request_limit"]["search"], 4)
+                self.assertEqual(document["live_request_limit"]["total"], 5)
+                self.assertEqual(len(document["queries"]), 4)
 
     def test_invalid_days_fails_before_loading_live_configuration(self):
         output = StringIO()

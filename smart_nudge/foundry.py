@@ -63,6 +63,14 @@ class FoundryConfig:
     def responses_url(self):
         return self.endpoint + "/openai/v1/responses"
 
+    def agent_responses_url(self, agent_name):
+        if not re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?", agent_name):
+            raise ProbeError("configuration", "The Prompt Agent name is invalid.")
+        return (
+            f"{self.endpoint}/agents/{agent_name}/endpoint/protocols/"
+            "openai/responses?api-version=v1"
+        )
+
 
 @dataclass(frozen=True)
 class BingConfig:
@@ -130,14 +138,6 @@ class AgentSearchConfig:
             )
         return cls(name, version, rule.allowed_hosts)
 
-    def reference(self):
-        return {
-            "type": "agent_reference",
-            "name": self.name,
-            "version": self.version,
-        }
-
-
 def get_cli_token(credential=None):
     logging.getLogger("azure.identity").setLevel(logging.CRITICAL)
     credential = credential or AzureCliCredential(process_timeout=30)
@@ -190,7 +190,11 @@ class FoundryAdapter:
 
     def execute_agent_search(self, payload: dict, agent: AgentSearchConfig):
         self._validate_payload(payload, kind="foundry_agent", agent=agent)
-        return self._request(payload, "search")
+        return self._request(
+            payload,
+            "search",
+            url=self.config.agent_responses_url(agent.name),
+        )
 
     def execute_summary(self, payload: dict):
         self._validate_payload(payload, kind="summary")
@@ -204,44 +208,49 @@ class FoundryAdapter:
             "parallel_tool_calls", "text", "store",
         }
         expected = {
-            "agent_reference", "input", "tool_choice", "max_tool_calls",
-            "max_output_tokens", "parallel_tool_calls", "text", "store",
+            "input", "tool_choice", "max_tool_calls",
+            "max_output_tokens", "parallel_tool_calls", "store",
         } if kind == "foundry_agent" else common | (
             {"tools", "tool_choice", "include"} if kind == "custom_bing" else set()
         )
-        text_format = payload.get("text", {}).get("format") if isinstance(payload.get("text"), dict) else None
         if (
             set(payload) != expected
             or payload.get("store") is not False
             or payload.get("parallel_tool_calls") is not False
-            or not isinstance(payload.get("input"), str)
-            or not payload["input"].strip()
             or type(payload.get("max_output_tokens")) is not int
             or not 1 <= payload["max_output_tokens"] <= 4000
-            or not isinstance(text_format, dict)
-            or text_format.get("type") != "json_schema"
-            or text_format.get("strict") is not True
-            or not isinstance(text_format.get("schema"), dict)
         ):
             raise ProbeError("invalid_request", "Foundry payload violates the PoC request boundary.")
         if kind == "foundry_agent":
-            reference = payload.get("agent_reference")
+            input_items = payload.get("input")
+            message = input_items[0] if isinstance(input_items, list) and len(input_items) == 1 else None
             if (
                 not isinstance(agent, AgentSearchConfig)
-                or reference != agent.reference()
+                or not isinstance(message, dict)
+                or set(message) != {"role", "content"}
+                or message.get("role") != "user"
+                or not isinstance(message.get("content"), str)
+                or not message["content"].strip()
                 or payload.get("tool_choice") != "required"
                 or payload.get("max_tool_calls") != 1
             ):
                 raise ProbeError(
                     "invalid_request",
-                    "Search requires the pinned Foundry Web Search Prompt Agent.",
+                    "Search requires the dedicated Foundry Web Search Prompt Agent endpoint.",
                 )
             return
+        text_format = payload.get("text", {}).get("format") if isinstance(payload.get("text"), dict) else None
         if (
             payload.get("model") != self.config.model
             or payload.get("reasoning") != {"effort": "low"}
             or not isinstance(payload.get("instructions"), str)
             or not payload["instructions"].strip()
+            or not isinstance(payload.get("input"), str)
+            or not payload["input"].strip()
+            or not isinstance(text_format, dict)
+            or text_format.get("type") != "json_schema"
+            or text_format.get("strict") is not True
+            or not isinstance(text_format.get("schema"), dict)
         ):
             raise ProbeError("invalid_request", "Foundry payload violates the PoC request boundary.")
         if kind == "summary":
@@ -266,7 +275,7 @@ class FoundryAdapter:
                 "Search requires Web Search bound to the configured Bing Custom Search instance.",
             )
 
-    def _request(self, payload, kind):
+    def _request(self, payload, kind, *, url=None):
         token = get_cli_token(self.credential)
         try:
             with httpx.Client(
@@ -275,7 +284,7 @@ class FoundryAdapter:
                 transport=self.transport,
             ) as client:
                 response = client.post(
-                    self.config.responses_url,
+                    url or self.config.responses_url,
                     json=payload,
                     headers={"Authorization": f"Bearer {token.token}"},
                 )
@@ -297,6 +306,8 @@ class FoundryAdapter:
         except ValueError:
             body = None
         if not response.is_success:
+            service_error = body.get("error") if isinstance(body, dict) else None
+            service_error = service_error if isinstance(service_error, dict) else {}
             code, message = {
                 400: ("request_rejected", "Foundry rejected the request parameters."),
                 401: ("authentication", "Foundry rejected the access token."),
@@ -304,7 +315,17 @@ class FoundryAdapter:
                 404: ("not_found", "The project endpoint or model deployment was not found."),
                 429: ("rate_limited", "Foundry rate or quota limit was reached; not retried."),
             }.get(response.status_code, ("service_error", "Foundry returned an unsuccessful status; not retried."))
-            raise ProbeError(code, message, http_status=response.status_code, request_id=request_id)
+            details = {
+                "http_status": response.status_code,
+                "request_id": request_id,
+            }
+            service_code = safe_identifier(service_error.get("code"))
+            service_param = safe_identifier(service_error.get("param"))
+            if service_code:
+                details["service_code"] = service_code
+            if service_param:
+                details["service_param"] = service_param
+            raise ProbeError(code, message, **details)
         if not isinstance(body, dict):
             raise ProbeError("invalid_response", "Foundry returned a non-object JSON response.")
         summary = {

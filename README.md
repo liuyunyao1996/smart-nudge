@@ -7,7 +7,7 @@ Smart Nudge 是一个面向 AIA Group CEO 的公开 Web 情报演示 PoC。它�
 
 另有一个显式选择的实验性搜索后端，可调用现有 Microsoft Foundry Prompt Agent 的普通 Web Search。它不会改变默认 Custom Bing 路径；域名定向由 `site:` 查询、提示词和本地引用白名单共同实施，其中只有最后一层是硬性输出边界。
 
-当前默认 Rule Pack 搜索最近 30 天的香港保险和金融监管动态，执行一次英文搜索、一次繁体中文搜索和最多一次英文摘要，最终选出不超过 5 条内容。项目不再包含 Verify Agent、独立网页抓取、claim/evidence 状态机或多轮补搜。
+当前默认 Rule Pack 搜索最近 30 天的香港保险和金融监管动态。默认 Custom Bing 路径执行一次英文搜索、一次繁体中文搜索和最多一次英文摘要；Agent 路径将每种语言按每两个允许域名拆分，香港最多执行 6 次搜索和一次摘要。两条路径最终都只选出不超过 5 条内容。项目不再包含 Verify Agent、独立网页抓取、claim/evidence 状态机或自动补搜。
 
 每条简报内容同时显示简短的 `Executive Attention Level`（High／Medium／Low）、监管信号类型和一句评级理由。该等级用于帮助管理层排序关注，不代表已经确认的法律适用性、损失概率或正式企业风险评级。
 
@@ -56,7 +56,7 @@ python -m venv .venv
 
 真实运行会把以下文件写入 `.tmp/poc-runs/<run_id>/`：
 
-- `search-results.json`：两次 Grounding 搜索中通过最低引用门槛的规范化内容。
+- `search-results.json`：所有计划内 Grounding 搜索中通过最低引用门槛的规范化内容。
 - `brief.json`：结构化英文简报。
 - `brief.md`：可直接展示或转发的英文简报。
 
@@ -66,7 +66,7 @@ python -m venv .venv
 
 首次使用时手动复制 `.env.example` 为 `.env`；已有 `.env` 不要覆盖。`.env` 只保存现有 Foundry Project、模型 deployment 和 Bing Custom Search project connection；具体 configuration/instance 名称来自所选 Rule Pack。因此切换地区不需要修改 `.env`，也不创建或修改云资源、不需要 Portal Agent ID。搜索请求使用 GPT-5-mini 支持的 `web_search` API surface，而不是该模型不支持的旧 `bing_custom_search_preview` 工具类型。
 
-可选的 Agent 后端还需要 `FOUNDRY_WEB_SEARCH_AGENT_NAME` 和固定的 `FOUNDRY_WEB_SEARCH_AGENT_VERSION`。两者均为非敏感标识；运行时通过 `agent_reference` 引用现有 Prompt Agent，不创建、修改或删除 Agent。该 Agent 应位于同一个 Foundry Project，且只启用普通 Web Search 工具。不要把 key、token 或 Portal 登录缓存写入 `.env`。
+可选的 Agent 后端还需要 `FOUNDRY_WEB_SEARCH_AGENT_NAME` 和固定的 `FOUNDRY_WEB_SEARCH_AGENT_VERSION`。两者均为非敏感标识；Agent 名称用于调用其 dedicated Responses endpoint，版本用于产物审计，并应与 Portal 中该 endpoint 的 Active version 一致。运行时不创建、修改或删除 Agent。该 Agent 应位于同一个 Foundry Project，且只启用普通 Web Search 工具。不要把 key、token 或 Portal 登录缓存写入 `.env`。
 
 默认规则位于 `config/rules/hk-regulatory-pulse.json`；另有 `macao-regulatory-pulse.json` 和 `cn-mainland-regulatory-pulse.json`。通过 `--rule config/rules/<name>.json` 选择。一个 Rule Pack 同时定义：
 
@@ -78,7 +78,7 @@ python -m venv .venv
 
 每条进入简报的搜索内容必须至少带一个由 `web_search_call.action.sources` 原生返回的 `https` URL，候选的 `citation_urls` 必须规范化匹配该 URL，且域名属于 Rule Pack 的允许列表。`message.content[].annotations` 中的 `url_citation` 用于补充原生标题和字符偏移。除此之外不做独立原文下载、locator 匹配或 Verify Agent 判断。无引用或越界只丢弃对应条目，不使整轮失败。
 
-在 Agent 后端中，原生 `url_citation` annotation 也可作为引用证据，因为该 API surface 不保证返回 action source 列表；若 action sources 存在也会一并校验。两种后端都严格丢弃站外、非 HTTPS 或非原生引用的候选。普通 Web Search 的提示词不能保证检索过程只接触 allowlist 网站，因此产物会明确标注该限制。
+在 Agent 后端中，原生 `url_citation` annotation 也可作为引用证据，因为该 API surface 不保证返回 action source 列表；若 action sources 存在也会一并校验。Prompt Agent 不接受请求级 `text.format`，所以 Agent 输出结构由运行时 JSON Schema 提示和严格本地解析共同约束，而不是由服务端 Structured Outputs 保证。为提高普通 Web Search 对目标站点的覆盖率，每个语言查询按 Rule Pack 顺序以两个域名为一组拆分；每个拆分请求仍只允许一次工具调用，且本地引用过滤同时限制在该组域名内。两种后端都严格丢弃站外、非 HTTPS 或非原生引用的候选。普通 Web Search 的提示词不能保证检索过程只接触 allowlist 网站，因此产物会明确标注该限制。
 
 因此结果应理解为“带来源链接的 Grounding 内容”，不是已经独立核验的原文结论。每份简报都会显示这一免责声明。原始模型／工具响应不落盘，外部请求不自动重试。
 

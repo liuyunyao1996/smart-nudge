@@ -236,7 +236,9 @@ class PipelineTests(unittest.TestCase):
 
         agent = AgentSearchConfig("regulatory-web-search", "3", self.rule.allowed_hosts)
         adapter = FakeAdapter(
-            [search_body(include_action_source=False), empty_search_body()], make_summary
+            [search_body(include_action_source=False)]
+            + [empty_search_body() for _ in range(5)],
+            make_summary,
         )
         run = PocPipeline(
             ROOT, self.rule, adapter, agent, clock=lambda: NOW
@@ -248,21 +250,51 @@ class PipelineTests(unittest.TestCase):
             run.search_results["search"]["agent"],
             {"name": "regulatory-web-search", "version": "3"},
         )
-        self.assertEqual(len(adapter.agent_search_payloads), 2)
+        self.assertEqual(len(adapter.agent_search_payloads), 6)
         payload = adapter.agent_search_payloads[0]
         self.assertNotIn("model", payload)
         self.assertNotIn("tools", payload)
-        self.assertEqual(payload["agent_reference"], agent.reference())
+        self.assertNotIn("agent_reference", payload)
+        self.assertNotIn("text", payload)
         self.assertEqual(payload["max_tool_calls"], 1)
-        for host in self.rule.allowed_hosts:
-            self.assertIn(f"site:{host}", payload["input"])
+        agent_input = payload["input"][0]["content"]
+        self.assertIn("Return exactly one JSON object", agent_input)
+        self.assertIn('"schema_version":{"const":"1.0.0"}', agent_input)
+        self.assertIn("site:www.ia.org.hk", agent_input)
+        self.assertIn("site:www.hkma.gov.hk", agent_input)
+        self.assertNotIn("site:www.sfc.hk", agent_input)
+        records = run.search_results["queries"]
+        self.assertEqual([record["query_id"] for record in records[:3]], [
+            "en-sites-1",
+            "en-sites-2",
+            "en-sites-3",
+        ])
+        self.assertEqual(records[0]["base_query_id"], "en")
+        self.assertEqual(records[0]["target_hosts"], ["www.ia.org.hk", "www.hkma.gov.hk"])
+        self.assertEqual(run.brief["coverage"]["queries_requested"], 6)
         self.assertEqual(len(run.search_results["items"]), 1)
         self.assertIn("prompt-based", run.brief["disclaimer"])
 
-    def test_agent_search_drops_off_domain_native_citations(self):
+    def test_agent_search_rejects_multiple_web_search_calls(self):
+        body = search_body()
+        body["output"].insert(1, json.loads(json.dumps(body["output"][0])))
+        agent = AgentSearchConfig("regulatory-web-search", "3", self.rule.allowed_hosts)
+        adapter = FakeAdapter([body] + [empty_search_body() for _ in range(5)])
+
+        run = PocPipeline(
+            ROOT, self.rule, adapter, agent, clock=lambda: NOW
+        ).run()
+
+        self.assertEqual(run.brief["status"], "empty")
+        self.assertTrue(
+            any("search_call_limit_exceeded" in value for value in run.brief["warnings"])
+        )
+
+    def test_agent_search_drops_citations_outside_the_current_host_group(self):
         agent = AgentSearchConfig("regulatory-web-search", "3", self.rule.allowed_hosts)
         adapter = FakeAdapter(
-            [search_body("https://example.com/update"), empty_search_body()]
+            [search_body("https://www.sfc.hk/Regulatory-functions/update")]
+            + [empty_search_body() for _ in range(5)]
         )
         run = PocPipeline(
             ROOT, self.rule, adapter, agent, clock=lambda: NOW
