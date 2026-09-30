@@ -1,0 +1,422 @@
+{
+  "schema_version": "1.3.0",
+  "run_id": "poc-20260930T092803Z-dbf8da",
+  "status": "partial",
+  "generated_at": "2026-09-30T09:32:07.063906+00:00",
+  "rule": {
+    "rule_id": "asia-executive-news",
+    "version": "1.2.0",
+    "sha256": "2fdca05926a90dc7f59f30980407b5a9148ee5fa676cab5f66f54461b58604cd"
+  },
+  "search": {
+    "approach": "custom-bing",
+    "custom_configurations": [
+      {
+        "configuration_id": "regulatory-official",
+        "instance_name": "asia-news-regulatory-official"
+      },
+      {
+        "configuration_id": "corporate-exchange",
+        "instance_name": "asia-news-corporate-exchange"
+      },
+      {
+        "configuration_id": "authoritative-media",
+        "instance_name": "asia-news-authoritative-media"
+      }
+    ]
+  },
+  "topic": "Material Asia insurance developments affecting AIA, its markets, competitors, regulation, capital, solvency or investors",
+  "window": {
+    "start_date": "2026-09-16",
+    "end_date": "2026-09-30",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "coverage": {
+    "queries_requested": 6,
+    "queries_succeeded": 5,
+    "queries_failed": 1
+  },
+  "title": "AIA Asia Executive Briefing | 16–30 September 2026",
+  "executive_summary": "Prudential made two consequential leadership changes spanning the Philippines, Singapore, health, products and asset management. Hong Kong outlined measures affecting risk-based capital, insurance-linked securities, captives and AI, while India amended premium-payment rules for GIFT IFSC and eased dividend restrictions for foreign-owned intermediaries. Regional reinsurance capacity remains ample, although cyber risks and severe flooding in Bangkok warrant operational monitoring.",
+  "items": [
+    {
+      "rank": 1,
+      "attention_level": "medium",
+      "signal_type": "leadership_change",
+      "published_date": "2026-09-24",
+      "publishers": [
+        "Prudential plc"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.prudentialplc.com/en/newsroom/company-news/2026/Prudential-plc-appoints-Naveed-Irshad-as-Regional-CEO-for-Indonesia%2C-Philippines-and-Africa/",
+          "title": "Prudential appoints Naveed Irshad as Regional CEO for Indonesia, Philippines and Africa",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-174c3e084fcb"
+      ],
+      "title": "Prudential names regional CEO with group-wide health and product remit",
+      "summary": "Prudential appointed former Manulife executive Naveed Irshad as Regional CEO for Indonesia, the Philippines and Africa, effective 26 October 2026, alongside enterprise-wide responsibility for Health and Product.",
+      "bullet_points": [
+        "Irshad will join Prudential’s Group Executive Committee, increasing the strategic weight of the appointment.",
+        "His remit combines leadership of three markets with oversight of group health and product activities.",
+        "The move may influence Prudential’s product, health and distribution priorities in the Philippines."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "specific_article"
+    },
+    {
+      "rank": 2,
+      "attention_level": "medium",
+      "signal_type": "leadership_change",
+      "published_date": "2026-09-24",
+      "publishers": [
+        "Prudential plc"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.prudentialplc.com/en/newsroom/company-news/2026/Prudential-Singapore-CEO-Chan-San-San-takes-up-new-role-at-Eastspring-Investments/",
+          "title": "Prudential Singapore CEO Chan San San takes up new role at Eastspring Investments",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-724fd2c30d63"
+      ],
+      "title": "Prudential shifts Singapore CEO to new Eastspring partnership role",
+      "summary": "Prudential appointed Chan San San as Eastspring Investments’ first Chief Partnership Officer and named Andreas Rosenthal Interim CEO of Prudential Singapore.",
+      "bullet_points": [
+        "Chan’s new role, effective 28 September 2026, is intended to strengthen collaboration between Prudential’s insurance and asset-management businesses.",
+        "Rosenthal, previously Prudential Singapore’s CFO, will lead the insurer while a permanent successor is sought.",
+        "The changes indicate increased emphasis on integration between insurance distribution and investment capabilities."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "specific_article"
+    },
+    {
+      "rank": 3,
+      "attention_level": "medium",
+      "signal_type": "guidance",
+      "published_date": "2026-09-16",
+      "publishers": [
+        "Insurance Authority of Hong Kong",
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ia.org.hk/en/infocenter/press_releases/20260916.html",
+          "title": "Hong Kong Insurance Authority supports policy initiatives covering RBC enhancement, specialty insurance and AI development",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://insuranceasianews.com/hong-kong-pushes-captive-insurance-ils-reforms-as-policy-address-seeks-to-strengthen-international-hub-status/",
+          "title": "Hong Kong pushes captive insurance and ILS reforms to strengthen its international insurance hub",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-8a8a74b42bcf",
+        "src-3677353df2c9"
+      ],
+      "title": "Hong Kong advances RBC, captive, ILS and AI initiatives",
+      "summary": "Hong Kong authorities outlined plans to enhance the Risk-based Capital Regime and develop captive insurance, insurance-linked securities, specialty insurance and AI capabilities.",
+      "bullet_points": [
+        "The Insurance Authority plans further RBC enhancement and deeper regulatory collaboration, which could shape AIA’s capital-management environment in its home market.",
+        "The policy agenda includes captive-market development and proposed legislation for a protected cell company structure.",
+        "Authorities also plan to expand specialty and marine capacity and advance the AI Cohort Programme; implementation details remain to be developed."
+      ],
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article"
+    },
+    {
+      "rank": 4,
+      "attention_level": "medium",
+      "signal_type": "final_rule",
+      "published_date": "2026-09-16",
+      "publishers": [
+        "International Financial Services Centres Authority"
+      ],
+      "source_links": [
+        {
+          "url": "https://ifsca.gov.in/CommonDirect/DownloadFile?fileName=114_IFSCA__Manner_of_payment_and_Receipt_of_Premium___Amendment__Regulations__2026_20260916_1247.pdf&id=b64bc220b28b988fb41d045999a52c5c",
+          "title": "IFSCA amends rules governing payment and receipt of insurance premiums in India’s IFSC",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "india",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-b4d0aa4bd573"
+      ],
+      "title": "IFSCA amends insurance premium-payment rules in GIFT IFSC",
+      "summary": "India’s IFSCA issued final amendments to the framework governing payment and receipt of insurance premiums in the country’s international financial services centres.",
+      "bullet_points": [
+        "The amendments apply to insurance business conducted through India’s GIFT IFSC framework.",
+        "Insurers and intermediaries operating through the centre may need to assess resulting payment-process and compliance requirements.",
+        "The supplied information does not establish direct applicability to AIA operations."
+      ],
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article"
+    },
+    {
+      "rank": 5,
+      "attention_level": "medium",
+      "signal_type": "final_rule",
+      "published_date": "2026-09-23",
+      "publishers": [
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/indian-regulator-eases-dividend-distribution-rules-for-foreign-owned-brokers/",
+          "title": "Indian regulator eases dividend distribution rules for foreign-owned brokers",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-473ec99dd4c0"
+      ],
+      "title": "India eases dividend rules for foreign-owned insurance intermediaries",
+      "summary": "IRDAI removed prior-approval and payout-ratio restrictions affecting dividend repatriation by majority foreign-owned insurance intermediaries.",
+      "bullet_points": [
+        "The change reduces capital-distribution friction for foreign investors in India’s insurance distribution sector.",
+        "It may improve the attractiveness and capital flexibility of foreign-controlled brokerage and intermediary businesses.",
+        "The supplied information does not establish whether the rule directly applies to an AIA entity."
+      ],
+      "topic": "government_regulatory",
+      "source_specificity": "unknown"
+    },
+    {
+      "rank": 6,
+      "attention_level": "medium",
+      "signal_type": "leadership_change",
+      "published_date": "2026-09-26",
+      "publishers": [
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/income-insurance-taps-manulifes-khoo-kah-siang-as-ceo-report/",
+          "title": "Income Insurance names former Manulife Singapore CEO Khoo Kah Siang as chief executive",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-ffb11f4f1728"
+      ],
+      "title": "Income Insurance appoints former Manulife Singapore CEO",
+      "summary": "Income Insurance appointed Khoo Kah Siang as CEO, bringing a former Manulife Singapore chief to the leadership of a significant Singapore competitor.",
+      "bullet_points": [
+        "Khoo is due to take office in January, succeeding Andrew Yeo.",
+        "His prior leadership experience at Manulife could inform Income’s competitive approach in Singapore.",
+        "The transition warrants monitoring for subsequent changes in products, channels or strategy."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "unknown"
+    },
+    {
+      "rank": 7,
+      "attention_level": "medium",
+      "signal_type": "leadership_change",
+      "published_date": "2026-09-30",
+      "publishers": [
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/marsh-promotes-thailands-derek-heng-to-asean-ceo-peta-latimer-takes-singapore-helm/",
+          "title": "Marsh promotes Thailand chief Derek Heng to ASEAN CEO and appoints Peta Latimer as Singapore chief",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-4a8623d2e9b6"
+      ],
+      "title": "Marsh restructures ASEAN and Singapore leadership",
+      "summary": "Marsh promoted Thailand chief Derek Heng to ASEAN CEO and appointed Peta Latimer to lead its Singapore operations.",
+      "bullet_points": [
+        "Heng will retain his Thailand responsibilities alongside the broader ASEAN remit.",
+        "The appointments change senior leadership at a major intermediary across two AIA markets.",
+        "The new structure may affect regional broking relationships and market engagement."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "unknown"
+    },
+    {
+      "rank": 8,
+      "attention_level": "medium",
+      "signal_type": "technology_operational_risk",
+      "published_date": "2026-09-27",
+      "publishers": [
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/bangkok-declares-flood-disaster-following-two-days-of-torrential-rains/",
+          "title": "Bangkok declares flood disaster after torrential rainfall",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-c359c1faedd6"
+      ],
+      "title": "Bangkok declares disaster after severe flooding",
+      "summary": "Bangkok declared a disaster after 48 hours of torrential rainfall caused widespread flooding, creating immediate claims and operational risks in Thailand.",
+      "bullet_points": [
+        "The event could affect property, health, protection and business-interruption claims, depending on exposure and policy coverage.",
+        "Flooding may disrupt customers, agents, employees and service operations in affected areas.",
+        "Loss development and operational continuity require monitoring as the event evolves."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "unknown"
+    },
+    {
+      "rank": 9,
+      "attention_level": "medium",
+      "signal_type": "macro_market",
+      "published_date": "2026-09-29",
+      "publishers": [
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/cedents-to-focus-on-right-sizing-reinsurance-programs-as-apac-market-enters-new-phase/",
+          "title": "APAC reinsurance market enters a new phase focused on right-sizing programmes",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        },
+        {
+          "url": "https://insuranceasianews.com/buyers-returning-to-apac-property-retro-market-trend-set-to-continue-marsh-re/",
+          "title": "Buyers return to the APAC property retrocession market amid record capital",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        },
+        {
+          "url": "https://insuranceasianews.com/asia-reinsurance-market-some-way-off-diminished-strength-gallagher-res-david-bangs-says/",
+          "title": "Asia reinsurance market expected to soften further from a position of strength",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-0c7821f61533",
+        "src-417d4d43f5bd",
+        "src-e3f12097cbe5"
+      ],
+      "title": "Ample capital keeps Asia reinsurance conditions buyer-friendly",
+      "summary": "Regional reinsurance reports indicate strong capacity, pressure on pricing and renewed demand for property retrocession, with programme structure becoming increasingly important.",
+      "bullet_points": [
+        "Gallagher Re expects ample capacity and buyer-friendly conditions to persist at upcoming Asian renewals.",
+        "Marsh Re reported increased buyer demand and substantial limit growth in Asia-Pacific property retrocession.",
+        "The environment may provide opportunities to improve risk-transfer terms, capacity or capital efficiency, subject to AIA’s exposures and renewal programmes."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "unknown"
+    },
+    {
+      "rank": 10,
+      "attention_level": "medium",
+      "signal_type": "technology_operational_risk",
+      "published_date": "2026-09-16",
+      "publishers": [
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/rising-cyber-threats-put-a-brake-on-apacs-softening-insurance-market/",
+          "title": "Rising cyber threats slow the softening of APAC cyber insurance pricing",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-71ef54f61d64"
+      ],
+      "title": "Rising threats slow APAC cyber insurance price declines",
+      "summary": "Brokers and underwriters expect rapid softening in Asia-Pacific cyber insurance pricing to decelerate as cyber threats increase and sector economics face greater scrutiny.",
+      "bullet_points": [
+        "The shift could moderate recent improvements in cyber cover pricing and terms.",
+        "Growing threat frequency remains relevant to both AIA’s operational resilience and its risk-transfer arrangements.",
+        "Renewal conditions should be monitored for changes in limits, exclusions and underwriting scrutiny."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "unknown"
+    }
+  ],
+  "summarization": {
+    "status": "succeeded",
+    "request_id": "ac1857ea-7b0f-4e96-bd90-db654bb9430a",
+    "response_id": "resp_080d399121555a4f016abcd703a3f881939395c1b27fe34f86",
+    "usage": {
+      "input_tokens": 3853,
+      "output_tokens": 1787,
+      "total_tokens": 5640
+    }
+  },
+  "warnings": [
+    "Search regulatory-official-zh ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: english.www.gov.cn.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search corporate-exchange-zh failed: incomplete_response.",
+    "Merged duplicate search result src-c3a10180789e.",
+    "Summary downgraded item 1 from high to medium because its signal type did not support high attention.",
+    "Summary downgraded item 2 from high to medium because its signal type did not support high attention."
+  ],
+  "disclaimer": "This briefing is based on Bing-grounded public information from approved primary and authoritative-media websites. Native source URLs were matched locally, but article content, publication dates and applicability were not independently verified against downloaded original text. Non-public regulator engagement and feedback are outside public-Web coverage.",
+  "raw_response_retained": false
+}

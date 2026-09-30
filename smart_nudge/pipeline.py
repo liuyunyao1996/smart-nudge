@@ -461,7 +461,7 @@ class PocPipeline:
             summary_audit = {"status": "fallback", "code": exc.code}
 
         brief = {
-            "schema_version": "1.2.0" if self.rule.is_asia_executive_news else "1.1.0",
+            "schema_version": "1.3.0" if self.rule.is_asia_executive_news else "1.1.0",
             "run_id": run_id,
             "status": "partial" if search_status == "partial" or fallback_used or summary_warnings else "completed",
             "generated_at": self._now().isoformat(),
@@ -645,8 +645,11 @@ class PocPipeline:
         asia_requirements = (
             [
                 "Output English only, even when source notes are Chinese.",
-                "For every item return topic, signal_type, and impact_to_aia across business_competitive, capital_rbc_solvency, and investor.",
-                "For each impact dimension choose exactly one status: direct, potential, not_established, or not_applicable, and explain it concisely.",
+                "For every item return a short, concrete title that lets an executive understand the event at a glance.",
+                "For every item return one concise summary and normally 2 or 3 non-repetitive bullet_points containing the most decision-useful facts or implications.",
+                "For a High-attention or unusually complex long-form development, expand proportionately to 4 or 5 bullet_points; do not add length merely to fill a quota.",
+                "Do not return attention rationale or a separate AIA impact assessment.",
+                "Return topic, signal_type, and attention_level for every item.",
                 "High attention is allowed only for a major AIA event, directly binding rule or enforcement, or structural competitor move supported by supplied notes.",
                 "General macro news is eligible only when the supplied notes establish an explicit transmission path to AIA.",
                 "Rank specific_article citations above otherwise comparable listing_page, homepage or unknown URL shapes.",
@@ -666,7 +669,11 @@ class PocPipeline:
                 *[f"- {rule}" for rule in rules["ranking_rules"]],
                 "Attention assessment rules:",
                 *[f"- {rule}" for rule in rules["attention_rules"]],
-                "For every item, return attention_level, signal_type, and one concise attention_reason.",
+                *(
+                    []
+                    if self.rule.is_asia_executive_news
+                    else ["For every item, return attention_level, signal_type, and one concise attention_reason."]
+                ),
                 "Use the attention assessment to support ranking without overstating legal applicability or risk.",
                 *asia_requirements,
                 "Writing rules:",
@@ -1027,7 +1034,11 @@ class PocPipeline:
             dates = [source["published_date"] for source in sources if source["published_date"]]
             attention_level = item["attention_level"]
             signal_type = item["signal_type"]
-            attention_reason = _safe_text(item["attention_reason"])
+            attention_reason = (
+                None
+                if self.rule.is_asia_executive_news
+                else _safe_text(item["attention_reason"])
+            )
             source_specificity = _best_url_specificity(
                 source.get("url_specificity", "unknown") for source in sources
             )
@@ -1036,11 +1047,10 @@ class PocPipeline:
                 and signal_type not in _HIGH_ATTENTION_SIGNAL_TYPES
             ):
                 attention_level = "medium"
-                attention_reason = (
-                    "Potentially material, but the supplied signal type does not support high attention under the Rule Pack."
-                    if self.rule.is_asia_executive_news
-                    else "Potentially material, but the supplied signal is not a final rule or enforcement action."
-                )
+                if not self.rule.is_asia_executive_news:
+                    attention_reason = (
+                        "Potentially material, but the supplied signal is not a final rule or enforcement action."
+                    )
                 warnings.append(
                     f"Summary downgraded item {index} from high to medium because its signal type did not support high attention."
                 )
@@ -1050,40 +1060,34 @@ class PocPipeline:
                 and source_specificity in {"listing_page", "homepage"}
             ):
                 attention_level = "medium"
-                attention_reason = (
-                    "Potentially material, but the supplied citations point only to a listing page or homepage; article-level evidence is preferred."
-                )
                 warnings.append(
                     f"Summary downgraded item {index} from high to medium because it lacked an article-specific citation."
                 )
             card = {
-                    "rank": len(cards) + 1,
-                    "headline": _safe_text(item["headline"]),
-                    "attention_level": attention_level,
-                    "signal_type": signal_type,
-                    "attention_reason": attention_reason,
-                    "published_date": max(dates) if dates else None,
-                    "publishers": sorted({source["publisher"] for source in sources}),
-                    "source_links": links,
-                    "source_item_ids": list(item["source_item_ids"]),
-                }
+                "rank": len(cards) + 1,
+                "attention_level": attention_level,
+                "signal_type": signal_type,
+                "published_date": max(dates) if dates else None,
+                "publishers": sorted({source["publisher"] for source in sources}),
+                "source_links": links,
+                "source_item_ids": list(item["source_item_ids"]),
+            }
             if self.rule.is_asia_executive_news:
                 card.update({
-                    "news_summary": _safe_text(item["news_summary"]),
+                    "title": _safe_text(item["title"]),
+                    "summary": _safe_text(item["summary"]),
+                    "bullet_points": [
+                        _safe_text(value) for value in item["bullet_points"]
+                    ],
                     "topic": item["topic"],
                     "source_specificity": source_specificity,
-                    "impact_to_aia": {
-                        dimension: {
-                            "status": item["impact_to_aia"][dimension]["status"],
-                            "description": _safe_text(item["impact_to_aia"][dimension]["description"]),
-                        }
-                        for dimension in ("business_competitive", "capital_rbc_solvency", "investor")
-                    },
                 })
             else:
                 card.update({
+                    "headline": _safe_text(item["headline"]),
                     "summary": _safe_text(item["summary"]),
                     "why_it_matters_to_aia": _safe_text(item["why_it_matters_to_aia"]),
+                    "attention_reason": attention_reason,
                 })
             cards.append(card)
         return {
@@ -1096,40 +1100,36 @@ class PocPipeline:
         cards = []
         for source in items[: self.rule.max_items]:
             card = {
-                    "rank": len(cards) + 1,
-                    "headline": source["title"],
-                    "attention_level": "medium",
-                    "signal_type": "unclassified",
-                    "attention_reason": (
-                        "Automated attention assessment was unavailable; manual review is recommended."
-                    ),
-                    "published_date": source["published_date"],
-                    "publishers": [source["publisher"]],
-                    "source_links": deepcopy(source["source_links"]),
-                    "source_item_ids": [source["source_item_id"]],
-                }
+                "rank": len(cards) + 1,
+                "attention_level": "medium",
+                "signal_type": "unclassified",
+                "published_date": source["published_date"],
+                "publishers": [source["publisher"]],
+                "source_links": deepcopy(source["source_links"]),
+                "source_item_ids": [source["source_item_id"]],
+            }
             if self.rule.is_asia_executive_news:
-                unavailable = {
-                    "status": "not_established",
-                    "description": "Impact was not assessed because executive summarization was unavailable.",
-                }
                 card.update({
-                    "news_summary": source["grounded_note"],
+                    "title": _safe_text(source["title"])[:140],
+                    "summary": source["grounded_note"],
+                    "bullet_points": [
+                        "Automated executive curation was unavailable; this item reproduces the grounded search note.",
+                        "Review the cited source before using the item in an executive briefing.",
+                    ],
                     "topic": source["topic"],
                     "signal_type": source["signal_type"],
                     "source_specificity": source["url_specificity"],
-                    "impact_to_aia": {
-                        "business_competitive": deepcopy(unavailable),
-                        "capital_rbc_solvency": deepcopy(unavailable),
-                        "investor": deepcopy(unavailable),
-                    },
                 })
             else:
                 card.update({
+                    "headline": source["title"],
                     "summary": source["grounded_note"],
                     "why_it_matters_to_aia": (
                         "Included under the selected regulatory monitoring rule; "
                         "executive relevance was not further assessed because summarization was unavailable."
+                    ),
+                    "attention_reason": (
+                        "Automated attention assessment was unavailable; manual review is recommended."
                     ),
                 })
             cards.append(card)
@@ -1144,7 +1144,7 @@ class PocPipeline:
 
     def _empty_brief(self, search_results: dict) -> dict:
         return {
-            "schema_version": "1.2.0" if self.rule.is_asia_executive_news else "1.1.0",
+            "schema_version": "1.3.0" if self.rule.is_asia_executive_news else "1.1.0",
             "run_id": search_results["run_id"],
             "status": "empty",
             "generated_at": self._now().isoformat(),
@@ -1187,40 +1187,35 @@ def render_markdown(brief: dict) -> str:
         text(brief["executive_summary"]),
     ]
     for item in brief["items"]:
+        is_asia_item = "bullet_points" in item
         lines.extend([
-                "",
-                f"## {item['rank']}. {text(item['headline'])}",
-                "",
-                f"**Attention:** {text(item['attention_level']).upper()} | "
-                f"{_SIGNAL_LABELS.get(item['signal_type'], 'Unclassified').upper()}",
-                "",
-                f"**Attention rationale:** {text(item['attention_reason'])}",
-                "",
-                text(item.get("news_summary", item.get("summary", ""))),
-                "",
-                f"**Published:** {item['published_date'] or 'Date not established'}  ",
-                f"**Publisher:** {', '.join(text(value) for value in item['publishers'])}",
+            "",
+            f"## {item['rank']}. {text(item.get('title', item.get('headline', 'Update')))}",
+            "",
+            f"**Attention:** {text(item['attention_level']).upper()} | "
+            f"{_SIGNAL_LABELS.get(item['signal_type'], 'Unclassified').upper()}",
+            "",
         ])
-        if "impact_to_aia" in item:
+        if is_asia_item:
+            lines.extend([text(item["summary"]), ""])
+            lines.extend(f"- {text(value)}" for value in item["bullet_points"])
             lines.extend([
                 "",
                 f"**Topic:** {text(item['topic'])}",
                 f"**Source specificity:** {text(item['source_specificity'])}",
-                "",
-                "**Impact to AIA:**",
             ])
-            for dimension, label in (
-                ("business_competitive", "Business / competitive"),
-                ("capital_rbc_solvency", "Capital / RBC / solvency"),
-                ("investor", "Investor"),
-            ):
-                impact = item["impact_to_aia"][dimension]
-                lines.append(
-                    f"- {label} — {text(impact['status'])}: {text(impact['description'])}"
-                )
         else:
-            lines.extend(["", f"**Why it matters to AIA:** {text(item['why_it_matters_to_aia'])}"])
+            lines.extend([
+                f"**Attention rationale:** {text(item['attention_reason'])}",
+                "",
+                text(item["summary"]),
+                "",
+                f"**Why it matters to AIA:** {text(item['why_it_matters_to_aia'])}",
+            ])
         lines.extend([
+            "",
+            f"**Published:** {item['published_date'] or 'Date not established'}  ",
+            f"**Publisher:** {', '.join(text(value) for value in item['publishers'])}",
             "",
             "**Sources:** " + ", ".join(
                 f"[{link_label(link['title'])}]({link['url']})" for link in item["source_links"]

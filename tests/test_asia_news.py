@@ -76,22 +76,20 @@ class FakeAdapter:
         self.summary_source_notes = json.loads(payload["input"])["source_notes"]
         source_id = self.summary_source_notes[0]["source_item_id"]
         document = {
-            "schema_version": "1.2.0",
+            "schema_version": "1.3.0",
             "title": "Asia Insurance Executive News",
             "executive_summary": "One material in-window development merits attention.",
             "items": [{
                 "source_item_ids": [source_id],
-                "headline": "AIA-relevant development",
-                "news_summary": "The cited source describes a material development.",
+                "title": "AIA launches a new regional offering",
+                "summary": "The cited source describes a material AIA development.",
+                "bullet_points": [
+                    "The development directly concerns AIA.",
+                    "Its financial materiality is not established by the supplied note.",
+                ],
                 "attention_level": "high",
-                "attention_reason": "The supplied note identifies a major AIA event.",
                 "topic": "external_environment",
                 "signal_type": "aia_major_news",
-                "impact_to_aia": {
-                    "business_competitive": {"status": "direct", "description": "The development concerns AIA directly."},
-                    "capital_rbc_solvency": {"status": "not_established", "description": "No capital effect is established."},
-                    "investor": {"status": "potential", "description": "Investors may assess strategic implications."},
-                },
             }],
         }
         body = {
@@ -120,6 +118,7 @@ class AsiaNewsTests(unittest.TestCase):
         )
 
     def test_dry_run_has_three_instances_six_queries_and_rejects_agent(self):
+        self.assertEqual(self.rule.version, "1.2.0")
         output = StringIO()
         with redirect_stdout(output):
             status = main(["--rule", "config/rules/asia-executive-news.json"])
@@ -144,6 +143,33 @@ class AsiaNewsTests(unittest.TestCase):
             ])
         self.assertEqual(status, 1)
         self.assertEqual(json.loads(output.getvalue())["code"], "configuration")
+
+    def test_summary_schema_requires_two_to_five_bullet_points(self):
+        pipeline = PocPipeline(
+            ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW
+        )
+        item = {
+            "source_item_ids": ["src-0123456789ab"],
+            "title": "AIA launches a regional offering",
+            "summary": "The cited source describes the launch.",
+            "bullet_points": ["First point.", "Second point."],
+            "attention_level": "medium",
+            "topic": "external_environment",
+            "signal_type": "aia_major_news",
+        }
+        document = {
+            "schema_version": "1.3.0",
+            "title": "Asia briefing",
+            "executive_summary": "One item was selected.",
+            "items": [item],
+        }
+        self.assertEqual(list(pipeline.summary_validator.iter_errors(document)), [])
+
+        document["items"][0]["bullet_points"] = ["Only one point."]
+        self.assertTrue(list(pipeline.summary_validator.iter_errors(document)))
+
+        document["items"][0]["bullet_points"] = [f"Point {index}." for index in range(6)]
+        self.assertTrue(list(pipeline.summary_validator.iter_errors(document)))
 
     def test_url_specificity_distinguishes_articles_from_listing_pages(self):
         self.assertEqual(_url_specificity("https://www.example.com/"), "homepage")
@@ -176,22 +202,20 @@ class AsiaNewsTests(unittest.TestCase):
             }],
         }]
         document = {
-            "schema_version": "1.2.0",
+            "schema_version": "1.3.0",
             "title": "Asia briefing",
             "executive_summary": "One item was selected.",
             "items": [{
                 "source_item_ids": [source_id],
-                "headline": "AIA product launch",
-                "news_summary": "A product launch was reported.",
+                "title": "AIA launches a new product",
+                "summary": "A product launch was reported.",
+                "bullet_points": [
+                    "The launch concerns AIA directly.",
+                    "Only a listing-page citation was supplied.",
+                ],
                 "attention_level": "high",
-                "attention_reason": "This is a major AIA event.",
                 "topic": "external_environment",
                 "signal_type": "aia_major_news",
-                "impact_to_aia": {
-                    "business_competitive": {"status": "direct", "description": "Direct product impact."},
-                    "capital_rbc_solvency": {"status": "not_established", "description": "No capital impact established."},
-                    "investor": {"status": "not_established", "description": "No investor impact established."},
-                },
             }],
         }
         body = {
@@ -259,7 +283,7 @@ class AsiaNewsTests(unittest.TestCase):
         ).run()
 
         self.assertTrue(run.ok)
-        self.assertEqual(run.brief["schema_version"], "1.2.0")
+        self.assertEqual(run.brief["schema_version"], "1.3.0")
         self.assertEqual(run.all_news["counts"], {
             "total": 4,
             "in_window": 2,
@@ -279,8 +303,14 @@ class AsiaNewsTests(unittest.TestCase):
             record["citation_diagnostics"]["envelope_checks"]["schema_version_valid"]
             for record in run.search_results["queries"]
         ))
-        self.assertEqual(run.brief["items"][0]["impact_to_aia"]["business_competitive"]["status"], "direct")
-        self.assertIn("Capital / RBC / solvency", run.markdown)
+        item = run.brief["items"][0]
+        self.assertEqual(item["title"], "AIA launches a new regional offering")
+        self.assertEqual(len(item["bullet_points"]), 2)
+        self.assertNotIn("impact_to_aia", item)
+        self.assertNotIn("attention_reason", item)
+        self.assertIn("- The development directly concerns AIA.", run.markdown)
+        self.assertNotIn("Attention rationale", run.markdown)
+        self.assertNotIn("Impact to AIA", run.markdown)
 
 
 if __name__ == "__main__":

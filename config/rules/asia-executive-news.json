@@ -2,7 +2,7 @@
   "schema_version": "1.2.0",
   "workflow": "asia_executive_news",
   "rule_id": "asia-executive-news",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "name": "Asia Insurance Executive News",
   "bing": {
     "configurations": [
@@ -224,7 +224,9 @@
     "writing_rules": [
       "Write concise neutral executive English and distinguish facts from implications.",
       "Do not invent legal applicability, financial magnitude, implementation dates or causal impact.",
-      "For every impact dimension use not_established when the supplied notes do not support a conclusion, and not_applicable only when the dimension is clearly irrelevant.",
+      "Use a short concrete title naming the actor and development; avoid vague labels such as major update or news to watch.",
+      "Give every item a concise summary followed by 2 or 3 distinct bullet points; allow 4 or 5 only for High-attention or unusually complex long-form developments.",
+      "Do not include a separate attention rationale or AIA impact section.",
       "Avoid repeating the same event merely because multiple sources covered it."
     ]
   }
