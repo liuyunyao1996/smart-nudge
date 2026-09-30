@@ -1,0 +1,517 @@
+{
+  "schema_version": "1.2.0",
+  "run_id": "poc-20260930T062245Z-169357",
+  "status": "partial",
+  "generated_at": "2026-09-30T06:27:33.825987+00:00",
+  "rule": {
+    "rule_id": "asia-executive-news",
+    "version": "1.1.0",
+    "sha256": "ff9ee14651c8862e0c345403f253a16e7e9221e6626825efb540854649cf9b1c"
+  },
+  "search": {
+    "approach": "custom-bing",
+    "custom_configurations": [
+      {
+        "configuration_id": "regulatory-official",
+        "instance_name": "asia-news-regulatory-official"
+      },
+      {
+        "configuration_id": "corporate-exchange",
+        "instance_name": "asia-news-corporate-exchange"
+      },
+      {
+        "configuration_id": "authoritative-media",
+        "instance_name": "asia-news-authoritative-media"
+      }
+    ]
+  },
+  "topic": "Material Asia insurance developments affecting AIA, its markets, competitors, regulation, capital, solvency or investors",
+  "window": {
+    "start_date": "2026-09-16",
+    "end_date": "2026-09-30",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "coverage": {
+    "queries_requested": 6,
+    "queries_succeeded": 6,
+    "queries_failed": 0
+  },
+  "title": "AIA Group Executive Briefing — Material Asia Insurance Developments",
+  "executive_summary": "Regulatory and competitive developments dominate the period. Hong Kong enforcement and policy priorities raise the importance of financial-crime controls, RBC planning, cross-boundary business and AI readiness. India is considering material distribution reforms. Competitively, Prudential is strengthening regional product and health leadership, while Ping An reports scaled AI deployment across service and claims. Sovereign-market liquidity and forthcoming IFRS changes warrant longer-term capital and investor monitoring.",
+  "items": [
+    {
+      "rank": 1,
+      "headline": "Hong Kong Insurance Authority fines FWD Life HK$19.5m for AML control shortcomings",
+      "attention_level": "high",
+      "signal_type": "enforcement",
+      "attention_reason": "Direct enforcement against a major competitor provides an immediate compliance benchmark in AIA’s home market.",
+      "published_date": "2026-09-25",
+      "publishers": [
+        "Asia Insurance Review"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97015",
+          "title": "FWD Life fined HK$19.5m over AML and counter-terrorist financing control shortcomings",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-26eaba66067e"
+      ],
+      "news_summary": "The Insurance Authority identified deficiencies involving third-party payments, suspicious transactions, politically exposed persons and customer due diligence. The enforcement signals heightened financial-crime control expectations for Hong Kong long-term insurers.",
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article",
+      "impact_to_aia": {
+        "business_competitive": {
+          "status": "potential",
+          "description": "May require benchmarking of customer due diligence, payment controls and transaction-monitoring practices."
+        },
+        "capital_rbc_solvency": {
+          "status": "not_established",
+          "description": "The notes do not establish an effect on AIA’s regulatory capital or solvency."
+        },
+        "investor": {
+          "status": "potential",
+          "description": "The action may increase investor attention to conduct and financial-crime controls among Hong Kong insurers."
+        }
+      }
+    },
+    {
+      "rank": 2,
+      "headline": "Hong Kong regulator sets priorities for RBC, cross-boundary insurance, specialty risks and AI",
+      "attention_level": "medium",
+      "signal_type": "guidance",
+      "attention_reason": "The priorities directly concern AIA’s home market, but the notes do not establish final requirements or implementation details.",
+      "published_date": "2026-09-16",
+      "publishers": [
+        "Insurance Authority of Hong Kong"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ia.org.hk/en/infocenter/press_releases/20260916.html",
+          "title": "Hong Kong Insurance Authority sets policy priorities covering RBC, specialty insurance, cross-boundary business and AI",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-8a8a74b42bcf"
+      ],
+      "news_summary": "The Insurance Authority plans to enhance the Risk-based Capital Regime, deepen regulatory collaboration, develop captives and insurance-linked securities, expand specialty capacity, advance its AI programme and encourage cross-boundary offerings with Mainland China.",
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article",
+      "impact_to_aia": {
+        "business_competitive": {
+          "status": "potential",
+          "description": "Cross-boundary offerings, specialty insurance and AI initiatives may create product, distribution and operating opportunities."
+        },
+        "capital_rbc_solvency": {
+          "status": "potential",
+          "description": "Planned RBC enhancements could affect capital management, subject to future details."
+        },
+        "investor": {
+          "status": "potential",
+          "description": "Changes to capital settings and growth opportunities may influence investor expectations once clarified."
+        }
+      }
+    },
+    {
+      "rank": 3,
+      "headline": "India proposes tighter distribution-cost, bundling and suitability controls",
+      "attention_level": "medium",
+      "signal_type": "consultation",
+      "attention_reason": "The consultation could materially change bancassurance and agency economics in a major AIA market, but it is not final.",
+      "published_date": "2026-09-29",
+      "publishers": [
+        "Asia Insurance Review"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97016",
+          "title": "IRDAI proposes tighter controls on insurance distribution costs",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-16be75b62fc7"
+      ],
+      "news_summary": "IRDAI proposed commission limits and restructuring, restrictions on compulsory insurance bundling with loans, stronger suitability and disclosure requirements, and a larger role for digital infrastructure including Bima Sugam.",
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article",
+      "impact_to_aia": {
+        "business_competitive": {
+          "status": "potential",
+          "description": "Proposals may alter distribution economics, sales practices and digital-channel competition in India."
+        },
+        "capital_rbc_solvency": {
+          "status": "not_established",
+          "description": "No specific capital or solvency effect is established."
+        },
+        "investor": {
+          "status": "potential",
+          "description": "Material changes to Indian distribution economics could affect market expectations for growth and profitability."
+        }
+      }
+    },
+    {
+      "rank": 4,
+      "headline": "Prudential strengthens regional leadership across Indonesia, the Philippines, health and products",
+      "attention_level": "medium",
+      "signal_type": "leadership_change",
+      "attention_reason": "Potentially material, but the supplied signal type does not support high attention under the Rule Pack.",
+      "published_date": "2026-09-25",
+      "publishers": [
+        "Asia Insurance Review",
+        "Prudential plc"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.prudentialplc.com/en/newsroom/company-news/2026/Prudential-plc-appoints-Naveed-Irshad-as-Regional-CEO-for-Indonesia%2C-Philippines-and-Africa/",
+          "title": "Prudential appoints regional CEO covering the Philippines and group health and product businesses",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97004",
+          "title": "Prudential appoints regional CEO for Indonesia and the Philippines",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-174c3e084fcb",
+        "src-c514aed48932"
+      ],
+      "news_summary": "Prudential appointed Naveed Irshad as Regional CEO covering Indonesia, the Philippines and Africa from 26 October 2026. He will also oversee group health and product activities and join the Group Executive Committee.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "impact_to_aia": {
+        "business_competitive": {
+          "status": "potential",
+          "description": "Stronger regional coordination may intensify competition in health, products and distribution, particularly in Southeast Asia."
+        },
+        "capital_rbc_solvency": {
+          "status": "not_established",
+          "description": "No impact on AIA’s capital or solvency is established."
+        },
+        "investor": {
+          "status": "potential",
+          "description": "The appointment may sharpen investor comparisons of regional growth and health strategies."
+        }
+      }
+    },
+    {
+      "rank": 5,
+      "headline": "Ping An reports scaled AI deployment across service, claims and healthcare workflows",
+      "attention_level": "medium",
+      "signal_type": "technology_operational_risk",
+      "attention_reason": "Potentially material, but the supplied signal type does not support high attention under the Rule Pack.",
+      "published_date": "2026-09-24",
+      "publishers": [
+        "Ping An Insurance (Group) Company of China"
+      ],
+      "source_links": [
+        {
+          "url": "https://group.pingan.com/media/news/2026/Ping-An-CTO-Ray-Wang--From-Tokens-to-Value-Creation.html",
+          "title": "Ping An reports scaled deployment of AI across service, claims and healthcare workflows",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "mainland_china",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-a58522b69a2e"
+      ],
+      "news_summary": "Ping An said its AI-powered Express Service supports more than 300 services and has exceeded 100 million interactions, with a reported 92% end-to-end resolution rate.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "impact_to_aia": {
+        "business_competitive": {
+          "status": "potential",
+          "description": "The deployment may raise competitive benchmarks for automation, claims handling and customer experience in China and Hong Kong."
+        },
+        "capital_rbc_solvency": {
+          "status": "not_established",
+          "description": "The notes establish no direct capital or solvency consequence for AIA."
+        },
+        "investor": {
+          "status": "potential",
+          "description": "Scaled AI adoption may influence investor expectations for insurers’ efficiency and technology execution."
+        }
+      }
+    },
+    {
+      "rank": 6,
+      "headline": "Prudential links insurance and asset management more closely through Eastspring leadership move",
+      "attention_level": "medium",
+      "signal_type": "leadership_change",
+      "attention_reason": "The move may strengthen a major competitor’s integrated insurance, wealth and asset-management proposition across Asia.",
+      "published_date": "2026-09-24",
+      "publishers": [
+        "Prudential plc"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.prudentialplc.com/en/newsroom/company-news/2026/Prudential-Singapore-CEO-Chan-San-San-takes-up-new-role-at-Eastspring-Investments/",
+          "title": "Prudential Singapore CEO moves to Eastspring; interim CEO appointed",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-724fd2c30d63"
+      ],
+      "news_summary": "Prudential Singapore CEO Chan San San will become Eastspring Investments’ Chief Partnership Officer, focusing on integration and wealth, retirement and investment solutions across Asia. Andreas Rosenthal was appointed interim CEO of Prudential Singapore.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "impact_to_aia": {
+        "business_competitive": {
+          "status": "potential",
+          "description": "Closer insurance–asset management integration may intensify competition in wealth and retirement solutions."
+        },
+        "capital_rbc_solvency": {
+          "status": "not_established",
+          "description": "No effect on AIA’s capital position is established."
+        },
+        "investor": {
+          "status": "potential",
+          "description": "The change may affect competitive comparisons in Asian wealth and retirement growth."
+        }
+      }
+    },
+    {
+      "rank": 7,
+      "headline": "Income Insurance appoints former Manulife Singapore chief as incoming CEO",
+      "attention_level": "medium",
+      "signal_type": "leadership_change",
+      "attention_reason": "The appointment is a significant leadership transition at a major Singapore composite insurer, but its strategic consequences are not yet established.",
+      "published_date": "2026-09-29",
+      "publishers": [
+        "Asia Insurance Review",
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97041",
+          "title": "Income Insurance names Khoo Kah Siang as incoming CEO",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://insuranceasianews.com/income-insurance-taps-manulifes-khoo-kah-siang-as-ceo-report/",
+          "title": "Income Insurance names former Manulife Singapore chief Khoo Kah Siang as CEO",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-e83d6b7ea156",
+        "src-ffb11f4f1728"
+      ],
+      "news_summary": "Income Insurance appointed Khoo Kah Siang as CEO effective 23 January 2027, subject to regulatory approval. He succeeds Andrew Yeo and brings prior leadership experience at Manulife Singapore and Great Eastern.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "impact_to_aia": {
+        "business_competitive": {
+          "status": "potential",
+          "description": "New leadership may affect competitive strategy across life, health and general insurance in Singapore."
+        },
+        "capital_rbc_solvency": {
+          "status": "not_established",
+          "description": "No AIA capital or solvency implication is established."
+        },
+        "investor": {
+          "status": "not_established",
+          "description": "The notes do not establish a material consequence for AIA investors."
+        }
+      }
+    },
+    {
+      "rank": 8,
+      "headline": "BIS research highlights sovereign-market liquidity risks associated with large NBFI holdings",
+      "attention_level": "medium",
+      "signal_type": "macro_market",
+      "attention_reason": "The research establishes a plausible transmission path through sovereign-bond valuation, liquidity and capital volatility for large Asian life insurers.",
+      "published_date": "2026-09-29",
+      "publishers": [
+        "Bank for International Settlements"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.bis.org/publications/bulletin-136-high-public-debt-nbfis-and-risk-market-dysfunction",
+          "title": "BIS identifies government-debt liquidity risks associated with large NBFI holdings",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "international_body",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-cb445326c363"
+      ],
+      "news_summary": "BIS research finds that high government debt worsens expected sovereign-market liquidity and that a large non-bank financial institution footprint widens potential market outcomes. Insurance companies are explicitly included among government-bond holders.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "impact_to_aia": {
+        "business_competitive": {
+          "status": "not_established",
+          "description": "No specific competitive or operating effect on AIA is established."
+        },
+        "capital_rbc_solvency": {
+          "status": "potential",
+          "description": "Sovereign-market illiquidity could affect asset valuations, liquidity management and capital volatility."
+        },
+        "investor": {
+          "status": "potential",
+          "description": "Greater sovereign-asset volatility may affect investor assessment of balance-sheet and market risk."
+        }
+      }
+    },
+    {
+      "rank": 9,
+      "headline": "IASB completes technical work on revised equity-method accounting standard",
+      "attention_level": "medium",
+      "signal_type": "informational",
+      "attention_reason": "The prospective accounting change may affect AIA’s reporting and investor comparability where material associate or joint-venture investments are held.",
+      "published_date": "2026-09-24",
+      "publishers": [
+        "IFRS Foundation"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ifrs.org/news-and-events/news/2026/09/iasb-decision-september-2026-meeting/",
+          "title": "IASB completes technical discussions on revised equity-method accounting standard",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "international_body",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-7996a1fef8b3"
+      ],
+      "news_summary": "The IASB completed technical discussions on revisions to IAS 28 for associates and joint ventures. The revised standard is expected in the first half of 2027 and would apply from 1 January 2029, with early application permitted.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "impact_to_aia": {
+        "business_competitive": {
+          "status": "not_established",
+          "description": "No competitive or operating impact is established."
+        },
+        "capital_rbc_solvency": {
+          "status": "not_established",
+          "description": "The notes do not establish that accounting revisions would change regulatory capital or solvency."
+        },
+        "investor": {
+          "status": "potential",
+          "description": "Revised equity-method accounting may affect reported results and comparability for investors."
+        }
+      }
+    },
+    {
+      "rank": 10,
+      "headline": "China’s revised Agriculture Law broadens the policy role of agricultural insurance",
+      "attention_level": "medium",
+      "signal_type": "final_rule",
+      "attention_reason": "This is a final legislative development in an AIA market, although its applicability to AIA’s current business is unclear.",
+      "published_date": "2026-09-25",
+      "publishers": [
+        "Asia Insurance Review"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eCin&id=97007",
+          "title": "China's revised Agriculture Law expands the role of agricultural insurance",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-39f0c3df12e9"
+      ],
+      "news_summary": "The revised law shifts agricultural insurance policy beyond basic cost coverage toward income protection, fairness and sustainability, potentially changing products, underwriting and public-private arrangements in Mainland China.",
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article",
+      "impact_to_aia": {
+        "business_competitive": {
+          "status": "potential",
+          "description": "The law may create product or partnership opportunities, but AIA’s exposure to agricultural insurance is not established."
+        },
+        "capital_rbc_solvency": {
+          "status": "not_established",
+          "description": "No capital or solvency implication for AIA is supported by the notes."
+        },
+        "investor": {
+          "status": "not_established",
+          "description": "The notes do not establish a material investor impact for AIA."
+        }
+      }
+    }
+  ],
+  "summarization": {
+    "status": "succeeded",
+    "request_id": "098c02fe-c944-4d1f-b351-d4ddf140de29",
+    "response_id": "resp_0b431efe25173a37016abcabba39a08195b71812656c7d8334",
+    "usage": {
+      "input_tokens": 6640,
+      "output_tokens": 2671,
+      "total_tokens": 9311
+    }
+  },
+  "warnings": [
+    "Search regulatory-official-en ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-official-en ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-en ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-en ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-en ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-en ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Merged duplicate search result src-7996a1fef8b3.",
+    "Merged duplicate search result src-65f79a39cc02.",
+    "Merged duplicate search result src-7ddac436e255.",
+    "Merged duplicate search result src-174c3e084fcb.",
+    "Merged duplicate search result src-724fd2c30d63.",
+    "Merged duplicate search result src-cb1c2d5822b0.",
+    "Merged duplicate search result src-1ae4392cc1ed.",
+    "Summary downgraded item 4 from high to medium because its signal type did not support high attention.",
+    "Summary downgraded item 5 from high to medium because its signal type did not support high attention."
+  ],
+  "disclaimer": "This briefing is based on Bing-grounded public information from approved primary and authoritative-media websites. Native source URLs were matched locally, but article content, publication dates and applicability were not independently verified against downloaded original text. Non-public regulator engagement and feedback are outside public-Web coverage.",
+  "raw_response_retained": false
+}
