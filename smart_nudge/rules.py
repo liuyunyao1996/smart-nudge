@@ -48,6 +48,7 @@ class RenderedQuery:
     market: str
     set_lang: str
     text: str
+    configuration_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -76,8 +77,33 @@ class RulePack:
         query_ids = [item["query_id"] for item in queries]
         if len(query_ids) != len(set(query_ids)):
             raise RulePackError("invalid_rule", "Rule Pack query IDs must be unique.")
+        configurations = document["bing"].get("configurations")
+        if configurations is not None:
+            if document.get("workflow") != "asia_executive_news":
+                raise RulePackError(
+                    "invalid_rule", "Multiple Bing configurations require the Asia executive news workflow."
+                )
+            configuration_ids = [item["configuration_id"] for item in configurations]
+            instance_names = [item["instance_name"] for item in configurations]
+            source_hosts = [source["host"] for item in configurations for source in item["sources"]]
+            query_configuration_ids = [item.get("configuration_id") for item in queries]
+            if (
+                len(configuration_ids) != len(set(configuration_ids))
+                or len(instance_names) != len(set(instance_names))
+                or len(source_hosts) != len(set(source_hosts))
+                or any(value not in configuration_ids for value in query_configuration_ids)
+            ):
+                raise RulePackError(
+                    "invalid_rule",
+                    "Bing configuration IDs, instance names and source hosts must be unique, and every query must reference a configuration.",
+                )
+        elif any(item.get("configuration_id") is not None for item in queries):
+            raise RulePackError("invalid_rule", "Legacy Rule Packs cannot reference a Bing configuration ID.")
+
         agent = document["search"].get("agent")
         if agent is not None:
+            if configurations is not None:
+                raise RulePackError("invalid_rule", "The Asia executive news workflow does not support Foundry Agent search.")
             site_ids = [site["site_id"] for site in agent["sites"]]
             site_hosts = [host for site in agent["sites"] for host in site["hosts"]]
             if (
@@ -124,7 +150,56 @@ class RulePack:
 
     @property
     def allowed_hosts(self) -> tuple[str, ...]:
-        return tuple(self.document["bing"]["allowed_hosts"])
+        configurations = self.document["bing"].get("configurations")
+        if configurations is None:
+            return tuple(self.document["bing"]["allowed_hosts"])
+        return tuple(source["host"] for item in configurations for source in item["sources"])
+
+    @property
+    def workflow(self) -> str:
+        return self.document.get("workflow", "regulatory_pulse")
+
+    @property
+    def is_asia_executive_news(self) -> bool:
+        return self.workflow == "asia_executive_news"
+
+    @property
+    def bing_configurations(self) -> tuple[dict, ...]:
+        configurations = self.document["bing"].get("configurations")
+        if configurations is not None:
+            return tuple(deepcopy(item) for item in configurations)
+        return (
+            {
+                "configuration_id": "default",
+                "instance_name": self.document["bing"]["instance_name"],
+                "source_tier": "primary",
+                "sources": [
+                    {"host": host, "source_type": "regulator", "market": "unspecified"}
+                    for host in self.allowed_hosts
+                ],
+            },
+        )
+
+    def bing_configuration(self, configuration_id: str | None) -> dict:
+        configurations = self.bing_configurations
+        if configuration_id is None and len(configurations) == 1:
+            return configurations[0]
+        for configuration in configurations:
+            if configuration["configuration_id"] == configuration_id:
+                return configuration
+        raise RulePackError("invalid_rule", "Query references an unknown Bing configuration.")
+
+    def source_metadata(self, host: str) -> dict:
+        for configuration in self.bing_configurations:
+            for source in configuration["sources"]:
+                if source["host"] == host:
+                    return {
+                        "configuration_id": configuration["configuration_id"],
+                        "source_tier": configuration["source_tier"],
+                        "source_type": source["source_type"],
+                        "market": source["market"],
+                    }
+        raise RulePackError("invalid_rule", "Source host is not configured by the Rule Pack.")
 
     @property
     def default_topic(self) -> str:
@@ -168,6 +243,7 @@ class RulePack:
                     date_from=start_date.isoformat(),
                     date_to=end_date.isoformat(),
                 ),
+                configuration_id=item.get("configuration_id"),
             )
             for item in self.document["search"]["queries"]
         )

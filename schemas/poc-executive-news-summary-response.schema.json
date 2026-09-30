@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smart-nudge.local/schemas/poc-executive-news-summary-response.schema.json",
+  "title": "Smart Nudge Asia executive news summary response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "title", "executive_summary", "items"],
+  "properties": {
+    "schema_version": {"const": "1.2.0"},
+    "title": {"$ref": "#/$defs/text"},
+    "executive_summary": {"$ref": "#/$defs/text"},
+    "items": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/item"}}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1, "maxLength": 2000},
+    "ids": {"type": "array", "minItems": 1, "maxItems": 5, "uniqueItems": true, "items": {"type": "string", "pattern": "^src-[a-f0-9]{12}$"}},
+    "impact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "description"],
+      "properties": {
+        "status": {"enum": ["direct", "potential", "not_established", "not_applicable"]},
+        "description": {"$ref": "#/$defs/text"}
+      }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_item_ids", "headline", "news_summary", "attention_level", "attention_reason", "topic", "signal_type", "impact_to_aia"],
+      "properties": {
+        "source_item_ids": {"$ref": "#/$defs/ids"},
+        "headline": {"$ref": "#/$defs/text"},
+        "news_summary": {"$ref": "#/$defs/text"},
+        "attention_level": {"enum": ["high", "medium", "low"]},
+        "attention_reason": {"$ref": "#/$defs/text"},
+        "topic": {"enum": ["external_environment", "government_regulatory"]},
+        "signal_type": {"enum": ["aia_major_news", "final_rule", "enforcement", "consultation", "guidance", "competitor_market_move", "product_distribution", "leadership_change", "macro_market", "technology_operational_risk", "informational"]},
+        "impact_to_aia": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["business_competitive", "capital_rbc_solvency", "investor"],
+          "properties": {
+            "business_competitive": {"$ref": "#/$defs/impact"},
+            "capital_rbc_solvency": {"$ref": "#/$defs/impact"},
+            "investor": {"$ref": "#/$defs/impact"}
+          }
+        }
+      }
+    }
+  }
+}

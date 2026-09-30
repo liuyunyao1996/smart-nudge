@@ -37,7 +37,9 @@ _SEARCH_CALL_TYPES = {
     "bing_custom_search_call",
     "bing_custom_search_preview_call",
 }
-_HIGH_ATTENTION_SIGNAL_TYPES = {"final_rule", "enforcement"}
+_HIGH_ATTENTION_SIGNAL_TYPES = {
+    "aia_major_news", "final_rule", "enforcement", "competitor_market_move"
+}
 _SIGNAL_LABELS = {
     "final_rule": "Final Rule",
     "enforcement": "Enforcement",
@@ -45,6 +47,12 @@ _SIGNAL_LABELS = {
     "guidance": "Guidance",
     "informational": "Informational",
     "unclassified": "Unclassified",
+    "aia_major_news": "AIA Major News",
+    "competitor_market_move": "Competitor Market Move",
+    "product_distribution": "Product / Distribution",
+    "leadership_change": "Leadership Change",
+    "macro_market": "Macro / Market",
+    "technology_operational_risk": "Technology / Operational Risk",
 }
 DISCLAIMER = (
     "This briefing is based on Bing-grounded public information from the configured "
@@ -55,6 +63,12 @@ AGENT_DISCLAIMER = (
     "Foundry Prompt Agent and locally filtered to the Rule Pack's allowed official websites. "
     "Domain targeting is prompt-based and the content has not been independently verified "
     "against downloaded original text."
+)
+ASIA_NEWS_DISCLAIMER = (
+    "This briefing is based on Bing-grounded public information from approved primary and "
+    "authoritative-media websites. Native source URLs were matched locally, but article content, "
+    "publication dates and applicability were not independently verified against downloaded original text. "
+    "Non-public regulator engagement and feedback are outside public-Web coverage."
 )
 CUSTOM_BING_APPROACH = "custom-bing"
 FOUNDRY_AGENT_APPROACH = "foundry-agent"
@@ -121,11 +135,50 @@ def _safe_text(value) -> str:
     return " ".join(str(value).split())
 
 
+_LISTING_SLUGS = {
+    "article", "articles", "category", "categories", "index", "media-center",
+    "media-centre", "news", "newsroom", "press-release", "press-releases",
+    "press_release", "press_releases", "publications",
+    "press-release-and-media-center", "press-release-and-media-centre",
+}
+
+
+def _url_specificity(value: str) -> str:
+    """Classify URL shape only; this is a ranking hint, not page verification."""
+    canonical = _canonical_url(value)
+    if canonical is None:
+        return "unknown"
+    parsed = urlsplit(canonical)
+    segments = [segment for segment in parsed.path.split("/") if segment]
+    if not segments:
+        return "homepage"
+    last = segments[-1].lower()
+    slug = last.rsplit(".", 1)[0] if "." in last else last
+    if slug in _LISTING_SLUGS or slug.startswith("press-release-and-media-center"):
+        return "listing_page"
+    if any(segment.lower() in {"category", "categories"} for segment in segments):
+        return "listing_page"
+    if len(segments) >= 2:
+        return "specific_article"
+    return "unknown"
+
+
+def _best_url_specificity(values) -> str:
+    priority = {
+        "specific_article": 3,
+        "unknown": 2,
+        "listing_page": 1,
+        "homepage": 0,
+    }
+    return max(values, key=lambda value: priority.get(value, 2), default="unknown")
+
+
 @dataclass(frozen=True)
 class PocRun:
     search_results: dict
     brief: dict | None
     markdown: str | None
+    all_news: dict | None = None
 
     @property
     def ok(self) -> bool:
@@ -139,12 +192,21 @@ class SearchTask:
     allowed_hosts: tuple[str, ...]
     site_id: str | None = None
     candidate_queries: tuple[str, ...] = ()
+    configuration_id: str | None = None
 
 
 def build_search_tasks(rule: RulePack, queries, search_approach: str) -> tuple[SearchTask, ...]:
     queries = tuple(queries)
     if search_approach == CUSTOM_BING_APPROACH:
-        return tuple(SearchTask(query, (query.query_id,), rule.allowed_hosts) for query in queries)
+        return tuple(
+            SearchTask(
+                query,
+                (query.query_id,),
+                tuple(source["host"] for source in rule.bing_configuration(query.configuration_id)["sources"]),
+                configuration_id=rule.bing_configuration(query.configuration_id)["configuration_id"],
+            )
+            for query in queries
+        )
     if search_approach != FOUNDRY_AGENT_APPROACH or not queries:
         raise PocError("configuration", "Invalid search plan.")
     languages = " / ".join(query.language for query in queries)
@@ -168,7 +230,7 @@ class PocPipeline:
         repository_root: str | Path,
         rule: RulePack,
         adapter: FoundryAdapter,
-        search_config: BingConfig | AgentSearchConfig,
+        search_config: BingConfig | tuple[BingConfig, ...] | AgentSearchConfig,
         *,
         clock=None,
     ):
@@ -176,16 +238,30 @@ class PocPipeline:
         self.rule = rule
         self.adapter = adapter
         self.search_config = search_config
+        self.bing_configs = (
+            (search_config,) if isinstance(search_config, BingConfig)
+            else tuple(search_config) if isinstance(search_config, tuple) and all(isinstance(item, BingConfig) for item in search_config)
+            else ()
+        )
+        self.bing_config_by_id = {item.configuration_id: item for item in self.bing_configs}
         self.search_approach = (
             CUSTOM_BING_APPROACH
-            if isinstance(search_config, BingConfig)
+            if self.bing_configs
             else FOUNDRY_AGENT_APPROACH
             if isinstance(search_config, AgentSearchConfig)
             else None
         )
         self.clock = clock or (lambda: datetime.now(timezone.utc))
-        self.search_schema = read_json(self.root / "schemas" / "poc-search-response.schema.json")
-        self.summary_schema = read_json(self.root / "schemas" / "poc-summary-response.schema.json")
+        search_schema_name = (
+            "poc-executive-news-search-response.schema.json"
+            if rule.is_asia_executive_news else "poc-search-response.schema.json"
+        )
+        summary_schema_name = (
+            "poc-executive-news-summary-response.schema.json"
+            if rule.is_asia_executive_news else "poc-summary-response.schema.json"
+        )
+        self.search_schema = read_json(self.root / "schemas" / search_schema_name)
+        self.summary_schema = read_json(self.root / "schemas" / summary_schema_name)
         Draft202012Validator.check_schema(self.search_schema)
         Draft202012Validator.check_schema(self.summary_schema)
         self.search_item_validator = Draft202012Validator(
@@ -198,14 +274,31 @@ class PocPipeline:
         self.summary_validator = Draft202012Validator(
             self.summary_schema, format_checker=FormatChecker()
         )
+        self.all_news_validator = None
+        if rule.is_asia_executive_news:
+            all_news_schema = read_json(self.root / "schemas" / "poc-all-news.schema.json")
+            Draft202012Validator.check_schema(all_news_schema)
+            self.all_news_validator = Draft202012Validator(
+                all_news_schema, format_checker=FormatChecker()
+            )
         if self.search_approach is None:
             raise PocError("configuration", "Unsupported search configuration.")
         if (
-            isinstance(search_config, BingConfig)
-            and search_config.instance_name != rule.document["bing"]["instance_name"]
+            self.bing_configs
+            and {
+                item.configuration_id: (item.instance_name, tuple(item.allowed_hosts))
+                for item in self.bing_configs
+            } != {
+                item["configuration_id"]: (
+                    item["instance_name"], tuple(source["host"] for source in item["sources"])
+                )
+                for item in rule.bing_configurations
+            }
         ):
-            raise PocError("configuration", "Bing configuration does not match the Rule Pack.")
-        if tuple(search_config.allowed_hosts) != rule.allowed_hosts:
+            raise PocError("configuration", "Bing configurations do not match the Rule Pack.")
+        if rule.is_asia_executive_news and self.search_approach != CUSTOM_BING_APPROACH:
+            raise PocError("configuration", "The Asia executive news workflow supports Custom Bing only.")
+        if isinstance(search_config, AgentSearchConfig) and tuple(search_config.allowed_hosts) != rule.allowed_hosts:
             raise PocError("configuration", "Search allowed hosts do not match the Rule Pack.")
 
     def run(self, *, topic: str | None = None, days: int | None = None) -> PocRun:
@@ -231,9 +324,16 @@ class PocPipeline:
 
         for task in search_tasks:
             query = task.query
+            bing_config = self.bing_config_by_id.get(task.configuration_id) if self.bing_configs else None
             audit = {}
             search_call_count = None
             record = {"query_id": query.query_id, "language": query.language}
+            if bing_config is not None:
+                record.update({
+                    "configuration_id": bing_config.configuration_id,
+                    "custom_configuration": bing_config.instance_name,
+                    "target_hosts": list(task.allowed_hosts),
+                })
             if self.search_approach == FOUNDRY_AGENT_APPROACH:
                 record.update({
                     "site_id": task.site_id,
@@ -248,9 +348,10 @@ class PocPipeline:
                     window,
                     allowed_hosts=task.allowed_hosts,
                     candidate_queries=task.candidate_queries,
+                    bing_config=bing_config,
                 )
-                if isinstance(self.search_config, BingConfig):
-                    body, audit = self.adapter.execute_search(payload, self.search_config)
+                if bing_config is not None:
+                    body, audit = self.adapter.execute_search(payload, bing_config)
                 else:
                     body, audit = self.adapter.execute_agent_search(
                         payload, self.search_config
@@ -263,12 +364,16 @@ class PocPipeline:
                 record["citation_diagnostics"] = build_citation_diagnostics(
                     body, task.allowed_hosts, _canonical_url,
                     use_annotations=self.search_approach == FOUNDRY_AGENT_APPROACH,
+                    expected_schema_version=(
+                        "1.1.0" if self.rule.is_asia_executive_news else "1.0.0"
+                    ),
                 )
                 record["citation_diagnostics"]["requested_include"] = list(payload["include"])
                 items, item_warnings, coverage_status = self._convert_search(
                     query,
                     body,
                     allowed_hosts=task.allowed_hosts,
+                    configuration_id=task.configuration_id,
                 )
                 warnings.extend(item_warnings)
                 collected.extend(items)
@@ -306,6 +411,9 @@ class PocPipeline:
 
         succeeded = sum(record["status"] == "succeeded" for record in query_records)
         items = self._deduplicate(collected, warnings)
+        if self.rule.is_asia_executive_news:
+            self._classify_source_quality(items)
+            self._classify_freshness(items, window)
         search_status = "failed" if succeeded == 0 else "partial" if succeeded < len(search_tasks) else "completed"
         search_results = {
             "schema_version": "1.0.0",
@@ -321,17 +429,22 @@ class PocPipeline:
             "warnings": list(warnings),
             "raw_response_retained": False,
         }
+        all_news = self._all_news(search_results) if self.rule.is_asia_executive_news else None
         if succeeded == 0:
-            return PocRun(search_results, None, None)
-        if not items:
+            return PocRun(search_results, None, None, all_news)
+        summary_items = (
+            [item for item in items if item.get("eligible_for_brief")]
+            if self.rule.is_asia_executive_news else items
+        )
+        if not summary_items:
             brief = self._empty_brief(search_results)
-            return PocRun(search_results, brief, render_markdown(brief))
+            return PocRun(search_results, brief, render_markdown(brief), all_news)
 
         fallback_used = False
         summary_warnings: list[str] = []
         try:
-            body, audit = self.adapter.execute_summary(self._summary_payload(items, topic, window))
-            summary, summary_warnings = self._convert_summary(body, items)
+            body, audit = self.adapter.execute_summary(self._summary_payload(summary_items, topic, window))
+            summary, summary_warnings = self._convert_summary(body, summary_items)
             warnings.extend(summary_warnings)
             if not summary["items"]:
                 raise PocError("empty_summary", "Summarization returned no usable items.")
@@ -344,11 +457,11 @@ class PocPipeline:
         except (ProbeError, PocError) as exc:
             fallback_used = True
             warnings.append(f"Summarization failed: {exc.code}; deterministic fallback used.")
-            summary = self._fallback_summary(items)
+            summary = self._fallback_summary(summary_items)
             summary_audit = {"status": "fallback", "code": exc.code}
 
         brief = {
-            "schema_version": "1.1.0",
+            "schema_version": "1.2.0" if self.rule.is_asia_executive_news else "1.1.0",
             "run_id": run_id,
             "status": "partial" if search_status == "partial" or fallback_used or summary_warnings else "completed",
             "generated_at": self._now().isoformat(),
@@ -369,7 +482,7 @@ class PocPipeline:
             "disclaimer": self._disclaimer(),
             "raw_response_retained": False,
         }
-        return PocRun(search_results, brief, render_markdown(brief))
+        return PocRun(search_results, brief, render_markdown(brief), all_news)
 
     def _now(self) -> datetime:
         value = self.clock()
@@ -386,8 +499,17 @@ class PocPipeline:
 
     def _search_record(self) -> dict:
         record = {"approach": self.search_approach}
-        if isinstance(self.search_config, BingConfig):
-            record["custom_configuration"] = self.search_config.instance_name
+        if self.bing_configs:
+            if len(self.bing_configs) == 1:
+                record["custom_configuration"] = self.bing_configs[0].instance_name
+            else:
+                record["custom_configurations"] = [
+                    {
+                        "configuration_id": item.configuration_id,
+                        "instance_name": item.instance_name,
+                    }
+                    for item in self.bing_configs
+                ]
         else:
             record["agent"] = {
                 "name": self.search_config.name,
@@ -397,6 +519,8 @@ class PocPipeline:
         return record
 
     def _disclaimer(self) -> str:
+        if self.rule.is_asia_executive_news:
+            return ASIA_NEWS_DISCLAIMER
         return (
             AGENT_DISCLAIMER
             if self.search_approach == FOUNDRY_AGENT_APPROACH
@@ -411,6 +535,7 @@ class PocPipeline:
         *,
         allowed_hosts: tuple[str, ...] | None = None,
         candidate_queries: tuple[str, ...] = (),
+        bing_config: BingConfig | None = None,
     ) -> dict:
         search = self.rule.document["search"]
         instructions = "\n".join(
@@ -425,13 +550,22 @@ class PocPipeline:
                 *[f"- {rule}" for rule in search["inclusion_rules"]],
                 "Exclusion rules:",
                 *[f"- {rule}" for rule in search["exclusion_rules"]],
+                *(
+                    [
+                        "Classify every candidate into one requested market, topic and signal type.",
+                        "Capture named companies, regulators and institutions in entities.",
+                        "Return all structured text fields in English; translate Chinese source content faithfully while preserving proper nouns.",
+                        "Publication date may be null when the source does not establish it; never infer a date.",
+                    ]
+                    if self.rule.is_asia_executive_news else []
+                ),
             ]
         )
         input_text = (
             f"Run this prepared query: {query.text}\n"
             f"Topic: {topic}\nLanguage: {query.language}\n"
             f"Window: {window['start_date']} through {window['end_date']}.\n"
-            f"Allowed source hosts: {', '.join(self.rule.allowed_hosts)}."
+            f"Allowed source hosts: {', '.join(allowed_hosts or self.rule.allowed_hosts)}."
         )
         if isinstance(self.search_config, AgentSearchConfig):
             scoped_hosts = tuple(allowed_hosts or ())
@@ -488,12 +622,12 @@ class PocPipeline:
             "instructions": instructions,
             "input": input_text,
             "tools": [
-                self.search_config.tool()
+                (bing_config or self.bing_configs[0]).tool()
             ],
             "tool_choice": "required",
             "include": ["web_search_call.action.sources"],
             "reasoning": {"effort": "low"},
-            "max_output_tokens": 2400,
+            "max_output_tokens": 4000 if self.rule.is_asia_executive_news else 2400,
             "parallel_tool_calls": False,
             "text": {
                 "format": {
@@ -508,6 +642,20 @@ class PocPipeline:
 
     def _summary_payload(self, items: list[dict], topic: str, window: dict) -> dict:
         rules = self.rule.document["summarization"]
+        asia_requirements = (
+            [
+                "Output English only, even when source notes are Chinese.",
+                "For every item return topic, signal_type, and impact_to_aia across business_competitive, capital_rbc_solvency, and investor.",
+                "For each impact dimension choose exactly one status: direct, potential, not_established, or not_applicable, and explain it concisely.",
+                "High attention is allowed only for a major AIA event, directly binding rule or enforcement, or structural competitor move supported by supplied notes.",
+                "General macro news is eligible only when the supplied notes establish an explicit transmission path to AIA.",
+                "Rank specific_article citations above otherwise comparable listing_page, homepage or unknown URL shapes.",
+                "Use a listing_page or homepage candidate only when it is materially relevant and no stronger article-level candidate covers the same development.",
+                "A candidate supported only by listing_page or homepage citations must not receive High attention.",
+                "Do not imply access to non-public regulator engagement or feedback.",
+            ]
+            if self.rule.is_asia_executive_news else []
+        )
         instructions = "\n".join(
             [
                 f"Create a {rules['output_language']} executive briefing for the {rules['audience']}.",
@@ -520,6 +668,7 @@ class PocPipeline:
                 *[f"- {rule}" for rule in rules["attention_rules"]],
                 "For every item, return attention_level, signal_type, and one concise attention_reason.",
                 "Use the attention assessment to support ranking without overstating legal applicability or risk.",
+                *asia_requirements,
                 "Writing rules:",
                 *[f"- {rule}" for rule in rules["writing_rules"]],
             ]
@@ -531,6 +680,19 @@ class PocPipeline:
                 "publisher": item["publisher"],
                 "published_date": item["published_date"],
                 "grounded_note": item["grounded_note"],
+                **(
+                    {
+                        "market": item["market"],
+                        "entities": item["entities"],
+                        "topic": item["topic"],
+                        "signal_type": item["signal_type"],
+                        "source_tier": item["source_tier"],
+                        "source_type": item["source_type"],
+                        "url_specificity": item["url_specificity"],
+                        "source_quality_note": item["source_quality_note"],
+                    }
+                    if self.rule.is_asia_executive_news else {}
+                ),
             }
             for item in items
         ]
@@ -543,7 +705,7 @@ class PocPipeline:
                 sort_keys=True,
             ),
             "reasoning": {"effort": "low"},
-            "max_output_tokens": 3000,
+            "max_output_tokens": 4000 if self.rule.is_asia_executive_news else 3000,
             "parallel_tool_calls": False,
             "text": {
                 "format": {
@@ -579,12 +741,14 @@ class PocPipeline:
         body: dict,
         *,
         allowed_hosts: tuple[str, ...] | None = None,
+        configuration_id: str | None = None,
     ) -> tuple[list[dict], list[str], str]:
         document, part = self._json_document(body, "search")
         allowed_host_set = set(allowed_hosts or self.rule.allowed_hosts)
+        expected_schema_version = "1.1.0" if self.rule.is_asia_executive_news else "1.0.0"
         if (
             set(document) != {"schema_version", "coverage_status", "items"}
-            or document.get("schema_version") != "1.0.0"
+            or document.get("schema_version") != expected_schema_version
             or document.get("coverage_status") not in {"checked", "partial", "unavailable"}
             or not isinstance(document.get("items"), list)
         ):
@@ -709,12 +873,35 @@ class PocPipeline:
                     "query_ids": [query.query_id],
                     "languages": [query.language],
                     "source_links": [
-                        annotation_links.get(
-                            url,
-                            {"url": url, "title": _safe_text(item["title"])},
-                        )
+                        {
+                            **annotation_links.get(
+                                url,
+                                {"url": url, "title": _safe_text(item["title"])},
+                            ),
+                            **(
+                                self.rule.source_metadata(urlsplit(url).hostname)
+                                if self.rule.is_asia_executive_news else {}
+                            ),
+                            **(
+                                {"url_specificity": _url_specificity(url)}
+                                if self.rule.is_asia_executive_news else {}
+                            ),
+                        }
                         for url in canonical_urls
                     ],
+                    **(
+                        {
+                            "configuration_id": configuration_id,
+                            "source_tier": self.rule.source_metadata(urlsplit(primary).hostname)["source_tier"],
+                            "source_type": self.rule.source_metadata(urlsplit(primary).hostname)["source_type"],
+                            "source_market": self.rule.source_metadata(urlsplit(primary).hostname)["market"],
+                            "market": _safe_text(item["market"]),
+                            "entities": [_safe_text(value) for value in item["entities"]],
+                            "topic": item["topic"],
+                            "signal_type": item["signal_type"],
+                        }
+                        if self.rule.is_asia_executive_news else {}
+                    ),
                 }
             )
         return results, warnings, document["coverage_status"]
@@ -743,6 +930,70 @@ class PocPipeline:
             key=lambda item: (item["published_date"] or "", item["title"].casefold()),
             reverse=True,
         )
+
+    @staticmethod
+    def _classify_source_quality(items: list[dict]) -> None:
+        for item in items:
+            values = [
+                link.get("url_specificity", "unknown")
+                for link in item["source_links"]
+            ]
+            specificity = _best_url_specificity(values)
+            item["url_specificity"] = specificity
+            item["source_quality_note"] = {
+                "specific_article": "At least one native citation appears to target a specific article or release.",
+                "listing_page": "Native citations appear to target a listing or category page; rank below comparable article-level evidence.",
+                "homepage": "Native citations target a site homepage; rank below comparable article-level evidence.",
+                "unknown": "URL shape does not establish whether the citation is article-specific.",
+            }[specificity]
+
+    @staticmethod
+    def _classify_freshness(items: list[dict], window: dict) -> None:
+        start_date = datetime.fromisoformat(window["start_date"]).date()
+        end_date = datetime.fromisoformat(window["end_date"]).date()
+        for item in items:
+            value = item.get("published_date")
+            if value is None:
+                item["freshness_status"] = "unknown"
+                item["eligible_for_brief"] = False
+                item["ineligibility_reason"] = "publication_date_not_established"
+                continue
+            published_date = datetime.fromisoformat(value).date()
+            if start_date <= published_date <= end_date:
+                item["freshness_status"] = "in_window"
+                item["eligible_for_brief"] = True
+                item["ineligibility_reason"] = None
+            else:
+                item["freshness_status"] = "out_of_window"
+                item["eligible_for_brief"] = False
+                item["ineligibility_reason"] = "outside_requested_window"
+
+    def _all_news(self, search_results: dict) -> dict:
+        items = deepcopy(search_results["items"])
+        document = {
+            "schema_version": "1.0.0",
+            "run_id": search_results["run_id"],
+            "status": search_results["status"],
+            "generated_at": search_results["generated_at"],
+            "rule": deepcopy(search_results["rule"]),
+            "search": deepcopy(search_results["search"]),
+            "topic": search_results["topic"],
+            "window": deepcopy(search_results["window"]),
+            "counts": {
+                "total": len(items),
+                "in_window": sum(item["freshness_status"] == "in_window" for item in items),
+                "out_of_window": sum(item["freshness_status"] == "out_of_window" for item in items),
+                "unknown_date": sum(item["freshness_status"] == "unknown" for item in items),
+                "eligible_for_brief": sum(item["eligible_for_brief"] for item in items),
+            },
+            "items": items,
+            "warnings": list(search_results["warnings"]),
+            "disclaimer": self._disclaimer(),
+            "raw_response_retained": False,
+        }
+        if self.all_news_validator is not None and list(self.all_news_validator.iter_errors(document)):
+            raise PocError("invalid_all_news_schema", "Normalized all-news output failed its Schema.")
+        return document
 
     def _convert_summary(self, body: dict, source_items: list[dict]) -> tuple[dict, list[str]]:
         document, _ = self._json_document(body, "summary")
@@ -777,23 +1028,37 @@ class PocPipeline:
             attention_level = item["attention_level"]
             signal_type = item["signal_type"]
             attention_reason = _safe_text(item["attention_reason"])
+            source_specificity = _best_url_specificity(
+                source.get("url_specificity", "unknown") for source in sources
+            )
             if (
                 attention_level == "high"
                 and signal_type not in _HIGH_ATTENTION_SIGNAL_TYPES
             ):
                 attention_level = "medium"
                 attention_reason = (
-                    "Potentially material, but the supplied signal is not a final rule or enforcement action."
+                    "Potentially material, but the supplied signal type does not support high attention under the Rule Pack."
+                    if self.rule.is_asia_executive_news
+                    else "Potentially material, but the supplied signal is not a final rule or enforcement action."
                 )
                 warnings.append(
                     f"Summary downgraded item {index} from high to medium because its signal type did not support high attention."
                 )
-            cards.append(
-                {
+            if (
+                self.rule.is_asia_executive_news
+                and attention_level == "high"
+                and source_specificity in {"listing_page", "homepage"}
+            ):
+                attention_level = "medium"
+                attention_reason = (
+                    "Potentially material, but the supplied citations point only to a listing page or homepage; article-level evidence is preferred."
+                )
+                warnings.append(
+                    f"Summary downgraded item {index} from high to medium because it lacked an article-specific citation."
+                )
+            card = {
                     "rank": len(cards) + 1,
                     "headline": _safe_text(item["headline"]),
-                    "summary": _safe_text(item["summary"]),
-                    "why_it_matters_to_aia": _safe_text(item["why_it_matters_to_aia"]),
                     "attention_level": attention_level,
                     "signal_type": signal_type,
                     "attention_reason": attention_reason,
@@ -802,7 +1067,25 @@ class PocPipeline:
                     "source_links": links,
                     "source_item_ids": list(item["source_item_ids"]),
                 }
-            )
+            if self.rule.is_asia_executive_news:
+                card.update({
+                    "news_summary": _safe_text(item["news_summary"]),
+                    "topic": item["topic"],
+                    "source_specificity": source_specificity,
+                    "impact_to_aia": {
+                        dimension: {
+                            "status": item["impact_to_aia"][dimension]["status"],
+                            "description": _safe_text(item["impact_to_aia"][dimension]["description"]),
+                        }
+                        for dimension in ("business_competitive", "capital_rbc_solvency", "investor")
+                    },
+                })
+            else:
+                card.update({
+                    "summary": _safe_text(item["summary"]),
+                    "why_it_matters_to_aia": _safe_text(item["why_it_matters_to_aia"]),
+                })
+            cards.append(card)
         return {
             "title": _safe_text(document["title"]),
             "executive_summary": _safe_text(document["executive_summary"]),
@@ -812,15 +1095,9 @@ class PocPipeline:
     def _fallback_summary(self, items: list[dict]) -> dict:
         cards = []
         for source in items[: self.rule.max_items]:
-            cards.append(
-                {
+            card = {
                     "rank": len(cards) + 1,
                     "headline": source["title"],
-                    "summary": source["grounded_note"],
-                    "why_it_matters_to_aia": (
-                        "Included under the selected regulatory monitoring rule; "
-                        "executive relevance was not further assessed because summarization was unavailable."
-                    ),
                     "attention_level": "medium",
                     "signal_type": "unclassified",
                     "attention_reason": (
@@ -831,11 +1108,35 @@ class PocPipeline:
                     "source_links": deepcopy(source["source_links"]),
                     "source_item_ids": [source["source_item_id"]],
                 }
-            )
+            if self.rule.is_asia_executive_news:
+                unavailable = {
+                    "status": "not_established",
+                    "description": "Impact was not assessed because executive summarization was unavailable.",
+                }
+                card.update({
+                    "news_summary": source["grounded_note"],
+                    "topic": source["topic"],
+                    "signal_type": source["signal_type"],
+                    "source_specificity": source["url_specificity"],
+                    "impact_to_aia": {
+                        "business_competitive": deepcopy(unavailable),
+                        "capital_rbc_solvency": deepcopy(unavailable),
+                        "investor": deepcopy(unavailable),
+                    },
+                })
+            else:
+                card.update({
+                    "summary": source["grounded_note"],
+                    "why_it_matters_to_aia": (
+                        "Included under the selected regulatory monitoring rule; "
+                        "executive relevance was not further assessed because summarization was unavailable."
+                    ),
+                })
+            cards.append(card)
         return {
             "title": self.rule.name,
             "executive_summary": (
-                f"The search returned {len(items)} cited official-source update(s). "
+                f"The search returned {len(items)} eligible cited update(s). "
                 "Automated executive summarization was unavailable, so the cards reproduce the grounded search notes."
             ),
             "items": cards,
@@ -843,7 +1144,7 @@ class PocPipeline:
 
     def _empty_brief(self, search_results: dict) -> dict:
         return {
-            "schema_version": "1.1.0",
+            "schema_version": "1.2.0" if self.rule.is_asia_executive_news else "1.1.0",
             "run_id": search_results["run_id"],
             "status": "empty",
             "generated_at": self._now().isoformat(),
@@ -886,8 +1187,7 @@ def render_markdown(brief: dict) -> str:
         text(brief["executive_summary"]),
     ]
     for item in brief["items"]:
-        lines.extend(
-            [
+        lines.extend([
                 "",
                 f"## {item['rank']}. {text(item['headline'])}",
                 "",
@@ -896,18 +1196,36 @@ def render_markdown(brief: dict) -> str:
                 "",
                 f"**Attention rationale:** {text(item['attention_reason'])}",
                 "",
-                text(item["summary"]),
-                "",
-                f"**Why it matters to AIA:** {text(item['why_it_matters_to_aia'])}",
+                text(item.get("news_summary", item.get("summary", ""))),
                 "",
                 f"**Published:** {item['published_date'] or 'Date not established'}  ",
                 f"**Publisher:** {', '.join(text(value) for value in item['publishers'])}",
+        ])
+        if "impact_to_aia" in item:
+            lines.extend([
                 "",
-                "**Sources:** " + ", ".join(
-                    f"[{link_label(link['title'])}]({link['url']})" for link in item["source_links"]
-                ),
-            ]
-        )
+                f"**Topic:** {text(item['topic'])}",
+                f"**Source specificity:** {text(item['source_specificity'])}",
+                "",
+                "**Impact to AIA:**",
+            ])
+            for dimension, label in (
+                ("business_competitive", "Business / competitive"),
+                ("capital_rbc_solvency", "Capital / RBC / solvency"),
+                ("investor", "Investor"),
+            ):
+                impact = item["impact_to_aia"][dimension]
+                lines.append(
+                    f"- {label} — {text(impact['status'])}: {text(impact['description'])}"
+                )
+        else:
+            lines.extend(["", f"**Why it matters to AIA:** {text(item['why_it_matters_to_aia'])}"])
+        lines.extend([
+            "",
+            "**Sources:** " + ", ".join(
+                f"[{link_label(link['title'])}]({link['url']})" for link in item["source_links"]
+            ),
+        ])
     if brief["warnings"]:
         lines.extend(["", "## Coverage notes", ""])
         lines.extend(f"- {text(warning)}" for warning in brief["warnings"])

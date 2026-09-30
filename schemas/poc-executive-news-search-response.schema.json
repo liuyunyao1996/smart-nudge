@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smart-nudge.local/schemas/poc-executive-news-search-response.schema.json",
+  "title": "Smart Nudge Asia executive news grounded search response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "coverage_status", "items"],
+  "properties": {
+    "schema_version": {"const": "1.1.0"},
+    "coverage_status": {"enum": ["checked", "partial", "unavailable"]},
+    "items": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {"$ref": "#/$defs/item"}
+    }
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1, "maxLength": 2000},
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "publisher", "published_date", "grounded_note", "citation_urls", "market", "entities", "topic", "signal_type"],
+      "properties": {
+        "title": {"$ref": "#/$defs/text"},
+        "publisher": {"$ref": "#/$defs/text"},
+        "published_date": {
+          "type": ["string", "null"],
+          "maxLength": 80,
+          "description": "Prefer null or YYYY-MM-DD. The local converter normalizes strict ISO datetimes and degrades other values to null."
+        },
+        "grounded_note": {"$ref": "#/$defs/text"},
+        "citation_urls": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": {"type": "string", "format": "uri", "pattern": "^https://"}
+        },
+        "market": {"$ref": "#/$defs/text"},
+        "entities": {
+          "type": "array",
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/text"}
+        },
+        "topic": {"enum": ["external_environment", "government_regulatory"]},
+        "signal_type": {"enum": ["aia_major_news", "final_rule", "enforcement", "consultation", "guidance", "competitor_market_move", "product_distribution", "leadership_change", "macro_market", "technology_operational_risk", "informational"]}
+      }
+    }
+  }
+}

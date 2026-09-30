@@ -77,19 +77,33 @@ class BingConfig:
     connection_id: str
     instance_name: str
     allowed_hosts: tuple[str, ...]
+    configuration_id: str = "default"
 
     @classmethod
     def load(cls, env_file, rule: RulePack, foundry: FoundryConfig, environ=None):
+        configurations = cls.load_all(env_file, rule, foundry, environ)
+        if len(configurations) != 1:
+            raise ProbeError(
+                "configuration",
+                "This Rule Pack uses multiple Bing configurations; load all configurations for the pipeline.",
+            )
+        return configurations[0]
+
+    @classmethod
+    def load_all(cls, env_file, rule: RulePack, foundry: FoundryConfig, environ=None):
         values = read_settings(env_file, environ)
         connection = (values.get("BING_CUSTOM_SEARCH_PROJECT_CONNECTION_ID") or "").strip()
-        instance = rule.document["bing"]["instance_name"]
         match = re.fullmatch(
             r"/subscriptions/[a-fA-F0-9-]{36}/resourceGroups/[a-zA-Z0-9_.-]+/providers/"
             r"Microsoft\.CognitiveServices/accounts/([a-zA-Z0-9-]+)/projects/"
             r"([a-zA-Z0-9_-]+)/connections/[a-zA-Z0-9_-]+",
             connection,
         )
-        if not match or not re.fullmatch(r"[a-zA-Z0-9_-]+", instance):
+        configurations = rule.bing_configurations
+        if not match or any(
+            not re.fullmatch(r"[a-zA-Z0-9_-]+", item["instance_name"])
+            for item in configurations
+        ):
             raise ProbeError(
                 "configuration",
                 "Set the full Bing project connection ID and a valid Rule Pack instance name.",
@@ -103,7 +117,15 @@ class BingConfig:
                 "configuration",
                 "The Bing connection must belong to the configured Foundry project.",
             )
-        return cls(connection, instance, rule.allowed_hosts)
+        return tuple(
+            cls(
+                connection,
+                item["instance_name"],
+                tuple(source["host"] for source in item["sources"]),
+                item["configuration_id"],
+            )
+            for item in configurations
+        )
 
     def tool(self):
         return {

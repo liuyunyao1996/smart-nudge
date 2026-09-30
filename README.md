@@ -1,5 +1,23 @@
 # Smart Nudge
 
+## Optional Asia executive-news workflow (not the default)
+
+`config/rules/asia-executive-news.json` adds an opt-in Custom Bing-only workflow for AIA executive news monitoring. It does not change the default Hong Kong rule or the Foundry Agent path.
+
+Before a live run, create and populate these three Bing Custom Search configurations in the existing Bing connection; this repository does not create or modify them:
+
+- `asia-news-regulatory-official`: regulators, governments, central banks and international standard setters.
+- `asia-news-corporate-exchange`: AIA, major competitors, exchanges and insurance associations.
+- `asia-news-authoritative-media`: named Hong Kong, Asian, Greater China and global media, including Ming Pao, Oriental Daily, RTHK, Bastille Post, ETNet, HK01, InsuranceAsia News, Xinhua, SCMP, Bloomberg, Reuters, Financial Times and The Business Times, plus Nikkei Asia, Asia Insurance Review, InsuranceERM and Channel NewsAsia.
+
+The offline plan is six searches (English and Chinese for each configuration), at most ten candidates per search and one no-tool Top-10 summarization request, with no automatic retries:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_poc.py --rule config/rules/asia-executive-news.json
+```
+
+A specifically authorized live run adds `--execute-live`. It writes `search-results.json`, normalized `all-news.json`, `brief.json` and `brief.md`. `all-news.json` retains in-window, out-of-window and unknown-date cited candidates from that run; only `in_window` candidates are eligible for the final brief. URL-shape diagnostics label each candidate as `specific_article`, `listing_page`, `homepage`, or `unknown`: specific articles rank ahead of comparable listing/homepage evidence, while listing/homepage candidates remain auditable but cannot retain High attention. The brief contains English summaries, attention level and rationale, topic and signal type, plus separate AIA impact assessments for business/competitive, capital/RBC/solvency and investors. Public Web Search cannot cover non-public regulator engagement or feedback, and native citation matching or URL-shape classification is not independent article verification.
+
 Smart Nudge 是一个面向 AIA Group CEO 的公开 Web 情报演示 PoC。它只展示两个核心能力：
 
 1. 按版本化 Rule Pack 使用 Foundry Responses API 的 `web_search` 工具，并绑定现有 Bing Custom Search configuration 来搜索香港、澳门或中国大陆官方站点。

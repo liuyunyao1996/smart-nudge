@@ -1,5 +1,23 @@
 # Smart Nudge PoC architecture
 
+## Optional Asia executive-news branch
+
+The `asia_executive_news` Rule Pack workflow extends only the Custom Bing branch. A query references one of three versioned configuration records, and the runtime binds that query to the matching Bing instance and host allowlist. Foundry Agent search is rejected before any request for this workflow.
+
+```text
+3 Custom Bing configurations x 2 languages
+    -> up to 60 normalized, natively cited candidates
+    -> URL deduplication and local freshness classification
+    -> all-news.json (in-window + out-of-window + unknown date)
+    -> in-window candidates only
+    -> one no-tool English Top-10 curation request
+    -> brief.json + brief.md
+```
+
+The source catalogue records `source_tier` (`primary` or `authoritative_media`), `source_type`, and source market for every host. The search model supplies candidate market, entities, topic and signal type; local code attaches the configured source metadata and rejects URLs outside the active configuration. The final schema requires attention level/reason and three structured AIA impact dimensions, each with `direct`, `potential`, `not_established`, or `not_applicable` status.
+
+Freshness is intentionally asymmetric: all normalized candidates remain visible in `all-news.json`, while a missing or out-of-window publication date makes a candidate ineligible for summarization. URL quality is intentionally non-destructive: URL shape classifies citations as `specific_article`, `listing_page`, `homepage`, or `unknown`; specific articles receive ranking preference, and listing/homepage-only evidence cannot retain High attention, but candidates remain auditable. These are local eligibility and ranking rules, not independent verification of the model-returned date or page content. The workflow remains subject to the existing native URL citation boundary and does not fetch original pages.
+
 更新日期：2026-09-16（Asia/Shanghai）。
 
 ## Runtime flow

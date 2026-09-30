@@ -1,0 +1,231 @@
+{
+  "schema_version": "1.2.0",
+  "workflow": "asia_executive_news",
+  "rule_id": "asia-executive-news",
+  "version": "1.1.0",
+  "name": "Asia Insurance Executive News",
+  "bing": {
+    "configurations": [
+      {
+        "configuration_id": "regulatory-official",
+        "instance_name": "asia-news-regulatory-official",
+        "source_tier": "primary",
+        "sources": [
+          {"host": "www.iais.org", "source_type": "international_body", "market": "asia"},
+          {"host": "www.imf.org", "source_type": "international_body", "market": "asia"},
+          {"host": "www.adb.org", "source_type": "international_body", "market": "asia"},
+          {"host": "www.bis.org", "source_type": "international_body", "market": "asia"},
+          {"host": "www.fsb.org", "source_type": "international_body", "market": "asia"},
+          {"host": "www.fatf-gafi.org", "source_type": "international_body", "market": "asia"},
+          {"host": "www.ifrs.org", "source_type": "international_body", "market": "asia"},
+          {"host": "www.ia.org.hk", "source_type": "regulator", "market": "hong_kong"},
+          {"host": "www.hkma.gov.hk", "source_type": "central_bank", "market": "hong_kong"},
+          {"host": "www.sfc.hk", "source_type": "regulator", "market": "hong_kong"},
+          {"host": "apps.sfc.hk", "source_type": "regulator", "market": "hong_kong"},
+          {"host": "www.fstb.gov.hk", "source_type": "government", "market": "hong_kong"},
+          {"host": "www.gov.hk", "source_type": "government", "market": "hong_kong"},
+          {"host": "www.gld.gov.hk", "source_type": "government", "market": "hong_kong"},
+          {"host": "www.pcpd.org.hk", "source_type": "regulator", "market": "hong_kong"},
+          {"host": "www.nfra.gov.cn", "source_type": "regulator", "market": "mainland_china"},
+          {"host": "www.pbc.gov.cn", "source_type": "central_bank", "market": "mainland_china"},
+          {"host": "www.safe.gov.cn", "source_type": "regulator", "market": "mainland_china"},
+          {"host": "www.csrc.gov.cn", "source_type": "regulator", "market": "mainland_china"},
+          {"host": "www.cac.gov.cn", "source_type": "regulator", "market": "mainland_china"},
+          {"host": "www.samr.gov.cn", "source_type": "regulator", "market": "mainland_china"},
+          {"host": "www.stats.gov.cn", "source_type": "government", "market": "mainland_china"},
+          {"host": "www.gov.cn", "source_type": "government", "market": "mainland_china"},
+          {"host": "www.mas.gov.sg", "source_type": "regulator", "market": "singapore"},
+          {"host": "www.pdpc.gov.sg", "source_type": "regulator", "market": "singapore"},
+          {"host": "www.mof.gov.sg", "source_type": "government", "market": "singapore"},
+          {"host": "www.mti.gov.sg", "source_type": "government", "market": "singapore"},
+          {"host": "www.singstat.gov.sg", "source_type": "government", "market": "singapore"},
+          {"host": "sso.agc.gov.sg", "source_type": "government", "market": "singapore"},
+          {"host": "www.oic.or.th", "source_type": "regulator", "market": "thailand"},
+          {"host": "cit.oic.or.th", "source_type": "regulator", "market": "thailand"},
+          {"host": "www.bot.or.th", "source_type": "central_bank", "market": "thailand"},
+          {"host": "www.sec.or.th", "source_type": "regulator", "market": "thailand"},
+          {"host": "www.mof.go.th", "source_type": "government", "market": "thailand"},
+          {"host": "ratchakitcha.soc.go.th", "source_type": "government", "market": "thailand"},
+          {"host": "www.fsc.gov.tw", "source_type": "regulator", "market": "taiwan"},
+          {"host": "www.ib.gov.tw", "source_type": "regulator", "market": "taiwan"},
+          {"host": "www.cbc.gov.tw", "source_type": "central_bank", "market": "taiwan"},
+          {"host": "gazette.nat.gov.tw", "source_type": "government", "market": "taiwan"},
+          {"host": "irdai.gov.in", "source_type": "regulator", "market": "india"},
+          {"host": "www.rbi.org.in", "source_type": "central_bank", "market": "india"},
+          {"host": "www.sebi.gov.in", "source_type": "regulator", "market": "india"},
+          {"host": "ifsca.gov.in", "source_type": "regulator", "market": "india"},
+          {"host": "financialservices.gov.in", "source_type": "government", "market": "india"},
+          {"host": "www.pib.gov.in", "source_type": "government", "market": "india"},
+          {"host": "egazette.nic.in", "source_type": "government", "market": "india"},
+          {"host": "www.insurance.gov.ph", "source_type": "regulator", "market": "philippines"},
+          {"host": "www.bsp.gov.ph", "source_type": "central_bank", "market": "philippines"},
+          {"host": "www.sec.gov.ph", "source_type": "regulator", "market": "philippines"},
+          {"host": "www.dof.gov.ph", "source_type": "government", "market": "philippines"},
+          {"host": "www.officialgazette.gov.ph", "source_type": "government", "market": "philippines"},
+          {"host": "privacy.gov.ph", "source_type": "regulator", "market": "philippines"}
+        ]
+      },
+      {
+        "configuration_id": "corporate-exchange",
+        "instance_name": "asia-news-corporate-exchange",
+        "source_tier": "primary",
+        "sources": [
+          {"host": "www.aia.com", "source_type": "company", "market": "asia"},
+          {"host": "aia.gcs-web.com", "source_type": "company", "market": "asia"},
+          {"host": "www.aia.com.hk", "source_type": "company", "market": "hong_kong"},
+          {"host": "www.aia.com.sg", "source_type": "company", "market": "singapore"},
+          {"host": "www.aia.co.th", "source_type": "company", "market": "thailand"},
+          {"host": "www.aia.com.tw", "source_type": "company", "market": "taiwan"},
+          {"host": "www.aia.com.ph", "source_type": "company", "market": "philippines"},
+          {"host": "www.tataaia.com", "source_type": "company", "market": "india"},
+          {"host": "www.axa.com", "source_type": "company", "market": "global"},
+          {"host": "www.manulife.com", "source_type": "company", "market": "asia"},
+          {"host": "group.pingan.com", "source_type": "company", "market": "mainland_china"},
+          {"host": "www.fwd.com", "source_type": "company", "market": "asia"},
+          {"host": "www.sunlife.com", "source_type": "company", "market": "asia"},
+          {"host": "www.prudentialplc.com", "source_type": "company", "market": "asia"},
+          {"host": "www.hkexnews.hk", "source_type": "exchange", "market": "hong_kong"},
+          {"host": "www1.hkexnews.hk", "source_type": "exchange", "market": "hong_kong"},
+          {"host": "www2.hkexnews.hk", "source_type": "exchange", "market": "hong_kong"},
+          {"host": "www.hkex.com.hk", "source_type": "exchange", "market": "hong_kong"},
+          {"host": "www.sgx.com", "source_type": "exchange", "market": "singapore"},
+          {"host": "www.set.or.th", "source_type": "exchange", "market": "thailand"},
+          {"host": "www.twse.com.tw", "source_type": "exchange", "market": "taiwan"},
+          {"host": "mops.twse.com.tw", "source_type": "exchange", "market": "taiwan"},
+          {"host": "www.nseindia.com", "source_type": "exchange", "market": "india"},
+          {"host": "www.bseindia.com", "source_type": "exchange", "market": "india"},
+          {"host": "edge.pse.com.ph", "source_type": "exchange", "market": "philippines"},
+          {"host": "www.sse.com.cn", "source_type": "exchange", "market": "mainland_china"},
+          {"host": "www.szse.cn", "source_type": "exchange", "market": "mainland_china"},
+          {"host": "www.hkfi.org.hk", "source_type": "association", "market": "hong_kong"},
+          {"host": "www.lia.org.sg", "source_type": "association", "market": "singapore"},
+          {"host": "www.tlaa.org", "source_type": "association", "market": "thailand"},
+          {"host": "lifeinscouncil.org", "source_type": "association", "market": "india"},
+          {"host": "www.plia.org.ph", "source_type": "association", "market": "philippines"},
+          {"host": "www.mdrt.org", "source_type": "association", "market": "global"}
+        ]
+      },
+      {
+        "configuration_id": "authoritative-media",
+        "instance_name": "asia-news-authoritative-media",
+        "source_tier": "authoritative_media",
+        "sources": [
+          {"host": "news.mingpao.com", "source_type": "media", "market": "hong_kong"},
+          {"host": "orientaldaily.on.cc", "source_type": "media", "market": "hong_kong"},
+          {"host": "news.rthk.hk", "source_type": "public_media", "market": "hong_kong"},
+          {"host": "www.bastillepost.com", "source_type": "media", "market": "hong_kong"},
+          {"host": "www.etnet.com.hk", "source_type": "media", "market": "hong_kong"},
+          {"host": "www.hk01.com", "source_type": "media", "market": "hong_kong"},
+          {"host": "global.hk01.com", "source_type": "media", "market": "hong_kong"},
+          {"host": "zh.hk01.com", "source_type": "media", "market": "hong_kong"},
+          {"host": "insuranceasianews.com", "source_type": "media", "market": "asia"},
+          {"host": "www.xinhuanet.com", "source_type": "state_media", "market": "mainland_china"},
+          {"host": "www.news.cn", "source_type": "state_media", "market": "mainland_china"},
+          {"host": "www.scmp.com", "source_type": "media", "market": "greater_china"},
+          {"host": "www.bloomberg.com", "source_type": "media", "market": "global"},
+          {"host": "www.reuters.com", "source_type": "media", "market": "global"},
+          {"host": "www.ft.com", "source_type": "media", "market": "global"},
+          {"host": "www.businesstimes.com.sg", "source_type": "media", "market": "singapore"},
+          {"host": "asia.nikkei.com", "source_type": "media", "market": "asia"},
+          {"host": "www.asiainsurancereview.com", "source_type": "media", "market": "asia"},
+          {"host": "www.insuranceerm.com", "source_type": "media", "market": "global"},
+          {"host": "www.channelnewsasia.com", "source_type": "media", "market": "asia"}
+        ]
+      }
+    ]
+  },
+  "search": {
+    "default_topic": "Material Asia insurance developments affecting AIA, its markets, competitors, regulation, capital, solvency or investors",
+    "default_days": 14,
+    "results_per_query": 10,
+    "queries": [
+      {
+        "query_id": "regulatory-official-en",
+        "configuration_id": "regulatory-official",
+        "language": "English",
+        "market": "asia",
+        "set_lang": "en",
+        "template": "{topic}; Hong Kong China Singapore Thailand Taiwan India Philippines; insurance regulation enforcement consultation policy risk capital RBC solvency commission medical repricing technology operational risk; from {date_from} to {date_to}"
+      },
+      {
+        "query_id": "regulatory-official-zh",
+        "configuration_id": "regulatory-official",
+        "language": "Chinese",
+        "market": "asia",
+        "set_lang": "zh-hans",
+        "template": "{topic}；香港 中国内地 新加坡 泰国 台湾 印度 菲律宾；保险 监管 执法 征求意见 政策 风险 资本 偿付能力 RBC 佣金 医疗调价 科技风险 营运风险；{date_from} 至 {date_to}"
+      },
+      {
+        "query_id": "corporate-exchange-en",
+        "configuration_id": "corporate-exchange",
+        "language": "English",
+        "market": "asia",
+        "set_lang": "en",
+        "template": "{topic}; AIA AXA Manulife Ping An FWD Sun Life Prudential; partnership acquisition market entry exit product distribution channel leadership capital results southbound investment; Hong Kong China Singapore Thailand Taiwan India Philippines; from {date_from} to {date_to}"
+      },
+      {
+        "query_id": "corporate-exchange-zh",
+        "configuration_id": "corporate-exchange",
+        "language": "Chinese",
+        "market": "asia",
+        "set_lang": "zh-hans",
+        "template": "{topic}；友邦 安盛 宏利 中国平安 富卫 永明 保诚；合作 收购 市场进入 退出 产品 分销 渠道 管理层 资本 业绩 南向资金；香港 中国内地 新加坡 泰国 台湾 印度 菲律宾；{date_from} 至 {date_to}"
+      },
+      {
+        "query_id": "authoritative-media-en",
+        "configuration_id": "authoritative-media",
+        "language": "English",
+        "market": "asia",
+        "set_lang": "en",
+        "template": "{topic}; AIA Asia insurance regulation enforcement competitors products partnerships leadership investment interest rates geopolitics; Hong Kong China Singapore Thailand Taiwan India Philippines; from {date_from} to {date_to}"
+      },
+      {
+        "query_id": "authoritative-media-zh",
+        "configuration_id": "authoritative-media",
+        "language": "Chinese",
+        "market": "asia",
+        "set_lang": "zh-hans",
+        "template": "{topic}；友邦 亚洲保险 监管 执法 竞争对手 产品 合作 管理层 投资 利率 地缘政治；香港 中国内地 新加坡 泰国 台湾 印度 菲律宾；{date_from} 至 {date_to}"
+      }
+    ],
+    "inclusion_rules": [
+      "Include material developments concerning AIA, insurance regulators, major competitors, market structure, products, distribution, capital, solvency, investors, financial risk, operational risk or technology risk.",
+      "Cover Hong Kong, Mainland China, Singapore, Thailand, Taiwan, India and the Philippines; include regional or global developments only when a plausible transmission path to AIA or those markets is stated.",
+      "Retain a candidate even when its publication date is outside the requested window or unknown; local logic decides final eligibility.",
+      "Prefer the specific article, release, filing, circular or notice URL over a home page or listing page."
+    ],
+    "exclusion_rules": [
+      "Exclude advertising, sponsored content, generic consumer advice, duplicate syndication and unrelated uses of company names.",
+      "Exclude routine small-competitor news unless it signals a meaningful market, product, channel, capital or regulatory shift.",
+      "Exclude general macro news without an explicit insurance-market or AIA transmission path.",
+      "Do not claim private regulator engagement, unpublished feedback, or facts not supported by a native cited source."
+    ]
+  },
+  "summarization": {
+    "output_language": "English",
+    "audience": "AIA Group CEO and senior executives",
+    "max_items": 10,
+    "ranking_rules": [
+      "Rank major AIA events first, including material partnerships, acquisitions, distribution moves, leadership changes, capital events and market expansion.",
+      "Next prioritize directly applicable final regulation, enforcement and material supervisory changes in AIA markets.",
+      "Then prioritize structural moves by AXA, Manulife, Ping An, FWD, Sun Life, Prudential and other major competitors: market entry or exit, products, channels, partnerships, capital and regional leadership.",
+      "Include macro or geopolitical developments only when the supplied source notes establish an explicit transmission path to AIA business, capital, solvency or investors.",
+      "Rank candidates with specific article or release URLs above otherwise comparable homepage, category-page or listing-page citations.",
+      "Use homepage or listing-page candidates only when they are materially relevant and no stronger article-level candidate covers the same development.",
+      "Deprioritize small competitors, routine announcements, repeated coverage and broad daily market commentary."
+    ],
+    "attention_rules": [
+      "High: a major AIA event, directly binding final rule or enforcement, or structural competitor move with credible material impact.",
+      "Medium: a consultation, guidance, emerging risk or competitor move with a plausible but not yet direct material impact.",
+      "Low: useful monitoring context whose impact is limited, indirect or uncertain.",
+      "A candidate supported only by a homepage or listing-page citation cannot receive High attention.",
+      "Unclear applicability must not receive High attention."
+    ],
+    "writing_rules": [
+      "Write concise neutral executive English and distinguish facts from implications.",
+      "Do not invent legal applicability, financial magnitude, implementation dates or causal impact.",
+      "For every impact dimension use not_established when the supplied notes do not support a conclusion, and not_applicable only when the dimension is clearly irrelevant.",
+      "Avoid repeating the same event merely because multiple sources covered it."
+    ]
+  }
+}

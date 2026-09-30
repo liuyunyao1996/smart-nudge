@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smart-nudge.local/schemas/poc-all-news.schema.json",
+  "title": "Smart Nudge normalized Asia news candidates",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "status", "generated_at", "rule", "search", "topic", "window", "counts", "items", "warnings", "disclaimer", "raw_response_retained"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "run_id": {"type": "string"},
+    "status": {"enum": ["completed", "partial", "failed"]},
+    "generated_at": {"type": "string"},
+    "rule": {"type": "object"},
+    "search": {"type": "object"},
+    "topic": {"type": "string"},
+    "window": {"type": "object"},
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "in_window", "out_of_window", "unknown_date", "eligible_for_brief"],
+      "properties": {
+        "total": {"type": "integer", "minimum": 0},
+        "in_window": {"type": "integer", "minimum": 0},
+        "out_of_window": {"type": "integer", "minimum": 0},
+        "unknown_date": {"type": "integer", "minimum": 0},
+        "eligible_for_brief": {"type": "integer", "minimum": 0}
+      }
+    },
+    "items": {"type": "array", "items": {"$ref": "#/$defs/item"}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "disclaimer": {"type": "string"},
+    "raw_response_retained": {"const": false}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1},
+    "source_link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "title", "configuration_id", "source_tier", "source_type", "market", "url_specificity"],
+      "properties": {
+        "url": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "title": {"$ref": "#/$defs/text"},
+        "configuration_id": {"$ref": "#/$defs/text"},
+        "source_tier": {"enum": ["primary", "authoritative_media"]},
+        "source_type": {"enum": ["regulator", "government", "central_bank", "exchange", "company", "association", "international_body", "public_media", "state_media", "media"]},
+        "market": {"$ref": "#/$defs/text"},
+        "url_specificity": {"enum": ["specific_article", "listing_page", "homepage", "unknown"]}
+      }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_item_id", "title", "publisher", "published_date", "grounded_note", "query_ids", "languages", "source_links", "configuration_id", "source_tier", "source_type", "source_market", "market", "entities", "topic", "signal_type", "url_specificity", "source_quality_note", "freshness_status", "eligible_for_brief", "ineligibility_reason"],
+      "properties": {
+        "source_item_id": {"type": "string", "pattern": "^src-[a-f0-9]{12}$"},
+        "title": {"$ref": "#/$defs/text"},
+        "publisher": {"$ref": "#/$defs/text"},
+        "published_date": {"type": ["string", "null"]},
+        "grounded_note": {"$ref": "#/$defs/text"},
+        "query_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+        "languages": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+        "source_links": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source_link"}},
+        "configuration_id": {"$ref": "#/$defs/text"},
+        "source_tier": {"enum": ["primary", "authoritative_media"]},
+        "source_type": {"enum": ["regulator", "government", "central_bank", "exchange", "company", "association", "international_body", "public_media", "state_media", "media"]},
+        "source_market": {"$ref": "#/$defs/text"},
+        "market": {"$ref": "#/$defs/text"},
+        "entities": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+        "topic": {"enum": ["external_environment", "government_regulatory"]},
+        "signal_type": {"enum": ["aia_major_news", "final_rule", "enforcement", "consultation", "guidance", "competitor_market_move", "product_distribution", "leadership_change", "macro_market", "technology_operational_risk", "informational"]},
+        "url_specificity": {"enum": ["specific_article", "listing_page", "homepage", "unknown"]},
+        "source_quality_note": {"$ref": "#/$defs/text"},
+        "freshness_status": {"enum": ["in_window", "out_of_window", "unknown"]},
+        "eligible_for_brief": {"type": "boolean"},
+        "ineligibility_reason": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

@@ -1,5 +1,16 @@
 # Smart Nudge：当前进度与交接
 
+## 2026-09-30 update: optional Asia executive-news workflow
+
+- Added `config/rules/asia-executive-news.json` as an opt-in workflow on the Custom Bing path only. The default remains `hk-regulatory-pulse.json`; legacy regional Rule Packs and the Foundry Agent path are unchanged.
+- The rule targets three user-managed Custom Bing instances: `asia-news-regulatory-official`, `asia-news-corporate-exchange`, and `asia-news-authoritative-media`. No cloud resources or configurations were created or changed by this implementation.
+- One run plans six searches (English and Chinese for each instance), accepts at most ten candidates per search, performs URL deduplication, and makes at most one no-tool Top-10 curation request. There are no automatic retries.
+- `search-results.json` remains the technical audit artifact. The new `all-news.json` contains normalized cited candidates from the current run and labels them `in_window`, `out_of_window`, or `unknown`; only `in_window` candidates can reach `brief.json` and `brief.md`.
+- The executive brief is English-only and includes attention level/reason, topic, signal type, and structured AIA impact for business/competitive, capital/RBC/solvency, and investors.
+- The source catalogue explicitly includes all user-named media domains (Ming Pao, Oriental Daily, RTHK, Bastille Post, ETNet, HK01, InsuranceAsia News, Xinhua, SCMP, Bloomberg, Reuters, Financial Times and The Business Times) plus selected additional authoritative media. Primary official sources cover Hong Kong, Mainland China, Singapore, Thailand, Taiwan, India, and the Philippines.
+- The first authorized live run completed on 2026-09-30 as `poc-20260930T055234Z-252d43`: all six searches and the summary succeeded, producing 33 deduplicated candidates, 20 in-window candidates and a Top-10 brief. The brief status was `partial` only because one unsupported High attention label was locally downgraded. The run used 202,463 known model tokens; native citation matching still does not independently verify page content.
+- After that v1.0.0 live run, the Asia Rule Pack was advanced to v1.1.0 with article-specific URL preference. A second authorized live run, `poc-20260930T062245Z-169357`, completed all six searches and the summary: 33 deduplicated candidates, 27 in-window candidates and a Top-10 brief whose selected sources were all `specific_article`. It used 244,545 known model tokens. No listing/homepage candidate was returned, so live downgrade behavior was not exercised; offline tests cover it. Ten InsuranceAsia News root-level slug URLs were conservatively classified as `unknown` despite appearing article-like, identifying a possible classifier refinement. The run also filtered `www.ifsca.gov.in` and `cbr.irdai.gov.in` as unconfigured subdomains. No third live run was made.
+
 更新日期：2026-09-16（Asia/Shanghai）。项目已从严格的 P0–P4 研究／核验体系重构为轻量演示 PoC，默认路径只保留 rule-based web search 和 rule-based summarization。
 
 ## 当前实现

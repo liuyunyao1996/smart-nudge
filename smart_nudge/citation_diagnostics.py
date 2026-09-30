@@ -9,7 +9,9 @@ from urllib.parse import urlsplit, urlunsplit
 LIMIT = 100
 
 
-def build_citation_diagnostics(body, allowed_hosts, canonicalize, *, use_annotations):
+def build_citation_diagnostics(
+    body, allowed_hosts, canonicalize, *, use_annotations, expected_schema_version="1.0.0"
+):
     allowed = set(allowed_hosts)
     native = set()
     references = []
@@ -139,7 +141,10 @@ def build_citation_diagnostics(body, allowed_hosts, canonicalize, *, use_annotat
         "object": isinstance(document, dict),
         "required_fields_present": {name: isinstance(document, dict) and name in document for name in sorted(expected_fields)},
         "unexpected_field_count": len(set(document) - expected_fields) if isinstance(document, dict) else 0,
-        "schema_version_valid": isinstance(document, dict) and document.get("schema_version") == "1.0.0",
+        "schema_version_valid": (
+            isinstance(document, dict)
+            and document.get("schema_version") == expected_schema_version
+        ),
         "coverage_status_valid": isinstance(document, dict) and document.get("coverage_status") in ("checked", "partial", "unavailable"),
         "items_array": isinstance(items, list),
     }

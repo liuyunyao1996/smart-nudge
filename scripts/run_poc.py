@@ -102,12 +102,15 @@ def _dry_run(
     else:
         planned_queries = [
             {
-                "query_id": query.query_id,
-                "language": query.language,
-                "market": query.market,
-                "query": query.text,
+                "query_id": task.query.query_id,
+                "configuration_id": task.configuration_id,
+                "custom_configuration": rule.bing_configuration(task.configuration_id)["instance_name"],
+                "language": task.query.language,
+                "market": task.query.market,
+                "target_hosts": list(task.allowed_hosts),
+                "query": task.query.text,
             }
-            for query in queries
+            for task in tasks
         ]
     return {
         "ok": True,
@@ -115,6 +118,7 @@ def _dry_run(
         "message": "Configuration is valid. Add --execute-live to issue external requests.",
         "rule": {"rule_id": rule.rule_id, "version": rule.version, "sha256": rule.sha256},
         "search_approach": search_approach,
+        "workflow": rule.workflow,
         "topic": selected_topic,
         "days": selected_days,
         "allowed_hosts": list(rule.allowed_hosts),
@@ -141,6 +145,11 @@ def main(argv=None) -> int:
     args = _parser().parse_args(argv)
     try:
         rule = RulePack.load(_rule_path(args.rule), ROOT)
+        if rule.is_asia_executive_news and args.search_approach != CUSTOM_BING_APPROACH:
+            raise PocError(
+                "configuration",
+                "The Asia executive news Rule Pack is available only on the Custom Bing path.",
+            )
         if not args.execute_live:
             print(
                 json.dumps(
@@ -153,7 +162,7 @@ def main(argv=None) -> int:
 
         foundry = FoundryConfig.load(ROOT / ".env")
         search_config = (
-            BingConfig.load(ROOT / ".env", rule, foundry)
+            BingConfig.load_all(ROOT / ".env", rule, foundry)
             if args.search_approach == CUSTOM_BING_APPROACH
             else AgentSearchConfig.load(ROOT / ".env", rule)
         )
@@ -165,6 +174,11 @@ def main(argv=None) -> int:
             run_directory / "search-results.json",
             json.dumps(run.search_results, ensure_ascii=False, indent=2) + "\n",
         )
+        if run.all_news is not None:
+            _write_atomic(
+                run_directory / "all-news.json",
+                json.dumps(run.all_news, ensure_ascii=False, indent=2) + "\n",
+            )
         if not run.ok:
             error = {
                 "ok": False,
