@@ -1,0 +1,1165 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "poc-20261002T023906Z-f5a056",
+  "status": "completed",
+  "generated_at": "2026-10-02T02:41:49.197877+00:00",
+  "rule": {
+    "rule_id": "asia-executive-news",
+    "version": "1.2.0",
+    "sha256": "2fdca05926a90dc7f59f30980407b5a9148ee5fa676cab5f66f54461b58604cd"
+  },
+  "search": {
+    "approach": "custom-bing",
+    "custom_configurations": [
+      {
+        "configuration_id": "regulatory-official",
+        "instance_name": "asia-news-regulatory-official"
+      },
+      {
+        "configuration_id": "corporate-exchange",
+        "instance_name": "asia-news-corporate-exchange"
+      },
+      {
+        "configuration_id": "authoritative-media",
+        "instance_name": "asia-news-authoritative-media"
+      }
+    ]
+  },
+  "topic": "Material Asia insurance developments affecting AIA, its markets, competitors, regulation, capital, solvency or investors",
+  "window": {
+    "start_date": "2026-09-28",
+    "end_date": "2026-10-02",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "counts": {
+    "total": 27,
+    "in_window": 10,
+    "out_of_window": 8,
+    "unknown_date": 9,
+    "eligible_for_brief": 10
+  },
+  "items": [
+    {
+      "source_item_id": "src-883cbca364c7",
+      "title": "MAS bans four former insurance representatives over misconduct",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-02",
+      "grounded_note": "Singapore's Monetary Authority imposed prohibition orders of four to 10 years on four former representatives of AXA Insurance, Manulife Financial Advisers and DBS Bank following convictions involving cheating, forgery or computer-related offences. The action signals continued enforcement scrutiny over intermediary conduct.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97085",
+          "title": "MAS bans four former insurance representatives over misconduct",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Singapore",
+      "entities": [
+        "Monetary Authority of Singapore",
+        "AXA Insurance",
+        "Manulife Financial Advisers",
+        "DBS Bank"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "enforcement",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-9103cd53d08b",
+      "title": "China insurance-law revision codifies risk-resolution measures",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-02",
+      "grounded_note": "China's National Financial Regulatory Administration reportedly opened a new channel for insurers to invest through Hong Kong-listed ETFs. The development may affect insurer asset allocation and cross-border investment access; detailed eligibility and capital-treatment terms were not available in the retrieved listing.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News",
+          "title": "China insurance-law revision codifies risk-resolution measures",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "listing_page"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Mainland China",
+      "entities": [
+        "Chinese insurance authorities"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "url_specificity": "listing_page",
+      "source_quality_note": "Native citations appear to target a listing or category page; rank below comparable article-level evidence.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-844cbe3e5c62",
+      "title": "Thailand floods and Typhoon Dujuan test flood cover and business-interruption exposure",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-01",
+      "grounded_note": "Loss adjusters said extreme rainfall is becoming a major Asian loss driver, with Thailand flooding generating motor, property and business-interruption claims. The event highlights catastrophe accumulation, claims and pricing risks in an AIA market.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/thailand-floods-typhoon-dujuan-test-asias-flood-cover-and-business-interruption-exposure/",
+          "title": "Thailand floods and Typhoon Dujuan test flood cover and business-interruption exposure",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Thailand",
+      "entities": [
+        "Charles Taylor Adjusting",
+        "McLarens",
+        "Sedgwick"
+      ],
+      "topic": "external_environment",
+      "signal_type": "technology_operational_risk",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-6b4746064517",
+      "title": "Simon Global launches Singapore-based reinsurance broker",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-01",
+      "grounded_note": "Simon Global launched SG Re following registration with the Monetary Authority of Singapore. The broker will focus on treaty reinsurance across Asia, particularly Japan, South Korea and Southeast Asia, adding capacity and competition to Singapore's regional reinsurance-distribution market.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/country/singapore/",
+          "title": "Simon Global launches Singapore-based reinsurance broker",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Singapore",
+      "entities": [
+        "Simon Global Insurance",
+        "SG Re",
+        "Monetary Authority of Singapore"
+      ],
+      "topic": "external_environment",
+      "signal_type": "competitor_market_move",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-977af2416d46",
+      "title": "Allianz Insurance Singapore appoints Bi Ying Ong as CEO",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-01",
+      "grounded_note": "Allianz Insurance Singapore named chief operating officer Bi Ying Ong to succeed Hicham Raissi as CEO after Raissi moved to Great Eastern. The simultaneous leadership changes affect two significant Singapore competitors.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/bi-ying-ong-to-succeed-hicham-raissi-as-allianz-singapore-ceo/",
+          "title": "Allianz Insurance Singapore appoints Bi Ying Ong as CEO",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Singapore",
+      "entities": [
+        "Allianz Insurance Singapore",
+        "Bi Ying Ong",
+        "Hicham Raissi",
+        "Great Eastern"
+      ],
+      "topic": "external_environment",
+      "signal_type": "leadership_change",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-6ae4a6836e1e",
+      "title": "Marsh appoints Derek Heng as ASEAN CEO and Peta Latimer as Singapore CEO",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-09-30",
+      "grounded_note": "Marsh promoted Thailand CEO Derek Heng to ASEAN CEO while appointing Peta Latimer to lead Singapore. The changes consolidate regional leadership at a major insurance broker operating across core AIA markets.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/country/thailand/",
+          "title": "Marsh appoints Derek Heng as ASEAN CEO and Peta Latimer as Singapore CEO",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Thailand",
+      "entities": [
+        "Marsh",
+        "Derek Heng",
+        "Peta Latimer"
+      ],
+      "topic": "external_environment",
+      "signal_type": "leadership_change",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-9ed7694d19af",
+      "title": "Japan's Asahi Life aims to hire 1,000 Vietnam staff with acquisition",
+      "publisher": "Nikkei Asia",
+      "published_date": "2026-09-30",
+      "grounded_note": "Nikkei Asia reported that Asahi Life plans to use an acquisition to build a roughly 1,000-person workforce in Vietnam and offer health insurance through dual sales channels. Although Vietnam is outside the requested core markets, the move indicates intensifying life- and health-insurance competition and distribution investment in Southeast Asia, where AIA has substantial operations.",
+      "query_ids": [
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://asia.nikkei.com/business/insurance",
+          "title": "Japan's Asahi Life aims to hire 1,000 Vietnam staff with acquisition",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Regional Asia",
+      "entities": [
+        "Asahi Life"
+      ],
+      "topic": "external_environment",
+      "signal_type": "competitor_market_move",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-85eb78fa68cc",
+      "title": "China bans online financial promotions by private brokers",
+      "publisher": "South China Morning Post",
+      "published_date": "2026-09-30",
+      "grounded_note": "China introduced rules limiting online financial marketing to financial institutions and eligible third-party internet platforms. The restrictions are relevant to insurers’ digital acquisition, intermediary oversight and distribution compliance in Mainland China, including the controls required when marketing insurance and wealth products online.",
+      "query_ids": [
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.scmp.com/topics/financial-regulation",
+          "title": "China bans online financial promotions by private brokers",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "greater_china",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "greater_china",
+      "market": "Mainland China",
+      "entities": [
+        "Chinese financial regulators",
+        "Financial institutions",
+        "Third-party internet platforms",
+        "Private brokers"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-1095477f6c03",
+      "title": "AIA Group lists CNY1 billion of 2.88% subordinated dated securities due 2036 on HKEX",
+      "publisher": "HKEXnews",
+      "published_date": "2026-09-30",
+      "grounded_note": "HKEXnews recorded AIA Group's formal notice for listing CNY1,000,000,000 of 2.88% subordinated dated securities due 2036. The securities are to consolidate with AIA's existing CNY2.5 billion and CNY500 million securities of the same series under its US$18 billion Global Medium Term Note and Securities Programme. This is a capital-market development directly relevant to AIA investors and its financing structure.",
+      "query_ids": [
+        "corporate-exchange-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www1.hkexnews.hk/search/titlesearch.xhtml?category=0&market=SEHK&stockId=54299",
+          "title": "AIA Group lists CNY1 billion of 2.88% subordinated dated securities due 2036 on HKEX",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "exchange",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "corporate-exchange",
+      "source_tier": "primary",
+      "source_type": "exchange",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "AIA Group Limited",
+        "The Stock Exchange of Hong Kong Limited",
+        "HKEX"
+      ],
+      "topic": "external_environment",
+      "signal_type": "aia_major_news",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-ea785943f209",
+      "title": "India's US$1.5 billion marine risk pool surpasses 3,000 cargo war policies",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-09-28",
+      "grounded_note": "India's Bharat Maritime Insurance Pool has written more than 3,000 cargo war policies since its May launch and has also issued 92 hull war-risk policies and three protection-and-indemnity policies. The sovereign-backed pool materially expands domestic capacity amid Middle East conflict and disrupted shipping routes.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/indias-us1-5bn-marine-risk-pool-surpasses-3000-cargo-war-policies/",
+          "title": "India's US$1.5 billion marine risk pool surpasses 3,000 cargo war policies",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "India",
+      "entities": [
+        "Bharat Maritime Insurance Pool",
+        "GIC",
+        "Indian government"
+      ],
+      "topic": "external_environment",
+      "signal_type": "product_distribution",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-16be75b62fc7",
+      "title": "IRDAI proposes tighter controls on insurance distribution costs",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-09-25",
+      "grounded_note": "India's insurance regulator proposed limits on distribution costs and commissions as part of a broader overhaul intended to reduce insurance costs and strengthen policyholder safeguards. Although published before the requested window, the proposal is material to insurer economics and agency or intermediary distribution models.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97016",
+          "title": "IRDAI proposes tighter controls on insurance distribution costs",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "India",
+      "entities": [
+        "Insurance Regulatory and Development Authority of India"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-724fd2c30d63",
+      "title": "Prudential Singapore CEO moves to Eastspring; interim CEO takes office on 28 September 2026",
+      "publisher": "Prudential plc",
+      "published_date": "2026-09-24",
+      "grounded_note": "Chan San San moved from CEO of Prudential Singapore to the newly created role of Chief Partnership Officer at Eastspring Investments effective 28 September 2026. Former Prudential Singapore CFO Andreas Rosenthal became interim CEO on the same date. Prudential said the Eastspring role will strengthen links between its life insurance and asset-management businesses and support Asian investment, wealth and retirement solutions.",
+      "query_ids": [
+        "corporate-exchange-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.prudentialplc.com/en/newsroom/company-news/2026/Prudential-Singapore-CEO-Chan-San-San-takes-up-new-role-at-Eastspring-Investments/",
+          "title": "Prudential Singapore CEO moves to Eastspring; interim CEO takes office on 28 September 2026",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "corporate-exchange",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "asia",
+      "market": "Singapore",
+      "entities": [
+        "Prudential plc",
+        "Prudential Singapore",
+        "Eastspring Investments",
+        "Chan San San",
+        "Andreas Rosenthal"
+      ],
+      "topic": "external_environment",
+      "signal_type": "leadership_change",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-174c3e084fcb",
+      "title": "Prudential appoints regional CEO with responsibility for the Philippines and group health and product businesses",
+      "publisher": "Prudential plc",
+      "published_date": "2026-09-24",
+      "grounded_note": "Prudential appointed Naveed Irshad as Regional CEO for Indonesia, the Philippines and Africa, effective 26 October 2026. He will also assume enterprise-wide responsibility for Prudential's Health and Product businesses and join the Group Executive Committee, creating a potential strategic transmission path to product development and operations in the Philippines and other Asian markets.",
+      "query_ids": [
+        "corporate-exchange-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.prudentialplc.com/en/newsroom/company-news/2026/Prudential-plc-appoints-Naveed-Irshad-as-Regional-CEO-for-Indonesia%2C-Philippines-and-Africa/",
+          "title": "Prudential appoints regional CEO with responsibility for the Philippines and group health and product businesses",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "corporate-exchange",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "asia",
+      "market": "Philippines",
+      "entities": [
+        "Prudential plc",
+        "Naveed Irshad",
+        "Manulife"
+      ],
+      "topic": "external_environment",
+      "signal_type": "leadership_change",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-e3433b3aaea7",
+      "title": "Prudential announces regional leadership changes, including Singapore and Indonesia",
+      "publisher": "The Business Times",
+      "published_date": "2026-09-24",
+      "grounded_note": "Prudential appointed Chan San San as Eastspring Investments’ chief partnership officer effective September 28, with responsibility for strengthening collaboration between Prudential’s Asian life businesses and its asset-management arm. Andreas Rosenthal became interim CEO of Prudential Singapore, while Naveed Irshad was named regional CEO for Indonesia, the Philippines and Africa effective October 26. The changes affect a major AIA competitor’s leadership, investment-product coordination and regional operating structure.",
+      "query_ids": [
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.businesstimes.com.sg/companies-markets/prudential-announces-regional-leadership-changes-including-singapore-indonesia",
+          "title": "Prudential announces regional leadership changes, including Singapore and Indonesia",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "singapore",
+      "market": "Singapore",
+      "entities": [
+        "Prudential",
+        "Eastspring Investments",
+        "Chan San San",
+        "Andreas Rosenthal",
+        "Naveed Irshad"
+      ],
+      "topic": "external_environment",
+      "signal_type": "leadership_change",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-96fd46c9425f",
+      "title": "AIA Singapore revises HealthShield Gold Max plans and riders effective 1 October 2026",
+      "publisher": "AIA Singapore",
+      "published_date": "2026-08-26",
+      "grounded_note": "AIA Singapore announced benefit and premium revisions for HealthShield Gold Max plans and riders, applying to new purchases and policy renewals from 1 October 2026. Changes include selected high-cost drug and stereotactic radiosurgery benefits, revised cataract coverage, and a 70% pro-ration factor for eligible outpatient claims under Max B plans when treatment is received at private hospitals or private medical institutions.",
+      "query_ids": [
+        "corporate-exchange-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.aia.com.sg/content/dam/sg-wise/en/docs/help-support/healthshieldsupport/faqs-on-HSG-changes-effective-1oct2026.pdf",
+          "title": "AIA Singapore revises HealthShield Gold Max plans and riders effective 1 October 2026",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "corporate-exchange",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "singapore",
+      "market": "Singapore",
+      "entities": [
+        "AIA Singapore",
+        "AIA HealthShield Gold Max"
+      ],
+      "topic": "external_environment",
+      "signal_type": "product_distribution",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-1e9aad282e39",
+      "title": "Philippine Insurance Commission grants regulatory relief during national energy emergency",
+      "publisher": "Insurance Commission, Philippines",
+      "published_date": "2026-05-13",
+      "grounded_note": "The Insurance Commission announced 90-day payment relief for consumers and extended reportorial deadlines for regulated entities during the national energy emergency. The measures affect policy servicing, collections and regulatory operations across the Philippine insurance sector.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.insurance.gov.ph/wp-content/uploads/2026/05/PR_IC-Grants-90-day-payment-relief-extends-submission-of-reportorial-requirements-amid-state-national-energy-emergency.pdf",
+          "title": "Philippine Insurance Commission grants regulatory relief during national energy emergency",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "philippines",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "philippines",
+      "market": "Philippines",
+      "entities": [
+        "Insurance Commission",
+        "Department of Finance",
+        "Government of the Philippines"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-d9939de9b429",
+      "title": "Hong Kong Insurance Authority concludes consultation on RBC enhancements",
+      "publisher": "Insurance Authority, Hong Kong",
+      "published_date": "2026-05-08",
+      "grounded_note": "The Insurance Authority published conclusions on amendments to the Insurance (Valuation and Capital) Rules. The changes seek to encourage infrastructure investment while retaining prudential safeguards, creating a direct capital-management and asset-allocation transmission path for Hong Kong insurers including AIA.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ia.org.hk/en/infocenter/press_releases/20260508.html",
+          "title": "Hong Kong Insurance Authority concludes consultation on RBC enhancements",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "Insurance Authority",
+        "AIA"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-773bfeb7771b",
+      "title": "Asia-Pacific asset-intensive reinsurance expected to keep expanding in 2026",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-02-04",
+      "grounded_note": "Market participants expected asset-intensive reinsurance activity to expand as Asian life insurers seek capital optimisation amid regulatory changes and interest-rate volatility. The development is relevant to AIA and peers because reinsurance transactions can alter solvency capacity, asset-liability exposure and competitive capital efficiency.",
+      "query_ids": [
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/asset-intensive-reinsurance-to-remain-robust-continue-apac-growth-in-2026/",
+          "title": "Asia-Pacific asset-intensive reinsurance expected to keep expanding in 2026",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Regional Asia",
+      "entities": [
+        "Asia-Pacific life insurers",
+        "Reinsurers"
+      ],
+      "topic": "external_environment",
+      "signal_type": "competitor_market_move",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-a5613e6896f8",
+      "title": "Prudential shareholder currency and scrip-dividend election deadline falls on 2 October 2026",
+      "publisher": "Prudential plc",
+      "published_date": null,
+      "grounded_note": "Prudential's 2026 first interim dividend notice set 2 October 2026 as the deadline for relevant US-dollar payment elections. The notice also describes a scrip-dividend alternative involving new shares on the Hong Kong line and planned listing or admission applications to HKEX and SGX, making it relevant to shareholders and capital-market administration in Hong Kong and Singapore.",
+      "query_ids": [
+        "corporate-exchange-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.prudentialplc.com/en/newsroom/company-news/2026/2026-first-interim-dividend/",
+          "title": "Prudential shareholder currency and scrip-dividend election deadline falls on 2 October 2026",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "corporate-exchange",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "asia",
+      "market": "Hong Kong",
+      "entities": [
+        "Prudential plc",
+        "Hong Kong Exchanges and Clearing",
+        "Singapore Exchange",
+        "The Central Depository"
+      ],
+      "topic": "external_environment",
+      "signal_type": "macro_market",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "unknown",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "publication_date_not_established"
+    },
+    {
+      "source_item_id": "src-238dbca46b6d",
+      "title": "Philippine Insurance Commission provides supplemental FRF, valuation and RBC guidance for mutual benefit associations",
+      "publisher": "Insurance Commission, Philippines",
+      "published_date": null,
+      "grounded_note": "The circular supplies supplemental guidance for applying the new financial-reporting framework, valuation standards and amended risk-based-capital framework to mutual benefit associations. It signals continued implementation of revised solvency and reporting requirements in the Philippine insurance market.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.insurance.gov.ph/wp-content/uploads/2026/03/IC-Circular-Letter-No.-2026-08_Supplemental-Guidelines-for-the-Application-of-the-New-FRF-Valuation-Standards-and-RBC-Framework.pdf",
+          "title": "Philippine Insurance Commission provides supplemental FRF, valuation and RBC guidance for mutual benefit associations",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "philippines",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "philippines",
+      "market": "Philippines",
+      "entities": [
+        "Insurance Commission",
+        "Mutual Benefit Associations"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "unknown",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "publication_date_not_established"
+    },
+    {
+      "source_item_id": "src-e96b7620993f",
+      "title": "Philippine Insurance Commission mandates electronic financial-statement submissions",
+      "publisher": "Insurance Commission, Philippines",
+      "published_date": null,
+      "grounded_note": "The circular requires insurers, reinsurers and mutual benefit associations to submit annual statements, audited financial statements and attachments online, subject to completion of quarterly financial reports. This changes compliance operations and reporting controls for regulated entities.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.insurance.gov.ph/wp-content/uploads/2026/03/IC-Circular-Letter-No.-2026-02_Guidelines-on-the-Electronic-Submission-of-the-AS-AFS-and-Attachments.pdf",
+          "title": "Philippine Insurance Commission mandates electronic financial-statement submissions",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "philippines",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "philippines",
+      "market": "Philippines",
+      "entities": [
+        "Insurance Commission",
+        "Insurance companies",
+        "Reinsurance companies",
+        "Mutual Benefit Associations"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "technology_operational_risk",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "unknown",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "publication_date_not_established"
+    },
+    {
+      "source_item_id": "src-c19e33ad6f19",
+      "title": "Philippine Insurance Commission adjusts limits and policyholder relief during national energy emergency",
+      "publisher": "Insurance Commission, Philippines",
+      "published_date": null,
+      "grounded_note": "The circular provides emergency relief and raises the aggregate threshold for loans to officers, employees and sales associates from 6% to 20% of company net worth. This is a material temporary change affecting insurer financial flexibility and governance controls.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.insurance.gov.ph/wp-content/uploads/2026/05/IC-Circular-Letter-No.-2026-11_Guidelines-Regarding-the-Provision-of-Relief-to-Policyholders-Planholders-Members-and-the-Public-During-the-State-of-National-_OCOM.pdf",
+          "title": "Philippine Insurance Commission adjusts limits and policyholder relief during national energy emergency",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "philippines",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "philippines",
+      "market": "Philippines",
+      "entities": [
+        "Insurance Commission",
+        "Insurance companies"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "unknown",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "publication_date_not_established"
+    },
+    {
+      "source_item_id": "src-6915059d9250",
+      "title": "IAIS publishes final operational-resilience objectives and toolkit",
+      "publisher": "International Association of Insurance Supervisors",
+      "published_date": null,
+      "grounded_note": "The final application paper gives supervisors and insurers practices and tools for assessing operational resilience under the Insurance Core Principles, with relevance to cyber, digital and third-party operational risks across AIA's Asian markets.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.iais.org/2026/02/final-version-of-the-application-paper-on-operational-resilience-objectives-and-toolkit-published/",
+          "title": "IAIS publishes final operational-resilience objectives and toolkit",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "international_body",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.iais.org/uploads/2026/02/Application-Paper-on-operational-resilience-objectives-and-toolkit.pdf",
+          "title": "IAIS publishes final operational-resilience objectives and toolkit",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "international_body",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "international_body",
+      "source_market": "asia",
+      "market": "Regional Asia",
+      "entities": [
+        "International Association of Insurance Supervisors",
+        "AIA"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "technology_operational_risk",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "unknown",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "publication_date_not_established"
+    },
+    {
+      "source_item_id": "src-dd48a0109c0f",
+      "title": "IAIS Insurance Capital Standard remains the global capital measure for internationally active insurance groups",
+      "publisher": "International Association of Insurance Supervisors",
+      "published_date": null,
+      "grounded_note": "The IAIS describes the Insurance Capital Standard as the globally comparable risk-based capital-adequacy measure for internationally active insurance groups and the quantitative component of ComFrame. It provides a direct group-capital and supervisory comparability channel for large Asian insurers.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.iais.org/activities-topics/standard-setting/insurance-capital-standard/",
+          "title": "IAIS Insurance Capital Standard remains the global capital measure for internationally active insurance groups",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "international_body",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "international_body",
+      "source_market": "asia",
+      "market": "Regional Asia",
+      "entities": [
+        "International Association of Insurance Supervisors",
+        "Internationally Active Insurance Groups"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "informational",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "unknown",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "publication_date_not_established"
+    },
+    {
+      "source_item_id": "src-a7d5c35f70eb",
+      "title": "IAIS 2026 mid-year report identifies global insurance solvency, liquidity and profitability risks",
+      "publisher": "International Association of Insurance Supervisors",
+      "published_date": null,
+      "grounded_note": "The mid-year Global Insurance Market Report presents preliminary findings from the 2026 Global Monitoring Exercise on macro-financial trends, solvency, liquidity, profitability and systemic-risk indicators. These global risk channels are relevant to AIA as an internationally active Asian insurance group.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.iais.org/uploads/2026/07/Global-Insurance-Market-Report-2026-mid-year-update.pdf",
+          "title": "IAIS 2026 mid-year report identifies global insurance solvency, liquidity and profitability risks",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "international_body",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "international_body",
+      "source_market": "asia",
+      "market": "Regional Asia",
+      "entities": [
+        "International Association of Insurance Supervisors",
+        "AIA"
+      ],
+      "topic": "external_environment",
+      "signal_type": "macro_market",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "unknown",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "publication_date_not_established"
+    },
+    {
+      "source_item_id": "src-c3a10180789e",
+      "title": "Hong Kong Insurance Authority: 2026 regulatory circulars",
+      "publisher": "Insurance Authority, Hong Kong",
+      "published_date": null,
+      "grounded_note": "The 2026 circular register lists material supervisory measures on integrity management, premium financing, cyber mapping, participating-policy illustration-rate caps, intermediary remuneration, conduct inspections, cross-sector reference checking and a generative-AI sandbox. The latest visible entry is dated 31 August 2026; the source does not establish an item within 28 September–2 October 2026.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ia.org.hk/en/legislative_framework/circulars/reg_matters/circulars_on_regulatory_matters_2026.html",
+          "title": "Hong Kong Insurance Authority: 2026 regulatory circulars",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "Insurance Authority",
+        "Hong Kong Monetary Authority"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "unknown",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "publication_date_not_established"
+    },
+    {
+      "source_item_id": "src-e58f473a9392",
+      "title": "Asia-Pacific insurers enter 2026 with earnings momentum and capital strength",
+      "publisher": "Bloomberg Professional Services",
+      "published_date": null,
+      "grounded_note": "Bloomberg’s regional outlook describes supportive investment returns, disciplined underwriting and stronger shareholder payouts among Asia-Pacific insurers. The assessment provides investor and competitive context for AIA, particularly around capital strength, earnings performance and distributions, but the retrieved source did not establish a publication date within the requested window.",
+      "query_ids": [
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.bloomberg.com/professional/insights/financial-services/asia-pacific-insurance-2026-outlook/",
+          "title": "Asia-Pacific insurers enter 2026 with earnings momentum and capital strength",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "global",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "global",
+      "market": "Regional Asia",
+      "entities": [
+        "AIA",
+        "Asia-Pacific insurers",
+        "Investors"
+      ],
+      "topic": "external_environment",
+      "signal_type": "macro_market",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "unknown",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "publication_date_not_established"
+    }
+  ],
+  "warnings": [
+    "Search regulatory-official-zh ignored an out-of-scope action source host: igmsuat.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Merged duplicate search result src-9103cd53d08b.",
+    "Merged duplicate search result src-9103cd53d08b.",
+    "Merged duplicate search result src-9ed7694d19af."
+  ],
+  "disclaimer": "This briefing is based on Bing-grounded public information from approved primary and authoritative-media websites. Native source URLs were matched locally, but article content, publication dates and applicability were not independently verified against downloaded original text. Non-public regulator engagement and feedback are outside public-Web coverage.",
+  "raw_response_retained": false
+}

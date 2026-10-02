@@ -1,0 +1,353 @@
+{
+  "schema_version": "1.3.0",
+  "run_id": "poc-20261002T023906Z-f5a056",
+  "status": "completed",
+  "generated_at": "2026-10-02T02:42:06.863890+00:00",
+  "rule": {
+    "rule_id": "asia-executive-news",
+    "version": "1.2.0",
+    "sha256": "2fdca05926a90dc7f59f30980407b5a9148ee5fa676cab5f66f54461b58604cd"
+  },
+  "search": {
+    "approach": "custom-bing",
+    "custom_configurations": [
+      {
+        "configuration_id": "regulatory-official",
+        "instance_name": "asia-news-regulatory-official"
+      },
+      {
+        "configuration_id": "corporate-exchange",
+        "instance_name": "asia-news-corporate-exchange"
+      },
+      {
+        "configuration_id": "authoritative-media",
+        "instance_name": "asia-news-authoritative-media"
+      }
+    ]
+  },
+  "topic": "Material Asia insurance developments affecting AIA, its markets, competitors, regulation, capital, solvency or investors",
+  "window": {
+    "start_date": "2026-09-28",
+    "end_date": "2026-10-02",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "coverage": {
+    "queries_requested": 6,
+    "queries_succeeded": 6,
+    "queries_failed": 0
+  },
+  "title": "Asia Insurance Executive Briefing | 28 September–2 October 2026",
+  "executive_summary": "AIA’s CNY1 billion subordinated securities listing is the period’s most material company-specific development. Regulatory priorities include China’s new controls on online financial marketing and Singapore enforcement against former financial-services representatives. Competitive signals include Asahi Life’s planned acquisition-led expansion in Vietnam and leadership changes at Allianz, Great Eastern and Marsh.",
+  "items": [
+    {
+      "rank": 1,
+      "attention_level": "high",
+      "signal_type": "aia_major_news",
+      "published_date": "2026-09-30",
+      "publishers": [
+        "HKEXnews"
+      ],
+      "source_links": [
+        {
+          "url": "https://www1.hkexnews.hk/search/titlesearch.xhtml?category=0&market=SEHK&stockId=54299",
+          "title": "AIA Group lists CNY1 billion of 2.88% subordinated dated securities due 2036 on HKEX",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "exchange",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-1095477f6c03"
+      ],
+      "title": "AIA lists CNY1 billion of subordinated securities due 2036",
+      "summary": "AIA Group formally listed CNY1 billion of 2.88% subordinated dated securities due 2036 on HKEX, directly affecting its financing structure and investor disclosures.",
+      "bullet_points": [
+        "The securities will consolidate with CNY3 billion of existing securities in the same series.",
+        "The issuance sits under AIA’s US$18 billion Global Medium Term Note and Securities Programme.",
+        "The listing is a material capital-markets development for AIA investors and funding stakeholders."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "specific_article"
+    },
+    {
+      "rank": 2,
+      "attention_level": "high",
+      "signal_type": "final_rule",
+      "published_date": "2026-09-30",
+      "publishers": [
+        "South China Morning Post"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.scmp.com/topics/financial-regulation",
+          "title": "China bans online financial promotions by private brokers",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "greater_china",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-85eb78fa68cc"
+      ],
+      "title": "China restricts online financial marketing channels",
+      "summary": "China introduced rules limiting online financial promotions to financial institutions and eligible third-party internet platforms, with direct relevance to digital insurance distribution and intermediary controls.",
+      "bullet_points": [
+        "The restrictions cover online promotion of financial products, including insurance and wealth offerings.",
+        "Insurers will need to ensure that digital acquisition partners and marketing channels meet the new eligibility requirements.",
+        "The rules increase the importance of oversight, content governance and accountability across third-party distribution arrangements."
+      ],
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article"
+    },
+    {
+      "rank": 3,
+      "attention_level": "high",
+      "signal_type": "enforcement",
+      "published_date": "2026-10-02",
+      "publishers": [
+        "Asia Insurance Review"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97085",
+          "title": "MAS bans four former insurance representatives over misconduct",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-883cbca364c7"
+      ],
+      "title": "MAS bans four former financial representatives for misconduct",
+      "summary": "The Monetary Authority of Singapore imposed prohibition orders lasting four to 10 years on four former representatives of AXA Insurance, Manulife Financial Advisers and DBS Bank following criminal convictions.",
+      "bullet_points": [
+        "The underlying misconduct involved cheating, forgery or computer-related offences.",
+        "The action reinforces MAS scrutiny of individual conduct and controls across insurance and financial-advisory distribution.",
+        "The orders affect former representatives rather than the named institutions directly."
+      ],
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article"
+    },
+    {
+      "rank": 4,
+      "attention_level": "medium",
+      "signal_type": "competitor_market_move",
+      "published_date": "2026-09-30",
+      "publishers": [
+        "Nikkei Asia"
+      ],
+      "source_links": [
+        {
+          "url": "https://asia.nikkei.com/business/insurance",
+          "title": "Japan's Asahi Life aims to hire 1,000 Vietnam staff with acquisition",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-9ed7694d19af"
+      ],
+      "title": "Asahi Life plans acquisition-led expansion in Vietnam",
+      "summary": "Asahi Life reportedly plans to use an acquisition to establish a roughly 1,000-person workforce and distribute health insurance through two sales channels in Vietnam.",
+      "bullet_points": [
+        "The proposed scale indicates a substantial commitment to Vietnam’s life and health market.",
+        "The dual-channel model points to increased investment in customer acquisition and distribution capacity.",
+        "The plan could intensify competition in a Southeast Asian growth market where AIA already has significant operations."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "specific_article"
+    },
+    {
+      "rank": 5,
+      "attention_level": "medium",
+      "signal_type": "leadership_change",
+      "published_date": "2026-10-01",
+      "publishers": [
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/bi-ying-ong-to-succeed-hicham-raissi-as-allianz-singapore-ceo/",
+          "title": "Allianz Insurance Singapore appoints Bi Ying Ong as CEO",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-977af2416d46"
+      ],
+      "title": "Allianz Singapore appoints Bi Ying Ong as CEO",
+      "summary": "Allianz Insurance Singapore appointed chief operating officer Bi Ying Ong as CEO, succeeding Hicham Raissi after his move to Great Eastern.",
+      "bullet_points": [
+        "The appointment provides internal continuity at Allianz through the promotion of its existing COO.",
+        "Raissi’s move links leadership changes at two significant competitors in Singapore.",
+        "The resulting strategic or distribution changes at either insurer have not yet been established."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "unknown"
+    },
+    {
+      "rank": 6,
+      "attention_level": "medium",
+      "signal_type": "leadership_change",
+      "published_date": "2026-09-30",
+      "publishers": [
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/country/thailand/",
+          "title": "Marsh appoints Derek Heng as ASEAN CEO and Peta Latimer as Singapore CEO",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-6ae4a6836e1e"
+      ],
+      "title": "Marsh reshapes ASEAN and Singapore leadership",
+      "summary": "Marsh promoted Thailand CEO Derek Heng to ASEAN CEO and appointed Peta Latimer to lead its Singapore business.",
+      "bullet_points": [
+        "Heng’s expanded mandate consolidates leadership across a region containing several core AIA markets.",
+        "Latimer assumes responsibility for Singapore, a major regional insurance and brokerage hub.",
+        "The appointments may influence Marsh’s regional client, placement and partnership priorities."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "specific_article"
+    },
+    {
+      "rank": 7,
+      "attention_level": "medium",
+      "signal_type": "final_rule",
+      "published_date": "2026-10-02",
+      "publishers": [
+        "Asia Insurance Review"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News",
+          "title": "China insurance-law revision codifies risk-resolution measures",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "listing_page"
+        }
+      ],
+      "source_item_ids": [
+        "src-9103cd53d08b"
+      ],
+      "title": "China reportedly opens Hong Kong ETF channel for insurers",
+      "summary": "China’s National Financial Regulatory Administration reportedly created a channel for insurers to invest through Hong Kong-listed ETFs, potentially widening cross-border asset-allocation options.",
+      "bullet_points": [
+        "The development could provide insurers with additional access to Hong Kong-listed market exposures.",
+        "The available note does not establish eligibility criteria, investment limits or capital treatment.",
+        "The evidence is based on a listing-page citation, so the measure’s detailed scope requires confirmation."
+      ],
+      "topic": "government_regulatory",
+      "source_specificity": "listing_page"
+    },
+    {
+      "rank": 8,
+      "attention_level": "medium",
+      "signal_type": "technology_operational_risk",
+      "published_date": "2026-10-01",
+      "publishers": [
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/thailand-floods-typhoon-dujuan-test-asias-flood-cover-and-business-interruption-exposure/",
+          "title": "Thailand floods and Typhoon Dujuan test flood cover and business-interruption exposure",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-844cbe3e5c62"
+      ],
+      "title": "Extreme rainfall increases Thailand claims pressure",
+      "summary": "Loss adjusters identified extreme rainfall as a growing Asian loss driver, with Thailand flooding producing motor, property and business-interruption claims.",
+      "bullet_points": [
+        "The event highlights catastrophe accumulation and claims-management pressures in an AIA market.",
+        "Potential implications include operational disruption and pressure on protection affordability or customer servicing in affected areas.",
+        "The supplied evidence does not quantify losses or establish a material impact on AIA."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "unknown"
+    },
+    {
+      "rank": 9,
+      "attention_level": "low",
+      "signal_type": "competitor_market_move",
+      "published_date": "2026-10-01",
+      "publishers": [
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/country/singapore/",
+          "title": "Simon Global launches Singapore-based reinsurance broker",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-6b4746064517"
+      ],
+      "title": "Simon Global launches Singapore reinsurance broker SG Re",
+      "summary": "Simon Global launched SG Re after registration with MAS, adding a treaty-reinsurance intermediary focused on Asian markets.",
+      "bullet_points": [
+        "SG Re will target Japan, South Korea and Southeast Asia from its Singapore base.",
+        "The launch adds competition and distribution capacity in Singapore’s regional reinsurance market.",
+        "Its scale and relevance to AIA’s reinsurance arrangements are not yet established."
+      ],
+      "topic": "external_environment",
+      "source_specificity": "specific_article"
+    }
+  ],
+  "summarization": {
+    "status": "succeeded",
+    "request_id": "101ba993-2b86-4aab-88eb-43df52456fc7",
+    "response_id": "resp_09486f4ecd1ac5e6016abf19f01c7c8197ae9975dd9d8b7f6c",
+    "usage": {
+      "input_tokens": 3054,
+      "output_tokens": 1494,
+      "total_tokens": 4548
+    }
+  },
+  "warnings": [
+    "Search regulatory-official-zh ignored an out-of-scope action source host: igmsuat.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Merged duplicate search result src-9103cd53d08b.",
+    "Merged duplicate search result src-9103cd53d08b.",
+    "Merged duplicate search result src-9ed7694d19af."
+  ],
+  "disclaimer": "This briefing is based on Bing-grounded public information from approved primary and authoritative-media websites. Native source URLs were matched locally, but article content, publication dates and applicability were not independently verified against downloaded original text. Non-public regulator engagement and feedback are outside public-Web coverage.",
+  "raw_response_retained": false
+}
