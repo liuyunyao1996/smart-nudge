@@ -1,0 +1,1079 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "poc-20261010T061132Z-515dc1",
+  "status": "completed",
+  "generated_at": "2026-10-10T06:15:07.401985+00:00",
+  "rule": {
+    "rule_id": "asia-executive-news",
+    "version": "1.2.0",
+    "sha256": "2fdca05926a90dc7f59f30980407b5a9148ee5fa676cab5f66f54461b58604cd"
+  },
+  "search": {
+    "approach": "custom-bing",
+    "custom_configurations": [
+      {
+        "configuration_id": "regulatory-official",
+        "instance_name": "asia-news-regulatory-official"
+      },
+      {
+        "configuration_id": "corporate-exchange",
+        "instance_name": "asia-news-corporate-exchange"
+      },
+      {
+        "configuration_id": "authoritative-media",
+        "instance_name": "asia-news-authoritative-media"
+      }
+    ]
+  },
+  "topic": "Material Asia insurance developments affecting AIA, its markets, competitors, regulation, capital, solvency or investors",
+  "window": {
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-10",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "counts": {
+    "total": 25,
+    "in_window": 20,
+    "out_of_window": 4,
+    "unknown_date": 1,
+    "eligible_for_brief": 20
+  },
+  "items": [
+    {
+      "source_item_id": "src-0bded3ba2c71",
+      "title": "Thailand’s insured flood losses in 2026 reach an estimated US$297–327m",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-09",
+      "grounded_note": "Thailand’s Office of Insurance Commission estimated year-to-date insured flood losses at THB10–11 billion, affecting homes, motor vehicles, agriculture, factories and businesses. Property-policy flood sublimits reportedly constrained insurer exposure.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/thailands-insured-flood-losses-to-date-in-2026-at-us297-327m-oic/",
+          "title": "Thailand’s insured flood losses in 2026 reach an estimated US$297–327m",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Thailand",
+      "entities": [
+        "Office of Insurance Commission",
+        "Crawford & Company"
+      ],
+      "topic": "external_environment",
+      "signal_type": "macro_market",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-d80822296031",
+      "title": "Thailand flood economic losses estimated at up to US$1 billion",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-09",
+      "grounded_note": "Aon estimated Thailand's economic losses from intense rainfall and flooding in late September and early October at US$370 million to US$1 billion, indicating potential catastrophe, claims and protection-gap implications for insurers operating in Thailand.",
+      "query_ids": [
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article/id/97186/Type/AirPlus/Storm-losses-estimated-at-up-to-US1bn-in-Thailand-less-than-100m-in-Myanmar",
+          "title": "Thailand flood economic losses estimated at up to US$1 billion",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Thailand",
+      "entities": [
+        "Aon"
+      ],
+      "topic": "external_environment",
+      "signal_type": "technology_operational_risk",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-f013d3865ae6",
+      "title": "Insurers extend mandatory motor and employees’ compensation cover to Huanggang port area",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-09",
+      "grounded_note": "The Hong Kong Government reached an agreement with 45 insurers to extend existing mandatory motor and employees’ compensation policies to the Huanggang Port Hong Kong area at no extra cost, creating a cross-boundary coverage arrangement ahead of the port area's opening.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/insurers-to-extend-mandatory-motorm-employees-compensation-cover-to-huanggang-port-area-at-no-extra-cost/",
+          "title": "Insurers extend mandatory motor and employees’ compensation cover to Huanggang port area",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Hong Kong",
+      "entities": [
+        "Hong Kong Government",
+        "Hong Kong Insurance Authority",
+        "Huanggang Port",
+        "45 participating insurers"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "product_distribution",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-e1ba5b1c53e8",
+      "title": "Chinese insurers adapt participating products to new accounting framework",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-09",
+      "grounded_note": "Analysis of listed Chinese insurers found relatively stable profit contributions from insurance risk and substantial contractual service margin reserves at leading carriers, while investment profits remained volatile. The findings point to closer alignment of insurance and investment considerations in participating-product management.",
+      "query_ids": [
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article/id/97170/Type/eCin/New-accounting-rules-push-insurers-to-align-insurance-and-investment-considerations-in-par-products",
+          "title": "Chinese insurers adapt participating products to new accounting framework",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Mainland China",
+      "entities": [
+        "Chinese listed insurance companies"
+      ],
+      "topic": "external_environment",
+      "signal_type": "product_distribution",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-03cf7b91e370",
+      "title": "Thailand insurance regulator conducts sector-wide cyber-readiness exercise",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-08",
+      "grounded_note": "Thailand's Office of Insurance Commission is strengthening insurance-sector preparedness for cyberattacks, AI-enabled vulnerability discovery, third-party service-provider attacks and interconnected digital risks through response-plan testing and simulated exercises.",
+      "query_ids": [
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97154",
+          "title": "Thailand insurance regulator conducts sector-wide cyber-readiness exercise",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Thailand",
+      "entities": [
+        "Office of Insurance Commission",
+        "Chayanin Kerdphongngam"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "technology_operational_risk",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-0528c4ac0a7c",
+      "title": "Taiwan opens wealth-management life products to an exemption from the minimum death-benefit ratio",
+      "publisher": "Financial Supervisory Commission, Insurance Bureau",
+      "published_date": "2026-10-08",
+      "grounded_note": "Taiwan's FSC amended its rules so life products sold to insurers' wealth-management clients may be exempt from the minimum ratio of death benefits to policy reserves or account value. The change expands product-design flexibility for wealth-management insurance while requiring customers to understand that these products differ from traditional protection-focused life insurance.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ib.gov.tw/ch/home.jsp?dataserno=202610080002&dtable=News&id=239&mcustomize=news_view.jsp&parentpath=0%2C2",
+          "title": "Taiwan opens wealth-management life products to an exemption from the minimum death-benefit ratio",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission",
+        "Insurance Bureau",
+        "life insurers"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "product_distribution",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-d4d17b2b5a9c",
+      "title": "Singapore regulator issues financial-sector AI risk-management guidelines",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-08",
+      "grounded_note": "The Monetary Authority of Singapore issued guidelines supporting responsible AI adoption across financial services. The article says the guidelines took effect on 7 October 2027, despite being published in October 2026; that effective date is reported without correction or inference.",
+      "query_ids": [
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=AirPlus&id=97151",
+          "title": "Singapore regulator issues financial-sector AI risk-management guidelines",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Singapore",
+      "entities": [
+        "Monetary Authority of Singapore"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-9da20d71e53f",
+      "title": "MS Amlin seeks investors for a US$40–50m Singapore reinsurance sidecar",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-08",
+      "grounded_note": "MS Amlin is discussing a Singapore-domiciled third-party capital vehicle with investors, targeting an initial US$40–50 million. The proposed sidecar would build on its Phoenix Re special-purpose reinsurance vehicle and signals further development of Singapore’s insurance-linked capital market.",
+      "query_ids": [
+        "authoritative-media-en",
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese",
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/ms-amlin-seeks-investors-for-new-singapore-domiciled-sidecar-eyes-untapped-potential/",
+          "title": "MS Amlin seeks investors for a US$40–50m Singapore reinsurance sidecar",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Singapore",
+      "entities": [
+        "MS Amlin",
+        "Phoenix Re"
+      ],
+      "topic": "external_environment",
+      "signal_type": "competitor_market_move",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-a0510ec6d8c4",
+      "title": "Manulife appoints Andy Bruce as Chief Information Officer of Manulife Asia",
+      "publisher": "Manulife",
+      "published_date": "2026-10-08",
+      "grounded_note": "Manulife promoted Andy Bruce to Chief Information Officer of Manulife Asia, effective October 1, 2026. He previously led technology for Hong Kong and Macau. The appointment supports regional technology modernization, operational stability, risk management and responsible scaling of AI, making it relevant to AIA’s competitive and technology-risk environment in Asia.",
+      "query_ids": [
+        "corporate-exchange-en",
+        "corporate-exchange-zh"
+      ],
+      "languages": [
+        "Chinese",
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.manulife.com/ca/en/about-us/news/manulife-announces-asia-technology-leadership-announcement",
+          "title": "Manulife appoints Andy Bruce as Chief Information Officer of Manulife Asia",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "corporate-exchange",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "asia",
+      "market": "Hong Kong",
+      "entities": [
+        "Manulife",
+        "Manulife Asia",
+        "Andy Bruce"
+      ],
+      "topic": "external_environment",
+      "signal_type": "leadership_change",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-392755e610cb",
+      "title": "Hong Kong Insurance Authority highlights intermediary conduct risks and fake news",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-08",
+      "grounded_note": "The Insurance Authority's Conduct In Focus reported 652 complaints in the first half of 2026, up 10% year on year, and identified self-referral arrangements, premium rebates, social-media misinformation and misuse of professional-investor exemptions as conduct concerns relevant to insurers and intermediaries.",
+      "query_ids": [
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97155",
+          "title": "Hong Kong Insurance Authority highlights intermediary conduct risks and fake news",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Hong Kong",
+      "entities": [
+        "Hong Kong Insurance Authority"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-929980ac9aff",
+      "title": "GIC Re’s investment income offsets weak technical profitability",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-08",
+      "grounded_note": "AM Best affirmed GIC Re’s A- financial-strength rating, a- long-term issuer credit rating and aaa.IN national-scale rating, all with stable outlooks. The assessment indicates investment income is compensating for a lack of technical profits at India’s state-owned reinsurer.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/gic-res-investment-income-makes-up-for-lack-of-technical-profits-am-best/",
+          "title": "GIC Re’s investment income offsets weak technical profitability",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "India",
+      "entities": [
+        "GIC Re",
+        "AM Best"
+      ],
+      "topic": "external_environment",
+      "signal_type": "macro_market",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-9cc551073fbd",
+      "title": "APAC data-centre expansion concentrates construction, power, operational and cyber risks",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-08",
+      "grounded_note": "Howden said rapid Asia-Pacific data-centre growth is concentrating multiple interconnected risks and making the sector more challenging to insure. Insurers and brokers are responding with integrated construction and operational programmes, although delay-in-start-up cover generally requires insured physical damage.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/apac-data-centre-expansion-concentrates-risk-across-construction-power-operations-and-cyber-howden/",
+          "title": "APAC data-centre expansion concentrates construction, power, operational and cyber risks",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Singapore",
+      "entities": [
+        "Howden"
+      ],
+      "topic": "external_environment",
+      "signal_type": "technology_operational_risk",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-72fbcc411e84",
+      "title": "Allianz Commercial reports business-interruption claim severity rising more than 30% annually",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-08",
+      "grounded_note": "Allianz Commercial reported that business-interruption claim severity has risen sharply despite stable claim volumes, linking the increase to geopolitical tensions and growing cyber and technology risks. The trend has implications for commercial underwriting, pricing and accumulation management across Asia-Pacific.",
+      "query_ids": [
+        "authoritative-media-en",
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese",
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/business-interruption-claim-severity-up-more-than-30-a-year-allianz-commercial/",
+          "title": "Allianz Commercial reports business-interruption claim severity rising more than 30% annually",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Singapore",
+      "entities": [
+        "Allianz Commercial"
+      ],
+      "topic": "external_environment",
+      "signal_type": "technology_operational_risk",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-b03aad3130d1",
+      "title": "Actuaries compare capital and risk profiles of major Asian life products",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-08",
+      "grounded_note": "Industry actuaries assessed participating whole-life, investment-linked and indexed universal-life products. Munich Re's Southeast Asia structured-solutions head said participating products can create significant capital drag because of long-term guarantees and smoothing obligations, directly relevant to life-insurer product and capital strategy.",
+      "query_ids": [
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/AIR",
+          "title": "Actuaries compare capital and risk profiles of major Asian life products",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Asia regional",
+      "entities": [
+        "Munich Re",
+        "Sebastien Voon"
+      ],
+      "topic": "external_environment",
+      "signal_type": "product_distribution",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-2f75eb37a58b",
+      "title": "Indian brokers warn proposed distribution reform could disrupt the sector",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-07",
+      "grounded_note": "Indian insurance brokers are opposing a proposed overhaul of distribution rules, warning of job losses and broader sector disruption. The Insurance Brokers Association of India sought an extension to December for submitting feedback to IRDAI.",
+      "query_ids": [
+        "authoritative-media-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/brokers-warn-indias-distribution-reform-plan-risks-job-cuts-sector-disruption/",
+          "title": "Indian brokers warn proposed distribution reform could disrupt the sector",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "India",
+      "entities": [
+        "Insurance Regulatory and Development Authority of India",
+        "Insurance Brokers Association of India"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-20546dd430cd",
+      "title": "Hong Kong SFC proceeds with enhancements to the retail fund regime code",
+      "publisher": "Securities and Futures Commission of Hong Kong",
+      "published_date": "2026-10-07",
+      "grounded_note": "The SFC announced that it would proceed with enhancements to Hong Kong's retail fund regime code. This is potentially relevant to insurers and insurance groups operating asset-management or investment-linked distribution businesses in Hong Kong, although the retrieved official index did not provide the detailed amendments.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.sfc.hk/sfc/html/EN/",
+          "title": "Hong Kong SFC proceeds with enhancements to the retail fund regime code",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "Securities and Futures Commission of Hong Kong",
+        "retail fund managers",
+        "insurance asset managers"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-5f45cb18c07d",
+      "title": "Taiwan consults on revisions encouraging insurance investment in venture-capital businesses",
+      "publisher": "Financial Supervisory Commission, Insurance Bureau",
+      "published_date": "2026-10-06",
+      "grounded_note": "The FSC proposed amendments governing insurers' special-purpose investments in public and social-welfare projects. The proposal would clarify how insurers may maintain their original investment proportion after a venture-capital business becomes publicly issued and would remove an obsolete category for emerging strategic industries.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ib.gov.tw/ch/home.jsp?dataserno=202610060002&dtable=News&id=239&mcustomize=news_view.jsp&parentpath=0",
+          "title": "Taiwan consults on revisions encouraging insurance investment in venture-capital businesses",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission",
+        "Insurance Bureau",
+        "insurance companies",
+        "venture-capital businesses"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-ed10ce5704a2",
+      "title": "Taiwan broadens insurers' permitted investment in health-promotion and long-term-care businesses",
+      "publisher": "Financial Supervisory Commission, Insurance Bureau",
+      "published_date": "2026-10-06",
+      "grounded_note": "The FSC said insurers may invest in a wider range of health-promotion, medical-technology, digital-health, long-term-care and age-friendly service businesses. It also relaxed the requirement that such investments be directly linked to insurance operations, increasing insurers' capital-allocation flexibility while retaining safety, liquidity and return considerations.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ib.gov.tw/ch/home.jsp?dataserno=202610060001&dtable=News&id=239&mcustomize=news_view.jsp&parentpath=0%2C2",
+          "title": "Taiwan broadens insurers' permitted investment in health-promotion and long-term-care businesses",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission",
+        "Insurance Bureau",
+        "insurance companies"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-ce94deb4e1b0",
+      "title": "Prudential agrees US$5bn reinsurance deal with Prismic Life",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-06",
+      "grounded_note": "Prudential entered an asset-intensive reinsurance agreement under which Prismic Life will reinsure US$5 billion of Japanese whole-life liabilities. The transaction expands their partnership to more than US$22 billion of liabilities and is relevant to competitor capital and liability management.",
+      "query_ids": [
+        "authoritative-media-en",
+        "authoritative-media-zh"
+      ],
+      "languages": [
+        "Chinese",
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/prudential-agrees-us5bn-reinsurance-deal-with-prismic-life/",
+          "title": "Prudential agrees US$5bn reinsurance deal with Prismic Life",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Hong Kong",
+      "entities": [
+        "Prudential",
+        "Prismic Life"
+      ],
+      "topic": "external_environment",
+      "signal_type": "competitor_market_move",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-ad1045e81d3e",
+      "title": "Taiwan amends insurance-industry financial-reporting standards",
+      "publisher": "Financial Supervisory Commission, Insurance Bureau",
+      "published_date": "2026-10-05",
+      "grounded_note": "The Insurance Bureau's official legal-update index records an amendment to the Regulations Governing the Preparation of Financial Reports by Insurance Enterprises dated 5 October 2026. The indexed source establishes the amendment and date but does not expose sufficient detail in the retrieved result to describe individual accounting changes.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ib.gov.tw/ch/home.jsp?id=37&parentpath=0%2C3",
+          "title": "Taiwan amends insurance-industry financial-reporting standards",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission",
+        "Insurance Bureau",
+        "insurance enterprises"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-8a8a74b42bcf",
+      "title": "Hong Kong Insurance Authority sets out policy priorities including RBC enhancement and cross-boundary insurance",
+      "publisher": "Insurance Authority of Hong Kong",
+      "published_date": "2026-09-16",
+      "grounded_note": "The Insurance Authority said it would enhance Hong Kong's Risk-based Capital Regime, develop captives and insurance-linked securities, expand specialty and marine underwriting capacity, advance an AI cohort programme, and deepen cross-boundary insurance connectivity with Mainland China. These priorities have direct strategic relevance to AIA's principal market even though the release predates the requested window.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ia.org.hk/en/infocenter/press_releases/20260916.html",
+          "title": "Hong Kong Insurance Authority sets out policy priorities including RBC enhancement and cross-boundary insurance",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "Insurance Authority of Hong Kong",
+        "Hong Kong Government",
+        "Mainland China",
+        "AIA"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-c2628714bb73",
+      "title": "Mainland China consults on a comprehensive revision of the Insurance Law",
+      "publisher": "National Financial Regulatory Administration",
+      "published_date": "2026-09-04",
+      "grounded_note": "The NFRA released a draft comprehensive revision of China's Insurance Law for consultation, with comments due 3 October 2026. The draft addresses stronger look-through supervision of shareholders and controllers, tougher penalties, consumer protection, risk resolution and market exit, making it material to insurers operating in Mainland China despite publication before the requested window.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1270936",
+          "title": "Mainland China consults on a comprehensive revision of the Insurance Law",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "mainland_china",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "mainland_china",
+      "market": "Mainland China",
+      "entities": [
+        "National Financial Regulatory Administration",
+        "insurance institutions",
+        "insurance company shareholders",
+        "policyholders"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-a17cf505594b",
+      "title": "IAIS reports sector stability but highlights macro-financial, solvency and geopolitical transmission risks",
+      "publisher": "International Association of Insurance Supervisors",
+      "published_date": "2026-07-09",
+      "grounded_note": "The IAIS mid-year Global Insurance Market Report analyses global insurers' solvency, liquidity and profitability and highlights the impact of macroeconomic risks on life-insurer balance sheets and geopolitical-risk transmission into non-life insurance. These channels are plausibly relevant to AIA's capital, investments and regional insurance exposures, although the report falls outside the requested window.",
+      "query_ids": [
+        "regulatory-official-zh"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.iais.org/2026/07/iais-mid-year-global-insurance-market-report-2026-reflects-insurance-sector-stability-amid-global-uncertainty/",
+          "title": "IAIS reports sector stability but highlights macro-financial, solvency and geopolitical transmission risks",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "international_body",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "international_body",
+      "source_market": "asia",
+      "market": "Regional/Global",
+      "entities": [
+        "International Association of Insurance Supervisors",
+        "internationally active insurance groups",
+        "life insurers",
+        "non-life insurers",
+        "AIA"
+      ],
+      "topic": "external_environment",
+      "signal_type": "macro_market",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-bfaa433af0cb",
+      "title": "IRDAI Information and Cybersecurity Guidelines, 2026",
+      "publisher": "Insurance Regulatory and Development Authority of India",
+      "published_date": "2026-04-08",
+      "grounded_note": "IRDAI issued its 2026 information and cybersecurity guidelines for regulated insurance entities. Although published outside the requested window, the framework is material to insurers' technology governance, cyber resilience and operational-risk controls in India.",
+      "query_ids": [
+        "regulatory-official-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://irdai.gov.in/guidelines?_com_irdai_document_media_IRDAIDocumentMediaPortlet_delta=8&_com_irdai_document_media_IRDAIDocumentMediaPortlet_resetCur=false",
+          "title": "IRDAI Information and Cybersecurity Guidelines, 2026",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "india",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "india",
+      "market": "India",
+      "entities": [
+        "Insurance Regulatory and Development Authority of India"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "technology_operational_risk",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-1a055a5e8244",
+      "title": "Hong Kong enhances Insurance (Valuation and Capital) Rules",
+      "publisher": "Insurance Authority of Hong Kong",
+      "published_date": null,
+      "grounded_note": "Hong Kong's enhanced valuation and capital rules provide preferential capital treatment for specified eligible infrastructure investments while retaining prudential safeguards. The changes take effect on 31 December 2026 and are relevant to insurers' asset allocation, capital management and solvency planning, including AIA's Hong Kong operations.",
+      "query_ids": [
+        "regulatory-official-en"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ia.org.hk/en/legislative_framework/overview/latest_legislative_developments.html",
+          "title": "Hong Kong enhances Insurance (Valuation and Capital) Rules",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "Insurance Authority of Hong Kong",
+        "AIA"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "unknown",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "publication_date_not_established"
+    }
+  ],
+  "warnings": [
+    "Search regulatory-official-en ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-official-en ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-en ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-en ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-official-en ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-official-en ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-en ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-official-zh ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Merged duplicate search result src-a0510ec6d8c4.",
+    "Merged duplicate search result src-ce94deb4e1b0.",
+    "Merged duplicate search result src-9da20d71e53f.",
+    "Merged duplicate search result src-72fbcc411e84."
+  ],
+  "disclaimer": "This briefing is based on Bing-grounded public information from approved primary and authoritative-media websites. Native source URLs were matched locally, but article content, publication dates and applicability were not independently verified against downloaded original text. Non-public regulator engagement and feedback are outside public-Web coverage.",
+  "raw_response_retained": false
+}
