@@ -2,19 +2,23 @@
 
 ## Optional Asia executive-news branch
 
-The `asia_executive_news` Rule Pack workflow extends only the Custom Bing branch. A query references one of three versioned configuration records, and the runtime binds that query to the matching Bing instance and host allowlist. Foundry Agent search is rejected before any request for this workflow.
+The `asia_executive_news` Rule Pack workflow extends only the Custom Bing branch. A query references one of four versioned configuration records, and the runtime binds that query to the matching Bing instance and host allowlist. Foundry Agent search is rejected before any request for this workflow.
 
 ```text
-3 Custom Bing configurations x 2 languages
-    -> up to 60 normalized, natively cited candidates
+3 regulatory market searches + 2 AIA thematic searches
+    + 1 named-competitor official search + 1 authoritative-media search
+    -> up to 70 normalized, natively cited candidates
     -> URL deduplication and local freshness classification
     -> all-news.json (in-window + out-of-window + unknown date)
     -> in-window candidates only
-    -> one no-tool English Top-10 curation request
+    -> one no-tool English evaluation of every eligible event
+    -> all High + Medium events (no final item cap; six is a target, not a quota)
     -> brief.json + brief.md
 ```
 
-The source catalogue records `source_tier` (`primary` or `authoritative_media`), `source_type`, and source market for every host. The search model supplies candidate market, entities, topic and signal type; local code attaches the configured source metadata and rejects URLs outside the active configuration. Asia brief schema v1.3.0 requires a short concrete title, concise summary, two to five bullet points, attention level, topic and signal type. Two or three bullets are the normal target; four or five are reserved for High-attention or unusually complex long-form developments. Separate attention rationale and AIA impact fields are intentionally absent.
+The source catalogue records `source_tier` (`primary` or `authoritative_media`), `source_type`, and source market for every host. The search model also classifies subject, content type and event scope. Asia Rule Pack v1.4.0 and summary schema v1.4.0 require an explicit evaluation covering every eligible source item exactly once. Local validation requires one final item for every High/Medium event, forbids Low and reinsurance events in the brief, and does not truncate above ten. Each item contains a concrete title, event summary, one to three detail bullets, optional timing/action and a distinct potential-impact assessment. The named competitor list is AXA, Manulife, Ping An, FWD, Sun Life and Prudential; local-market-leader expansion is not used.
+
+The two AIA queries are isolated on `asia-news-aia-primary` and have local subject/entity admission gates. The competitor official query uses `asia-news-corporate-exchange` and is limited locally to the six named competitors. This reduces cross-subject leakage even if an older cloud configuration temporarily retains overlapping sites for rollback. Feedback examples such as a particular campaign or paper are not pinned keywords, quotas or required results.
 
 Freshness is intentionally asymmetric: all normalized candidates remain visible in `all-news.json`, while a missing or out-of-window publication date makes a candidate ineligible for summarization. URL quality is intentionally non-destructive: URL shape classifies citations as `specific_article`, `listing_page`, `homepage`, or `unknown`; specific articles receive ranking preference, and listing/homepage-only evidence cannot retain High attention, but candidates remain auditable. These are local eligibility and ranking rules, not independent verification of the model-returned date or page content. The workflow remains subject to the existing native URL citation boundary and does not fetch original pages.
 

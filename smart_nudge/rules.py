@@ -49,6 +49,8 @@ class RenderedQuery:
     set_lang: str
     text: str
     configuration_id: str | None = None
+    allowed_subject_types: tuple[str, ...] = ()
+    required_entities_any: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -97,8 +99,27 @@ class RulePack:
                     "invalid_rule",
                     "Bing configuration IDs, instance names and source hosts must be unique, and every query must reference a configuration.",
                 )
+            editorial_policy = document.get("editorial_policy")
+            if editorial_policy is None:
+                raise RulePackError(
+                    "invalid_rule", "The Asia executive news workflow requires an editorial policy."
+                )
+            if "max_items" in document["summarization"]:
+                raise RulePackError(
+                    "invalid_rule", "The Asia executive news workflow must not impose a final item cap."
+                )
+            if set(editorial_policy["included_attention_levels"]) != {"high", "medium"}:
+                raise RulePackError(
+                    "invalid_rule", "The Asia executive news brief must include exactly High and Medium events."
+                )
+            if "reinsurance" not in editorial_policy["excluded_content_types"]:
+                raise RulePackError(
+                    "invalid_rule", "The Asia executive news workflow must exclude reinsurance content."
+                )
         elif any(item.get("configuration_id") is not None for item in queries):
             raise RulePackError("invalid_rule", "Legacy Rule Packs cannot reference a Bing configuration ID.")
+        elif "max_items" not in document["summarization"]:
+            raise RulePackError("invalid_rule", "Legacy Rule Packs require summarization.max_items.")
 
         agent = document["search"].get("agent")
         if agent is not None:
@@ -221,8 +242,28 @@ class RulePack:
         return self.document["search"].get("agent", {}).get("max_tool_calls_per_site", 3)
 
     @property
-    def max_items(self) -> int:
-        return self.document["summarization"]["max_items"]
+    def max_items(self) -> int | None:
+        return self.document["summarization"].get("max_items")
+
+    @property
+    def minimum_expected_items(self) -> int:
+        return self.document.get("editorial_policy", {}).get("minimum_expected_items", 1)
+
+    @property
+    def included_attention_levels(self) -> tuple[str, ...]:
+        return tuple(self.document.get("editorial_policy", {}).get("included_attention_levels", ()))
+
+    @property
+    def competitors(self) -> tuple[str, ...]:
+        return tuple(self.document.get("editorial_policy", {}).get("competitors", ()))
+
+    @property
+    def excluded_content_types(self) -> tuple[str, ...]:
+        return tuple(self.document.get("editorial_policy", {}).get("excluded_content_types", ()))
+
+    @property
+    def importance_dimensions(self) -> tuple[str, ...]:
+        return tuple(self.document.get("editorial_policy", {}).get("importance_dimensions", ()))
 
     def render_queries(self, topic: str, end_date: date, days: int) -> tuple[RenderedQuery, ...]:
         if not isinstance(topic, str) or not topic.strip() or len(topic.strip()) > 300:
@@ -244,6 +285,8 @@ class RulePack:
                     date_to=end_date.isoformat(),
                 ),
                 configuration_id=item.get("configuration_id"),
+                allowed_subject_types=tuple(item.get("allowed_subject_types", ())),
+                required_entities_any=tuple(item.get("required_entities_any", ())),
             )
             for item in self.document["search"]["queries"]
         )

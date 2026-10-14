@@ -235,12 +235,14 @@ class FoundryAdapter:
         } if kind == "foundry_agent" else common | (
             {"tools", "tool_choice", "include"} if kind == "custom_bing" else set()
         )
+        max_output_tokens = payload.get("max_output_tokens")
+        max_output_token_limit = 32768 if kind == "summary" else 4000
         if (
             set(payload) != expected
             or payload.get("store") is not False
             or payload.get("parallel_tool_calls") is not False
-            or type(payload.get("max_output_tokens")) is not int
-            or not 1 <= payload["max_output_tokens"] <= 4000
+            or type(max_output_tokens) is not int
+            or not 1 <= max_output_tokens <= max_output_token_limit
         ):
             raise ProbeError("invalid_request", "Foundry payload violates the PoC request boundary.")
         if kind == "foundry_agent":

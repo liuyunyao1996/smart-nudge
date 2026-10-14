@@ -4,19 +4,20 @@
 
 `config/rules/asia-executive-news.json` adds an opt-in Custom Bing-only workflow for AIA executive news monitoring. It does not change the default Hong Kong rule or the Foundry Agent path.
 
-Before a live run, create and populate these three Bing Custom Search configurations in the existing Bing connection; this repository does not create or modify them:
+Before a live run, create and populate these four Bing Custom Search configurations in the existing Bing connection; this repository does not create or modify them:
 
 - `asia-news-regulatory-official`: regulators, governments, central banks and international standard setters.
-- `asia-news-corporate-exchange`: AIA, major competitors, exchanges and insurance associations.
+- `asia-news-aia-primary`: AIA Group and local-market official sites, the AIA-related Amplify Health site, and AIA-relevant HKEX disclosure hosts. These are eligible sources, not required or preferred stories.
+- `asia-news-corporate-exchange`: the six named major competitors, exchanges and insurance associations.
 - `asia-news-authoritative-media`: named Hong Kong, Asian, Greater China and global media, including Ming Pao, Oriental Daily, RTHK, Bastille Post, ETNet, HK01, InsuranceAsia News, Xinhua, SCMP, Bloomberg, Reuters, Financial Times and The Business Times, plus Nikkei Asia, Asia Insurance Review, InsuranceERM and Channel NewsAsia.
 
-The offline plan is six searches (English and Chinese for each configuration), at most ten candidates per search and one no-tool Top-10 summarization request, with no automatic retries:
+The offline plan is seven thematic searches—three regulatory market groups, two AIA searches, one named-competitor official search and one authoritative-media search—at most ten candidates per search and one no-tool editorial assessment request, with no automatic retries:
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\run_poc.py --rule config/rules/asia-executive-news.json
 ```
 
-A specifically authorized live run adds `--execute-live`. It writes `search-results.json`, normalized `all-news.json`, `brief.json` and `brief.md`. `all-news.json` retains in-window, out-of-window and unknown-date cited candidates from that run; only `in_window` candidates are eligible for the final brief. URL-shape diagnostics label each candidate as `specific_article`, `listing_page`, `homepage`, or `unknown`: specific articles rank ahead of comparable listing/homepage evidence, while listing/homepage candidates remain auditable but cannot retain High attention. Each brief item contains a short concrete English title, a concise summary, normally two or three bullet points, attention level, topic, signal type, date, publisher and sources. High-attention or unusually complex long-form items may expand to four or five bullet points. The Asia brief intentionally omits separate attention rationale and AIA impact sections. Public Web Search cannot cover non-public regulator engagement or feedback, and native citation matching or URL-shape classification is not independent article verification.
+A specifically authorized live run adds `--execute-live`. It writes `search-results.json`, normalized `all-news.json`, `brief.json` and `brief.md`. `all-news.json` retains in-window, out-of-window and unknown-date cited candidates from that run; only `in_window` candidates are eligible for assessment. Every eligible event must receive a High, Medium or Low evaluation. The final brief includes every High and Medium event, has no item cap, and never promotes Low events to meet the six-item coverage target. It excludes all reinsurance coverage and limits competitors to AXA, Manulife, Ping An, FWD, Sun Life and Prudential. AIA coverage spans its 18 markets and can include material market leadership, research, health, technology, credible recognition and social or industry impact; routine promotions and generic awards remain Low. Each item explains what happened, concrete details, supported timing/action and potential impact. Official or sponsored AIA material may be included when important but is not represented as independent confirmation. Native citation matching and URL-shape classification are not independent article verification.
 
 Smart Nudge 是一个面向 AIA Group CEO 的公开 Web 情报演示 PoC。它只展示两个核心能力：
 

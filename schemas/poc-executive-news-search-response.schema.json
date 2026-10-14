@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["schema_version", "coverage_status", "items"],
   "properties": {
-    "schema_version": {"const": "1.1.0"},
+    "schema_version": {"const": "1.2.0"},
     "coverage_status": {"enum": ["checked", "partial", "unavailable"]},
     "items": {
       "type": "array",
@@ -19,7 +19,7 @@
     "item": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["title", "publisher", "published_date", "grounded_note", "citation_urls", "market", "entities", "topic", "signal_type"],
+      "required": ["title", "publisher", "published_date", "grounded_note", "citation_urls", "market", "entities", "topic", "signal_type", "subject_type", "content_type", "event_scope"],
       "properties": {
         "title": {"$ref": "#/$defs/text"},
         "publisher": {"$ref": "#/$defs/text"},
@@ -44,7 +44,10 @@
           "items": {"$ref": "#/$defs/text"}
         },
         "topic": {"enum": ["external_environment", "government_regulatory"]},
-        "signal_type": {"enum": ["aia_major_news", "final_rule", "enforcement", "consultation", "guidance", "competitor_market_move", "product_distribution", "leadership_change", "macro_market", "technology_operational_risk", "informational"]}
+        "signal_type": {"enum": ["aia_major_news", "final_rule", "enforcement", "consultation", "guidance", "competitor_market_move", "product_distribution", "leadership_change", "macro_market", "technology_operational_risk", "informational"]},
+        "subject_type": {"enum": ["aia", "regulator", "competitor", "reinsurance", "industry", "other"]},
+        "content_type": {"enum": ["corporate", "regulatory", "research_thought_leadership", "leadership", "recognition_social_impact", "campaign_initiative", "product_distribution", "market_risk", "reinsurance", "other"]},
+        "event_scope": {"enum": ["group_regional", "market_sector", "firm_specific", "individual"]}
       }
     }
   }

@@ -22,9 +22,15 @@ def main() -> int:
             print(f"FAIL file={path.name} {exc.code}: {exc}")
             failed = True
             continue
+        selection = (
+            f"included_levels={','.join(rule.included_attention_levels)} "
+            f"minimum_expected_items={rule.minimum_expected_items}"
+            if rule.is_asia_executive_news
+            else f"max_items={rule.max_items}"
+        )
         print(
             f"PASS rule={rule.rule_id}@{rule.version} queries={len(queries)} "
-            f"max_items={rule.max_items} hosts={len(rule.allowed_hosts)}"
+            f"{selection} hosts={len(rule.allowed_hosts)}"
         )
     return 1 if failed else 0
 

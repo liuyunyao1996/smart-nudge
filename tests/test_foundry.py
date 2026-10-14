@@ -171,6 +171,44 @@ class FoundryTests(unittest.TestCase):
             adapter.execute_summary(payload)
         self.assertEqual(error.exception.code, "invalid_request")
 
+    def test_summary_allows_expanded_output_budget_but_search_remains_bounded(self):
+        adapter = FoundryAdapter(
+            FoundryConfig(
+                "https://resource.services.ai.azure.com/api/projects/project",
+                "gpt-5-mini",
+            ),
+            credential=_Credential(),
+            transport=httpx.MockTransport(
+                lambda _request: httpx.Response(
+                    200, json={"id": "resp-1", "status": "completed", "output": []}
+                )
+            ),
+        )
+        payload = summary_payload()
+        payload["max_output_tokens"] = 13000
+        adapter.execute_summary(payload)
+        payload["max_output_tokens"] = 32769
+        with self.assertRaises(ProbeError):
+            adapter.execute_summary(payload)
+
+        search = summary_payload()
+        search.update({
+            "max_output_tokens": 4001,
+            "tools": [{
+                "type": "web_search",
+                "custom_search_configuration": {
+                    "project_connection_id": "connection",
+                    "instance_name": "instance",
+                },
+            }],
+            "tool_choice": "required",
+            "include": ["web_search_call.action.sources"],
+        })
+        with self.assertRaises(ProbeError):
+            adapter.execute_search(
+                search, BingConfig("connection", "instance", ("www.example.com",))
+            )
+
     def test_agent_search_uses_dedicated_endpoint_and_bounded_tool_calls(self):
         payload = summary_payload()
         for key in ("model", "instructions", "reasoning", "text"):

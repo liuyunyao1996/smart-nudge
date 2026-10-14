@@ -8,7 +8,7 @@ import unittest
 
 from scripts.run_poc import main
 from smart_nudge.foundry import BingConfig, FoundryConfig
-from smart_nudge.pipeline import PocPipeline, _url_specificity
+from smart_nudge.pipeline import PocError, PocPipeline, _url_specificity
 from smart_nudge.rules import RulePack
 
 
@@ -16,9 +16,13 @@ ROOT = Path(__file__).resolve().parents[1]
 NOW = datetime(2026, 9, 13, 4, 0, tzinfo=timezone.utc)
 
 
-def search_body(url, published_date, *, title, publisher, market, signal_type, topic):
+def search_body(
+    url, published_date, *, title, publisher, market, signal_type, topic,
+    subject_type="aia", content_type="corporate", event_scope="firm_specific",
+    entities=None,
+):
     document = {
-        "schema_version": "1.1.0",
+        "schema_version": "1.2.0",
         "coverage_status": "checked",
         "items": [{
             "title": title,
@@ -27,9 +31,12 @@ def search_body(url, published_date, *, title, publisher, market, signal_type, t
             "grounded_note": "A cited development was reported with potential relevance to Asian insurance markets.",
             "citation_urls": [url],
             "market": market,
-            "entities": ["AIA"],
+            "entities": entities or ["AIA"],
             "topic": topic,
             "signal_type": signal_type,
+            "subject_type": subject_type,
+            "content_type": content_type,
+            "event_scope": event_scope,
         }],
     }
     text = json.dumps(document)
@@ -76,20 +83,31 @@ class FakeAdapter:
         self.summary_source_notes = json.loads(payload["input"])["source_notes"]
         source_id = self.summary_source_notes[0]["source_item_id"]
         document = {
-            "schema_version": "1.3.0",
+            "schema_version": "1.4.0",
             "title": "Asia Insurance Executive News",
             "executive_summary": "One material in-window development merits attention.",
+            "evaluations": [
+                {
+                    "source_item_ids": [note["source_item_id"]],
+                    "importance_level": "high" if index == 0 else "low",
+                    "importance_reason": "Directly relevant to AIA." if index == 0 else "Limited executive impact.",
+                }
+                for index, note in enumerate(self.summary_source_notes)
+            ],
             "items": [{
                 "source_item_ids": [source_id],
                 "title": "AIA launches a new regional offering",
                 "summary": "The cited source describes a material AIA development.",
-                "bullet_points": [
+                "detail_bullets": [
                     "The development directly concerns AIA.",
                     "Its financial materiality is not established by the supplied note.",
                 ],
+                "timing_or_action": None,
+                "potential_impact": "The development may influence AIA's regional positioning.",
                 "attention_level": "high",
                 "topic": "external_environment",
                 "signal_type": "aia_major_news",
+                "content_type": "corporate",
             }],
         }
         body = {
@@ -117,19 +135,20 @@ class AsiaNewsTests(unittest.TestCase):
             for item in cls.rule.bing_configurations
         )
 
-    def test_dry_run_has_three_instances_six_queries_and_rejects_agent(self):
-        self.assertEqual(self.rule.version, "1.2.0")
+    def test_dry_run_has_four_instances_seven_queries_and_rejects_agent(self):
+        self.assertEqual(self.rule.version, "1.4.0")
         output = StringIO()
         with redirect_stdout(output):
             status = main(["--rule", "config/rules/asia-executive-news.json"])
         document = json.loads(output.getvalue())
         self.assertEqual(status, 0)
         self.assertEqual(document["live_request_limit"], {
-            "search": 6, "summarization": 1, "total": 7, "automatic_retries": 0
+            "search": 7, "summarization": 1, "total": 8, "automatic_retries": 0
         })
         self.assertEqual(
             sorted({item["custom_configuration"] for item in document["queries"]}),
             [
+                "asia-news-aia-primary",
                 "asia-news-authoritative-media",
                 "asia-news-corporate-exchange",
                 "asia-news-regulatory-official",
@@ -144,7 +163,46 @@ class AsiaNewsTests(unittest.TestCase):
         self.assertEqual(status, 1)
         self.assertEqual(json.loads(output.getvalue())["code"], "configuration")
 
-    def test_summary_schema_requires_two_to_five_bullet_points(self):
+    def test_aia_research_query_covers_theme_without_pinning_feedback_examples(self):
+        query = next(
+            item for item in self.rule.document["search"]["queries"]
+            if item["query_id"] == "aia-research-purpose"
+        )
+        template = query["template"].lower()
+        self.assertNotIn("amplify health", template)
+        self.assertNotIn("healthy living", template)
+        for theme in (
+            "research", "health", "wellness", "longevity", "technology",
+            "social impact", "industry impact",
+        ):
+            self.assertIn(theme, template)
+        self.assertIn("do not prioritize or require", template)
+
+    def test_aia_queries_use_the_dedicated_configuration_and_admission_policy(self):
+        queries = {
+            item["query_id"]: item for item in self.rule.document["search"]["queries"]
+        }
+        for query_id in ("aia-corporate-markets", "aia-research-purpose"):
+            query = queries[query_id]
+            self.assertEqual(query["configuration_id"], "aia-primary")
+            self.assertEqual(query["allowed_subject_types"], ["aia"])
+            self.assertEqual(query["required_entities_any"], ["AIA"])
+        aia_hosts = {
+            source["host"]
+            for source in self.rule.bing_configuration("aia-primary")["sources"]
+        }
+        self.assertIn("www.aia.com", aia_hosts)
+        self.assertIn("www1.hkexnews.hk", aia_hosts)
+        self.assertNotIn("www.manulife.com", aia_hosts)
+        competitor = queries["competitor-official-material-moves"]
+        self.assertEqual(competitor["configuration_id"], "corporate-exchange")
+        self.assertEqual(competitor["allowed_subject_types"], ["competitor"])
+        self.assertEqual(
+            competitor["required_entities_any"],
+            ["AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential"],
+        )
+
+    def test_summary_schema_supports_detailed_items_without_an_item_cap(self):
         pipeline = PocPipeline(
             ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW
         )
@@ -152,23 +210,27 @@ class AsiaNewsTests(unittest.TestCase):
             "source_item_ids": ["src-0123456789ab"],
             "title": "AIA launches a regional offering",
             "summary": "The cited source describes the launch.",
-            "bullet_points": ["First point.", "Second point."],
+            "detail_bullets": ["First point."],
+            "timing_or_action": None,
+            "potential_impact": "The development may affect distribution strategy.",
             "attention_level": "medium",
             "topic": "external_environment",
             "signal_type": "aia_major_news",
+            "content_type": "corporate",
         }
         document = {
-            "schema_version": "1.3.0",
+            "schema_version": "1.4.0",
             "title": "Asia briefing",
             "executive_summary": "One item was selected.",
-            "items": [item],
+            "evaluations": [{
+                "source_item_ids": ["src-0123456789ab"],
+                "importance_level": "medium",
+                "importance_reason": "The event has strategic relevance.",
+            }],
+            "items": [dict(item) for _ in range(11)],
         }
         self.assertEqual(list(pipeline.summary_validator.iter_errors(document)), [])
-
-        document["items"][0]["bullet_points"] = ["Only one point."]
-        self.assertTrue(list(pipeline.summary_validator.iter_errors(document)))
-
-        document["items"][0]["bullet_points"] = [f"Point {index}." for index in range(6)]
+        document["items"][0]["detail_bullets"] = []
         self.assertTrue(list(pipeline.summary_validator.iter_errors(document)))
 
     def test_url_specificity_distinguishes_articles_from_listing_pages(self):
@@ -185,6 +247,58 @@ class AsiaNewsTests(unittest.TestCase):
             _url_specificity("https://www.ia.org.hk/en/infocenter/press_releases/20260924.html"),
             "specific_article",
         )
+        self.assertEqual(
+            _url_specificity(
+                "https://www1.hkexnews.hk/search/titlesearch.xhtml?category=0&market=SEHK&stockId=54299"
+            ),
+            "listing_page",
+        )
+
+    def test_aia_query_admission_rejects_wrong_subject_and_entity(self):
+        pipeline = PocPipeline(
+            ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW
+        )
+        query = next(
+            item for item in self.rule.render_queries(self.rule.default_topic, NOW.date(), 14)
+            if item.query_id == "aia-research-purpose"
+        )
+        config = self.rule.bing_configuration("aia-primary")
+        hosts = tuple(source["host"] for source in config["sources"])
+        wrong_subject = search_body(
+            "https://www.aia.com/en/media-centre/competitor", "2026-09-10",
+            title="Competitor update", publisher="AIA", market="Asia",
+            signal_type="competitor_market_move", topic="external_environment",
+            subject_type="competitor", entities=["Manulife"],
+        )
+        items, warnings, _ = pipeline._convert_search(
+            query, wrong_subject, allowed_hosts=hosts, configuration_id="aia-primary"
+        )
+        self.assertEqual(items, [])
+        self.assertTrue(any("subject type" in warning for warning in warnings))
+
+        wrong_entity = search_body(
+            "https://www.aia.com/en/media-centre/other", "2026-09-10",
+            title="Other update", publisher="AIA", market="Asia",
+            signal_type="aia_major_news", topic="external_environment",
+            subject_type="aia", entities=["Manulife"],
+        )
+        items, warnings, _ = pipeline._convert_search(
+            query, wrong_entity, allowed_hosts=hosts, configuration_id="aia-primary"
+        )
+        self.assertEqual(items, [])
+        self.assertTrue(any("admitted entity" in warning for warning in warnings))
+
+        accepted = search_body(
+            "https://www.aia.com/en/media-centre/aia-update", "2026-09-10",
+            title="AIA update", publisher="AIA", market="Asia",
+            signal_type="aia_major_news", topic="external_environment",
+            subject_type="aia", entities=["AIA Hong Kong"],
+        )
+        items, warnings, _ = pipeline._convert_search(
+            query, accepted, allowed_hosts=hosts, configuration_id="aia-primary"
+        )
+        self.assertEqual(len(items), 1)
+        self.assertFalse(any("admission" in warning or "admitted entity" in warning for warning in warnings))
 
     def test_listing_only_source_cannot_keep_high_attention(self):
         pipeline = PocPipeline(
@@ -195,6 +309,8 @@ class AsiaNewsTests(unittest.TestCase):
             "source_item_id": source_id,
             "publisher": "Tata AIA",
             "published_date": "2026-09-10",
+            "content_type": "product_distribution",
+            "subject_type": "aia",
             "url_specificity": "listing_page",
             "source_links": [{
                 "url": "https://www.tataaia.com/about-us/press-release-and-media-center.html",
@@ -202,20 +318,28 @@ class AsiaNewsTests(unittest.TestCase):
             }],
         }]
         document = {
-            "schema_version": "1.3.0",
+            "schema_version": "1.4.0",
             "title": "Asia briefing",
             "executive_summary": "One item was selected.",
+            "evaluations": [{
+                "source_item_ids": [source_id],
+                "importance_level": "high",
+                "importance_reason": "The development directly concerns AIA.",
+            }],
             "items": [{
                 "source_item_ids": [source_id],
                 "title": "AIA launches a new product",
                 "summary": "A product launch was reported.",
-                "bullet_points": [
+                "detail_bullets": [
                     "The launch concerns AIA directly.",
                     "Only a listing-page citation was supplied.",
                 ],
+                "timing_or_action": None,
+                "potential_impact": "The launch may affect product competition.",
                 "attention_level": "high",
                 "topic": "external_environment",
                 "signal_type": "aia_major_news",
+                "content_type": "product_distribution",
             }],
         }
         body = {
@@ -229,7 +353,130 @@ class AsiaNewsTests(unittest.TestCase):
         self.assertEqual(summary["items"][0]["source_specificity"], "listing_page")
         self.assertTrue(any("article-specific citation" in warning for warning in warnings))
 
-    def test_live_configuration_loader_binds_all_three_instances(self):
+    def test_editorial_policy_has_named_competitors_and_no_final_cap(self):
+        self.assertIsNone(self.rule.max_items)
+        self.assertEqual(
+            self.rule.competitors,
+            ("AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential"),
+        )
+        self.assertEqual(self.rule.included_attention_levels, ("high", "medium"))
+        self.assertIn("reinsurance", self.rule.excluded_content_types)
+
+    def test_all_high_and_medium_events_are_returned_even_above_ten(self):
+        pipeline = PocPipeline(
+            ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW
+        )
+        source_items = []
+        evaluations = []
+        items = []
+        for index in range(11):
+            source_id = f"src-{index:012x}"
+            source_items.append({
+                "source_item_id": source_id,
+                "publisher": "AIA",
+                "published_date": "2026-09-10",
+                "content_type": "corporate",
+                "subject_type": "aia",
+                "source_type": "company",
+                "url_specificity": "specific_article",
+                "source_links": [{
+                    "url": f"https://www.aia.com/en/media-centre/event-{index}",
+                    "title": f"Event {index}",
+                }],
+            })
+            evaluations.append({
+                "source_item_ids": [source_id],
+                "importance_level": "medium",
+                "importance_reason": "The event has supported strategic relevance.",
+            })
+            items.append({
+                "source_item_ids": [source_id],
+                "title": f"AIA event {index}",
+                "summary": "A material event was reported.",
+                "detail_bullets": ["A cited source provides the event detail."],
+                "timing_or_action": None,
+                "potential_impact": "The event may affect AIA or the insurance industry.",
+                "attention_level": "medium",
+                "topic": "external_environment",
+                "signal_type": "aia_major_news",
+                "content_type": "corporate",
+            })
+        document = {
+            "schema_version": "1.4.0",
+            "title": "Asia briefing",
+            "executive_summary": "Eleven events met the importance threshold.",
+            "evaluations": evaluations,
+            "items": items,
+        }
+        body = {"output": [{
+            "type": "message", "role": "assistant",
+            "content": [{"type": "output_text", "text": json.dumps(document)}],
+        }]}
+        summary, warnings = pipeline._convert_summary(body, source_items)
+        self.assertEqual(len(summary["items"]), 11)
+        self.assertEqual(summary["selection"]["item_cap"], None)
+        self.assertIn("not independent media confirmation", summary["items"][0]["source_positioning"])
+        self.assertEqual(warnings, [])
+
+    def test_every_candidate_must_be_evaluated_and_reinsurance_cannot_be_selected(self):
+        pipeline = PocPipeline(
+            ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW
+        )
+        source_id = "src-0123456789ab"
+        source_items = [{
+            "source_item_id": source_id,
+            "publisher": "Reinsurer",
+            "published_date": "2026-09-10",
+            "content_type": "reinsurance",
+            "subject_type": "reinsurance",
+            "url_specificity": "specific_article",
+            "source_links": [{"url": "https://www.reuters.com/world/asia/reinsurance", "title": "Report"}],
+        }]
+        document = {
+            "schema_version": "1.4.0",
+            "title": "Asia briefing",
+            "executive_summary": "One candidate was assessed.",
+            "evaluations": [{
+                "source_item_ids": [source_id],
+                "importance_level": "medium",
+                "importance_reason": "The event appears material.",
+            }],
+            "items": [{
+                "source_item_ids": [source_id],
+                "title": "Reinsurance event",
+                "summary": "A reinsurance event was reported.",
+                "detail_bullets": ["The event concerns a reinsurer."],
+                "timing_or_action": None,
+                "potential_impact": "The event may affect the sector.",
+                "attention_level": "medium",
+                "topic": "external_environment",
+                "signal_type": "informational",
+                "content_type": "other",
+            }],
+        }
+        body = {"output": [{
+            "type": "message", "role": "assistant",
+            "content": [{"type": "output_text", "text": json.dumps(document)}],
+        }]}
+        with self.assertRaisesRegex(PocError, "Reinsurance content"):
+            pipeline._convert_summary(body, source_items)
+
+        source_items[0].update({
+            "content_type": "corporate",
+            "subject_type": "competitor",
+            "signal_type": "competitor_market_move",
+            "entities": ["Marsh"],
+        })
+        with self.assertRaisesRegex(PocError, "named competitor list"):
+            pipeline._convert_summary(body, source_items)
+
+        document["evaluations"] = []
+        document["items"] = []
+        body["output"][0]["content"][0]["text"] = json.dumps(document)
+        with self.assertRaisesRegex(PocError, "Every eligible source item"):
+            pipeline._convert_summary(body, source_items)
+
+    def test_live_configuration_loader_binds_all_four_instances(self):
         environ = {
             "BING_CUSTOM_SEARCH_PROJECT_CONNECTION_ID": (
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/"
@@ -246,6 +493,7 @@ class AsiaNewsTests(unittest.TestCase):
             [config.instance_name for config in configs],
             [
                 "asia-news-regulatory-official",
+                "asia-news-aia-primary",
                 "asia-news-corporate-exchange",
                 "asia-news-authoritative-media",
             ],
@@ -270,20 +518,20 @@ class AsiaNewsTests(unittest.TestCase):
             title="Older market report", publisher="Reuters", market="Asia",
             signal_type="macro_market", topic="external_environment",
         )
-        media_unknown = search_body(
-            "https://www.bloomberg.com/news/articles/insurance-market", None,
-            title="Undated market report", publisher="Bloomberg", market="Asia",
+        corporate_unknown = search_body(
+            "https://www.aia.com/en/media-centre/2026/undated-update", None,
+            title="Undated AIA update", publisher="AIA", market="Asia",
             signal_type="macro_market", topic="external_environment",
         )
         adapter = FakeAdapter([
-            regulatory, regulatory, corporate, corporate, media_old, media_unknown
+            regulatory, regulatory, regulatory, corporate, corporate_unknown, media_old, media_old
         ])
         run = PocPipeline(
             ROOT, self.rule, adapter, self.configs, clock=lambda: NOW
         ).run()
 
         self.assertTrue(run.ok)
-        self.assertEqual(run.brief["schema_version"], "1.3.0")
+        self.assertEqual(run.brief["schema_version"], "1.4.0")
         self.assertEqual(run.all_news["counts"], {
             "total": 4,
             "in_window": 2,
@@ -296,8 +544,9 @@ class AsiaNewsTests(unittest.TestCase):
         self.assertTrue(all(note["url_specificity"] == "specific_article" for note in adapter.summary_source_notes))
         self.assertEqual(adapter.search_configs, [
             "asia-news-regulatory-official", "asia-news-regulatory-official",
-            "asia-news-corporate-exchange", "asia-news-corporate-exchange",
-            "asia-news-authoritative-media", "asia-news-authoritative-media",
+            "asia-news-regulatory-official", "asia-news-aia-primary",
+            "asia-news-aia-primary", "asia-news-corporate-exchange",
+            "asia-news-authoritative-media",
         ])
         self.assertTrue(all(
             record["citation_diagnostics"]["envelope_checks"]["schema_version_valid"]
@@ -305,12 +554,14 @@ class AsiaNewsTests(unittest.TestCase):
         ))
         item = run.brief["items"][0]
         self.assertEqual(item["title"], "AIA launches a new regional offering")
-        self.assertEqual(len(item["bullet_points"]), 2)
+        self.assertEqual(len(item["detail_bullets"]), 2)
         self.assertNotIn("impact_to_aia", item)
         self.assertNotIn("attention_reason", item)
         self.assertIn("- The development directly concerns AIA.", run.markdown)
+        self.assertIn("Potential impact", run.markdown)
         self.assertNotIn("Attention rationale", run.markdown)
         self.assertNotIn("Impact to AIA", run.markdown)
+        self.assertTrue(any("below the editorial target" in warning for warning in run.brief["warnings"]))
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["schema_version", "run_id", "status", "generated_at", "rule", "search", "topic", "window", "counts", "items", "warnings", "disclaimer", "raw_response_retained"],
   "properties": {
-    "schema_version": {"const": "1.0.0"},
+    "schema_version": {"const": "1.1.0"},
     "run_id": {"type": "string"},
     "status": {"enum": ["completed", "partial", "failed"]},
     "generated_at": {"type": "string"},
@@ -50,7 +50,7 @@
     "item": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["source_item_id", "title", "publisher", "published_date", "grounded_note", "query_ids", "languages", "source_links", "configuration_id", "source_tier", "source_type", "source_market", "market", "entities", "topic", "signal_type", "url_specificity", "source_quality_note", "freshness_status", "eligible_for_brief", "ineligibility_reason"],
+      "required": ["source_item_id", "title", "publisher", "published_date", "grounded_note", "query_ids", "languages", "source_links", "configuration_id", "source_tier", "source_type", "source_market", "market", "entities", "topic", "signal_type", "subject_type", "content_type", "event_scope", "url_specificity", "source_quality_note", "freshness_status", "eligible_for_brief", "ineligibility_reason"],
       "properties": {
         "source_item_id": {"type": "string", "pattern": "^src-[a-f0-9]{12}$"},
         "title": {"$ref": "#/$defs/text"},
@@ -68,6 +68,9 @@
         "entities": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
         "topic": {"enum": ["external_environment", "government_regulatory"]},
         "signal_type": {"enum": ["aia_major_news", "final_rule", "enforcement", "consultation", "guidance", "competitor_market_move", "product_distribution", "leadership_change", "macro_market", "technology_operational_risk", "informational"]},
+        "subject_type": {"enum": ["aia", "regulator", "competitor", "reinsurance", "industry", "other"]},
+        "content_type": {"enum": ["corporate", "regulatory", "research_thought_leadership", "leadership", "recognition_social_impact", "campaign_initiative", "product_distribution", "market_risk", "reinsurance", "other"]},
+        "event_scope": {"enum": ["group_regional", "market_sector", "firm_specific", "individual"]},
         "url_specificity": {"enum": ["specific_article", "listing_page", "homepage", "unknown"]},
         "source_quality_note": {"$ref": "#/$defs/text"},
         "freshness_status": {"enum": ["in_window", "out_of_window", "unknown"]},

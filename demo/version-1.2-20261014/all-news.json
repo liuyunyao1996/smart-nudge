@@ -1,0 +1,1087 @@
+{
+  "schema_version": "1.1.0",
+  "run_id": "poc-20261014T090848Z-8e84b6",
+  "status": "completed",
+  "generated_at": "2026-10-14T09:12:29.004261+00:00",
+  "rule": {
+    "rule_id": "asia-executive-news",
+    "version": "1.4.0",
+    "sha256": "9f8e3f71c8690968c8121bf9803b592ef817d4d46b1e36e438a6171986b97ab3"
+  },
+  "search": {
+    "approach": "custom-bing",
+    "custom_configurations": [
+      {
+        "configuration_id": "regulatory-official",
+        "instance_name": "asia-news-regulatory-official"
+      },
+      {
+        "configuration_id": "aia-primary",
+        "instance_name": "asia-news-aia-primary"
+      },
+      {
+        "configuration_id": "corporate-exchange",
+        "instance_name": "asia-news-corporate-exchange"
+      },
+      {
+        "configuration_id": "authoritative-media",
+        "instance_name": "asia-news-authoritative-media"
+      }
+    ]
+  },
+  "topic": "Material developments affecting AIA, its 18 markets, insurance regulation, or its named major competitors",
+  "window": {
+    "start_date": "2026-09-30",
+    "end_date": "2026-10-14",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "counts": {
+    "total": 23,
+    "in_window": 20,
+    "out_of_window": 2,
+    "unknown_date": 1,
+    "eligible_for_brief": 20
+  },
+  "items": [
+    {
+      "source_item_id": "src-61c601ddfeb4",
+      "title": "Taiwan regulator to permit insurer investment in health, wellness and long-term-care businesses",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-13",
+      "grounded_note": "Taiwan's Insurance Bureau said it will issue a ruling explicitly permitting insurers to invest in health-promotion, long-term-care and age-inclusive service businesses. The measure is relevant to insurers evaluating health-ecosystem expansion and ageing-related investments.",
+      "query_ids": [
+        "competitor-authoritative-media"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article/id/97223/Type/AirPlus/Taiwan-Regulator-opens-up-insurers-investments-in-health-wellness-and-long-term-care",
+          "title": "Taiwan regulator to permit insurer investment in health, wellness and long-term-care businesses",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Taiwan",
+      "entities": [
+        "Insurance Bureau",
+        "Financial Supervisory Commission"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-e1ba5b1c53e8",
+      "title": "New accounting rules reshape participating-product management at Chinese insurers",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-09",
+      "grounded_note": "The report examines how new accounting requirements are pushing Chinese insurers to align insurance liability management, investment decisions and participating-product economics more closely. It highlights stable insurance-risk earnings but greater volatility in investment contributions.",
+      "query_ids": [
+        "competitor-authoritative-media"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article/id/97170/Type/eCin/New-accounting-rules-push-insurers-to-align-insurance-and-investment-considerations-in-par-products",
+          "title": "New accounting rules reshape participating-product management at Chinese insurers",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Mainland China",
+      "entities": [
+        "Chinese insurance companies"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "industry",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-860704820003",
+      "title": "Mainland China issues final rules on property insurance product development",
+      "publisher": "National Financial Regulatory Administration",
+      "published_date": "2026-10-09",
+      "grounded_note": "The NFRA issued binding rules governing property insurers’ product development, including product structure, policy wording, pricing, consumer protection and accountability requirements. The rules take effect on 1 November 2026 and replace specified earlier product-development guidance.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1274236&itemId=928",
+          "title": "Mainland China issues final rules on property insurance product development",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "mainland_china",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "mainland_china",
+      "market": "Mainland China",
+      "entities": [
+        "National Financial Regulatory Administration",
+        "Property insurance companies"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-47dc5523d35c",
+      "title": "Belanjawan 2027 measures for voluntary medical and health insurance and takaful",
+      "publisher": "Bank Negara Malaysia",
+      "published_date": "2026-10-09",
+      "grounded_note": "BNM stated that premiums or contributions for voluntary medical and health insurance or takaful will qualify for income-tax relief. The budget also allocates RM40 million for MediAsas vouchers for employees of SMEs with fewer than 75 employees, supporting wider healthcare protection coverage.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.bnm.gov.my/-/belanjawan2027",
+          "title": "Belanjawan 2027 measures for voluntary medical and health insurance and takaful",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "central_bank",
+          "market": "malaysia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "central_bank",
+      "source_market": "malaysia",
+      "market": "Malaysia",
+      "entities": [
+        "Bank Negara Malaysia",
+        "Government of Malaysia",
+        "MediAsas"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "product_distribution",
+      "subject_type": "regulator",
+      "content_type": "product_distribution",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-f9dc3e4a4952",
+      "title": "AIA Alta forms exclusive Hong Kong longevity collaboration with Chi Longevity",
+      "publisher": "Bastille Post / Media OutReach Newswire",
+      "published_date": "2026-10-08",
+      "grounded_note": "AIA Hong Kong & Macau's high-net-worth proposition announced an exclusive collaboration with Chi Longevity. It includes plans to launch an AIA Alta longevity centre and provide eligible customers with access to healthy-ageing and precision-geromedicine services. This is company-sponsored material.",
+      "query_ids": [
+        "competitor-authoritative-media"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.bastillepost.com/global/article/6232539-aia-alta-announces-exclusive-collaboration-with-chi-longevity-in-hong-kong",
+          "title": "AIA Alta forms exclusive Hong Kong longevity collaboration with Chi Longevity",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "AIA Alta",
+        "AIA Hong Kong & Macau",
+        "Chi Longevity",
+        "Alger Fung",
+        "Alice Liang",
+        "Andrea B. Maier",
+        "Craig McGee"
+      ],
+      "topic": "external_environment",
+      "signal_type": "product_distribution",
+      "subject_type": "aia",
+      "content_type": "product_distribution",
+      "event_scope": "firm_specific",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-02f743b15859",
+      "title": "Review of critical-illness policy definitions to focus more on underlying disease and severity",
+      "publisher": "Monetary Authority of Singapore",
+      "published_date": "2026-10-07",
+      "grounded_note": "MAS stated that the Life Insurance Association Singapore will begin a review in 2027 of whether some critical-illness definitions should rely less on specified medical procedures and more on underlying disease and severity. Any revisions would affect new products, coverage scope, claims experience and premiums.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.mas.gov.sg/news/parliamentary-replies/2026/written-reply-to-parliamentary-question-on-moving-critical-illness-policy-definitions",
+          "title": "Review of critical-illness policy definitions to focus more on underlying disease and severity",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "singapore",
+      "market": "Singapore",
+      "entities": [
+        "Monetary Authority of Singapore",
+        "Life Insurance Association Singapore"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "informational",
+      "subject_type": "regulator",
+      "content_type": "product_distribution",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-58892c11a38e",
+      "title": "Guidelines on Artificial Intelligence Risk Management for Financial Institutions",
+      "publisher": "Monetary Authority of Singapore",
+      "published_date": "2026-10-07",
+      "grounded_note": "MAS issued supervisory guidance applying to all financial institutions, including direct insurers and insurance brokers, and all forms of AI. It establishes expectations for proportionate governance and management of risks arising throughout AI use.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.mas.gov.sg/regulation/guidelines/guidelines-on-artificial-intelligence-risk-management-for-financial-institutions",
+          "title": "Guidelines on Artificial Intelligence Risk Management for Financial Institutions",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "singapore",
+      "market": "Singapore",
+      "entities": [
+        "Monetary Authority of Singapore"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-435e6adf5e0a",
+      "title": "Taiwan issues rules under Article 146(4) of the Insurance Act",
+      "publisher": "Executive Yuan Gazette / Financial Supervisory Commission",
+      "published_date": "2026-10-06",
+      "grounded_note": "The Financial Supervisory Commission issued an administrative order stipulating rules regarding paragraph 4 of Article 146 of Taiwan’s Insurance Act, effective 6 October 2026. The source establishes the order and effective date but provides limited substantive detail in its indexed text.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://gazette.nat.gov.tw/egFront/e_detail.do?metaid=168744",
+          "title": "Taiwan issues rules under Article 146(4) of the Insurance Act",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "government",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "government",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission",
+        "Executive Yuan Gazette"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-1bba3201944c",
+      "title": "Proposed rules for insurers' investment in public and social-welfare projects",
+      "publisher": "Insurance Bureau, Financial Supervisory Commission, Taiwan",
+      "published_date": "2026-10-06",
+      "grounded_note": "Taiwan's Insurance Bureau listed a regulatory consultation concerning the use of insurance-sector funds for investment in public and social-welfare projects. This is potentially material to insurers' permitted investments and asset-allocation governance.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ib.gov.tw/ch/home.jsp?id=38&parentpath=0%2C3",
+          "title": "Proposed rules for insurers' investment in public and social-welfare projects",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Insurance Bureau",
+        "Financial Supervisory Commission Taiwan"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-6029825d68e2",
+      "title": "IRDAI consultation proposes tighter commission and expense controls for Indian insurers",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-06",
+      "grounded_note": "IRDAI's consultation proposes product- and channel-specific commission limits, lower insurer expense-of-management ceilings, remuneration disclosure, seller-level traceability and commission clawbacks for mis-selling. Stakeholder comments were invited through 25 October 2026.",
+      "query_ids": [
+        "competitor-authoritative-media"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97107",
+          "title": "IRDAI consultation proposes tighter commission and expense controls for Indian insurers",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "India",
+      "entities": [
+        "Insurance Regulatory and Development Authority of India",
+        "LocalCircles"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-65e6c97770ca",
+      "title": "Taiwan amends insurance-enterprise financial-reporting rules",
+      "publisher": "Executive Yuan Gazette / Financial Supervisory Commission",
+      "published_date": "2026-10-05",
+      "grounded_note": "The Financial Supervisory Commission amended multiple articles and reporting formats under the Regulations Governing the Preparation of Financial Reports by Insurance Enterprises. The Gazette states that specified provisions take effect from fiscal year 2027 and others from fiscal year 2028.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://gazette.nat.gov.tw/egFront/e_detail.do?metaid=168724",
+          "title": "Taiwan amends insurance-enterprise financial-reporting rules",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "government",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "government",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission",
+        "Insurance enterprises",
+        "Executive Yuan Gazette"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-c031a7c9c427",
+      "title": "Taiwan issues reserve-setting interpretation under insurance regulations",
+      "publisher": "Executive Yuan Gazette / Financial Supervisory Commission",
+      "published_date": "2026-10-02",
+      "grounded_note": "The Financial Supervisory Commission issued rules concerning Articles 3 and 16 of the Regulations Governing the Setting Aside of Various Reserves by Insurance Enterprises, effective 2 October 2026.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://gazette.nat.gov.tw/egFront/e_detail.do?metaid=168685",
+          "title": "Taiwan issues reserve-setting interpretation under insurance regulations",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "government",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "government",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission",
+        "Insurance enterprises",
+        "Executive Yuan Gazette"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-971784129eb5",
+      "title": "Hong Kong Insurance Authority refreshes disciplinary and expert panels",
+      "publisher": "Insurance Authority of Hong Kong",
+      "published_date": "2026-10-02",
+      "grounded_note": "The IA appointed six new and re-appointed 27 existing members to its Disciplinary Panel Pool, and appointed three new and re-appointed ten existing members to its Expert Advisor Panel, for three-year terms beginning 1 October 2026. The panels support disciplinary decisions, investigations and sanction advice.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ia.org.hk/en/legislative_framework/circulars/reg_matters/files/20261002_Circulars_DPP_and_EAP_Eng.pdf",
+          "title": "Hong Kong Insurance Authority refreshes disciplinary and expert panels",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "Insurance Authority of Hong Kong",
+        "Disciplinary Panel Pool",
+        "Expert Advisor Panel"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "leadership_change",
+      "subject_type": "regulator",
+      "content_type": "leadership",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-66efc39a8cc4",
+      "title": "ASIC sets insurance supervisory priorities for 2026–27",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-02",
+      "grounded_note": "Australia's corporate regulator outlined its planned supervisory priorities for the general- and life-insurance sectors for 2026–27, giving insurers advance visibility into the regulator's areas of scrutiny.",
+      "query_ids": [
+        "competitor-authoritative-media"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article/id/97087/Type/eDaily/Conferences/Conferences/Conferences/Gallery",
+          "title": "ASIC sets insurance supervisory priorities for 2026–27",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Australia",
+      "entities": [
+        "Australian Securities and Investments Commission"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-a1b6c097e18a",
+      "title": "AIA Group publishes pricing supplement for CNY1 billion subordinated securities due 2036",
+      "publisher": "Hong Kong Exchanges and Clearing Limited (HKEXnews)",
+      "published_date": "2026-10-02",
+      "grounded_note": "AIA Group published the pricing supplement for CNY1,000,000,000 of 2.88% subordinated dated securities due 2036 under its US$18 billion Global Medium Term Note and Securities Programme. The securities consolidate with existing CNY2.5 billion and CNY500 million tranches issued in 2026, taking the series to CNY4 billion.",
+      "query_ids": [
+        "aia-corporate-markets"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/1002/2026100200688.pdf",
+          "title": "AIA Group publishes pricing supplement for CNY1 billion subordinated securities due 2036",
+          "configuration_id": "aia-primary",
+          "source_tier": "primary",
+          "source_type": "exchange",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "aia-primary",
+      "source_tier": "primary",
+      "source_type": "exchange",
+      "source_market": "hong_kong",
+      "market": "AIA Group / Asia",
+      "entities": [
+        "AIA Group Limited",
+        "Hong Kong Exchanges and Clearing Limited"
+      ],
+      "topic": "external_environment",
+      "signal_type": "aia_major_news",
+      "subject_type": "aia",
+      "content_type": "corporate",
+      "event_scope": "group_regional",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-1095477f6c03",
+      "title": "AIA Group publishes pricing supplement for CNY1 billion of 2.88% subordinated dated securities due 2036",
+      "publisher": "HKEXnews",
+      "published_date": "2026-10-02",
+      "grounded_note": "AIA Group published a pricing supplement for CNY1 billion of 2.88% subordinated dated securities due 2036 under its US$18 billion Global Medium Term Note and Securities Programme. The securities consolidate with the same series issued in April and June 2026.",
+      "query_ids": [
+        "aia-research-purpose"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www1.hkexnews.hk/search/titlesearch.xhtml?category=0&market=SEHK&stockId=54299",
+          "title": "AIA Group publishes pricing supplement for CNY1 billion of 2.88% subordinated dated securities due 2036",
+          "configuration_id": "aia-primary",
+          "source_tier": "primary",
+          "source_type": "exchange",
+          "market": "hong_kong",
+          "url_specificity": "listing_page"
+        }
+      ],
+      "configuration_id": "aia-primary",
+      "source_tier": "primary",
+      "source_type": "exchange",
+      "source_market": "hong_kong",
+      "market": "AIA Group",
+      "entities": [
+        "AIA Group Limited",
+        "Hong Kong Exchanges and Clearing Limited",
+        "The Stock Exchange of Hong Kong Limited"
+      ],
+      "topic": "external_environment",
+      "signal_type": "aia_major_news",
+      "subject_type": "aia",
+      "content_type": "corporate",
+      "event_scope": "group_regional",
+      "url_specificity": "listing_page",
+      "source_quality_note": "Native citations appear to target a listing or category page; rank below comparable article-level evidence.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-97915531b9eb",
+      "title": "Hong Kong Insurance Authority highlights market-wide intermediary conduct and marketing-control concerns",
+      "publisher": "Insurance Authority of Hong Kong",
+      "published_date": "2026-09-30",
+      "grounded_note": "The September 2026 Conduct in Focus warns insurers and intermediaries about selectively presented marketing statistics, misuse of professional-investor exemptions, inadequate intermediary-management controls and self-referral arrangements that effectively circumvent commission-rebating or licensing requirements.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ia.org.hk/en/legislative_framework/circulars/reg_matters/files/20260930_Circular_Conduct_In_Focus_Issue_13_Eng.pdf",
+          "title": "Hong Kong Insurance Authority highlights market-wide intermediary conduct and marketing-control concerns",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "Insurance Authority of Hong Kong",
+        "Authorized insurers",
+        "Licensed insurance agencies",
+        "Licensed insurance brokers"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-a41f7add2a48",
+      "title": "Exposure Draft on Proper Advice Practices for Insurance and Takaful Business",
+      "publisher": "Bank Negara Malaysia",
+      "published_date": "2026-09-30",
+      "grounded_note": "BNM proposed industry-wide requirements and guidance for insurance and takaful advice, recommendations and sales. The draft addresses needs-based assessment, product suitability and affordability, sales-quality reviews, telemarketing safeguards, and accountability of financial service providers and intermediaries.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.bnm.gov.my/-/ed-papit-25",
+          "title": "Exposure Draft on Proper Advice Practices for Insurance and Takaful Business",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "central_bank",
+          "market": "malaysia",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.bnm.gov.my/documents/20124/948107/ED_on_Proper_Advice_Practices_for_Insurance_Takaful_Business.pdf",
+          "title": "Exposure Draft on Proper Advice Practices for Insurance and Takaful Business",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "central_bank",
+          "market": "malaysia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "central_bank",
+      "source_market": "malaysia",
+      "market": "Malaysia",
+      "entities": [
+        "Bank Negara Malaysia"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-521b831f2325",
+      "title": "Consultation Paper on Amendments to Corporate Governance Regulations for Banks, Insurers and Designated Financial Holding Companies",
+      "publisher": "Monetary Authority of Singapore",
+      "published_date": "2026-09-30",
+      "grounded_note": "MAS proposed targeted corporate-governance changes applicable to insurers, including refinements concerning director independence, board and board-committee composition, and appointments of key principals. The consultation closes on 9 December 2026.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.mas.gov.sg/publications/consultations/2026/consultation-paper-on-amendments-to-cg-regulations-for-banks-insurers-and-designated-fhcs",
+          "title": "Consultation Paper on Amendments to Corporate Governance Regulations for Banks, Insurers and Designated Financial Holding Companies",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "singapore",
+      "market": "Singapore",
+      "entities": [
+        "Monetary Authority of Singapore"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-ea25611d52ca",
+      "title": "Circular on Misconduct Report and Investigation Report Templates",
+      "publisher": "Monetary Authority of Singapore",
+      "published_date": "2026-09-30",
+      "grounded_note": "MAS published templates for misconduct and investigation reports covering regulated firms including direct insurers and insurance brokers. Firms are directed to prepare for submissions through the new misconduct reporting system from 1 January 2027.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.mas.gov.sg/regulation/circulars/circular-on-misconduct-report-and-investigation-report-templates",
+          "title": "Circular on Misconduct Report and Investigation Report Templates",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.mas.gov.sg/-/media/mas/regulations-and-financial-stability/regulations-guidance-and-licensing/financial-advisers/circulars/circular---misconduct-and-investigation-report-templates.pdf",
+          "title": "Circular on Misconduct Report and Investigation Report Templates",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "singapore",
+      "market": "Singapore",
+      "entities": [
+        "Monetary Authority of Singapore"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-e3433b3aaea7",
+      "title": "Prudential announces regional leadership changes spanning Singapore, Indonesia and the Philippines",
+      "publisher": "The Business Times",
+      "published_date": "2026-09-24",
+      "grounded_note": "Prudential moved Singapore CEO Chan San San into a newly created partnership role at Eastspring Investments and appointed Andreas Rosenthal interim Singapore CEO. Naveed Irshad was named regional CEO for Indonesia, the Philippines and Africa, with additional group responsibility for health and product businesses. Publication predates the requested window but is retained under candidate-collection rules.",
+      "query_ids": [
+        "competitor-authoritative-media"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.businesstimes.com.sg/companies-markets/prudential-announces-regional-leadership-changes-including-singapore-indonesia",
+          "title": "Prudential announces regional leadership changes spanning Singapore, Indonesia and the Philippines",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "singapore",
+      "market": "Asia regional; Singapore; Indonesia; Philippines",
+      "entities": [
+        "Prudential",
+        "Eastspring Investments",
+        "Chan San San",
+        "Andreas Rosenthal",
+        "Naveed Irshad",
+        "Anil Wadhwani"
+      ],
+      "topic": "external_environment",
+      "signal_type": "leadership_change",
+      "subject_type": "competitor",
+      "content_type": "leadership",
+      "event_scope": "group_regional",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-4d0137f02ab0",
+      "title": "Mainland China consultation on comprehensive Insurance Law revision closed during the scan window",
+      "publisher": "National Financial Regulatory Administration",
+      "published_date": "2026-09-04",
+      "grounded_note": "The NFRA consulted on a 214-article revision of the Insurance Law, with comments due 3 October 2026. The proposal covers stronger look-through shareholder supervision, related-party obligations, consumer protection, risk resolution, market exit and increased consequences for violations. Publication predates the requested window, but the consultation deadline falls within it.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1270936&itemId=951",
+          "title": "Mainland China consultation on comprehensive Insurance Law revision closed during the scan window",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "mainland_china",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.nfra.gov.cn/chinese/docfile/2026/7c3269d4982b47ed9269a71db3830ad4.pdf",
+          "title": "Mainland China consultation on comprehensive Insurance Law revision closed during the scan window",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "mainland_china",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.nfra.gov.cn/chinese/docfile/2026/c6ba53b5320c4a2daf6bf56decec9351.pdf",
+          "title": "Mainland China consultation on comprehensive Insurance Law revision closed during the scan window",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "mainland_china",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "mainland_china",
+      "market": "Mainland China",
+      "entities": [
+        "National Financial Regulatory Administration",
+        "Insurance companies",
+        "Insurance intermediaries",
+        "Insurance company shareholders",
+        "Policyholders"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_requested_window"
+    },
+    {
+      "source_item_id": "src-a3159f776c52",
+      "title": "Beyond Oil Prices: From Geopolitical Conflict to Financial Stability Risk",
+      "publisher": "Bank Negara Malaysia",
+      "published_date": null,
+      "grounded_note": "BNM identified explicit insurance transmission channels from Middle East conflict, including higher claims costs, asset-valuation losses, weaker demand and policyholder lapse pressure, and reduced earnings or capital generation. It reported that Malaysian insurers and takaful operators continued to maintain strong financial buffers at publication.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.bnm.gov.my/documents/20124/23237430/bnm-insights-oct-2026--beyond-oil-prices.pdf",
+          "title": "Beyond Oil Prices: From Geopolitical Conflict to Financial Stability Risk",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "central_bank",
+          "market": "malaysia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "central_bank",
+      "source_market": "malaysia",
+      "market": "Malaysia",
+      "entities": [
+        "Bank Negara Malaysia"
+      ],
+      "topic": "external_environment",
+      "signal_type": "macro_market",
+      "subject_type": "industry",
+      "content_type": "market_risk",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "unknown",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "publication_date_not_established"
+    }
+  ],
+  "warnings": [],
+  "disclaimer": "This briefing is based on Bing-grounded public information from approved primary and authoritative-media websites. Native source URLs were matched locally, but article content, publication dates and applicability were not independently verified against downloaded original text. Non-public regulator engagement and feedback are outside public-Web coverage.",
+  "raw_response_retained": false
+}

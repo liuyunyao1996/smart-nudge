@@ -107,6 +107,8 @@ def _dry_run(
                 "custom_configuration": rule.bing_configuration(task.configuration_id)["instance_name"],
                 "language": task.query.language,
                 "market": task.query.market,
+                "allowed_subject_types": list(task.query.allowed_subject_types),
+                "required_entities_any": list(task.query.required_entities_any),
                 "target_hosts": list(task.allowed_hosts),
                 "query": task.query.text,
             }

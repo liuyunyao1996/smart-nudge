@@ -4,35 +4,49 @@
   "title": "Smart Nudge Asia executive news summary response",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "title", "executive_summary", "items"],
+  "required": ["schema_version", "title", "executive_summary", "evaluations", "items"],
   "properties": {
-    "schema_version": {"const": "1.3.0"},
+    "schema_version": {"const": "1.4.0"},
     "title": {"$ref": "#/$defs/text"},
     "executive_summary": {"$ref": "#/$defs/text"},
-    "items": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/item"}}
+    "evaluations": {"type": "array", "items": {"$ref": "#/$defs/evaluation"}},
+    "items": {"type": "array", "items": {"$ref": "#/$defs/item"}}
   },
   "$defs": {
     "text": {"type": "string", "minLength": 1, "maxLength": 2000},
-    "ids": {"type": "array", "minItems": 1, "maxItems": 5, "uniqueItems": true, "items": {"type": "string", "pattern": "^src-[a-f0-9]{12}$"}},
+    "ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^src-[a-f0-9]{12}$"}},
     "short_text": {"type": "string", "minLength": 1, "maxLength": 140},
-    "bullets": {
+    "detail_bullets": {
       "type": "array",
-      "minItems": 2,
-      "maxItems": 5,
+      "minItems": 1,
+      "maxItems": 3,
       "items": {"$ref": "#/$defs/text"}
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_item_ids", "importance_level", "importance_reason"],
+      "properties": {
+        "source_item_ids": {"$ref": "#/$defs/ids"},
+        "importance_level": {"enum": ["high", "medium", "low"]},
+        "importance_reason": {"$ref": "#/$defs/text"}
+      }
     },
     "item": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["source_item_ids", "title", "summary", "bullet_points", "attention_level", "topic", "signal_type"],
+      "required": ["source_item_ids", "title", "summary", "detail_bullets", "timing_or_action", "potential_impact", "attention_level", "topic", "signal_type", "content_type"],
       "properties": {
         "source_item_ids": {"$ref": "#/$defs/ids"},
         "title": {"$ref": "#/$defs/short_text"},
         "summary": {"$ref": "#/$defs/text"},
-        "bullet_points": {"$ref": "#/$defs/bullets"},
-        "attention_level": {"enum": ["high", "medium", "low"]},
+        "detail_bullets": {"$ref": "#/$defs/detail_bullets"},
+        "timing_or_action": {"type": ["string", "null"], "minLength": 1, "maxLength": 2000},
+        "potential_impact": {"$ref": "#/$defs/text"},
+        "attention_level": {"enum": ["high", "medium"]},
         "topic": {"enum": ["external_environment", "government_regulatory"]},
-        "signal_type": {"enum": ["aia_major_news", "final_rule", "enforcement", "consultation", "guidance", "competitor_market_move", "product_distribution", "leadership_change", "macro_market", "technology_operational_risk", "informational"]}
+        "signal_type": {"enum": ["aia_major_news", "final_rule", "enforcement", "consultation", "guidance", "competitor_market_move", "product_distribution", "leadership_change", "macro_market", "technology_operational_risk", "informational"]},
+        "content_type": {"enum": ["corporate", "regulatory", "research_thought_leadership", "leadership", "recognition_social_impact", "campaign_initiative", "product_distribution", "market_risk", "other"]}
       }
     }
   }
