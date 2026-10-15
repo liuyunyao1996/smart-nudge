@@ -4,15 +4,16 @@
   "title": "Smart Nudge normalized Asia news candidates",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "run_id", "status", "generated_at", "rule", "search", "topic", "window", "counts", "items", "warnings", "disclaimer", "raw_response_retained"],
+  "required": ["schema_version", "run_id", "status", "generated_at", "rule", "search", "topic", "search_window", "window", "counts", "items", "warnings", "disclaimer", "raw_response_retained"],
   "properties": {
-    "schema_version": {"const": "1.1.0"},
+    "schema_version": {"const": "1.2.0"},
     "run_id": {"type": "string"},
     "status": {"enum": ["completed", "partial", "failed"]},
     "generated_at": {"type": "string"},
     "rule": {"type": "object"},
     "search": {"type": "object"},
     "topic": {"type": "string"},
+    "search_window": {"type": "object"},
     "window": {"type": "object"},
     "counts": {
       "type": "object",

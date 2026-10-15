@@ -69,6 +69,48 @@ class RulePackTests(unittest.TestCase):
                 RulePack.load(path, ROOT)
         self.assertEqual(error.exception.code, "invalid_rule")
 
+    def test_rolling_brief_window_requires_brief_days_only_in_that_mode(self):
+        original = json.loads(
+            (ROOT / "config/rules/asia-executive-news.json").read_text(encoding="utf-8")
+        )
+        invalid_documents = []
+
+        missing_days = json.loads(json.dumps(original))
+        del missing_days["search"]["brief_days"]
+        invalid_documents.append(missing_days)
+
+        misplaced_days = json.loads(json.dumps(original))
+        misplaced_days["search"]["brief_window"] = "search_window"
+        invalid_documents.append(misplaced_days)
+
+        with tempfile.TemporaryDirectory() as directory:
+            for index, document in enumerate(invalid_documents):
+                with self.subTest(index=index):
+                    path = Path(directory) / f"rule-{index}.json"
+                    path.write_text(json.dumps(document), encoding="utf-8")
+                    with self.assertRaises(RulePackError) as error:
+                        RulePack.load(path, ROOT)
+                    self.assertEqual(error.exception.code, "invalid_rule")
+
+    def test_asia_rule_requires_low_supplement_and_soft_target(self):
+        original = json.loads(
+            (ROOT / "config/rules/asia-executive-news.json").read_text(encoding="utf-8")
+        )
+        invalid_documents = []
+        for field in ("supplemental_attention_level", "target_items"):
+            document = json.loads(json.dumps(original))
+            del document["editorial_policy"][field]
+            invalid_documents.append(document)
+
+        with tempfile.TemporaryDirectory() as directory:
+            for index, document in enumerate(invalid_documents):
+                with self.subTest(index=index):
+                    path = Path(directory) / f"rule-{index}.json"
+                    path.write_text(json.dumps(document), encoding="utf-8")
+                    with self.assertRaises(RulePackError) as error:
+                        RulePack.load(path, ROOT)
+                    self.assertEqual(error.exception.code, "invalid_rule")
+
     def test_agent_sites_partition_hosts_and_limit_calls(self):
         rule = RulePack.load(DEFAULT_RULE, ROOT)
         self.assertEqual(len(rule.agent_sites), 5)

@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["schema_version", "title", "executive_summary", "evaluations", "items"],
   "properties": {
-    "schema_version": {"const": "1.4.0"},
+    "schema_version": {"const": "1.5.0"},
     "title": {"$ref": "#/$defs/text"},
     "executive_summary": {"$ref": "#/$defs/text"},
     "evaluations": {"type": "array", "items": {"$ref": "#/$defs/evaluation"}},
@@ -43,7 +43,7 @@
         "detail_bullets": {"$ref": "#/$defs/detail_bullets"},
         "timing_or_action": {"type": ["string", "null"], "minLength": 1, "maxLength": 2000},
         "potential_impact": {"$ref": "#/$defs/text"},
-        "attention_level": {"enum": ["high", "medium"]},
+        "attention_level": {"enum": ["high", "medium", "low"]},
         "topic": {"enum": ["external_environment", "government_regulatory"]},
         "signal_type": {"enum": ["aia_major_news", "final_rule", "enforcement", "consultation", "guidance", "competitor_market_move", "product_distribution", "leadership_change", "macro_market", "technology_operational_risk", "informational"]},
         "content_type": {"enum": ["corporate", "regulatory", "research_thought_leadership", "leadership", "recognition_social_impact", "campaign_initiative", "product_distribution", "market_risk", "other"]}

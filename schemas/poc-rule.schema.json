@@ -41,6 +41,8 @@
       "properties": {
         "default_topic": {"$ref": "#/$defs/text"},
         "default_days": {"type": "integer", "minimum": 1, "maximum": 90},
+        "brief_window": {"enum": ["search_window", "rolling_days"]},
+        "brief_days": {"type": "integer", "minimum": 1, "maximum": 90},
         "results_per_query": {"type": "integer", "minimum": 1, "maximum": 10},
         "agent": {
           "type": "object",
@@ -95,7 +97,7 @@
     "editorial_policy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["included_attention_levels", "competitors", "excluded_content_types", "importance_dimensions"],
+      "required": ["included_attention_levels", "supplemental_attention_level", "target_items", "competitors", "excluded_content_types", "importance_dimensions"],
       "properties": {
         "included_attention_levels": {
           "type": "array",
@@ -103,6 +105,8 @@
           "uniqueItems": true,
           "items": {"enum": ["high", "medium", "low"]}
         },
+        "supplemental_attention_level": {"const": "low"},
+        "target_items": {"type": "integer", "minimum": 1, "maximum": 50},
         "competitors": {"$ref": "#/$defs/texts"},
         "excluded_content_types": {
           "type": "array",

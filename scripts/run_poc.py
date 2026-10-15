@@ -85,6 +85,16 @@ def _dry_run(
     regional_time = timezone(timedelta(hours=8), name="UTC+08:00")
     today = datetime.now(timezone.utc).astimezone(regional_time).date()
     queries = rule.render_queries(selected_topic, today, selected_days)
+    search_window = {
+        "start_date": (today - timedelta(days=selected_days)).isoformat(),
+        "end_date": today.isoformat(),
+        "timezone": "Asia/Hong_Kong",
+    }
+    brief_window = {
+        "start_date": rule.brief_start_date(today, selected_days).isoformat(),
+        "end_date": today.isoformat(),
+        "timezone": "Asia/Hong_Kong",
+    }
     tasks = build_search_tasks(rule, queries, search_approach)
     if search_approach == FOUNDRY_AGENT_APPROACH:
         planned_queries = [
@@ -123,6 +133,8 @@ def _dry_run(
         "workflow": rule.workflow,
         "topic": selected_topic,
         "days": selected_days,
+        "search_window": search_window,
+        "brief_window": brief_window,
         "allowed_hosts": list(rule.allowed_hosts),
         "live_request_limit": {
             "search": len(planned_queries),

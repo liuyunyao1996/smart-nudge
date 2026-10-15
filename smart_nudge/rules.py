@@ -76,6 +76,13 @@ class RulePack:
             raise RulePackError("invalid_rule", f"Rule Pack validation failed at {location}.")
 
         queries = document["search"]["queries"]
+        brief_window = document["search"].get("brief_window", "search_window")
+        brief_days = document["search"].get("brief_days")
+        if (brief_window == "rolling_days") != (brief_days is not None):
+            raise RulePackError(
+                "invalid_rule",
+                "A rolling brief window requires brief_days, which is invalid for other modes.",
+            )
         query_ids = [item["query_id"] for item in queries]
         if len(query_ids) != len(set(query_ids)):
             raise RulePackError("invalid_rule", "Rule Pack query IDs must be unique.")
@@ -111,6 +118,14 @@ class RulePack:
             if set(editorial_policy["included_attention_levels"]) != {"high", "medium"}:
                 raise RulePackError(
                     "invalid_rule", "The Asia executive news brief must include exactly High and Medium events."
+                )
+            if (
+                editorial_policy.get("supplemental_attention_level") != "low"
+                or not isinstance(editorial_policy.get("target_items"), int)
+            ):
+                raise RulePackError(
+                    "invalid_rule",
+                    "The Asia executive news workflow requires a Low supplemental level and target item count.",
                 )
             if "reinsurance" not in editorial_policy["excluded_content_types"]:
                 raise RulePackError(
@@ -231,6 +246,19 @@ class RulePack:
         return self.document["search"]["default_days"]
 
     @property
+    def brief_window_mode(self) -> str:
+        return self.document["search"].get("brief_window", "search_window")
+
+    @property
+    def brief_days(self) -> int | None:
+        return self.document["search"].get("brief_days")
+
+    def brief_start_date(self, end_date: date, search_days: int) -> date:
+        if self.brief_window_mode == "rolling_days":
+            return end_date - timedelta(days=self.brief_days)
+        return end_date - timedelta(days=search_days)
+
+    @property
     def agent_sites(self) -> tuple[tuple[str, tuple[str, ...]], ...]:
         agent = self.document["search"].get("agent")
         if agent is None:
@@ -248,6 +276,14 @@ class RulePack:
     @property
     def included_attention_levels(self) -> tuple[str, ...]:
         return tuple(self.document.get("editorial_policy", {}).get("included_attention_levels", ()))
+
+    @property
+    def supplemental_attention_level(self) -> str | None:
+        return self.document.get("editorial_policy", {}).get("supplemental_attention_level")
+
+    @property
+    def target_items(self) -> int | None:
+        return self.document.get("editorial_policy", {}).get("target_items")
 
     @property
     def competitors(self) -> tuple[str, ...]:

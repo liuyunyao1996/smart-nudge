@@ -8,13 +8,15 @@
 
 本文主要记录最终的 25-configuration / 44-query 目标设计。2026-10-14 已先落地一个低风险的中间阶段：
 
-- 当前实现使用 4 个 Custom Bing configurations、7 次搜索和最多 1 次总结请求。
-- Rule Pack v1.5.1 保留泛化的重要性评估，但把两个 AIA query 改为 recall-first 发现：使用完整市场名称以及中性的官方文档形态和事件类别召回潜在相关候选，重要性统一留到后续评估阶段判断。监管和竞争者 query 继续避免写入反馈历史、具体案例、命名监管机构或案例衍生的优先类别。最终 brief 没有最低数量目标或最高条数上限。
+- 当前实现使用 4 个 Custom Bing configurations、7 次搜索和最多 1 次总结请求。Rule Pack v1.5.4 以运行时香港系统日期为共同基准，使用滚动 14 天搜索回看期和滚动 7 天 brief 入选期，不再依赖日历周边界；两个窗口分别写入审计产物。
+- 两个 AIA query 采用 recall-first 发现：使用完整市场名称以及中性的官方文档形态和事件类别召回潜在相关候选，重要性统一留到后续评估阶段判断。监管和竞争者 query 继续避免写入反馈历史、具体案例、命名监管机构或案例衍生的优先类别。最终 brief 必须包含所有 High/Medium 且没有最高条数上限；不足 10 条时用最高价值的 eligible Low 补至 10 条或补完为止，全部 eligible 事件不足 10 条时允许最终少于 10 条。
 - 新增 `asia-news-aia-primary`，把两个 AIA 专题从共享的 corporate configuration 中独立出来；同时增加一个只覆盖六家主要竞争者的官方来源 query。
 - 多次端到端运行已完成 7/7 搜索和总结，因此云端已删除 `asia-news-corporate-exchange` 中与新 AIA 配置重复的 AIA、Amplify Health 和直接 HKEX news 域名。
 - `asia-news-aia-primary` 现在独占 AIA 官方来源、`www.amplifyhealth.com` 和 `www.hkexnews.hk` / `www1.hkexnews.hk` / `www2.hkexnews.hk`；`asia-news-corporate-exchange` 保留六家主要竞争者、`www.hkex.com.hk`、其他交易所和保险协会来源。当前云端分组已与本地 Rule Pack 一致。
 - v1.5.0 真实运行 `poc-20261015T020451Z-f004a9` 完成 7/7 搜索，得到 16 条去重候选、12 条时间窗内候选和 8 条最终事件，使用 170,490 tokens。两个 AIA query 各只接纳 1 条且是同一证券事件，说明过于抽象的 materiality 搜索词压低了 AIA 召回；这是 v1.5.1 的直接比较基线。
 - v1.5.1 真实运行 `poc-20261015T022219Z-f64a51` 完成 7/7 搜索和总结，得到 25 条 query-level 候选、23 条去重候选、19 条时间窗内候选、14 个评估事件和 11 条最终事件，使用 222,105 tokens。两个 AIA query 分别接纳 3 条和 2 条，去重后得到 4 条直接 AIA 搜索结果，最终 brief 包含 3 个 AIA 事件，说明 recall-first 调整改善了 AIA 召回。
+- v1.5.2 真实运行 `poc-20261015T025605Z-d5f4c6` 完成 7/7 搜索和总结：14 天搜索接纳 25 条 query-level 候选并得到 24 条去重候选，本周窗口在本地筛出 3 个评估事件，最终保留 2 条 Medium 事件并排除 1 条 Low 事件，共使用 222,777 tokens。结果验证了扩大召回窗口、收紧 brief 窗口的两层日期策略。
+- v1.5.3 真实运行 `poc-20261015T030758Z-60d217` 完成 7/7 搜索和总结：14 天搜索接纳 26 条 query-level 候选并得到 24 条去重候选，滚动 7 天窗口筛出 10 条来源并合并为 8 个评估事件，最终保留 2 条 High 和 3 条 Medium、排除 3 条 Low，共使用 254,211 tokens。产物正确记录 10 月 1–15 日搜索窗口和 10 月 8–15 日 brief 窗口。
 - 目标实现使用 25 个 Custom Bing configurations、44 次搜索，并把分析改为分组评估和最终合并两个层级。
 - 云端 configuration 由用户管理；代码不得自行创建或修改 Azure 资源。
 - 实施和离线验证不授权真实模型或 Bing 调用。每次 live run 仍需用户明确授权。
@@ -248,18 +250,18 @@ Rule Pack 不需要手写 44 段完全重复的长提示，而应保存可审计
    - `topic` 和 `signal_type`
 4. 批次阶段只做重要性判断和事件归一，不撰写完整 brief，以控制输出 token。
 5. 本地校验必须证明每个日期合格候选被评估恰好一次；缺失、重复或未知 candidate ID 使该批次失败。
-6. Low 候选不进入最终写作，但其 evaluation 留在审计产物中。
+6. Low 候选的 evaluation 留在审计产物中；除再保险和名单外竞争者等硬排除项外，Low 可在 High/Medium 少于 10 条时参与最终补位。
 
 分组优先采用稳定输入顺序或稳定 hash，而不是让模型自行决定批次。这样相同输入可以重现相同分组，便于比较不同运行。
 
 ### 阶段 E：最终事件合并与 brief 写作
 
-最终请求只接收 High/Medium evaluations 及其 grounded notes：
+最终请求接收所有 High/Medium，以及用于比较补位价值的 eligible Low evaluations 及其 grounded notes：
 
 1. 按 `event_key` 合并同一事件的多来源报道，同时保留所有合格 native citations。
 2. 再次检查竞争者名单、再保险排除和日期资格。
-3. 不设置最终 10 条或 6–8 条上限；所有符合重要性标准的事件都进入 brief。
-4. 不设置最低数量目标，不允许为了达到任何条数把 Low 事件提升为 Medium。
+3. 不设置最终 10 条或 6–8 条上限；所有 High/Medium 事件都进入 brief，即使总数超过 10 条也不得截断。
+4. 10 条是软目标而不是最低保证。High/Medium 少于 10 条时，按价值选择 eligible Low 补到 10 条或直到 Low 用完；全部 eligible 事件不足 10 条时全部进入并允许少于 10 条，不虚构或拆分事件凑数，也不把 Low 改标为 Medium。
 5. 每个最终事件应包括：
    - 简明标题；
    - 发生了什么；
@@ -310,7 +312,9 @@ Rule Pack 不需要手写 44 段完全重复的长提示，而应保存可审计
 - 云端 instance name 重复、未知 configuration、空 source group 的拒绝测试。
 - competitor allowlist、名单外公司排除和 reinsurance 全局排除测试。
 - 每个候选恰好评估一次的 completeness 测试。
-- High/Medium 全部进入最终 brief、Low 不用于凑数的测试。
+- High/Medium 超过 10 条时全部进入且不截断的测试。
+- High/Medium 少于 10 条时以 eligible Low 恰好补到 10 条，以及全部 eligible 事件不足 10 条时全部进入且允许少于 10 条的测试。
+- 再保险和名单外竞争者等硬排除 Low 不得用于补位的测试。
 - 跨批次相同 `event_key` 的合并测试。
 - `tool_usage.web_search.num_requests` 缺失、为零和正常返回的诊断测试。
 - 搜索、评估、汇总 token 和 duration 的聚合测试。
@@ -323,7 +327,7 @@ Rule Pack 不需要手写 44 段完全重复的长提示，而应保存可审计
 - 44 个计划 query 均有独立状态，未发生未记录的调用。
 - 所有接受候选都具有 native in-scope citation。
 - 每个 `in_window` 候选被评估恰好一次。
-- 每个 High/Medium 事件在最终 brief 中恰好出现一次。
+- 每个 High/Medium 事件在最终 brief 中恰好出现一次；Low 补位数量符合 10 条软目标和候选耗尽规则。
 - 没有名单外公司或再保险内容。
 - AIA、监管和六家竞争者的覆盖可按 configuration/query 追溯。
 - 实际 Bing 计费请求数可由 `tool_usage.web_search.num_requests` 汇总，而不是由 action 数猜测。

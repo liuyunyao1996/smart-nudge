@@ -1,0 +1,575 @@
+{
+  "schema_version": "1.7.0",
+  "run_id": "poc-20261015T032813Z-e71cb3",
+  "status": "completed",
+  "generated_at": "2026-10-15T03:32:25.687588+00:00",
+  "rule": {
+    "rule_id": "asia-executive-news",
+    "version": "1.5.4",
+    "sha256": "75022f41dc627f4891e00a6002b9776e040f6e75a512757d24d842ca59d6461f"
+  },
+  "search": {
+    "approach": "custom-bing",
+    "custom_configurations": [
+      {
+        "configuration_id": "regulatory-official",
+        "instance_name": "asia-news-regulatory-official"
+      },
+      {
+        "configuration_id": "aia-primary",
+        "instance_name": "asia-news-aia-primary"
+      },
+      {
+        "configuration_id": "corporate-exchange",
+        "instance_name": "asia-news-corporate-exchange"
+      },
+      {
+        "configuration_id": "authoritative-media",
+        "instance_name": "asia-news-authoritative-media"
+      }
+    ]
+  },
+  "topic": "Material developments affecting AIA, its 18 markets, insurance regulation, or its named major competitors",
+  "search_window": {
+    "start_date": "2026-10-01",
+    "end_date": "2026-10-15",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "window": {
+    "start_date": "2026-10-08",
+    "end_date": "2026-10-15",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "coverage": {
+    "queries_requested": 7,
+    "queries_succeeded": 7,
+    "queries_failed": 0
+  },
+  "title": "AIA Executive Briefing: Regulatory Modernisation, Taiwan Product Rules and Market Moves",
+  "executive_summary": "Six medium-attention developments lead this briefing. Taiwan is advancing agentic-AI controls and has revised life-product death-benefit ratios, while the FSB is consulting on modernised supervision globally. FWD’s planned return to Hong Kong P&C represents a structural competitor move, and Malaysia’s Budget 2027 measures could support medical insurance demand. Four lower-attention items are included to complete the market view, including two company-issued AIA proposition updates. No event meets the threshold for High attention based on the supplied evidence.",
+  "items": [
+    {
+      "rank": 1,
+      "attention_level": "medium",
+      "signal_type": "consultation",
+      "content_type": "regulatory",
+      "published_date": "2026-10-14",
+      "publishers": [
+        "Financial Stability Board"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsb.org/2026/10/fsb-consults-on-high-level-principles-for-regulatory-and-supervisory-modernisation/",
+          "title": "FSB consults on principles for regulatory and supervisory modernisation",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "international_body",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-c03e643aca8e"
+      ],
+      "title": "FSB consults on modernising financial supervision",
+      "summary": "The Financial Stability Board proposed eight high-level principles intended to make financial regulation and supervision more risk-focused, coherent and responsive to changing vulnerabilities, technologies and market conditions.",
+      "detail_bullets": [
+        "The cross-sector principles are relevant to insurance supervisors and internationally active insurers.",
+        "The proposal focuses on supervisory effectiveness and adaptability rather than prescribing sector-specific implementation measures."
+      ],
+      "timing_or_action": "Comments are due by 8 January 2027; AIA may monitor how relevant national supervisors interpret the proposed principles.",
+      "potential_impact": "The principles could potentially shape future supervisory expectations across AIA markets, including approaches to technology risk, regulatory coherence and emerging vulnerabilities.",
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 2,
+      "attention_level": "medium",
+      "signal_type": "consultation",
+      "content_type": "regulatory",
+      "published_date": "2026-10-13",
+      "publishers": [
+        "Financial Supervisory Commission, Taiwan"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610130003&dtable=News&id=96&mcustomize=news_view.jsp&parentpath=0%2C6",
+          "title": "Taiwan FSC consults on safe use of agentic AI by financial institutions",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.fsc.gov.tw/uploaddowndoc?file=news%2F202610131438280.pdf&filedisplay=%E9%87%91%E8%9E%8D%E6%A5%AD%E9%81%8B%E7%94%A8%E4%BB%A3%E7%90%86AI%E5%AE%89%E5%85%A8%E8%AB%AE%E8%A9%A2%E6%96%87%E4%BB%B6.pdf&flag=doc",
+          "title": "Taiwan FSC consults on safe use of agentic AI by financial institutions",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-4109452125d6"
+      ],
+      "title": "Taiwan FSC consults on controls for agentic AI",
+      "summary": "Taiwan’s Financial Supervisory Commission opened a 30-day consultation on governance, risk classification and security controls for financial institutions deploying agentic AI.",
+      "detail_bullets": [
+        "The document addresses unauthorized tool use, sensitive-data leakage and cascading errors.",
+        "The consultation may inform subsequent guidance and supervisory communication applicable to insurers."
+      ],
+      "timing_or_action": "A 30-day consultation began with the 13 October 2026 publication; AIA should assess relevant Taiwan AI use cases against the proposed control themes.",
+      "potential_impact": "The framework could potentially raise governance, testing, access-control and monitoring expectations for autonomous AI deployments by insurers in Taiwan.",
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 3,
+      "attention_level": "medium",
+      "signal_type": "final_rule",
+      "content_type": "regulatory",
+      "published_date": "2026-10-13",
+      "publishers": [
+        "Financial Supervisory Commission, Taiwan"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/",
+          "title": "Taiwan FSC consults on agentic-AI security for the financial sector",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "homepage"
+        },
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?id=128&parentpath=0%2C2",
+          "title": "Taiwan revises minimum death-benefit ratios for life insurance products",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?id=97&parentpath=0%2C2",
+          "title": "Taiwan FSC changes minimum death-benefit ratios for certain life-insurance products",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.ib.gov.tw/ch/index.jsp",
+          "title": "Taiwan FSC changes minimum death-benefit ratios for certain life-insurance products",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "listing_page"
+        },
+        {
+          "url": "https://www.ib.gov.tw/ch/home.jsp?id=35&parentpath=0%2C2",
+          "title": "Taiwan FSC updates reserve requirements for catastrophe and nuclear insurance",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-0237d26e31d4",
+        "src-7554eaf4506e"
+      ],
+      "title": "Taiwan changes life-product death-benefit ratios",
+      "summary": "Taiwan’s FSC revised minimum ratios between death benefits and policy reserves or policy-account value, while designated wealth-management insurance products were opened to an exemption.",
+      "detail_bullets": [
+        "The measure concerns life-insurance product structure and the relationship between protection benefits and accumulated value.",
+        "The exemption indicates differentiated treatment for certain wealth-management insurance propositions."
+      ],
+      "timing_or_action": "The change was recorded by the regulator on 8–13 October 2026; the supplied evidence does not establish an effective date.",
+      "potential_impact": "The revision could potentially affect product design, compliance reviews and distribution strategy for life and wealth-management insurance in Taiwan.",
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 4,
+      "attention_level": "medium",
+      "signal_type": "competitor_market_move",
+      "content_type": "corporate",
+      "published_date": "2026-10-12",
+      "publishers": [
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/fwd-to-acquire-25-of-hong-kong-pc-carrier-bolttech-insurance-for-us21m/",
+          "title": "FWD to re-enter Hong Kong P&C market with 25% stake in bolttech Insurance",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-cd1f88eb8ace"
+      ],
+      "title": "FWD plans return to Hong Kong P&C market",
+      "summary": "FWD Group agreed to acquire a 25% interest in bolttech Insurance (Hong Kong), a transaction that would return the competitor to Hong Kong’s property-and-casualty market.",
+      "detail_bullets": [
+        "The stated base consideration is US$20.72 million.",
+        "The minority investment expands FWD’s presence beyond its existing insurance activities in Hong Kong."
+      ],
+      "timing_or_action": "Transaction completion timing and approvals were not provided in the supplied note; monitor execution and subsequent distribution plans.",
+      "potential_impact": "FWD’s return could potentially strengthen its customer ecosystem and cross-selling capabilities in Hong Kong, creating incremental competition across protection and broader insurance relationships.",
+      "topic": "external_environment",
+      "source_specificity": "unknown",
+      "source_positioning": null
+    },
+    {
+      "rank": 5,
+      "attention_level": "medium",
+      "signal_type": "technology_operational_risk",
+      "content_type": "research_thought_leadership",
+      "published_date": "2026-10-12",
+      "publishers": [
+        "AXA"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.axa.com/en/press/press-releases/axa-future-risks-report-2026-artificial-intelligence-becomes-%20experts-top-concern-ahead-of-climate-change",
+          "title": "AXA Future Risks Report identifies AI and big data as experts’ leading emerging risk",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "global",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-a2c1e1541c04"
+      ],
+      "title": "AXA report ranks AI as the leading emerging risk",
+      "summary": "AXA’s company-issued 2026 Future Risks Report ranked artificial intelligence and big-data risks first among surveyed experts, ahead of climate change.",
+      "detail_bullets": [
+        "AXA said the study contributes to its strategic thinking and risk management.",
+        "The report highlights potential implications for protection, prevention, retirement, health and wealth-transfer propositions."
+      ],
+      "timing_or_action": "No deadline is identified; the findings can inform ongoing emerging-risk and proposition reviews.",
+      "potential_impact": "The report reinforces the potential need for insurers to address AI risk both operationally and through customer propositions, while indicating a competitor’s strategic framing of the issue.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 6,
+      "attention_level": "medium",
+      "signal_type": "product_distribution",
+      "content_type": "product_distribution",
+      "published_date": "2026-10-09",
+      "publishers": [
+        "Bank Negara Malaysia"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.bnm.gov.my/-/belanjawan2027",
+          "title": "Malaysia announces insurance-related measures under Budget 2027",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "central_bank",
+          "market": "malaysia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-47dc5523d35c"
+      ],
+      "title": "Malaysia Budget 2027 supports medical insurance demand",
+      "summary": "Bank Negara Malaysia described Budget 2027 measures including income-tax relief for voluntary medical and health insurance or takaful and RM40 million for MediAsas vouchers targeting employees of smaller businesses.",
+      "detail_bullets": [
+        "The tax measure applies to qualifying premiums or contributions for voluntary medical and health coverage.",
+        "The voucher funding targets employees of small and medium enterprises."
+      ],
+      "timing_or_action": "Implementation details and customer-eligibility mechanics should be monitored as Budget 2027 measures progress.",
+      "potential_impact": "The measures could potentially stimulate medical insurance and takaful demand and create distribution opportunities through employers and underserved customer segments in Malaysia.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 7,
+      "attention_level": "low",
+      "signal_type": "final_rule",
+      "content_type": "regulatory",
+      "published_date": "2026-10-09",
+      "publishers": [
+        "National Financial Regulatory Administration"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/index/",
+          "title": "China NFRA issues provisions governing property insurers’ insurance-product development",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "mainland_china",
+          "url_specificity": "listing_page"
+        }
+      ],
+      "source_item_ids": [
+        "src-bf10fddfc7bd"
+      ],
+      "title": "China NFRA issues P&C product-development provisions",
+      "summary": "China’s NFRA listed the issuance of provisions governing insurance-product development by property insurance companies, but the available regulator listing does not provide the detailed requirements.",
+      "detail_bullets": [
+        "The official listing records issuance on 9 October 2026.",
+        "The supplied evidence does not establish the provisions’ effective date or implementation obligations."
+      ],
+      "timing_or_action": "Obtain and review the full provisions before determining applicability or required action.",
+      "potential_impact": "The provisions may potentially affect product governance in China’s P&C sector, but the implications for AIA cannot be determined from the available listing-page evidence.",
+      "topic": "government_regulatory",
+      "source_specificity": "listing_page",
+      "source_positioning": null
+    },
+    {
+      "rank": 8,
+      "attention_level": "low",
+      "signal_type": "product_distribution",
+      "content_type": "product_distribution",
+      "published_date": "2026-10-09",
+      "publishers": [
+        "AIA Hong Kong"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.aia.com.hk/en/about-aia/about-us/media-centre/press-releases",
+          "title": "AIA launches EverBliss Annuity Insurance Plan to redefine retirement planning beyond financial security",
+          "configuration_id": "aia-primary",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "hong_kong",
+          "url_specificity": "listing_page"
+        }
+      ],
+      "source_item_ids": [
+        "src-da0d7217249a"
+      ],
+      "title": "AIA Hong Kong launches EverBliss annuity plan",
+      "summary": "AIA Hong Kong’s official press-release index records the launch of the EverBliss Annuity Insurance Plan, positioned as a retirement proposition extending beyond financial security.",
+      "detail_bullets": [
+        "The available evidence confirms the product launch but does not provide detailed features or commercial targets.",
+        "The source is an AIA company-issued press-release listing rather than a retrieved article-level release."
+      ],
+      "timing_or_action": "Launched on 9 October 2026; no further action or deadline is supported by the supplied note.",
+      "potential_impact": "The launch may broaden AIA Hong Kong’s retirement proposition, but the available evidence does not establish material customer, sales or financial effects.",
+      "topic": "external_environment",
+      "source_specificity": "listing_page",
+      "source_positioning": "Includes AIA-issued or AIA-affiliated source material; this is not independent media confirmation."
+    },
+    {
+      "rank": 9,
+      "attention_level": "low",
+      "signal_type": "leadership_change",
+      "content_type": "leadership",
+      "published_date": "2026-10-08",
+      "publishers": [
+        "Manulife"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.manulife.com/ca/en/about-us/news/manulife-announces-asia-technology-leadership-announcement",
+          "title": "Manulife appoints Andy Bruce as Chief Information Officer for Asia",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-a0510ec6d8c4"
+      ],
+      "title": "Manulife names Andy Bruce Asia CIO",
+      "summary": "Manulife promoted Andy Bruce to Chief Information Officer for Asia, with a mandate spanning technology modernisation, operational stability, risk management and responsible AI scaling.",
+      "detail_bullets": [
+        "The role covers Manulife’s Asian operations.",
+        "The appointment signals continued competitor focus on regional technology and AI execution."
+      ],
+      "timing_or_action": "The appointment took effect on 1 October 2026.",
+      "potential_impact": "The appointment may support Manulife’s technology delivery and responsible-AI capabilities in Asia, but no structural operating-model change is established.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 10,
+      "attention_level": "low",
+      "signal_type": "product_distribution",
+      "content_type": "product_distribution",
+      "published_date": "2026-10-08",
+      "publishers": [
+        "Bastille Post / Media OutReach Newswire"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.bastillepost.com/global/article/6232539-aia-alta-announces-exclusive-collaboration-with-chi-longevity-in-hong-kong",
+          "title": "AIA Alta announces exclusive Hong Kong collaboration with Chi Longevity",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-f9dc3e4a4952"
+      ],
+      "title": "AIA Alta adds Chi Longevity services in Hong Kong",
+      "summary": "AIA Alta announced an exclusive Hong Kong collaboration with Chi Longevity, giving eligible high-net-worth customers access to longevity-science services within its integrated health-and-wealth proposition.",
+      "detail_bullets": [
+        "The collaboration is limited to AIA Alta’s eligible customers in Hong Kong.",
+        "The announcement was distributed as company-sourced promotional content through a newswire."
+      ],
+      "timing_or_action": "Announced on 8 October 2026; no implementation deadline is identified.",
+      "potential_impact": "The collaboration may differentiate AIA’s high-net-worth offering and deepen health-and-wealth engagement, although the supplied evidence does not demonstrate material commercial impact.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    }
+  ],
+  "selection": {
+    "evaluated_events": 11,
+    "included_events": 10,
+    "importance_counts": {
+      "high": 0,
+      "medium": 6,
+      "low": 5
+    },
+    "included_attention_levels": [
+      "high",
+      "medium"
+    ],
+    "supplemental_attention_level": "low",
+    "target_items": 10,
+    "supplemental_low_items": 4,
+    "item_cap": null
+  },
+  "evaluations": [
+    {
+      "source_item_ids": [
+        "src-c03e643aca8e"
+      ],
+      "importance_level": "medium",
+      "importance_reason": "The FSB consultation could influence the direction of risk-focused, technology-responsive supervision across multiple jurisdictions, but it sets high-level principles rather than immediate implementation requirements."
+    },
+    {
+      "source_item_ids": [
+        "src-4109452125d6"
+      ],
+      "importance_level": "medium",
+      "importance_reason": "Taiwan’s proposed agentic-AI controls have substantive governance, data-security and operational relevance for financial institutions, with potential implications for insurers deploying autonomous AI tools."
+    },
+    {
+      "source_item_ids": [
+        "src-0237d26e31d4",
+        "src-7554eaf4506e"
+      ],
+      "importance_level": "medium",
+      "importance_reason": "The revised death-benefit ratios and exemption for designated wealth-management insurance products could affect life-product design and distribution in Taiwan, although the supplied notes do not establish detailed requirements or financial magnitude."
+    },
+    {
+      "source_item_ids": [
+        "src-cd1f88eb8ace"
+      ],
+      "importance_level": "medium",
+      "importance_reason": "FWD’s proposed minority investment would mark a structural return to Hong Kong P&C, potentially expanding its customer relationships and cross-selling position in an AIA market."
+    },
+    {
+      "source_item_ids": [
+        "src-a2c1e1541c04"
+      ],
+      "importance_level": "medium",
+      "importance_reason": "AXA’s company-issued global risk study provides a relevant competitor perspective on AI and big-data risk and their implications for insurance propositions and risk management, but does not itself constitute an operational move."
+    },
+    {
+      "source_item_ids": [
+        "src-ae09eaabcd89"
+      ],
+      "importance_level": "low",
+      "importance_reason": "The enforcement concerns Prudential Financial rather than in-scope competitor Prudential plc; it is therefore out-of-scope competitor news and is omitted from the briefing."
+    },
+    {
+      "source_item_ids": [
+        "src-47dc5523d35c"
+      ],
+      "importance_level": "medium",
+      "importance_reason": "Malaysia’s tax relief and RM40 million voucher programme could support medical insurance and takaful demand, particularly through smaller employers, although the scale of the commercial effect is not established."
+    },
+    {
+      "source_item_ids": [
+        "src-bf10fddfc7bd"
+      ],
+      "importance_level": "low",
+      "importance_reason": "The NFRA issuance may matter to China’s P&C sector, but listing-page evidence does not provide the effective date or substantive requirements needed for stronger executive assessment."
+    },
+    {
+      "source_item_ids": [
+        "src-da0d7217249a"
+      ],
+      "importance_level": "low",
+      "importance_reason": "The AIA Hong Kong annuity launch is directly relevant but appears to be a routine single-market product introduction, supported only by a press-release index."
+    },
+    {
+      "source_item_ids": [
+        "src-a0510ec6d8c4"
+      ],
+      "importance_level": "low",
+      "importance_reason": "Manulife’s regional CIO promotion supports technology and AI priorities but remains a routine leadership appointment without evidence of a wider structural change."
+    },
+    {
+      "source_item_ids": [
+        "src-f9dc3e4a4952"
+      ],
+      "importance_level": "low",
+      "importance_reason": "AIA Alta’s collaboration adds a differentiated service for eligible high-net-worth customers, but it is a limited single-market proposition enhancement without supported material financial impact."
+    }
+  ],
+  "summarization": {
+    "status": "succeeded",
+    "request_id": "87d5e4ca-c78e-4e02-89b1-bf453e757bdb",
+    "response_id": "resp_0f967c98f6c15184016ad0492fbfd48190a9eac99540bdefd4",
+    "usage": {
+      "input_tokens": 4166,
+      "output_tokens": 2966,
+      "total_tokens": 7132
+    }
+  },
+  "warnings": [
+    "Search regulatory-southeast-asia ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: bimabharosa.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Merged duplicate search result src-7554eaf4506e.",
+    "Merged duplicate search result src-7554eaf4506e.",
+    "Merged duplicate search result src-7554eaf4506e.",
+    "Merged duplicate search result src-7554eaf4506e.",
+    "Merged duplicate search result src-0237d26e31d4.",
+    "Merged duplicate search result src-6a76bed2e7fe.",
+    "Merged duplicate search result src-0237d26e31d4.",
+    "Merged duplicate search result src-6a76bed2e7fe.",
+    "Merged duplicate search result src-da0d7217249a."
+  ],
+  "disclaimer": "This briefing is based on Bing-grounded public information from approved primary and authoritative-media websites. Native source URLs were matched locally, but article content, publication dates and applicability were not independently verified against downloaded original text. Non-public regulator engagement and feedback are outside public-Web coverage.",
+  "raw_response_retained": false
+}

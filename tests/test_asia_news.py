@@ -83,7 +83,7 @@ class FakeAdapter:
         self.summary_source_notes = json.loads(payload["input"])["source_notes"]
         source_id = self.summary_source_notes[0]["source_item_id"]
         document = {
-            "schema_version": "1.4.0",
+            "schema_version": "1.5.0",
             "title": "Asia Insurance Executive News",
             "executive_summary": "One material in-window development merits attention.",
             "evaluations": [
@@ -135,8 +135,58 @@ class AsiaNewsTests(unittest.TestCase):
             for item in cls.rule.bing_configurations
         )
 
+    @staticmethod
+    def briefing_event(index, attention_level):
+        source_id = f"src-{index:012x}"
+        source = {
+            "source_item_id": source_id,
+            "publisher": "AIA",
+            "published_date": "2026-09-10",
+            "content_type": "corporate",
+            "subject_type": "aia",
+            "source_type": "company",
+            "url_specificity": "specific_article",
+            "source_links": [{
+                "url": f"https://www.aia.com/en/media-centre/event-{index}",
+                "title": f"Event {index}",
+            }],
+        }
+        evaluation = {
+            "source_item_ids": [source_id],
+            "importance_level": attention_level,
+            "importance_reason": f"The event has supported {attention_level} relevance.",
+        }
+        item = {
+            "source_item_ids": [source_id],
+            "title": f"AIA event {index}",
+            "summary": "A cited event was reported.",
+            "detail_bullets": ["A cited source provides the event detail."],
+            "timing_or_action": None,
+            "potential_impact": "The event may affect AIA or the insurance industry.",
+            "attention_level": attention_level,
+            "topic": "external_environment",
+            "signal_type": "aia_major_news",
+            "content_type": "corporate",
+        }
+        return source, evaluation, item
+
+    @staticmethod
+    def summary_body(evaluations, items):
+        document = {
+            "schema_version": "1.5.0",
+            "title": "Asia briefing",
+            "executive_summary": "Eligible events were assessed for the briefing.",
+            "evaluations": evaluations,
+            "items": items,
+        }
+        return {"output": [{
+            "type": "message",
+            "role": "assistant",
+            "content": [{"type": "output_text", "text": json.dumps(document)}],
+        }]}
+
     def test_dry_run_has_four_instances_seven_queries_and_rejects_agent(self):
-        self.assertEqual(self.rule.version, "1.5.1")
+        self.assertEqual(self.rule.version, "1.5.4")
         output = StringIO()
         with redirect_stdout(output):
             status = main(["--rule", "config/rules/asia-executive-news.json"])
@@ -145,6 +195,13 @@ class AsiaNewsTests(unittest.TestCase):
         self.assertEqual(document["live_request_limit"], {
             "search": 7, "summarization": 1, "total": 8, "automatic_retries": 0
         })
+        search_start = datetime.fromisoformat(document["search_window"]["start_date"]).date()
+        search_end = datetime.fromisoformat(document["search_window"]["end_date"]).date()
+        brief_start = datetime.fromisoformat(document["brief_window"]["start_date"]).date()
+        brief_end = datetime.fromisoformat(document["brief_window"]["end_date"]).date()
+        self.assertEqual((search_end - search_start).days, 14)
+        self.assertEqual((brief_end - brief_start).days, 7)
+        self.assertEqual(brief_end, search_end)
         self.assertEqual(
             sorted({item["custom_configuration"] for item in document["queries"]}),
             [
@@ -261,7 +318,7 @@ class AsiaNewsTests(unittest.TestCase):
             "content_type": "corporate",
         }
         document = {
-            "schema_version": "1.4.0",
+            "schema_version": "1.5.0",
             "title": "Asia briefing",
             "executive_summary": "One item was selected.",
             "evaluations": [{
@@ -395,7 +452,7 @@ class AsiaNewsTests(unittest.TestCase):
             }],
         }]
         document = {
-            "schema_version": "1.4.0",
+            "schema_version": "1.5.0",
             "title": "Asia briefing",
             "executive_summary": "One item was selected.",
             "evaluations": [{
@@ -430,9 +487,10 @@ class AsiaNewsTests(unittest.TestCase):
         self.assertEqual(summary["items"][0]["source_specificity"], "listing_page")
         self.assertTrue(any("article-specific citation" in warning for warning in warnings))
 
-    def test_editorial_policy_has_named_competitors_and_no_item_target_or_cap(self):
+    def test_editorial_policy_has_soft_target_and_no_item_cap(self):
         self.assertIsNone(self.rule.max_items)
-        self.assertNotIn("minimum_expected_items", self.rule.document["editorial_policy"])
+        self.assertEqual(self.rule.target_items, 10)
+        self.assertEqual(self.rule.supplemental_attention_level, "low")
         self.assertEqual(
             self.rule.competitors,
             ("AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential"),
@@ -447,7 +505,10 @@ class AsiaNewsTests(unittest.TestCase):
             "start_date": "2026-08-31", "end_date": "2026-09-13",
         })
         instructions = payload["instructions"].lower()
-        self.assertNotIn("expected minimum", instructions)
+        self.assertIn("soft target of 10", instructions)
+        self.assertIn("highest-value eligible low", instructions)
+        self.assertIn("no maximum item count", instructions)
+        self.assertIn("never invent or split events", instructions)
         self.assertIn("same materiality dimensions", instructions)
 
     def test_all_high_and_medium_events_are_returned_even_above_ten(self):
@@ -490,7 +551,7 @@ class AsiaNewsTests(unittest.TestCase):
                 "content_type": "corporate",
             })
         document = {
-            "schema_version": "1.4.0",
+            "schema_version": "1.5.0",
             "title": "Asia briefing",
             "executive_summary": "Eleven events met the importance threshold.",
             "evaluations": evaluations,
@@ -503,7 +564,98 @@ class AsiaNewsTests(unittest.TestCase):
         summary, warnings = pipeline._convert_summary(body, source_items)
         self.assertEqual(len(summary["items"]), 11)
         self.assertEqual(summary["selection"]["item_cap"], None)
+        self.assertEqual(summary["selection"]["target_items"], 10)
+        self.assertEqual(summary["selection"]["supplemental_low_items"], 0)
         self.assertIn("not independent media confirmation", summary["items"][0]["source_positioning"])
+        self.assertEqual(warnings, [])
+
+    def test_low_events_supplement_high_and_medium_to_soft_target(self):
+        pipeline = PocPipeline(
+            ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW
+        )
+        events = [
+            self.briefing_event(index, "medium" if index < 2 else "low")
+            for index in range(12)
+        ]
+        source_items = [event[0] for event in events]
+        evaluations = [event[1] for event in events]
+        selected_items = [event[2] for event in events[:10]]
+
+        summary, warnings = pipeline._convert_summary(
+            self.summary_body(evaluations, selected_items), source_items
+        )
+
+        self.assertEqual(len(summary["items"]), 10)
+        self.assertEqual(
+            [item["attention_level"] for item in summary["items"]],
+            ["medium", "medium", *("low" for _ in range(8))],
+        )
+        self.assertEqual(summary["selection"]["supplemental_low_items"], 8)
+        self.assertEqual(summary["selection"]["target_items"], 10)
+        self.assertEqual(warnings, [])
+
+    def test_low_supplement_count_must_stop_at_soft_target(self):
+        pipeline = PocPipeline(
+            ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW
+        )
+        events = [
+            self.briefing_event(index, "medium" if index < 2 else "low")
+            for index in range(12)
+        ]
+        source_items = [event[0] for event in events]
+        evaluations = [event[1] for event in events]
+
+        for selected_count in (9, 11):
+            with self.subTest(selected_count=selected_count):
+                with self.assertRaisesRegex(PocError, "soft target"):
+                    pipeline._convert_summary(
+                        self.summary_body(
+                            evaluations, [event[2] for event in events[:selected_count]]
+                        ),
+                        source_items,
+                    )
+
+    def test_all_eligible_events_are_included_when_total_is_below_ten(self):
+        pipeline = PocPipeline(
+            ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW
+        )
+        events = [
+            self.briefing_event(0, "medium"),
+            self.briefing_event(1, "low"),
+            self.briefing_event(2, "low"),
+        ]
+        source_items = [event[0] for event in events]
+        evaluations = [event[1] for event in events]
+        items = [event[2] for event in events]
+
+        summary, warnings = pipeline._convert_summary(
+            self.summary_body(evaluations, items), source_items
+        )
+
+        self.assertEqual(len(summary["items"]), 3)
+        self.assertEqual(summary["selection"]["supplemental_low_items"], 2)
+        self.assertEqual(summary["selection"]["included_events"], 3)
+        self.assertEqual(warnings, [])
+
+    def test_hard_excluded_low_event_does_not_fill_soft_target(self):
+        pipeline = PocPipeline(
+            ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW
+        )
+        source, evaluation, _ = self.briefing_event(0, "low")
+        source.update({
+            "publisher": "Reinsurer",
+            "content_type": "reinsurance",
+            "subject_type": "reinsurance",
+            "source_type": "media",
+        })
+
+        summary, warnings = pipeline._convert_summary(
+            self.summary_body([evaluation], []), [source]
+        )
+
+        self.assertEqual(summary["items"], [])
+        self.assertEqual(summary["selection"]["supplemental_low_items"], 0)
+        self.assertEqual(summary["selection"]["importance_counts"]["low"], 1)
         self.assertEqual(warnings, [])
 
     def test_every_candidate_must_be_evaluated_and_reinsurance_cannot_be_selected(self):
@@ -521,7 +673,7 @@ class AsiaNewsTests(unittest.TestCase):
             "source_links": [{"url": "https://www.reuters.com/world/asia/reinsurance", "title": "Report"}],
         }]
         document = {
-            "schema_version": "1.4.0",
+            "schema_version": "1.5.0",
             "title": "Asia briefing",
             "executive_summary": "One candidate was assessed.",
             "evaluations": [{
@@ -590,7 +742,7 @@ class AsiaNewsTests(unittest.TestCase):
             sum(len(config.allowed_hosts) for config in configs), len(self.rule.allowed_hosts)
         )
 
-    def test_all_news_retains_dates_but_summary_gets_in_window_only(self):
+    def test_search_uses_fourteen_days_but_summary_gets_rolling_seven_days_only(self):
         regulatory = search_body(
             "https://www.hkma.gov.hk/eng/news/2026/update", "2026-09-10",
             title="Regulatory update", publisher="HKMA", market="Hong Kong",
@@ -619,16 +771,28 @@ class AsiaNewsTests(unittest.TestCase):
         ).run()
 
         self.assertTrue(run.ok)
-        self.assertEqual(run.brief["schema_version"], "1.5.0")
+        self.assertEqual(run.brief["schema_version"], "1.7.0")
+        self.assertEqual(run.search_results["search_window"], {
+            "start_date": "2026-08-30",
+            "end_date": "2026-09-13",
+            "timezone": "Asia/Hong_Kong",
+        })
+        self.assertEqual(run.brief["window"], {
+            "start_date": "2026-09-06",
+            "end_date": "2026-09-13",
+            "timezone": "Asia/Hong_Kong",
+        })
+        self.assertEqual(run.all_news["schema_version"], "1.2.0")
+        self.assertEqual(run.all_news["search_window"], run.search_results["search_window"])
         self.assertEqual(run.all_news["counts"], {
             "total": 4,
-            "in_window": 2,
-            "out_of_window": 1,
+            "in_window": 1,
+            "out_of_window": 2,
             "unknown_date": 1,
-            "eligible_for_brief": 2,
+            "eligible_for_brief": 1,
         })
-        self.assertEqual(len(adapter.summary_source_notes), 2)
-        self.assertTrue(all(note["published_date"] in {"2026-09-10", "2026-09-01"} for note in adapter.summary_source_notes))
+        self.assertEqual(len(adapter.summary_source_notes), 1)
+        self.assertEqual(adapter.summary_source_notes[0]["published_date"], "2026-09-10")
         self.assertTrue(all(note["url_specificity"] == "specific_article" for note in adapter.summary_source_notes))
         self.assertEqual(adapter.search_configs, [
             "asia-news-regulatory-official", "asia-news-regulatory-official",
@@ -647,6 +811,8 @@ class AsiaNewsTests(unittest.TestCase):
         self.assertNotIn("attention_reason", item)
         self.assertIn("- The development directly concerns AIA.", run.markdown)
         self.assertIn("Potential impact", run.markdown)
+        self.assertIn("**Brief window:** 2026-09-06 to 2026-09-13", run.markdown)
+        self.assertIn("**Search window:** 2026-08-30 to 2026-09-13", run.markdown)
         self.assertNotIn("Attention rationale", run.markdown)
         self.assertNotIn("Impact to AIA", run.markdown)
         self.assertFalse(any("editorial target" in warning for warning in run.brief["warnings"]))

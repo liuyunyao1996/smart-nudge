@@ -318,8 +318,13 @@ class PocPipeline:
         queries = self.rule.render_queries(topic, local_date, days)
         search_tasks = build_search_tasks(self.rule, queries, self.search_approach)
         run_id = f"poc-{started.strftime('%Y%m%dT%H%M%SZ')}-{uuid4().hex[:6]}"
-        window = {
+        search_window = {
             "start_date": (local_date - timedelta(days=days)).isoformat(),
+            "end_date": local_date.isoformat(),
+            "timezone": "Asia/Hong_Kong",
+        }
+        brief_window = {
+            "start_date": self.rule.brief_start_date(local_date, days).isoformat(),
             "end_date": local_date.isoformat(),
             "timezone": "Asia/Hong_Kong",
         }
@@ -354,7 +359,7 @@ class PocPipeline:
                 payload = self._search_payload(
                     query,
                     topic,
-                    window,
+                    search_window,
                     allowed_hosts=task.allowed_hosts,
                     candidate_queries=task.candidate_queries,
                     bing_config=bing_config,
@@ -422,17 +427,18 @@ class PocPipeline:
         items = self._deduplicate(collected, warnings)
         if self.rule.is_asia_executive_news:
             self._classify_source_quality(items)
-            self._classify_freshness(items, window)
+            self._classify_freshness(items, brief_window)
         search_status = "failed" if succeeded == 0 else "partial" if succeeded < len(search_tasks) else "completed"
         search_results = {
-            "schema_version": "1.0.0",
+            "schema_version": "1.1.0" if self.rule.is_asia_executive_news else "1.0.0",
             "run_id": run_id,
             "status": search_status,
             "generated_at": self._now().isoformat(),
             "rule": self._rule_record(),
             "search": self._search_record(),
             "topic": topic,
-            "window": window,
+            "search_window": search_window,
+            "window": brief_window,
             "queries": query_records,
             "items": items,
             "warnings": list(warnings),
@@ -452,7 +458,9 @@ class PocPipeline:
         fallback_used = False
         summary_warnings: list[str] = []
         try:
-            body, audit = self.adapter.execute_summary(self._summary_payload(summary_items, topic, window))
+            body, audit = self.adapter.execute_summary(
+                self._summary_payload(summary_items, topic, brief_window)
+            )
             summary, summary_warnings = self._convert_summary(body, summary_items)
             warnings.extend(summary_warnings)
             if not summary["items"] and not self.rule.is_asia_executive_news:
@@ -470,14 +478,15 @@ class PocPipeline:
             summary_audit = {"status": "fallback", "code": exc.code}
 
         brief = {
-            "schema_version": "1.5.0" if self.rule.is_asia_executive_news else "1.1.0",
+            "schema_version": "1.7.0" if self.rule.is_asia_executive_news else "1.1.0",
             "run_id": run_id,
             "status": "partial" if search_status == "partial" or fallback_used or summary_warnings else "completed",
             "generated_at": self._now().isoformat(),
             "rule": self._rule_record(),
             "search": self._search_record(),
             "topic": topic,
-            "window": window,
+            "search_window": search_window,
+            "window": brief_window,
             "coverage": {
                 "queries_requested": len(search_tasks),
                 "queries_succeeded": succeeded,
@@ -680,9 +689,12 @@ class PocPipeline:
                 "Output English only, even when source notes are Chinese.",
                 "Evaluate every supplied source_item_id exactly once. Merge IDs only when they describe the same event.",
                 "For every distinct event return one evaluation with High, Medium or Low importance and a concise reason.",
-                "Return one final item for every High or Medium evaluation and no final item for a Low evaluation. There is no maximum item count.",
+                "Return one final item for every High or Medium evaluation; never omit or truncate these events, even when their count exceeds the target.",
+                f"The briefing has a soft target of {self.rule.target_items} items and no maximum item count.",
+                f"If High and Medium events total fewer than {self.rule.target_items}, select the highest-value eligible Low events until the target is reached or no eligible Low event remains.",
+                "If all eligible High, Medium and Low events together remain below the target, include all of them and return fewer items; never invent or split events to reach the target.",
                 f"The only competitors in scope are: {', '.join(self.rule.competitors)}. Other companies are not competitor news.",
-                "All reinsurance content must be Low and omitted from final items without exception.",
+                "All reinsurance content and out-of-scope competitor content must be Low and omitted from final items without exception; these events cannot supplement the target.",
                 "An event limited to isolated actors or routine activity is normally Low unless supplied facts establish wider impact, a material precedent, or executive decision value.",
                 "Evaluate regulatory developments using the same materiality dimensions as other events; consultation, guidance, enforcement or final-rule status alone does not determine importance.",
                 "Evaluate AIA developments using the same materiality dimensions as other events; direct AIA relevance alone does not make routine activity important.",
@@ -1047,18 +1059,19 @@ class PocPipeline:
             else:
                 item["freshness_status"] = "out_of_window"
                 item["eligible_for_brief"] = False
-                item["ineligibility_reason"] = "outside_requested_window"
+                item["ineligibility_reason"] = "outside_brief_window"
 
     def _all_news(self, search_results: dict) -> dict:
         items = deepcopy(search_results["items"])
         document = {
-            "schema_version": "1.1.0",
+            "schema_version": "1.2.0",
             "run_id": search_results["run_id"],
             "status": search_results["status"],
             "generated_at": search_results["generated_at"],
             "rule": deepcopy(search_results["rule"]),
             "search": deepcopy(search_results["search"]),
             "topic": search_results["topic"],
+            "search_window": deepcopy(search_results["search_window"]),
             "window": deepcopy(search_results["window"]),
             "counts": {
                 "total": len(items),
@@ -1188,6 +1201,7 @@ class PocPipeline:
         evaluated_ids: set[str] = set()
         evaluation_by_group: dict[frozenset[str], dict] = {}
         normalized_evaluations: list[dict] = []
+        hard_excluded_groups: set[frozenset[str]] = set()
         normalized_competitors = tuple(
             _normalized_entity_name(value) for value in self.rule.competitors
         )
@@ -1199,13 +1213,14 @@ class PocPipeline:
             if evaluated_ids.intersection(group):
                 raise PocError("invalid_summary_coverage", "A source item was evaluated more than once.")
             evaluated_ids.update(group)
-            if any(
+            has_excluded_content = any(
                 source_by_id[source_id]["content_type"] in self.rule.excluded_content_types
                 or source_by_id[source_id]["subject_type"] == "reinsurance"
                 for source_id in ids
-            ) and evaluation["importance_level"] != "low":
+            )
+            if has_excluded_content and evaluation["importance_level"] != "low":
                 raise PocError("invalid_summary_selection", "Reinsurance content must be assessed as Low.")
-            if any(
+            has_out_of_scope_competitor = any(
                 (
                     source_by_id[source_id].get("subject_type") == "competitor"
                     or source_by_id[source_id].get("signal_type") == "competitor_market_move"
@@ -1217,11 +1232,14 @@ class PocPipeline:
                     for competitor in normalized_competitors
                 )
                 for source_id in ids
-            ) and evaluation["importance_level"] != "low":
+            )
+            if has_out_of_scope_competitor and evaluation["importance_level"] != "low":
                 raise PocError(
                     "invalid_summary_selection",
                     "Competitor coverage is limited to the named competitor list.",
                 )
+            if has_excluded_content or has_out_of_scope_competitor:
+                hard_excluded_groups.add(group)
             normalized = {
                 "source_item_ids": ids,
                 "importance_level": evaluation["importance_level"],
@@ -1235,11 +1253,21 @@ class PocPipeline:
                 "Every eligible source item must be covered by exactly one evaluation.",
             )
 
-        expected_groups = {
+        mandatory_groups = {
             group
             for group, evaluation in evaluation_by_group.items()
             if evaluation["importance_level"] in self.rule.included_attention_levels
         }
+        eligible_low_groups = {
+            group
+            for group, evaluation in evaluation_by_group.items()
+            if evaluation["importance_level"] == self.rule.supplemental_attention_level
+            and group not in hard_excluded_groups
+        }
+        supplemental_low_required = min(
+            max(self.rule.target_items - len(mandatory_groups), 0),
+            len(eligible_low_groups),
+        )
         item_groups: set[frozenset[str]] = set()
         cards: list[dict] = []
         warnings: list[str] = []
@@ -1249,10 +1277,18 @@ class PocPipeline:
             if evaluation is None or group in item_groups:
                 raise PocError(
                     "invalid_summary_selection",
-                    "Each final item must match one unique High or Medium evaluation.",
+                    "Each final item must match one unique event evaluation.",
                 )
-            if evaluation["importance_level"] not in self.rule.included_attention_levels:
-                raise PocError("invalid_summary_selection", "Low-importance events cannot enter the brief.")
+            if group in hard_excluded_groups:
+                raise PocError(
+                    "invalid_summary_selection",
+                    "Hard-excluded Low events cannot supplement the brief target.",
+                )
+            if (
+                evaluation["importance_level"] not in self.rule.included_attention_levels
+                and evaluation["importance_level"] != self.rule.supplemental_attention_level
+            ):
+                raise PocError("invalid_summary_selection", "Final item has an unsupported attention level.")
             if item["attention_level"] != evaluation["importance_level"]:
                 raise PocError(
                     "invalid_summary_selection",
@@ -1316,10 +1352,21 @@ class PocPipeline:
                     else None
                 ),
             })
-        if item_groups != expected_groups:
+        if not mandatory_groups.issubset(item_groups):
             raise PocError(
                 "invalid_summary_selection",
                 "Every High or Medium evaluation must appear exactly once in the final briefing.",
+            )
+        selected_low_groups = item_groups - mandatory_groups
+        if not selected_low_groups.issubset(eligible_low_groups):
+            raise PocError(
+                "invalid_summary_selection",
+                "Only eligible Low events may supplement the brief target.",
+            )
+        if len(selected_low_groups) != supplemental_low_required:
+            raise PocError(
+                "invalid_summary_selection",
+                "The final briefing must use exactly the available Low events needed to reach its soft target.",
             )
 
         counts = {
@@ -1336,6 +1383,9 @@ class PocPipeline:
                 "included_events": len(cards),
                 "importance_counts": counts,
                 "included_attention_levels": list(self.rule.included_attention_levels),
+                "supplemental_attention_level": self.rule.supplemental_attention_level,
+                "target_items": self.rule.target_items,
+                "supplemental_low_items": len(selected_low_groups),
                 "item_cap": None,
             },
         }, warnings
@@ -1355,6 +1405,9 @@ class PocPipeline:
                     "included_events": 0,
                     "importance_counts": {"high": 0, "medium": 0, "low": 0},
                     "included_attention_levels": list(self.rule.included_attention_levels),
+                    "supplemental_attention_level": self.rule.supplemental_attention_level,
+                    "target_items": self.rule.target_items,
+                    "supplemental_low_items": 0,
                     "item_cap": None,
                 },
             }
@@ -1392,13 +1445,14 @@ class PocPipeline:
 
     def _empty_brief(self, search_results: dict) -> dict:
         return {
-            "schema_version": "1.5.0" if self.rule.is_asia_executive_news else "1.1.0",
+            "schema_version": "1.7.0" if self.rule.is_asia_executive_news else "1.1.0",
             "run_id": search_results["run_id"],
             "status": "empty",
             "generated_at": self._now().isoformat(),
             "rule": self._rule_record(),
             "search": self._search_record(),
             "topic": search_results["topic"],
+            "search_window": deepcopy(search_results["search_window"]),
             "window": deepcopy(search_results["window"]),
             "coverage": {
                 "queries_requested": len(search_results["queries"]),
@@ -1418,6 +1472,9 @@ class PocPipeline:
                         "included_events": 0,
                         "importance_counts": {"high": 0, "medium": 0, "low": 0},
                         "included_attention_levels": list(self.rule.included_attention_levels),
+                        "supplemental_attention_level": self.rule.supplemental_attention_level,
+                        "target_items": self.rule.target_items,
+                        "supplemental_low_items": 0,
                         "item_cap": None,
                     },
                     "evaluations": [],
@@ -1442,7 +1499,9 @@ def render_markdown(brief: dict) -> str:
         f"# {text(brief['title'])}",
         "",
         f"**Status:** {brief['status']}  ",
-        f"**Window:** {brief['window']['start_date']} to {brief['window']['end_date']}  ",
+        f"**Brief window:** {brief['window']['start_date']} to {brief['window']['end_date']}  ",
+        f"**Search window:** {brief.get('search_window', brief['window'])['start_date']} to "
+        f"{brief.get('search_window', brief['window'])['end_date']}  ",
         f"**Generated:** {brief['generated_at']}",
         "",
         text(brief["executive_summary"]),

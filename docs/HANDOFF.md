@@ -1,5 +1,33 @@
 # Smart Nudge：当前进度与交接
 
+## 2026-10-15 update: soft ten-item brief target
+
+- Asia Rule Pack v1.5.4 changes final selection without changing retrieval. Every High and Medium event remains mandatory and the brief still has no maximum item cap.
+- Ten items is now a soft target. When High plus Medium totals fewer than 10, the summary selects the highest-value eligible Low events until the brief reaches 10 or eligible Low events are exhausted. If all eligible High, Medium and Low events total fewer than 10, every eligible event is included and the brief is allowed to remain shorter; the model must not invent or split events to fill the target.
+- Reinsurance and competitors outside AXA, Manulife, Ping An, FWD, Sun Life and Prudential remain hard exclusions. They must be evaluated as Low when supplied but cannot enter the final brief or count as Low supplements.
+- Local conversion validates all three branches: no truncation above 10, the exact required Low supplement count below 10, and shorter output after candidate exhaustion. Selection metadata records `target_items`, `supplemental_attention_level` and `supplemental_low_items`. The model-summary schema is v1.5.0 and the Asia brief contract is v1.7.0.
+- Offline validation passes: all four Rule Packs validate, all 67 unit tests pass, the Asia dry run reports the dynamic 14-day search and 7-day brief windows, and `pip check` reports no broken requirements.
+- No cloud configuration, source host, search query, request count, date window or citation rule changed.
+- The v1.5.4 live run `poc-20261015T032813Z-e71cb3` completed all seven searches and summary in about 4 minutes 13 seconds. The searches accepted 33 query-level candidates and produced 24 deduplicated items; 12 sources in the rolling seven-day window were merged into 11 evaluated events. Six Medium events and four of five Low events entered the 10-item brief, validating Low supplementation to the soft target. The run used 201,194 tokens, and its copied artifacts are stored in `demo/version-1.4-20261015/`.
+- Two quality gaps remain visible in that run. A Prudential Financial Japan item passed broad search admission because the generic `Prudential` entity string overlaps the intended Prudential plc competitor, although the summary correctly left it out. The Taiwan death-benefit event also merged unrelated agentic-AI and other regulator links. Future hardening should use exact corporate-identity aliases and a stricter same-event merge check.
+
+## 2026-10-15 update: rolling search and brief windows
+
+- Asia Rule Pack v1.5.3 replaces the calendar-week brief boundary with a rolling seven-day brief window. Both windows are calculated dynamically from the Hong Kong system date at run time: search uses a 14-day lookback and brief eligibility uses a 7-day lookback.
+- The Rule Pack now declares `brief_window: rolling_days` and `brief_days: 7`; configurations without a separate brief window continue to use their search window. Local validation rejects an incomplete or misplaced rolling-window configuration.
+- For a 15 October 2026 run, the resulting search window is 1–15 October and the brief window is 8–15 October. The date semantics match the existing lookback convention (`end_date - N days` through `end_date`, inclusive).
+- No cloud configuration, source host, request count, importance rule, competitor scope or citation policy changed.
+- The v1.5.3 live run `poc-20261015T030758Z-60d217` completed all seven searches and summary in about 4 minutes 25 seconds. The 14-day searches accepted 26 query-level candidates and produced 24 deduplicated items; rolling-seven-day filtering admitted 10 source items that were merged into eight evaluated events. The final brief included two High and three Medium events, excluded three Low events, and used 254,211 tokens. The artifacts correctly show a 1–15 October search window and an 8–15 October brief window, validating the rolling-window implementation.
+
+## 2026-10-15 update: separate search and brief windows
+
+- Asia Rule Pack v1.5.2 decouples retrieval from brief eligibility. The seven search queries retain the 14-day lookback, while local brief eligibility covers only the current Hong Kong calendar week, from Monday through the run date.
+- `search-results.json`, `all-news.json` and `brief.json` now record `search_window` separately from the existing `window`, which is the brief window. The Markdown output displays both. `all-news.json` contract is v1.2.0 and the Asia brief contract is v1.6.0.
+- This change was prompted by the authorized three-day run `poc-20261015T024422Z-c91a8d`: all seven searches succeeded, but only three out-of-window candidates were accepted and the brief was empty, even though the previous 14-day run had found several 12–13 October events. The run used 138,008 search tokens and no summary request.
+- The broader retrieval window does not make older candidates brief-eligible. Publication date remains the local eligibility field; unknown-date and pre-Monday candidates stay auditable in `all-news.json` but do not reach summarization.
+- No cloud configuration, source host, query count, importance rule or competitor scope changed in v1.5.2.
+- The v1.5.2 live run `poc-20261015T025605Z-d5f4c6` completed all seven searches and summary in about 3 minutes 46 seconds. The 14-day searches accepted 25 query-level candidates and produced 24 deduplicated items; local current-week filtering admitted three events for evaluation, of which two were Medium and one was Low. The final brief included the 12 October MAS prospecting/telemarketing response and AXA Future Risks Report, used 222,777 tokens, and displayed both windows correctly. This validates the decoupled-window behavior.
+
 ## 2026-10-15 update: recall-first AIA discovery
 
 - Asia Rule Pack v1.5.1 keeps the v1.5.0 importance and selection rules but changes the two AIA searches from abstract materiality-led wording to recall-first discovery.

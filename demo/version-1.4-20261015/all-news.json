@@ -1,0 +1,1214 @@
+{
+  "schema_version": "1.2.0",
+  "run_id": "poc-20261015T032813Z-e71cb3",
+  "status": "completed",
+  "generated_at": "2026-10-15T03:31:57.247747+00:00",
+  "rule": {
+    "rule_id": "asia-executive-news",
+    "version": "1.5.4",
+    "sha256": "75022f41dc627f4891e00a6002b9776e040f6e75a512757d24d842ca59d6461f"
+  },
+  "search": {
+    "approach": "custom-bing",
+    "custom_configurations": [
+      {
+        "configuration_id": "regulatory-official",
+        "instance_name": "asia-news-regulatory-official"
+      },
+      {
+        "configuration_id": "aia-primary",
+        "instance_name": "asia-news-aia-primary"
+      },
+      {
+        "configuration_id": "corporate-exchange",
+        "instance_name": "asia-news-corporate-exchange"
+      },
+      {
+        "configuration_id": "authoritative-media",
+        "instance_name": "asia-news-authoritative-media"
+      }
+    ]
+  },
+  "topic": "Material developments affecting AIA, its 18 markets, insurance regulation, or its named major competitors",
+  "search_window": {
+    "start_date": "2026-10-01",
+    "end_date": "2026-10-15",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "window": {
+    "start_date": "2026-10-08",
+    "end_date": "2026-10-15",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "counts": {
+    "total": 24,
+    "in_window": 12,
+    "out_of_window": 12,
+    "unknown_date": 0,
+    "eligible_for_brief": 12
+  },
+  "items": [
+    {
+      "source_item_id": "src-c03e643aca8e",
+      "title": "FSB consults on principles for regulatory and supervisory modernisation",
+      "publisher": "Financial Stability Board",
+      "published_date": "2026-10-14",
+      "grounded_note": "The FSB proposed eight high-level principles intended to make financial regulation and supervision more effective, risk-focused, coherent and responsive to changing vulnerabilities, technologies and market conditions. The cross-sector consultation is relevant to insurance supervisors and internationally active insurers; comments are due on 8 January 2027.",
+      "query_ids": [
+        "regulatory-india-regional"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsb.org/2026/10/fsb-consults-on-high-level-principles-for-regulatory-and-supervisory-modernisation/",
+          "title": "FSB consults on principles for regulatory and supervisory modernisation",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "international_body",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "international_body",
+      "source_market": "asia",
+      "market": "Asia and global",
+      "entities": [
+        "Financial Stability Board",
+        "G20",
+        "financial authorities",
+        "insurers"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-4109452125d6",
+      "title": "Taiwan FSC consults on safe use of agentic AI by financial institutions",
+      "publisher": "Financial Supervisory Commission, Taiwan",
+      "published_date": "2026-10-13",
+      "grounded_note": "The FSC issued a 30-day consultation document covering governance, risk classification and security controls for financial institutions deploying agentic AI. It addresses risks including unauthorized tool use, sensitive-data leakage and cascading errors, and may inform subsequent guidance and supervisory communication applicable to insurers.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610130003&dtable=News&id=96&mcustomize=news_view.jsp&parentpath=0%2C6",
+          "title": "Taiwan FSC consults on safe use of agentic AI by financial institutions",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.fsc.gov.tw/uploaddowndoc?file=news%2F202610131438280.pdf&filedisplay=%E9%87%91%E8%9E%8D%E6%A5%AD%E9%81%8B%E7%94%A8%E4%BB%A3%E7%90%86AI%E5%AE%89%E5%85%A8%E8%AB%AE%E8%A9%A2%E6%96%87%E4%BB%B6.pdf&flag=doc",
+          "title": "Taiwan FSC consults on safe use of agentic AI by financial institutions",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission, Taiwan",
+        "Taiwan financial institutions"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-0237d26e31d4",
+      "title": "Taiwan FSC consults on agentic-AI security for the financial sector",
+      "publisher": "Financial Supervisory Commission, Taiwan",
+      "published_date": "2026-10-13",
+      "grounded_note": "The FSC’s official register records amendments to minimum ratios between death benefits and policy reserves or policy-account value for life insurance products. A related FSC notice states that certain wealth-management insurance products were permitted an exemption, indicating product-design and distribution implications.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/",
+          "title": "Taiwan FSC consults on agentic-AI security for the financial sector",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "homepage"
+        },
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?id=128&parentpath=0%2C2",
+          "title": "Taiwan revises minimum death-benefit ratios for life insurance products",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission, Taiwan"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-cd1f88eb8ace",
+      "title": "FWD to re-enter Hong Kong P&C market with 25% stake in bolttech Insurance",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-12",
+      "grounded_note": "Hong Kong-listed FWD Group agreed to acquire a 25% interest in bolttech Insurance (Hong Kong) for a base consideration of US$20.72 million. The transaction would return FWD to Hong Kong’s property-and-casualty insurance market.",
+      "query_ids": [
+        "competitor-authoritative-media"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/fwd-to-acquire-25-of-hong-kong-pc-carrier-bolttech-insurance-for-us21m/",
+          "title": "FWD to re-enter Hong Kong P&C market with 25% stake in bolttech Insurance",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Hong Kong",
+      "entities": [
+        "FWD",
+        "FWD Group",
+        "bolttech Insurance (Hong Kong)"
+      ],
+      "topic": "external_environment",
+      "signal_type": "competitor_market_move",
+      "subject_type": "competitor",
+      "content_type": "corporate",
+      "event_scope": "firm_specific",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-a2c1e1541c04",
+      "title": "AXA Future Risks Report identifies AI and big data as experts’ leading emerging risk",
+      "publisher": "AXA",
+      "published_date": "2026-10-12",
+      "grounded_note": "AXA’s 2026 Future Risks Report ranked artificial intelligence and big-data risks first among surveyed experts, ahead of climate change. AXA said the study contributes to its strategic thinking and risk management and highlighted implications for insurers’ protection, prevention, retirement, health and wealth-transfer propositions.",
+      "query_ids": [
+        "competitor-official-material-moves"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.axa.com/en/press/press-releases/axa-future-risks-report-2026-artificial-intelligence-becomes-%20experts-top-concern-ahead-of-climate-change",
+          "title": "AXA Future Risks Report identifies AI and big data as experts’ leading emerging risk",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "global",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "corporate-exchange",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "global",
+      "market": "Global, including Asia",
+      "entities": [
+        "AXA",
+        "Ipsos"
+      ],
+      "topic": "external_environment",
+      "signal_type": "technology_operational_risk",
+      "subject_type": "competitor",
+      "content_type": "research_thought_leadership",
+      "event_scope": "group_regional",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-ae09eaabcd89",
+      "title": "Japan’s FSA suspends Prudential Life and Gibraltar Life operations for three months over employee fraud",
+      "publisher": "InsuranceAsia News",
+      "published_date": "2026-10-11",
+      "grounded_note": "Japan’s Financial Services Agency ordered Prudential Life Insurance and Gibraltar Life Insurance, both belonging to US-based Prudential Financial, to suspend certain operations for more than three months. The restrictions include writing new contracts and selling products. This source concerns Prudential Financial rather than Prudential plc.",
+      "query_ids": [
+        "competitor-authoritative-media"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/japans-fsa-suspends-prudential-life-gibraltar-life-operations-for-3-months-over-employee-fraud/",
+          "title": "Japan’s FSA suspends Prudential Life and Gibraltar Life operations for three months over employee fraud",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Japan",
+      "entities": [
+        "Prudential",
+        "Prudential Financial",
+        "Prudential Life Insurance",
+        "Gibraltar Life Insurance",
+        "Japan Financial Services Agency"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "enforcement",
+      "subject_type": "competitor",
+      "content_type": "regulatory",
+      "event_scope": "firm_specific",
+      "url_specificity": "unknown",
+      "source_quality_note": "URL shape does not establish whether the citation is article-specific.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-47dc5523d35c",
+      "title": "Malaysia announces insurance-related measures under Budget 2027",
+      "publisher": "Bank Negara Malaysia",
+      "published_date": "2026-10-09",
+      "grounded_note": "Budget-related measures described by BNM include income-tax relief for premiums or contributions paid for voluntary medical and health insurance or takaful and RM40 million for MediAsas vouchers targeting employees of smaller businesses. The measures may affect demand and distribution in Malaysia’s medical insurance and takaful market.",
+      "query_ids": [
+        "regulatory-india-regional"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.bnm.gov.my/-/belanjawan2027",
+          "title": "Malaysia announces insurance-related measures under Budget 2027",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "central_bank",
+          "market": "malaysia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "central_bank",
+      "source_market": "malaysia",
+      "market": "Malaysia",
+      "entities": [
+        "Bank Negara Malaysia",
+        "Government of Malaysia",
+        "MediAsas",
+        "medical and health insurers",
+        "takaful operators",
+        "small and medium enterprises"
+      ],
+      "topic": "external_environment",
+      "signal_type": "product_distribution",
+      "subject_type": "industry",
+      "content_type": "product_distribution",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-bf10fddfc7bd",
+      "title": "China NFRA issues provisions governing property insurers’ insurance-product development",
+      "publisher": "National Financial Regulatory Administration",
+      "published_date": "2026-10-09",
+      "grounded_note": "NFRA’s official website lists issuance of the Provisions on the Administration of Insurance Product Development by Property Insurance Companies. The retrieved regulator page establishes issuance on 9 October but does not provide enough text to state the provisions’ effective date or detailed requirements.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/index/",
+          "title": "China NFRA issues provisions governing property insurers’ insurance-product development",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "mainland_china",
+          "url_specificity": "listing_page"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "mainland_china",
+      "market": "Mainland China",
+      "entities": [
+        "National Financial Regulatory Administration"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "listing_page",
+      "source_quality_note": "Native citations appear to target a listing or category page; rank below comparable article-level evidence.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-da0d7217249a",
+      "title": "AIA launches EverBliss Annuity Insurance Plan to redefine retirement planning beyond financial security",
+      "publisher": "AIA Hong Kong",
+      "published_date": "2026-10-09",
+      "grounded_note": "AIA Hong Kong's press-release index records the launch of EverBliss Annuity Insurance Plan, a retirement proposition positioned as extending beyond financial security. The specific release URL was not exposed in the retrieved search result, so the cited native source is the official press-release index.",
+      "query_ids": [
+        "aia-business-publications-initiatives"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.aia.com.hk/en/about-aia/about-us/media-centre/press-releases",
+          "title": "AIA launches EverBliss Annuity Insurance Plan to redefine retirement planning beyond financial security",
+          "configuration_id": "aia-primary",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "hong_kong",
+          "url_specificity": "listing_page"
+        }
+      ],
+      "configuration_id": "aia-primary",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "AIA",
+        "AIA Hong Kong"
+      ],
+      "topic": "external_environment",
+      "signal_type": "product_distribution",
+      "subject_type": "aia",
+      "content_type": "product_distribution",
+      "event_scope": "firm_specific",
+      "url_specificity": "listing_page",
+      "source_quality_note": "Native citations appear to target a listing or category page; rank below comparable article-level evidence.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-7554eaf4506e",
+      "title": "Taiwan FSC changes minimum death-benefit ratios for certain life-insurance products",
+      "publisher": "Financial Supervisory Commission, Taiwan",
+      "published_date": "2026-10-08",
+      "grounded_note": "The FSC's official announcements list a revision to the rules governing the minimum ratio of death benefits to policy reserves or policy-account value for life-insurance products. The Insurance Bureau also reported that designated wealth-management insurance products were opened to an exemption from the relevant requirement.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?id=97&parentpath=0%2C2",
+          "title": "Taiwan FSC changes minimum death-benefit ratios for certain life-insurance products",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.ib.gov.tw/ch/index.jsp",
+          "title": "Taiwan FSC changes minimum death-benefit ratios for certain life-insurance products",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "listing_page"
+        },
+        {
+          "url": "https://www.ib.gov.tw/ch/home.jsp?id=35&parentpath=0%2C2",
+          "title": "Taiwan FSC updates reserve requirements for catastrophe and nuclear insurance",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission, Taiwan",
+        "Insurance Bureau, Taiwan",
+        "Taiwan life insurers"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-a0510ec6d8c4",
+      "title": "Manulife appoints Andy Bruce as Chief Information Officer for Asia",
+      "publisher": "Manulife",
+      "published_date": "2026-10-08",
+      "grounded_note": "Manulife promoted Andy Bruce to Chief Information Officer of Manulife Asia, effective October 1, 2026. The regional appointment supports technology modernization, operational stability, risk management and the responsible scaling of AI across Manulife’s Asian operations.",
+      "query_ids": [
+        "competitor-official-material-moves"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.manulife.com/ca/en/about-us/news/manulife-announces-asia-technology-leadership-announcement",
+          "title": "Manulife appoints Andy Bruce as Chief Information Officer for Asia",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "corporate-exchange",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "asia",
+      "market": "Asia; Hong Kong and Macau",
+      "entities": [
+        "Manulife",
+        "Andy Bruce",
+        "Manulife Asia"
+      ],
+      "topic": "external_environment",
+      "signal_type": "leadership_change",
+      "subject_type": "competitor",
+      "content_type": "leadership",
+      "event_scope": "individual",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-f9dc3e4a4952",
+      "title": "AIA Alta announces exclusive Hong Kong collaboration with Chi Longevity",
+      "publisher": "Bastille Post / Media OutReach Newswire",
+      "published_date": "2026-10-08",
+      "grounded_note": "AIA Alta, AIA Hong Kong & Macau’s proposition for high-net-worth customers, announced an exclusive Hong Kong collaboration with Chi Longevity. The company-sourced release says eligible customers will receive access to longevity-science services within AIA Alta’s integrated health-and-wealth proposition.",
+      "query_ids": [
+        "competitor-authoritative-media"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.bastillepost.com/global/article/6232539-aia-alta-announces-exclusive-collaboration-with-chi-longevity-in-hong-kong",
+          "title": "AIA Alta announces exclusive Hong Kong collaboration with Chi Longevity",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "AIA",
+        "AIA Alta",
+        "AIA Hong Kong & Macau",
+        "Chi Longevity"
+      ],
+      "topic": "external_environment",
+      "signal_type": "product_distribution",
+      "subject_type": "aia",
+      "content_type": "product_distribution",
+      "event_scope": "firm_specific",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-58892c11a38e",
+      "title": "MAS issues Guidelines on Artificial Intelligence Risk Management for Financial Institutions",
+      "publisher": "Monetary Authority of Singapore",
+      "published_date": "2026-10-07",
+      "grounded_note": "MAS issued supervisory expectations for managing risks from all forms of AI use. The guidelines expressly apply to direct insurers, captive insurers, insurance brokers and other financial institutions, and take effect on 7 October 2027.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.mas.gov.sg/regulation/guidelines/guidelines-on-artificial-intelligence-risk-management-for-financial-institutions",
+          "title": "MAS issues Guidelines on Artificial Intelligence Risk Management for Financial Institutions",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "singapore",
+      "market": "Singapore",
+      "entities": [
+        "Monetary Authority of Singapore"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-24e98f1dcc2b",
+      "title": "MAS issues Guidelines on Artificial Intelligence Risk Management for Financial Institutions",
+      "publisher": "Monetary Authority of Singapore",
+      "published_date": "2026-10-07",
+      "grounded_note": "MAS issued supervisory expectations covering governance, AI risk-management systems, lifecycle controls, policies and institutional capabilities. The guidelines apply across Singapore financial institutions, expressly including life, general and composite direct insurers and insurance intermediaries, and cover potentially consequential uses such as insurance underwriting.",
+      "query_ids": [
+        "regulatory-india-regional"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.mas.gov.sg/regulation/guidelines/guidelines-on-artificial-intelligence-risk-management-for-financial-institutions",
+          "title": "MAS issues Guidelines on Artificial Intelligence Risk Management for Financial Institutions",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.mas.gov.sg/-/media/mas-media-library/regulation/guidelines/bd/guidelines-on-artificial-intelligence-risk-management-for-financial-institutions/guidelines-on-artificial-intelligence-risk-management.pdf",
+          "title": "MAS issues Guidelines on Artificial Intelligence Risk Management for Financial Institutions",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "singapore",
+      "market": "Singapore",
+      "entities": [
+        "Monetary Authority of Singapore",
+        "financial institutions",
+        "direct insurers",
+        "insurance brokers"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-45190d782f25",
+      "title": "Taiwan FSC strengthens fair-treatment assessment and remediation framework",
+      "publisher": "Financial Supervisory Commission, Taiwan",
+      "published_date": "2026-10-06",
+      "grounded_note": "The FSC reported changes to its financial-sector fair-treatment assessment, which covered 20 life insurers and 19 property insurers. The framework adds supervisory and examination findings as a deduction factor and introduces improvement plans and targeted supervisory counselling for firms ranked in the bottom 20% for two consecutive years. AIA Taiwan was identified among the recipients of a most-improved award.",
+      "query_ids": [
+        "regulatory-india-regional"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610060003&dtable=News&id=96&mcustomize=news_view.jsp&parentpath=0%2C2",
+          "title": "Taiwan FSC strengthens fair-treatment assessment and remediation framework",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission",
+        "Insurance Bureau",
+        "AIA Taiwan",
+        "life insurers",
+        "property insurers",
+        "Financial Ombudsman Institution"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-d383a19fdc4a",
+      "title": "Taiwan FSC proposes amendments facilitating insurer investment in venture-capital businesses",
+      "publisher": "Financial Supervisory Commission, Taiwan",
+      "published_date": "2026-10-06",
+      "grounded_note": "The FSC opened a regulatory proposal concerning insurers’ special-purpose investments in public infrastructure and social-welfare businesses. Proposed changes would permit insurers to maintain existing investment ratios after a venture-capital business becomes publicly issued and remove an obsolete investment category.",
+      "query_ids": [
+        "regulatory-india-regional"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610060002&dtable=News&id=96&mcustomize=news_view.jsp&parentpath=0%2C2",
+          "title": "Taiwan FSC proposes amendments facilitating insurer investment in venture-capital businesses",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission",
+        "Insurance Bureau",
+        "insurers",
+        "venture-capital businesses"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-e7f70d174aa8",
+      "title": "Taiwan FSC expands permissible insurer investment in health and welfare businesses",
+      "publisher": "Financial Supervisory Commission, Taiwan",
+      "published_date": "2026-10-06",
+      "grounded_note": "The FSC expanded the categories of health and welfare businesses treated as insurance-related investments, including health management, digital health, long-term-care support, nutrition and integrated-service platforms. It also relaxed the requirement that such businesses be directly linked to insurance operations, increasing insurers’ investment flexibility.",
+      "query_ids": [
+        "regulatory-india-regional"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610060001&dtable=News&id=96&mcustomize=news_view.jsp&parentpath=0%2C6",
+          "title": "Taiwan FSC expands permissible insurer investment in health and welfare businesses",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610060001&dtable=Law&id=128&mcustomize=lawnew_view.jsp&parentpath=0%2C3",
+          "title": "Taiwan FSC expands permissible insurer investment in health and welfare businesses",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission",
+        "Insurance Bureau",
+        "insurers",
+        "health and welfare businesses",
+        "long-term-care providers"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-6a76bed2e7fe",
+      "title": "Taiwan revises the Regulations Governing the Preparation of Financial Reports by Insurance Enterprises",
+      "publisher": "Financial Supervisory Commission, Taiwan",
+      "published_date": "2026-10-05",
+      "grounded_note": "The FSC register records a coordinated package that revoked prior nuclear-insurance reserve rules and issued interpretations covering general reserve requirements, commercial earthquake and typhoon/flood insurance reserves, and nuclear-insurance reserves. The package is relevant to property insurers’ reserving frameworks.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?id=128&parentpath=0%2C2",
+          "title": "Taiwan revises the Regulations Governing the Preparation of Financial Reports by Insurance Enterprises",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission, Taiwan",
+        "Insurance Bureau, Taiwan"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-560cf14e556e",
+      "title": "Taiwan FSC establishes reserve requirements for commercial earthquake and typhoon-flood insurance",
+      "publisher": "Financial Supervisory Commission, Taiwan",
+      "published_date": "2026-10-02",
+      "grounded_note": "The FSC issued an interpretive order specifying special-reserve treatment for property insurers writing commercial earthquake and typhoon-flood insurance. It addresses catastrophe and risk-fluctuation reserves, including accumulation and release thresholds, and took effect immediately.",
+      "query_ids": [
+        "regulatory-india-regional"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610020002&dtable=Law&id=3&mcustomize=lawnew_view.jsp&parentpath=0%2C2",
+          "title": "Taiwan FSC establishes reserve requirements for commercial earthquake and typhoon-flood insurance",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission",
+        "Insurance Bureau",
+        "property insurers"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-a1b6c097e18a",
+      "title": "Publication of Pricing Supplement for CNY1 Billion 2.88% Subordinated Dated Securities Due 2036",
+      "publisher": "HKEXnews — AIA Group Limited filing",
+      "published_date": "2026-10-02",
+      "grounded_note": "AIA Group published a pricing supplement for CNY1,000,000,000 of 2.88% subordinated dated securities due 2036 under its US$18 billion Global Medium Term Note and Securities Programme. The securities are to be consolidated with existing securities of the same series issued in April and June 2026. Source is an AIA filing hosted by HKEXnews. ([www1.hkexnews.hk](https://www1.hkexnews.hk/listedco/listconews/sehk/2026/1002/2026100200688.pdf))",
+      "query_ids": [
+        "aia-corporate-markets"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/1002/2026100200688.pdf",
+          "title": "AIA Group Limited 友邦保險控股有限公司 - hkexnews.hk",
+          "configuration_id": "aia-primary",
+          "source_tier": "primary",
+          "source_type": "exchange",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "aia-primary",
+      "source_tier": "primary",
+      "source_type": "exchange",
+      "source_market": "hong_kong",
+      "market": "AIA Group / Hong Kong",
+      "entities": [
+        "AIA",
+        "AIA Group Limited",
+        "The Stock Exchange of Hong Kong Limited"
+      ],
+      "topic": "external_environment",
+      "signal_type": "aia_major_news",
+      "subject_type": "aia",
+      "content_type": "corporate",
+      "event_scope": "group_regional",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-5b166d751de9",
+      "title": "MAS publishes key enforcement actions taken in Q3 2026",
+      "publisher": "Monetary Authority of Singapore",
+      "published_date": "2026-10-01",
+      "grounded_note": "MAS summarized public enforcement actions from July through September 2026. Insurance-related entries included prohibition orders against former representatives of AXA Insurance and Manulife Financial Advisers following criminal convictions; these actions concerned named individuals rather than the firms themselves.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.mas.gov.sg/news/media-releases/2026/key-enforcement-actions-taken-by-mas-in-q3-2026",
+          "title": "MAS publishes key enforcement actions taken in Q3 2026",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "singapore",
+      "market": "Singapore",
+      "entities": [
+        "Monetary Authority of Singapore",
+        "AXA Insurance Pte Ltd",
+        "Manulife Financial Advisers Pte. Ltd.",
+        "Andrew Tiew Siew Ing",
+        "Lai Mei Lin"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "enforcement",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "individual",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-e5e5013a4194",
+      "title": "MAS consultation proposes corporate-governance changes for insurers",
+      "publisher": "Monetary Authority of Singapore",
+      "published_date": "2026-09-30",
+      "grounded_note": "MAS proposed targeted amendments affecting insurers, banks and designated financial holding companies, including director-independence criteria, board and committee composition and appointments of key principals. Although published immediately before the requested window, the consultation remained open through 9 December 2026 and could materially affect insurer governance requirements.",
+      "query_ids": [
+        "regulatory-india-regional"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.mas.gov.sg/publications/consultations/2026/consultation-paper-on-amendments-to-cg-regulations-for-banks-insurers-and-designated-fhcs",
+          "title": "MAS consultation proposes corporate-governance changes for insurers",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.mas.gov.sg/news/media-releases/2026/mas-consults-on-targeted-updates-to-corporate-governance-requirements",
+          "title": "MAS consultation proposes corporate-governance changes for insurers",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "singapore",
+      "market": "Singapore",
+      "entities": [
+        "Monetary Authority of Singapore",
+        "insurers",
+        "banks",
+        "designated financial holding companies"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-4d0137f02ab0",
+      "title": "Mainland China NFRA consults on comprehensive revision of the Insurance Law",
+      "publisher": "National Financial Regulatory Administration",
+      "published_date": "2026-09-04",
+      "grounded_note": "The NFRA published a draft comprehensive revision of the PRC Insurance Law, with comments due on October 3, 2026. The 214-article draft addresses areas including look-through shareholder supervision, related-party obligations, stronger penalties and consumer protection, risk resolution and market exit. Publication predates the requested window, but the consultation deadline falls within it.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1270936&itemId=951",
+          "title": "Mainland China NFRA consults on comprehensive revision of the Insurance Law",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "mainland_china",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.nfra.gov.cn/chinese/docfile/2026/7c3269d4982b47ed9269a71db3830ad4.pdf",
+          "title": "Mainland China NFRA consults on comprehensive revision of the Insurance Law",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "mainland_china",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.nfra.gov.cn/chinese/docfile/2026/c6ba53b5320c4a2daf6bf56decec9351.pdf",
+          "title": "Mainland China NFRA consults on comprehensive revision of the Insurance Law",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "mainland_china",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "mainland_china",
+      "market": "Mainland China",
+      "entities": [
+        "National Financial Regulatory Administration",
+        "People's Republic of China",
+        "Mainland China insurers"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-d1c5220111e3",
+      "title": "China’s trial rules for managing lists of seriously untrustworthy entities take effect",
+      "publisher": "National Financial Regulatory Administration",
+      "published_date": "2026-07-03",
+      "grounded_note": "NFRA’s official regulations register states that the trial provisions for managing lists of seriously untrustworthy entities took effect on 1 October 2026. The register places the measure within the body of rules administered by the banking and insurance regulator; the source does not establish any firm-specific designation.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/zhengwuxinxi/guizhang.html",
+          "title": "China’s trial rules for managing lists of seriously untrustworthy entities take effect",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "mainland_china",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "mainland_china",
+      "market": "Mainland China",
+      "entities": [
+        "National Financial Regulatory Administration"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    }
+  ],
+  "warnings": [
+    "Search regulatory-southeast-asia ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: bimabharosa.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Merged duplicate search result src-7554eaf4506e.",
+    "Merged duplicate search result src-7554eaf4506e.",
+    "Merged duplicate search result src-7554eaf4506e.",
+    "Merged duplicate search result src-7554eaf4506e.",
+    "Merged duplicate search result src-0237d26e31d4.",
+    "Merged duplicate search result src-6a76bed2e7fe.",
+    "Merged duplicate search result src-0237d26e31d4.",
+    "Merged duplicate search result src-6a76bed2e7fe.",
+    "Merged duplicate search result src-da0d7217249a."
+  ],
+  "disclaimer": "This briefing is based on Bing-grounded public information from approved primary and authoritative-media websites. Native source URLs were matched locally, but article content, publication dates and applicability were not independently verified against downloaded original text. Non-public regulator engagement and feedback are outside public-Web coverage.",
+  "raw_response_retained": false
+}
