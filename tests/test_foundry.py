@@ -27,7 +27,7 @@ class _Credential:
         return _Token()
 
 
-def summary_payload(model="gpt-5-mini"):
+def summary_payload(model="gpt-5-mini", effort="medium"):
     schema = {
         "type": "object",
         "additionalProperties": False,
@@ -38,7 +38,7 @@ def summary_payload(model="gpt-5-mini"):
         "model": model,
         "instructions": "Summarize.",
         "input": "Input",
-        "reasoning": {"effort": "low"},
+        "reasoning": {"effort": effort},
         "max_output_tokens": 100,
         "parallel_tool_calls": False,
         "text": {"format": {"type": "json_schema", "name": "summary", "schema": schema, "strict": True}},
@@ -121,7 +121,7 @@ class FoundryTests(unittest.TestCase):
         self.assertEqual(audit["usage"]["total_tokens"], 14)
 
     def test_search_requires_web_search_bound_to_custom_configuration(self):
-        payload = summary_payload()
+        payload = summary_payload(effort="low")
         payload.update(
             {
                 "tools": [
@@ -191,9 +191,43 @@ class FoundryTests(unittest.TestCase):
         with self.assertRaises(ProbeError):
             adapter.execute_summary(payload)
 
-        search = summary_payload()
+        search = summary_payload(effort="low")
         search.update({
             "max_output_tokens": 4001,
+            "tools": [{
+                "type": "web_search",
+                "custom_search_configuration": {
+                    "project_connection_id": "connection",
+                    "instance_name": "instance",
+                },
+            }],
+            "tool_choice": "required",
+            "include": ["web_search_call.action.sources"],
+        })
+        with self.assertRaises(ProbeError):
+            adapter.execute_search(
+                search, BingConfig("connection", "instance", ("www.example.com",))
+            )
+
+    def test_summary_requires_medium_effort_and_search_requires_low_effort(self):
+        adapter = FoundryAdapter(
+            FoundryConfig(
+                "https://resource.services.ai.azure.com/api/projects/project",
+                "gpt-5-mini",
+            ),
+            credential=_Credential(),
+            transport=httpx.MockTransport(
+                lambda _request: httpx.Response(
+                    200, json={"id": "resp-1", "status": "completed", "output": []}
+                )
+            ),
+        )
+
+        with self.assertRaises(ProbeError):
+            adapter.execute_summary(summary_payload(effort="low"))
+
+        search = summary_payload(effort="medium")
+        search.update({
             "tools": [{
                 "type": "web_search",
                 "custom_search_configuration": {

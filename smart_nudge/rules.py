@@ -41,6 +41,10 @@ def read_json(path: str | Path) -> dict:
     return value
 
 
+def _normalized_entity_name(value: str) -> str:
+    return "".join(character for character in value.casefold() if character.isalnum())
+
+
 @dataclass(frozen=True)
 class RenderedQuery:
     query_id: str
@@ -50,6 +54,7 @@ class RenderedQuery:
     text: str
     configuration_id: str | None = None
     allowed_subject_types: tuple[str, ...] = ()
+    allowed_source_markets: tuple[str, ...] = ()
     required_entities_any: tuple[str, ...] = ()
 
 
@@ -106,6 +111,20 @@ class RulePack:
                     "invalid_rule",
                     "Bing configuration IDs, instance names and source hosts must be unique, and every query must reference a configuration.",
                 )
+            for query in queries:
+                allowed_source_markets = query.get("allowed_source_markets", ())
+                if allowed_source_markets:
+                    source_markets = {
+                        source["market"]
+                        for configuration in configurations
+                        if configuration["configuration_id"] == query["configuration_id"]
+                        for source in configuration["sources"]
+                    }
+                    if not set(allowed_source_markets).issubset(source_markets):
+                        raise RulePackError(
+                            "invalid_rule",
+                            "Query source-market admission must reference markets in its Bing configuration.",
+                        )
             editorial_policy = document.get("editorial_policy")
             if editorial_policy is None:
                 raise RulePackError(
@@ -130,6 +149,30 @@ class RulePack:
             if "reinsurance" not in editorial_policy["excluded_content_types"]:
                 raise RulePackError(
                     "invalid_rule", "The Asia executive news workflow must exclude reinsurance content."
+                )
+            competitors = editorial_policy["competitors"]
+            identities = editorial_policy["competitor_identities"]
+            identity_names = [identity["name"] for identity in identities]
+            normalized_aliases = [
+                _normalized_entity_name(alias)
+                for identity in identities
+                for alias in identity["aliases"]
+            ]
+            if (
+                identity_names != competitors
+                or any(
+                    _normalized_entity_name(identity["name"])
+                    not in {
+                        _normalized_entity_name(alias)
+                        for alias in identity["aliases"]
+                    }
+                    for identity in identities
+                )
+                or len(normalized_aliases) != len(set(normalized_aliases))
+            ):
+                raise RulePackError(
+                    "invalid_rule",
+                    "Competitor identities must follow the competitor list, include each canonical name, and use unique aliases.",
                 )
         elif any(item.get("configuration_id") is not None for item in queries):
             raise RulePackError("invalid_rule", "Legacy Rule Packs cannot reference a Bing configuration ID.")
@@ -290,6 +333,24 @@ class RulePack:
         return tuple(self.document.get("editorial_policy", {}).get("competitors", ()))
 
     @property
+    def competitor_identities(self) -> tuple[dict, ...]:
+        return tuple(
+            deepcopy(value)
+            for value in self.document.get("editorial_policy", {}).get(
+                "competitor_identities", ()
+            )
+        )
+
+    def competitor_aliases_for(self, names=None) -> tuple[str, ...]:
+        selected = set(names if names is not None else self.competitors)
+        return tuple(
+            alias
+            for identity in self.competitor_identities
+            if identity["name"] in selected
+            for alias in identity["aliases"]
+        )
+
+    @property
     def excluded_content_types(self) -> tuple[str, ...]:
         return tuple(self.document.get("editorial_policy", {}).get("excluded_content_types", ()))
 
@@ -318,6 +379,7 @@ class RulePack:
                 ),
                 configuration_id=item.get("configuration_id"),
                 allowed_subject_types=tuple(item.get("allowed_subject_types", ())),
+                allowed_source_markets=tuple(item.get("allowed_source_markets", ())),
                 required_entities_any=tuple(item.get("required_entities_any", ())),
             )
             for item in self.document["search"]["queries"]

@@ -118,6 +118,7 @@ def _dry_run(
                 "language": task.query.language,
                 "market": task.query.market,
                 "allowed_subject_types": list(task.query.allowed_subject_types),
+                "allowed_source_markets": list(task.query.allowed_source_markets),
                 "required_entities_any": list(task.query.required_entities_any),
                 "target_hosts": list(task.allowed_hosts),
                 "query": task.query.text,

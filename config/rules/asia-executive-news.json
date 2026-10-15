@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.3.0",
+  "schema_version": "1.4.0",
   "workflow": "asia_executive_news",
   "rule_id": "asia-executive-news",
-  "version": "1.5.4",
+  "version": "1.5.7",
   "name": "Asia Insurance Executive News",
   "bing": {
     "configurations": [
@@ -168,6 +168,7 @@
         "language": "English",
         "market": "greater_china",
         "set_lang": "en",
+        "allowed_source_markets": ["hong_kong", "mainland_china", "taiwan", "asia"],
         "template": "{topic}; Hong Kong Mainland China Taiwan; material insurance regulatory developments with potential market-wide or sector-wide implications for insurers; proposed, final or newly effective requirements, consultations, supervisory expectations, enforcement developments and implementation changes; from {date_from} to {date_to}"
       },
       {
@@ -176,6 +177,7 @@
         "language": "English",
         "market": "southeast_asia",
         "set_lang": "en",
+        "allowed_source_markets": ["singapore", "malaysia", "thailand", "philippines", "asia"],
         "template": "{topic}; Singapore Malaysia Thailand Philippines; material insurance regulatory developments with potential market-wide or sector-wide implications for insurers; proposed, final or newly effective requirements, consultations, supervisory expectations, enforcement developments and implementation changes; from {date_from} to {date_to}"
       },
       {
@@ -184,6 +186,7 @@
         "language": "English",
         "market": "india_regional",
         "set_lang": "en",
+        "allowed_source_markets": ["india", "asia"],
         "template": "{topic}; India and Asia regional standards; material insurance regulatory developments with potential market-wide, sector-wide or cross-border implications for insurers; proposed, final or newly effective requirements, consultations, supervisory expectations, enforcement developments and implementation changes; from {date_from} to {date_to}"
       },
       {
@@ -213,8 +216,8 @@
         "market": "asia",
         "set_lang": "en",
         "allowed_subject_types": ["competitor"],
-        "required_entities_any": ["AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential"],
-        "template": "{topic}; AXA Manulife Ping An FWD Sun Life Prudential only; material Asia insurance developments with potential strategic, financial, organizational, operational or market significance; exclude AIA and companies outside the named list; from {date_from} to {date_to}"
+        "required_entities_any": ["AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential plc"],
+        "template": "{topic}; AXA Manulife Ping An FWD Sun Life and Prudential plc only; material Asia insurance developments with potential strategic, financial, organizational, operational or market significance; Prudential plc is the intended insurance group and Prudential Financial Inc is a separate out-of-scope company; exclude AIA and companies outside the named list; from {date_from} to {date_to}"
       },
       {
         "query_id": "competitor-authoritative-media",
@@ -223,20 +226,21 @@
         "market": "asia",
         "set_lang": "en",
         "allowed_subject_types": ["aia", "competitor"],
-        "required_entities_any": ["AIA", "AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential"],
-        "template": "{topic}; AIA AXA Manulife Ping An FWD Sun Life Prudential only; material Asia insurance developments with potential strategic, financial, organizational, operational or market significance; exclude companies outside the named list; from {date_from} to {date_to}"
+        "required_entities_any": ["AIA", "AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential plc"],
+        "template": "{topic}; AIA AXA Manulife Ping An FWD Sun Life and Prudential plc only; material Asia insurance developments with potential strategic, financial, organizational, operational or market significance; Prudential plc is the intended insurance group and Prudential Financial Inc is a separate out-of-scope company; exclude companies outside the named list; from {date_from} to {date_to}"
       }
     ],
     "inclusion_rules": [
       "Collect substantive, potentially decision-relevant AIA developments across its markets for later importance assessment; discovery should not require the search stage to assign an executive importance level.",
       "Collect material sector-wide regulatory consultations, final rules, supervisory expectations, enforcement developments and implementation changes with decision value for insurers.",
-      "For competitor coverage, include only AXA, Manulife, Ping An, FWD, Sun Life and Prudential, and only when the development is structurally or strategically material.",
+      "For competitor coverage, include only AXA, Manulife, Ping An, FWD, Sun Life and Prudential plc, and only when the development is structurally or strategically material.",
       "Retain a candidate even when its publication date is outside the requested window or unknown; local logic decides final date eligibility.",
       "Prefer the specific article, release, filing, circular or notice URL over a home page or listing page."
     ],
     "exclusion_rules": [
       "Exclude all reinsurance-company and reinsurance-market news without exception.",
       "Exclude companies outside the named competitor list from competitor coverage.",
+      "Treat corporate identity precisely: Prudential plc and its insurance businesses are the named competitor; exclude Prudential Financial Inc and its subsidiaries as a separate group.",
       "Exclude advertising, routine promotions, generic consumer advice, low-substance campaigns, generic awards, duplicate syndication and unrelated uses of company names.",
       "Exclude general macro news without an explicit insurance-market or AIA transmission path, and do not claim non-public facts."
     ]
@@ -249,7 +253,7 @@
       "Rank High before Medium before any supplemental Low; within each attention level, rank by direct relevance to AIA, breadth of affected market or sector, strategic or operational consequence, and executive decision value.",
       "AIA developments may be material at Group, regional or single-market level; judge their substance and likely effect rather than their content category alone.",
       "Evaluate regulatory proposals and implementation requirements using the same materiality dimensions as other events; proposal or final-rule status alone neither qualifies nor disqualifies an event.",
-      "For competitors, consider only AXA, Manulife, Ping An, FWD, Sun Life and Prudential; routine appointments or announcements are Low unless they represent a structural move.",
+      "For competitors, consider only AXA, Manulife, Ping An, FWD, Sun Life and Prudential plc; routine appointments or announcements are Low unless they represent a structural move.",
       "Rank specific article or release URLs above otherwise comparable homepage or listing-page evidence."
     ],
     "attention_rules": [
@@ -260,7 +264,11 @@
     ],
     "writing_rules": [
       "Write neutral executive English and clearly distinguish sourced facts from implications.",
-      "For each included event, state what happened, add one to three concrete detail bullets, identify any supported deadline or action, and explain the potential impact on AIA or the industry.",
+      "For each included event, write a substantive two-to-four-sentence summary explaining what happened, what changed, who or what is affected, and the event's supported context.",
+      "Add two to four non-overlapping detail bullets with concrete sourced facts such as scope, mechanism, affected products or processes, transaction structure, quantitative terms, implementation status, effective dates or deadlines; do not repeat the title or summary in generic language.",
+      "For regulatory, policy or rule developments, explain the substance and scope of the proposed, final or effective change; apply equivalent specificity to corporate, product, financial, leadership, research and market developments.",
+      "Integrate supported timing facts into the summary or detail bullets and do not create a separate timing or action section.",
+      "Do not recommend actions or tell AIA what it should do; describe explicit source-stated obligations as facts, and keep potential impact analytical rather than prescriptive.",
       "Label implications as potential when they are analytical rather than explicit in the supplied source note.",
       "Do not invent legal applicability, financial magnitude, implementation dates or causal impact.",
       "Use a short concrete title naming the actor and development, and merge duplicate coverage of the same event."
@@ -270,13 +278,21 @@
     "included_attention_levels": ["high", "medium"],
     "supplemental_attention_level": "low",
     "target_items": 10,
-    "competitors": ["AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential"],
+    "competitors": ["AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential plc"],
+    "competitor_identities": [
+      {"name": "AXA", "aliases": ["AXA", "AXA Group", "AXA Asia"]},
+      {"name": "Manulife", "aliases": ["Manulife", "Manulife Financial", "Manulife Asia"]},
+      {"name": "Ping An", "aliases": ["Ping An", "Ping An Insurance", "Ping An Insurance Group"]},
+      {"name": "FWD", "aliases": ["FWD", "FWD Group", "FWD Insurance"]},
+      {"name": "Sun Life", "aliases": ["Sun Life", "Sun Life Financial", "Sun Life Asia"]},
+      {"name": "Prudential plc", "aliases": ["Prudential plc", "Prudential Insurance", "Prudential Corporation Asia"]}
+    ],
     "excluded_content_types": ["reinsurance"],
     "importance_dimensions": [
       "Direct relevance to AIA",
       "Breadth of impact across a market, sector or region",
       "Strategic, financial, governance or operational consequence",
-      "Executive decision value, including a deadline, required action or monitorable implication"
+      "Executive decision value, including a supported deadline, stated implementation obligation or monitorable implication"
     ]
   }
 }

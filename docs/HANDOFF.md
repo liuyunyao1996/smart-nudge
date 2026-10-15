@@ -1,5 +1,44 @@
 # Smart Nudge：当前进度与交接
 
+## 2026-10-15 update: deterministic classification, coverage and market admission
+
+- Asia Rule Pack v1.5.7 adds `allowed_source_markets` to the three generalized regulatory queries. The runtime narrows the shared `asia-news-regulatory-official` host allowlist per query and repeats the market check during local item admission. Greater China, Southeast Asia and India/regional searches can no longer accept a purely out-of-group source merely because it exists in the same cloud configuration.
+- This is a local routing and validation change only. It reuses existing source-market metadata and the existing four published Bing configurations; no cloud configuration, source-domain deletion or Azure setting change is required.
+- Final `topic`, `signal_type` and `content_type` values are now derived deterministically from the normalized source events in stable input order. Conflicting summary-model classifications are replaced locally and recorded as warnings. The summary prompt also asks the model to copy these fields instead of reclassifying them.
+- A successful query's `coverage_status=partial` or `unavailable` now propagates to aggregate search status and final brief status. Asia brief contract v1.9.0 includes checked, partial, unavailable and failed query counts, and Markdown displays the same coverage line. HTTP/model completion is no longer treated as complete information coverage.
+- New regression coverage verifies market-scoped host planning and local admission, invalid Rule Pack market references, source-backed final classification and partial-coverage propagation.
+- Offline validation passes: all four Rule Packs validate, all 74 unit tests pass, the Asia dry run shows seven searches with the three regulatory host groups correctly scoped, and `pip check` reports no broken requirements.
+- The v1.5.7 live run `poc-20261015T074602Z-9e446d` completed all seven searches and the summary in about 4 minutes 24 seconds. Six queries reported checked coverage and `aia-corporate-markets` reported partial coverage, so both search and brief correctly remained `partial` despite 7/7 request success. The run produced 24 deduplicated candidates, 12 rolling-seven-day eligible sources, 11 evaluated events and a 10-item brief containing three High, six Medium and one supplemental Low event. Total usage was 235,503 tokens.
+- The live run showed no Greater China or Hong Kong item admitted through `regulatory-india-regional`; that query returned zero structured candidates. Its action-source diagnostics did expose unconfigured host aliases (`cbr.irdai.gov.in`, `www.ifsca.gov.in` and `www.financialservices.gov.in`), which were rejected by the exact-host boundary. Because the model returned an empty items array, no candidate was dropped in this run. Adding those aliases later would require matching local and cloud configuration changes and is not required for the current fix.
+- Final regulatory cards retained source-backed regulatory classifications, and no summary metadata replacement warning was needed. The generated brief also retained the richer detail format, integrated timing facts and non-prescriptive impact language. Artifacts are under `.tmp/poc-runs/poc-20261015T074602Z-9e446d/`.
+
+## 2026-10-15 update: medium-effort executive summarization
+
+- The seven Bing-grounded search requests remain at `reasoning.effort=low`; only the final no-tool executive-summary request now uses `medium` to improve event merging, importance judgement, factual organization and non-repetitive detail writing.
+- The Asia summary request budget now has a 16,000-token minimum and still caps at 32,768 tokens. This provides room for medium-effort reasoning and structured output without changing the search-stage 4,000-token boundary.
+- Local request validation enforces the asymmetric policy: Custom Bing search must remain `low`, while summary must be `medium`. No cloud configuration, source, date window, request count or selection rule changed.
+- Offline validation passes: all four Rule Packs validate, all 71 unit tests pass, the Asia dry run remains a seven-search and one-summary plan, and `pip check` reports no broken requirements.
+- This reasoning-effort change has not yet been live-tested. A real run requires explicit authorization.
+
+## 2026-10-15 update: exact Prudential competitor identity
+
+- Asia Rule Pack v1.5.6 and Rule Pack schema v1.4.0 define versioned canonical competitor identities and exact admitted aliases. The intended Prudential competitor is Prudential plc and its admitted insurance-business aliases; Prudential Financial, Inc. and its subsidiaries are a separate out-of-scope group.
+- Competitor candidates no longer pass local search admission through bidirectional substring matching. Both the competitor-only and mixed authoritative-media routes require an exact normalized alias for the named competitor identity, while the existing AIA local-business admission behavior is preserved.
+- Final-summary validation uses the same exact alias policy. An out-of-scope lookalike must be assessed as Low and cannot enter the brief or act as a Low supplement; a High or Medium evaluation is rejected locally.
+- Search and summary prompts now state the corporate-identity distinction, and competitor query text names Prudential plc rather than generic Prudential. The existing `www.prudentialplc.com` source remains the correct official domain; no cloud configuration or source-list change is required.
+- Regression coverage verifies that Prudential plc, Prudential Insurance and Prudential Corporation Asia are admitted, while Prudential Financial, Inc. and the Prudential Insurance Company of America are rejected. The prior v1.5.4 Prudential Financial admission gap is resolved locally; the separate same-event merge gap remains.
+- Offline validation passes: all four Rule Packs validate, all 70 unit tests pass, the Asia dry run remains a seven-search and one-summary plan, and `pip check` reports no broken requirements.
+- This identity-scope change has not been live-tested. A real run still requires explicit authorization.
+
+## 2026-10-15 update: richer factual detail without action recommendations
+
+- Asia Rule Pack v1.5.5 removes the per-item `timing_or_action` field. Supported announcement dates, effective dates, transition periods and deadlines are incorporated into the event summary or detail bullets instead of appearing in a separate timing/action section.
+- Each included event now requires a substantive two-to-four-sentence summary and two to four non-overlapping detail bullets. The generalized writing policy asks for the substance, scope, mechanism, affected parties, products or processes, material terms and implementation status supported by the supplied notes. Regulatory changes receive the same event-specific treatment as corporate, product, financial, leadership, research and market developments; no named feedback example is embedded as a priority.
+- The brief must not recommend actions or tell AIA to monitor, assess, review, prepare, engage or act. Source-stated legal or implementation obligations may be reported as facts, while `potential_impact` remains analytical and non-prescriptive.
+- The model-summary schema is v1.6.0 and rejects both fewer than two or more than four detail bullets and any legacy `timing_or_action` property. The Asia brief contract is v1.8.0. No search query, source, date window, selection rule, cloud configuration or request count changed.
+- Offline validation passes: all four Rule Packs validate, all 68 unit tests pass, the Asia dry run remains a seven-search and one-summary plan, and `pip check` reports no broken requirements.
+- This writing-format change has not been live-tested. A real run still requires explicit authorization.
+
 ## 2026-10-15 update: soft ten-item brief target
 
 - Asia Rule Pack v1.5.4 changes final selection without changing retrieval. Every High and Medium event remains mandatory and the brief still has no maximum item cap.

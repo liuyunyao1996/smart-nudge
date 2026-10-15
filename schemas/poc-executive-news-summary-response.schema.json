@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["schema_version", "title", "executive_summary", "evaluations", "items"],
   "properties": {
-    "schema_version": {"const": "1.5.0"},
+    "schema_version": {"const": "1.6.0"},
     "title": {"$ref": "#/$defs/text"},
     "executive_summary": {"$ref": "#/$defs/text"},
     "evaluations": {"type": "array", "items": {"$ref": "#/$defs/evaluation"}},
@@ -18,8 +18,8 @@
     "short_text": {"type": "string", "minLength": 1, "maxLength": 140},
     "detail_bullets": {
       "type": "array",
-      "minItems": 1,
-      "maxItems": 3,
+      "minItems": 2,
+      "maxItems": 4,
       "items": {"$ref": "#/$defs/text"}
     },
     "evaluation": {
@@ -35,13 +35,12 @@
     "item": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["source_item_ids", "title", "summary", "detail_bullets", "timing_or_action", "potential_impact", "attention_level", "topic", "signal_type", "content_type"],
+      "required": ["source_item_ids", "title", "summary", "detail_bullets", "potential_impact", "attention_level", "topic", "signal_type", "content_type"],
       "properties": {
         "source_item_ids": {"$ref": "#/$defs/ids"},
         "title": {"$ref": "#/$defs/short_text"},
         "summary": {"$ref": "#/$defs/text"},
         "detail_bullets": {"$ref": "#/$defs/detail_bullets"},
-        "timing_or_action": {"type": ["string", "null"], "minLength": 1, "maxLength": 2000},
         "potential_impact": {"$ref": "#/$defs/text"},
         "attention_level": {"enum": ["high", "medium", "low"]},
         "topic": {"enum": ["external_environment", "government_regulatory"]},

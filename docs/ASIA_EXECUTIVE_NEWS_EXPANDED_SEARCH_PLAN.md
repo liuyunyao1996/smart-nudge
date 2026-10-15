@@ -8,15 +8,18 @@
 
 本文主要记录最终的 25-configuration / 44-query 目标设计。2026-10-14 已先落地一个低风险的中间阶段：
 
-- 当前实现使用 4 个 Custom Bing configurations、7 次搜索和最多 1 次总结请求。Rule Pack v1.5.4 以运行时香港系统日期为共同基准，使用滚动 14 天搜索回看期和滚动 7 天 brief 入选期，不再依赖日历周边界；两个窗口分别写入审计产物。
+- 当前实现使用 4 个 Custom Bing configurations、7 次搜索和最多 1 次总结请求。Rule Pack v1.5.7 以运行时香港系统日期为共同基准，使用滚动 14 天搜索回看期和滚动 7 天 brief 入选期，不再依赖日历周边界；两个窗口分别写入审计产物。每条 brief 新闻使用更完整的事件摘要和 2–4 个具体细节 bullet，时间事实并入这些内容，不单设 timing/action，也不给 AIA 提行动建议。
 - 两个 AIA query 采用 recall-first 发现：使用完整市场名称以及中性的官方文档形态和事件类别召回潜在相关候选，重要性统一留到后续评估阶段判断。监管和竞争者 query 继续避免写入反馈历史、具体案例、命名监管机构或案例衍生的优先类别。最终 brief 必须包含所有 High/Medium 且没有最高条数上限；不足 10 条时用最高价值的 eligible Low 补至 10 条或补完为止，全部 eligible 事件不足 10 条时允许最终少于 10 条。
 - 新增 `asia-news-aia-primary`，把两个 AIA 专题从共享的 corporate configuration 中独立出来；同时增加一个只覆盖六家主要竞争者的官方来源 query。
+- 当前三个监管 query 虽共享 `asia-news-regulatory-official` 云端 configuration，但分别声明本地来源市场组。运行时会按查询缩小允许域名，并在候选准入时再次检查来源市场，避免 India/regional 查询接纳纯香港来源等跨组泄漏。此项不要求修改云端 configuration。
+- 最终 brief 的 `topic`、`signal_type` 和 `content_type` 由规范化源事件确定；总结模型的冲突分类会被本地替换并留下 warning。任一成功查询返回 `partial` 或 `unavailable` coverage 时，search 和 brief 均标记为 partial，并在 JSON 与 Markdown 中显示 checked/partial/unavailable/failed 计数。
 - 多次端到端运行已完成 7/7 搜索和总结，因此云端已删除 `asia-news-corporate-exchange` 中与新 AIA 配置重复的 AIA、Amplify Health 和直接 HKEX news 域名。
 - `asia-news-aia-primary` 现在独占 AIA 官方来源、`www.amplifyhealth.com` 和 `www.hkexnews.hk` / `www1.hkexnews.hk` / `www2.hkexnews.hk`；`asia-news-corporate-exchange` 保留六家主要竞争者、`www.hkex.com.hk`、其他交易所和保险协会来源。当前云端分组已与本地 Rule Pack 一致。
 - v1.5.0 真实运行 `poc-20261015T020451Z-f004a9` 完成 7/7 搜索，得到 16 条去重候选、12 条时间窗内候选和 8 条最终事件，使用 170,490 tokens。两个 AIA query 各只接纳 1 条且是同一证券事件，说明过于抽象的 materiality 搜索词压低了 AIA 召回；这是 v1.5.1 的直接比较基线。
 - v1.5.1 真实运行 `poc-20261015T022219Z-f64a51` 完成 7/7 搜索和总结，得到 25 条 query-level 候选、23 条去重候选、19 条时间窗内候选、14 个评估事件和 11 条最终事件，使用 222,105 tokens。两个 AIA query 分别接纳 3 条和 2 条，去重后得到 4 条直接 AIA 搜索结果，最终 brief 包含 3 个 AIA 事件，说明 recall-first 调整改善了 AIA 召回。
 - v1.5.2 真实运行 `poc-20261015T025605Z-d5f4c6` 完成 7/7 搜索和总结：14 天搜索接纳 25 条 query-level 候选并得到 24 条去重候选，本周窗口在本地筛出 3 个评估事件，最终保留 2 条 Medium 事件并排除 1 条 Low 事件，共使用 222,777 tokens。结果验证了扩大召回窗口、收紧 brief 窗口的两层日期策略。
 - v1.5.3 真实运行 `poc-20261015T030758Z-60d217` 完成 7/7 搜索和总结：14 天搜索接纳 26 条 query-level 候选并得到 24 条去重候选，滚动 7 天窗口筛出 10 条来源并合并为 8 个评估事件，最终保留 2 条 High 和 3 条 Medium、排除 3 条 Low，共使用 254,211 tokens。产物正确记录 10 月 1–15 日搜索窗口和 10 月 8–15 日 brief 窗口。
+- v1.5.7 真实运行 `poc-20261015T074602Z-9e446d` 完成 7/7 搜索和总结，用时约 4 分 24 秒、共使用 235,503 tokens。运行得到 24 条去重候选、12 条滚动 7 天 eligible 来源和 11 个评估事件；最终 brief 包含 3 条 High、6 条 Medium 和 1 条补位 Low。六个 query 为 checked，`aia-corporate-markets` 为 partial，因此 search 与 brief 正确标记为 partial。India/regional query 没有接纳香港或 Greater China 新闻，最终分类也保持源事件字段，验证了 v1.5.7 的三项确定性修复。
 - 目标实现使用 25 个 Custom Bing configurations、44 次搜索，并把分析改为分组评估和最终合并两个层级。
 - 云端 configuration 由用户管理；代码不得自行创建或修改 Azure 资源。
 - 实施和离线验证不授权真实模型或 Bing 调用。每次 live run 仍需用户明确授权。
@@ -166,7 +169,7 @@ Rule Pack 不需要手写 44 段完全重复的长提示，而应保存可审计
 - `{date_from}` 和 `{date_to}`。
 - 排除再保险、普通推广和低影响内容的规则。
 - 对监管 query，排除没有行业先例的个别从业人员执法。
-- 对竞争者 query，只允许 AXA、Manulife、Ping An、FWD、Sun Life 和 Prudential。
+- 对竞争者 query，只允许 AXA、Manulife、Ping An、FWD、Sun Life 和 Prudential plc；使用版本化的规范公司名和精确别名校验，Prudential Financial, Inc. 及其子公司不属于该竞争者范围。
 
 建议的 query ID 规则：
 
@@ -264,13 +267,13 @@ Rule Pack 不需要手写 44 段完全重复的长提示，而应保存可审计
 4. 10 条是软目标而不是最低保证。High/Medium 少于 10 条时，按价值选择 eligible Low 补到 10 条或直到 Low 用完；全部 eligible 事件不足 10 条时全部进入并允许少于 10 条，不虚构或拆分事件凑数，也不把 Low 改标为 Medium。
 5. 每个最终事件应包括：
    - 简明标题；
-   - 发生了什么；
-   - 一至三个进一步细节；
-   - 有来源支持的日期、deadline 或行动要求；
+   - 用两至四句话说明发生了什么、变化实质、范围及受影响对象；
+   - 两至四个不重复的具体细节，包括有来源支持的机制、产品或流程、交易条款、实施状态以及日期或 deadline；
    - 对 AIA 或行业的潜在影响；
    - native URL citation。
-6. AIA 官方或赞助来源可以支持重要 AIA 事件，但不能表述为独立第三方确认。
-7. 输出继续包含“未独立抓取或核验原文”的限制说明。
+6. 不单设 timing/action 字段，不建议 AIA 应该采取什么行动；来源明确规定的义务只作为新闻事实陈述。
+7. AIA 官方或赞助来源可以支持重要 AIA 事件，但不能表述为独立第三方确认。
+8. 输出继续包含“未独立抓取或核验原文”的限制说明。
 
 如果 High/Medium 事件本身超过单次最终上下文安全范围，应按 `event_key` 再做确定性写作分批，随后执行只负责排序和去重的轻量合并；不得因为上下文不足静默丢弃重要事件。
 

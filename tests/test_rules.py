@@ -111,6 +111,53 @@ class RulePackTests(unittest.TestCase):
                         RulePack.load(path, ROOT)
                     self.assertEqual(error.exception.code, "invalid_rule")
 
+    def test_asia_query_source_market_must_exist_in_its_bing_configuration(self):
+        document = json.loads(
+            (ROOT / "config/rules/asia-executive-news.json").read_text(encoding="utf-8")
+        )
+        document["search"]["queries"][0]["allowed_source_markets"].append(
+            "not_configured"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "rule.json"
+            path.write_text(json.dumps(document), encoding="utf-8")
+            with self.assertRaises(RulePackError) as error:
+                RulePack.load(path, ROOT)
+        self.assertEqual(error.exception.code, "invalid_rule")
+
+    def test_asia_competitor_identities_match_canonical_list_and_unique_aliases(self):
+        original = json.loads(
+            (ROOT / "config/rules/asia-executive-news.json").read_text(encoding="utf-8")
+        )
+        invalid_documents = []
+
+        missing_canonical_alias = json.loads(json.dumps(original))
+        missing_canonical_alias["editorial_policy"]["competitor_identities"][-1][
+            "aliases"
+        ].remove("Prudential plc")
+        invalid_documents.append(missing_canonical_alias)
+
+        mismatched_names = json.loads(json.dumps(original))
+        mismatched_names["editorial_policy"]["competitor_identities"][-1][
+            "name"
+        ] = "Different company"
+        invalid_documents.append(mismatched_names)
+
+        duplicate_alias = json.loads(json.dumps(original))
+        duplicate_alias["editorial_policy"]["competitor_identities"][-1][
+            "aliases"
+        ].append("AXA")
+        invalid_documents.append(duplicate_alias)
+
+        with tempfile.TemporaryDirectory() as directory:
+            for index, document in enumerate(invalid_documents):
+                with self.subTest(index=index):
+                    path = Path(directory) / f"rule-{index}.json"
+                    path.write_text(json.dumps(document), encoding="utf-8")
+                    with self.assertRaises(RulePackError) as error:
+                        RulePack.load(path, ROOT)
+                    self.assertEqual(error.exception.code, "invalid_rule")
+
     def test_agent_sites_partition_hosts_and_limit_calls(self):
         rule = RulePack.load(DEFAULT_RULE, ROOT)
         self.assertEqual(len(rule.agent_sites), 5)

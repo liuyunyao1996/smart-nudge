@@ -266,9 +266,10 @@ class FoundryAdapter:
                 )
             return
         text_format = payload.get("text", {}).get("format") if isinstance(payload.get("text"), dict) else None
+        expected_reasoning_effort = "medium" if kind == "summary" else "low"
         if (
             payload.get("model") != self.config.model
-            or payload.get("reasoning") != {"effort": "low"}
+            or payload.get("reasoning") != {"effort": expected_reasoning_effort}
             or not isinstance(payload.get("instructions"), str)
             or not payload["instructions"].strip()
             or not isinstance(payload.get("input"), str)
