@@ -136,7 +136,7 @@ class AsiaNewsTests(unittest.TestCase):
         )
 
     def test_dry_run_has_four_instances_seven_queries_and_rejects_agent(self):
-        self.assertEqual(self.rule.version, "1.4.0")
+        self.assertEqual(self.rule.version, "1.5.1")
         output = StringIO()
         with redirect_stdout(output):
             status = main(["--rule", "config/rules/asia-executive-news.json"])
@@ -163,26 +163,62 @@ class AsiaNewsTests(unittest.TestCase):
         self.assertEqual(status, 1)
         self.assertEqual(json.loads(output.getvalue())["code"], "configuration")
 
-    def test_aia_research_query_covers_theme_without_pinning_feedback_examples(self):
-        query = next(
-            item for item in self.rule.document["search"]["queries"]
-            if item["query_id"] == "aia-research-purpose"
-        )
-        template = query["template"].lower()
-        self.assertNotIn("amplify health", template)
-        self.assertNotIn("healthy living", template)
-        for theme in (
-            "research", "health", "wellness", "longevity", "technology",
-            "social impact", "industry impact",
+    def test_aia_queries_use_recall_first_discovery_language(self):
+        queries = {
+            item["query_id"]: item for item in self.rule.document["search"]["queries"]
+        }
+        corporate = queries["aia-corporate-markets"]["template"].lower()
+        business = queries["aia-business-publications-initiatives"]["template"].lower()
+        for template in (corporate, business):
+            self.assertIn("recent substantive official", template)
+            self.assertIn("later materiality assessment", template)
+            for market in ("mainland china", "south korea", "macau", "india"):
+                self.assertIn(market, template)
+
+        for phrase in (
+            "financial results", "capital or financing", "governance",
+            "leadership", "market entry or exit",
         ):
-            self.assertIn(theme, template)
-        self.assertIn("do not prioritize or require", template)
+            self.assertIn(phrase, corporate)
+        for phrase in (
+            "products", "services", "customer propositions", "partnerships",
+            "technology", "industry-facing initiatives",
+        ):
+            self.assertIn(phrase, business)
+
+        combined = " ".join(item["template"].lower() for item in queries.values())
+        self.assertNotIn("feedback", combined)
+        self.assertNotIn("example", combined)
+        self.assertNotIn("do not prioritize", combined)
+        self.assertNotIn("with potential strategic or executive significance", combined)
+
+    def test_regulatory_queries_use_generalized_discovery_language(self):
+        queries = [
+            item for item in self.rule.document["search"]["queries"]
+            if item["query_id"].startswith("regulatory-")
+        ]
+        self.assertEqual(len(queries), 3)
+        disallowed = (
+            "mas", "bnm", "board independence", "needs assessment",
+            "suitability", "affordability", "individual misconduct",
+            "feedback", "example",
+        )
+        for query in queries:
+            template = query["template"].lower()
+            self.assertIn("material insurance regulatory developments", template)
+            self.assertIn("implications for insurers", template)
+            self.assertIn("implementation changes", template)
+            for phrase in disallowed:
+                self.assertNotIn(phrase, template)
+
+        exclusions = " ".join(self.rule.document["search"]["exclusion_rules"]).lower()
+        self.assertNotIn("individual financial representatives", exclusions)
 
     def test_aia_queries_use_the_dedicated_configuration_and_admission_policy(self):
         queries = {
             item["query_id"]: item for item in self.rule.document["search"]["queries"]
         }
-        for query_id in ("aia-corporate-markets", "aia-research-purpose"):
+        for query_id in ("aia-corporate-markets", "aia-business-publications-initiatives"):
             query = queries[query_id]
             self.assertEqual(query["configuration_id"], "aia-primary")
             self.assertEqual(query["allowed_subject_types"], ["aia"])
@@ -200,6 +236,12 @@ class AsiaNewsTests(unittest.TestCase):
         self.assertEqual(
             competitor["required_entities_any"],
             ["AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential"],
+        )
+        media = queries["competitor-authoritative-media"]
+        self.assertEqual(media["allowed_subject_types"], ["aia", "competitor"])
+        self.assertEqual(
+            media["required_entities_any"],
+            ["AIA", "AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential"],
         )
 
     def test_summary_schema_supports_detailed_items_without_an_item_cap(self):
@@ -260,7 +302,7 @@ class AsiaNewsTests(unittest.TestCase):
         )
         query = next(
             item for item in self.rule.render_queries(self.rule.default_topic, NOW.date(), 14)
-            if item.query_id == "aia-research-purpose"
+            if item.query_id == "aia-business-publications-initiatives"
         )
         config = self.rule.bing_configuration("aia-primary")
         hosts = tuple(source["host"] for source in config["sources"])
@@ -296,6 +338,41 @@ class AsiaNewsTests(unittest.TestCase):
         )
         items, warnings, _ = pipeline._convert_search(
             query, accepted, allowed_hosts=hosts, configuration_id="aia-primary"
+        )
+        self.assertEqual(len(items), 1)
+        self.assertFalse(any("admission" in warning or "admitted entity" in warning for warning in warnings))
+
+    def test_authoritative_media_query_rejects_unrelated_industry_items(self):
+        pipeline = PocPipeline(
+            ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW
+        )
+        query = next(
+            item for item in self.rule.render_queries(self.rule.default_topic, NOW.date(), 14)
+            if item.query_id == "competitor-authoritative-media"
+        )
+        config = self.rule.bing_configuration("authoritative-media")
+        hosts = tuple(source["host"] for source in config["sources"])
+        unrelated = search_body(
+            "https://www.reuters.com/world/asia-pacific/pension-proposal", "2026-09-10",
+            title="Think tank publishes pension proposal", publisher="Reuters", market="Asia",
+            signal_type="informational", topic="external_environment",
+            subject_type="industry", content_type="research_thought_leadership",
+            entities=["Industry think tank"],
+        )
+        items, warnings, _ = pipeline._convert_search(
+            query, unrelated, allowed_hosts=hosts, configuration_id="authoritative-media"
+        )
+        self.assertEqual(items, [])
+        self.assertTrue(any("subject type" in warning for warning in warnings))
+
+        competitor = search_body(
+            "https://www.reuters.com/world/asia-pacific/manulife-strategy", "2026-09-10",
+            title="Manulife announces material Asia strategy", publisher="Reuters", market="Asia",
+            signal_type="competitor_market_move", topic="external_environment",
+            subject_type="competitor", entities=["Manulife"],
+        )
+        items, warnings, _ = pipeline._convert_search(
+            query, competitor, allowed_hosts=hosts, configuration_id="authoritative-media"
         )
         self.assertEqual(len(items), 1)
         self.assertFalse(any("admission" in warning or "admitted entity" in warning for warning in warnings))
@@ -353,14 +430,25 @@ class AsiaNewsTests(unittest.TestCase):
         self.assertEqual(summary["items"][0]["source_specificity"], "listing_page")
         self.assertTrue(any("article-specific citation" in warning for warning in warnings))
 
-    def test_editorial_policy_has_named_competitors_and_no_final_cap(self):
+    def test_editorial_policy_has_named_competitors_and_no_item_target_or_cap(self):
         self.assertIsNone(self.rule.max_items)
+        self.assertNotIn("minimum_expected_items", self.rule.document["editorial_policy"])
         self.assertEqual(
             self.rule.competitors,
             ("AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential"),
         )
         self.assertEqual(self.rule.included_attention_levels, ("high", "medium"))
         self.assertIn("reinsurance", self.rule.excluded_content_types)
+
+        pipeline = PocPipeline(
+            ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW
+        )
+        payload = pipeline._summary_payload([], self.rule.default_topic, {
+            "start_date": "2026-08-31", "end_date": "2026-09-13",
+        })
+        instructions = payload["instructions"].lower()
+        self.assertNotIn("expected minimum", instructions)
+        self.assertIn("same materiality dimensions", instructions)
 
     def test_all_high_and_medium_events_are_returned_even_above_ten(self):
         pipeline = PocPipeline(
@@ -465,7 +553,7 @@ class AsiaNewsTests(unittest.TestCase):
             "content_type": "corporate",
             "subject_type": "competitor",
             "signal_type": "competitor_market_move",
-            "entities": ["Marsh"],
+            "entities": ["Unlisted Insurer"],
         })
         with self.assertRaisesRegex(PocError, "named competitor list"):
             pipeline._convert_summary(body, source_items)
@@ -531,7 +619,7 @@ class AsiaNewsTests(unittest.TestCase):
         ).run()
 
         self.assertTrue(run.ok)
-        self.assertEqual(run.brief["schema_version"], "1.4.0")
+        self.assertEqual(run.brief["schema_version"], "1.5.0")
         self.assertEqual(run.all_news["counts"], {
             "total": 4,
             "in_window": 2,
@@ -561,7 +649,7 @@ class AsiaNewsTests(unittest.TestCase):
         self.assertIn("Potential impact", run.markdown)
         self.assertNotIn("Attention rationale", run.markdown)
         self.assertNotIn("Impact to AIA", run.markdown)
-        self.assertTrue(any("below the editorial target" in warning for warning in run.brief["warnings"]))
+        self.assertFalse(any("editorial target" in warning for warning in run.brief["warnings"]))
 
 
 if __name__ == "__main__":

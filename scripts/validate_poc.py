@@ -23,8 +23,7 @@ def main() -> int:
             failed = True
             continue
         selection = (
-            f"included_levels={','.join(rule.included_attention_levels)} "
-            f"minimum_expected_items={rule.minimum_expected_items}"
+            f"included_levels={','.join(rule.included_attention_levels)} item_cap=none"
             if rule.is_asia_executive_news
             else f"max_items={rule.max_items}"
         )

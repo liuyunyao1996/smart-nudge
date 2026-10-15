@@ -246,10 +246,6 @@ class RulePack:
         return self.document["summarization"].get("max_items")
 
     @property
-    def minimum_expected_items(self) -> int:
-        return self.document.get("editorial_policy", {}).get("minimum_expected_items", 1)
-
-    @property
     def included_attention_levels(self) -> tuple[str, ...]:
         return tuple(self.document.get("editorial_policy", {}).get("included_attention_levels", ()))
 

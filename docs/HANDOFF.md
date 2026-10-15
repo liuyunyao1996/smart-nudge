@@ -1,5 +1,30 @@
 # Smart Nudge：当前进度与交接
 
+## 2026-10-15 update: recall-first AIA discovery
+
+- Asia Rule Pack v1.5.1 keeps the v1.5.0 importance and selection rules but changes the two AIA searches from abstract materiality-led wording to recall-first discovery.
+- Both AIA queries now name the full set of covered AIA markets and use neutral official-document and event vocabulary. The corporate/market query covers results, capital or financing, transactions, governance, organization, leadership, market entry or exit and significant operating changes. The business/publications/initiatives query covers products, services, customer propositions, distribution, partnerships, technology, operations and industry-facing initiatives.
+- Search is asked to return potentially relevant cited candidates for later materiality assessment. This does not make any category automatically important; the common evaluation stage still includes every High/Medium event and excludes every Low event, with no minimum target or maximum count.
+- Routine marketing, routine promotion and generic awards remain excluded. No source host, cloud configuration, request count, local admission gate or output contract changed in v1.5.1.
+- The v1.5.0 live run `poc-20261015T020451Z-f004a9` completed all seven searches and summary in about 3 minutes 48 seconds. It produced 17 query-level accepted results, 16 deduplicated candidates, 12 in-window candidates, 11 evaluated events and 8 final High/Medium events using 170,490 tokens. Both AIA searches returned only one accepted candidate and the two candidates represented the same securities event, which motivated the v1.5.1 recall adjustment.
+- The v1.5.1 live run `poc-20261015T022219Z-f64a51` completed all seven searches and summary in about 4 minutes 55 seconds. It produced 25 query-level accepted results, 23 deduplicated candidates, 19 in-window candidates, 14 evaluated events and 11 final High/Medium events using 222,105 tokens. The two AIA searches accepted three and two candidates respectively, yielding four deduplicated direct AIA-search items; the final brief included EverBliss, the AIA Alta longevity collaboration and the AIA Korea CEO nomination. This supports the recall-first change while retaining later materiality selection. A copy of the run artifacts is stored in `demo/version-1.3-20261015/`.
+
+## 2026-10-15 update: materiality-only discovery and selection
+
+- Asia Rule Pack v1.5.0 removes the remaining feedback-shaped category preferences from AIA and competitor discovery. Search no longer names health, longevity, recognition, flagship initiatives, country CEOs, senior leadership, Marsh or any other prior example; it asks for material developments using general strategic, financial, organizational, operational, customer, market and industry dimensions.
+- The six-item coverage target has been removed from the Rule Pack, schema, prompt, warnings and brief selection metadata. Brief contract v1.5.0 has neither a minimum target nor a maximum item cap: every High/Medium event is included, every Low event is excluded.
+- Regulatory consultations, guidance, enforcement and final rules no longer receive an importance level based on content type alone. AIA relevance likewise does not make routine activity important. All events use the same evidence-based materiality dimensions.
+- The authoritative-media query now has local subject/entity admission for AIA and the six named competitors, closing the path that previously admitted an unrelated industry think-tank item. The six-competitor allowlist and deterministic reinsurance exclusion remain explicit business scope.
+- MAS and BNM remain ordinary official regulatory sources. AIA local official domains and `www.amplifyhealth.com` remain source coverage, not query keywords or automatic selection signals. No cloud configuration, source host or request count changed in v1.5.0.
+- The v1.4.1 live run `poc-20261014T100601Z-6e602d` completed all seven searches and summary in about 3 minutes 53 seconds. It produced 26 query-level accepted results, 21 deduplicated candidates, 18 in-window candidates, 14 evaluated events and 10 final High/Medium events using 200,188 tokens. The subsequent v1.5.0 live result is recorded in the v1.5.1 update above.
+
+## 2026-10-14 update: generalized discovery prompts
+
+- Asia Rule Pack v1.4.1 removes feedback-derived policy details from all three regulatory search queries. Terms such as board independence, needs assessment, suitability and affordability no longer steer retrieval; the queries now ask generically for material proposed, final or newly effective requirements, consultations, supervisory expectations, enforcement developments and implementation changes with broader implications for insurers.
+- Search no longer excludes isolated individual enforcement. Retrieval remains broad, while the existing evaluation stage decides whether an event is Low or has wider precedent, systemic significance or direct relevance.
+- The AIA research query also removes meta-language about examples and prior prioritisation. It now states only the generalized AIA subject areas and the existing low-value-content exclusions.
+- MAS and BNM remain valid official sources. No source host, cloud configuration, query count, output contract or editorial importance threshold changed in v1.4.1. Its successful live result is recorded in the v1.5.0 update above.
+
 ## 2026-10-14 update: dedicated AIA search routing and cloud cleanup
 
 - Asia Rule Pack v1.4.0 adds a fourth user-managed Custom Bing instance, `asia-news-aia-primary`, and routes both AIA thematic queries to it. The active plan is now seven searches: three regulatory, two AIA, one six-competitor official-source search and one authoritative-media search, followed by at most one no-tool summary request.

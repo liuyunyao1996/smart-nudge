@@ -2,7 +2,7 @@
   "schema_version": "1.3.0",
   "workflow": "asia_executive_news",
   "rule_id": "asia-executive-news",
-  "version": "1.4.0",
+  "version": "1.5.1",
   "name": "Asia Insurance Executive News",
   "bing": {
     "configurations": [
@@ -166,7 +166,7 @@
         "language": "English",
         "market": "greater_china",
         "set_lang": "en",
-        "template": "{topic}; Hong Kong Mainland China Taiwan; insurance regulator consultation final rule governance board independence capital solvency product sales conduct suitability affordability distribution data technology operational risk; exclude individual misconduct without wider precedent and exclude reinsurance; from {date_from} to {date_to}"
+        "template": "{topic}; Hong Kong Mainland China Taiwan; material insurance regulatory developments with potential market-wide or sector-wide implications for insurers; proposed, final or newly effective requirements, consultations, supervisory expectations, enforcement developments and implementation changes; from {date_from} to {date_to}"
       },
       {
         "query_id": "regulatory-southeast-asia",
@@ -174,7 +174,7 @@
         "language": "English",
         "market": "southeast_asia",
         "set_lang": "en",
-        "template": "{topic}; Singapore Malaysia Thailand Philippines; insurance regulator consultation final rule governance board independence capital solvency product sales conduct needs assessment suitability affordability distribution data technology operational risk; exclude individual misconduct without wider precedent and exclude reinsurance; from {date_from} to {date_to}"
+        "template": "{topic}; Singapore Malaysia Thailand Philippines; material insurance regulatory developments with potential market-wide or sector-wide implications for insurers; proposed, final or newly effective requirements, consultations, supervisory expectations, enforcement developments and implementation changes; from {date_from} to {date_to}"
       },
       {
         "query_id": "regulatory-india-regional",
@@ -182,7 +182,7 @@
         "language": "English",
         "market": "india_regional",
         "set_lang": "en",
-        "template": "{topic}; India Asia regional IAIS IMF BIS FSB FATF IFRS; insurance consultation final rule governance capital solvency product distribution conduct technology operational risk systemic industry standards; exclude individual misconduct without wider precedent and exclude reinsurance; from {date_from} to {date_to}"
+        "template": "{topic}; India and Asia regional standards; material insurance regulatory developments with potential market-wide, sector-wide or cross-border implications for insurers; proposed, final or newly effective requirements, consultations, supervisory expectations, enforcement developments and implementation changes; from {date_from} to {date_to}"
       },
       {
         "query_id": "aia-corporate-markets",
@@ -192,17 +192,17 @@
         "set_lang": "en",
         "allowed_subject_types": ["aia"],
         "required_entities_any": ["AIA"],
-        "template": "{topic}; AIA Group and AIA businesses in Mainland China Hong Kong Thailand Singapore Malaysia Australia Cambodia Indonesia Myanmar New Zealand Philippines South Korea Sri Lanka Taiwan Vietnam Brunei Macau India; results capital financing country CEO senior leadership partnership acquisition market entry exit product distribution channel health ecosystem technology innovation; exclude routine promotion and reinsurance; from {date_from} to {date_to}"
+        "template": "{topic}; AIA Group and AIA businesses in Mainland China Hong Kong Thailand Singapore Malaysia Australia Cambodia Indonesia Myanmar New Zealand Philippines South Korea Sri Lanka Taiwan Vietnam Brunei Macau and India; recent substantive official news press releases announcements and disclosures concerning financial results capital or financing transactions governance organization leadership market entry or exit and significant operating changes; return potentially relevant cited candidates for later materiality assessment; exclude routine marketing; from {date_from} to {date_to}"
       },
       {
-        "query_id": "aia-research-purpose",
+        "query_id": "aia-business-publications-initiatives",
         "configuration_id": "aia-primary",
         "language": "English",
         "market": "asia",
         "set_lang": "en",
         "allowed_subject_types": ["aia"],
         "required_entities_any": ["AIA"],
-        "template": "{topic}; AIA Group and AIA businesses across its 18 markets; substantive research report paper health wellness longevity ecosystem technology innovation social impact industry impact credible recognition and flagship initiatives; treat named campaigns, platforms and programmes only as examples within these themes and do not prioritize or require them; exclude routine campaign promotion generic awards and reinsurance; from {date_from} to {date_to}"
+        "template": "{topic}; AIA Group and AIA businesses in Mainland China Hong Kong Thailand Singapore Malaysia Australia Cambodia Indonesia Myanmar New Zealand Philippines South Korea Sri Lanka Taiwan Vietnam Brunei Macau and India; recent substantive official press releases reports publications and announcements concerning products services customer propositions distribution partnerships technology operations and industry-facing initiatives; return potentially relevant cited candidates for later materiality assessment; exclude routine promotion and generic awards; from {date_from} to {date_to}"
       },
       {
         "query_id": "competitor-official-material-moves",
@@ -212,7 +212,7 @@
         "set_lang": "en",
         "allowed_subject_types": ["competitor"],
         "required_entities_any": ["AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential"],
-        "template": "{topic}; AXA Manulife Ping An FWD Sun Life Prudential only; material Asia insurance market entry exit acquisition partnership capital results product distribution technology regional or market CEO change; exclude AIA Marsh other local players routine appointments and all reinsurance companies; from {date_from} to {date_to}"
+        "template": "{topic}; AXA Manulife Ping An FWD Sun Life Prudential only; material Asia insurance developments with potential strategic, financial, organizational, operational or market significance; exclude AIA and companies outside the named list; from {date_from} to {date_to}"
       },
       {
         "query_id": "competitor-authoritative-media",
@@ -220,20 +220,21 @@
         "language": "English",
         "market": "asia",
         "set_lang": "en",
-        "template": "{topic}; AIA AXA Manulife Ping An FWD Sun Life Prudential only; material Asia insurance market entry exit acquisition partnership capital results product distribution technology regional or market CEO change; exclude Marsh other local players and all reinsurance companies; from {date_from} to {date_to}"
+        "allowed_subject_types": ["aia", "competitor"],
+        "required_entities_any": ["AIA", "AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential"],
+        "template": "{topic}; AIA AXA Manulife Ping An FWD Sun Life Prudential only; material Asia insurance developments with potential strategic, financial, organizational, operational or market significance; exclude companies outside the named list; from {date_from} to {date_to}"
       }
     ],
     "inclusion_rules": [
-      "Collect material AIA developments across all 18 markets, including corporate, capital, country leadership, research, health ecosystem, technology, credible recognition, and social or industry impact.",
-      "Collect sector-wide regulatory consultations, final rules, governance, capital, conduct, product, distribution, affordability, technology and operational requirements with decision value for insurers.",
+      "Collect substantive, potentially decision-relevant AIA developments across its markets for later importance assessment; discovery should not require the search stage to assign an executive importance level.",
+      "Collect material sector-wide regulatory consultations, final rules, supervisory expectations, enforcement developments and implementation changes with decision value for insurers.",
       "For competitor coverage, include only AXA, Manulife, Ping An, FWD, Sun Life and Prudential, and only when the development is structurally or strategically material.",
       "Retain a candidate even when its publication date is outside the requested window or unknown; local logic decides final date eligibility.",
       "Prefer the specific article, release, filing, circular or notice URL over a home page or listing page."
     ],
     "exclusion_rules": [
       "Exclude all reinsurance-company and reinsurance-market news without exception.",
-      "Exclude companies outside the named competitor list from competitor coverage; Marsh is not a competitor.",
-      "Exclude isolated enforcement against individual financial representatives unless it reveals a sector-wide control failure, establishes a material precedent, or directly concerns AIA or a named competitor.",
+      "Exclude companies outside the named competitor list from competitor coverage.",
       "Exclude advertising, routine promotions, generic consumer advice, low-substance campaigns, generic awards, duplicate syndication and unrelated uses of company names.",
       "Exclude general macro news without an explicit insurance-market or AIA transmission path, and do not claim non-public facts."
     ]
@@ -245,15 +246,14 @@
       "Assess every date-eligible candidate against the editorial policy; do not stop after reaching a target count.",
       "Rank High before Medium, then rank by direct relevance to AIA, breadth of affected market or sector, strategic or operational consequence, and executive decision value.",
       "AIA developments may be material at Group, regional or single-market level; judge their substance and likely effect rather than their content category alone.",
-      "Give sector-wide regulatory proposals and implementation requirements appropriate weight even before they become final when they could require material governance, product, distribution or operational change.",
+      "Evaluate regulatory proposals and implementation requirements using the same materiality dimensions as other events; proposal or final-rule status alone neither qualifies nor disqualifies an event.",
       "For competitors, consider only AXA, Manulife, Ping An, FWD, Sun Life and Prudential; routine appointments or announcements are Low unless they represent a structural move.",
       "Rank specific article or release URLs above otherwise comparable homepage or listing-page evidence."
     ],
     "attention_rules": [
-      "High: direct and potentially material AIA change, binding or near-term sector-wide requirement, or structural move by a named competitor with credible implications.",
-      "Medium: a substantive AIA development, sector-wide consultation or guidance, credible research or recognition with industry impact, or a named-competitor move with plausible strategic relevance.",
-      "Low: routine promotion, generic award, isolated individual enforcement, ordinary appointment outside AIA, minor firm activity, weakly connected macro context, or anything lacking executive decision value.",
-      "All reinsurance content is Low and excluded from the final briefing.",
+      "High: an event with supported material strategic, financial, governance or operational consequences for AIA or a broad insurance market, or a structural move by a named competitor with credible implications.",
+      "Medium: an event with supported substantive but non-urgent relevance to AIA or the insurance sector and a plausible strategic, financial, governance, operational, customer or market consequence.",
+      "Low: routine activity, promotion, generic award, isolated low-impact event, minor firm activity, weakly connected macro context, or anything lacking executive decision value.",
       "A candidate supported only by a homepage or listing-page citation cannot receive High attention, and unclear applicability cannot receive High attention."
     ],
     "writing_rules": [
@@ -265,7 +265,6 @@
     ]
   },
   "editorial_policy": {
-    "minimum_expected_items": 6,
     "included_attention_levels": ["high", "medium"],
     "competitors": ["AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential"],
     "excluded_content_types": ["reinsurance"],

@@ -469,14 +469,8 @@ class PocPipeline:
             summary = self._fallback_summary(summary_items)
             summary_audit = {"status": "fallback", "code": exc.code}
 
-        if self.rule.is_asia_executive_news and len(summary["items"]) < self.rule.minimum_expected_items:
-            warnings.append(
-                f"The brief contains {len(summary['items'])} important event(s), below the editorial target of "
-                f"{self.rule.minimum_expected_items}; no Low-importance items were added to fill the target."
-            )
-
         brief = {
-            "schema_version": "1.4.0" if self.rule.is_asia_executive_news else "1.1.0",
+            "schema_version": "1.5.0" if self.rule.is_asia_executive_news else "1.1.0",
             "run_id": run_id,
             "status": "partial" if search_status == "partial" or fallback_used or summary_warnings else "completed",
             "generated_at": self._now().isoformat(),
@@ -687,12 +681,11 @@ class PocPipeline:
                 "Evaluate every supplied source_item_id exactly once. Merge IDs only when they describe the same event.",
                 "For every distinct event return one evaluation with High, Medium or Low importance and a concise reason.",
                 "Return one final item for every High or Medium evaluation and no final item for a Low evaluation. There is no maximum item count.",
-                f"The expected minimum of {self.rule.minimum_expected_items} items is a coverage target, not a quota: never promote Low events to fill it.",
                 f"The only competitors in scope are: {', '.join(self.rule.competitors)}. Other companies are not competitor news.",
                 "All reinsurance content must be Low and omitted from final items without exception.",
-                "Isolated action against individual representatives is normally Low unless supplied facts establish wider systemic impact, a material precedent, or direct relevance to AIA or a named competitor.",
-                "Sector-wide consultations can be Medium or High when their governance, product, conduct or operational consequences are material.",
-                "AIA country leadership, substantive research, health or technology initiatives, credible recognition and social or industry impact may qualify when supported facts show strategic significance; routine promotions and generic awards are Low.",
+                "An event limited to isolated actors or routine activity is normally Low unless supplied facts establish wider impact, a material precedent, or executive decision value.",
+                "Evaluate regulatory developments using the same materiality dimensions as other events; consultation, guidance, enforcement or final-rule status alone does not determine importance.",
+                "Evaluate AIA developments using the same materiality dimensions as other events; direct AIA relevance alone does not make routine activity important.",
                 "For every included item return a concrete title, concise event summary, one to three detail_bullets, any supported timing_or_action, and a distinct potential_impact on AIA or the industry.",
                 "For AIA official or sponsored content, describe it as company-issued or company-sponsored when that is clear from the source; do not imply independent media confirmation.",
                 "Return topic, signal_type, content_type and attention_level for every included item.",
@@ -1343,7 +1336,6 @@ class PocPipeline:
                 "included_events": len(cards),
                 "importance_counts": counts,
                 "included_attention_levels": list(self.rule.included_attention_levels),
-                "minimum_expected_items": self.rule.minimum_expected_items,
                 "item_cap": None,
             },
         }, warnings
@@ -1363,7 +1355,6 @@ class PocPipeline:
                     "included_events": 0,
                     "importance_counts": {"high": 0, "medium": 0, "low": 0},
                     "included_attention_levels": list(self.rule.included_attention_levels),
-                    "minimum_expected_items": self.rule.minimum_expected_items,
                     "item_cap": None,
                 },
             }
@@ -1401,7 +1392,7 @@ class PocPipeline:
 
     def _empty_brief(self, search_results: dict) -> dict:
         return {
-            "schema_version": "1.4.0" if self.rule.is_asia_executive_news else "1.1.0",
+            "schema_version": "1.5.0" if self.rule.is_asia_executive_news else "1.1.0",
             "run_id": search_results["run_id"],
             "status": "empty",
             "generated_at": self._now().isoformat(),
@@ -1427,7 +1418,6 @@ class PocPipeline:
                         "included_events": 0,
                         "importance_counts": {"high": 0, "medium": 0, "low": 0},
                         "included_attention_levels": list(self.rule.included_attention_levels),
-                        "minimum_expected_items": self.rule.minimum_expected_items,
                         "item_cap": None,
                     },
                     "evaluations": [],

@@ -1,6 +1,6 @@
 # Asia Executive News：细分搜索实施计划与单次运行成本预测
 
-更新时间：2026-10-14（Asia/Shanghai）
+更新时间：2026-10-15（Asia/Shanghai）
 
 ## 1. 文档状态与目标
 
@@ -9,10 +9,12 @@
 本文主要记录最终的 25-configuration / 44-query 目标设计。2026-10-14 已先落地一个低风险的中间阶段：
 
 - 当前实现使用 4 个 Custom Bing configurations、7 次搜索和最多 1 次总结请求。
+- Rule Pack v1.5.1 保留泛化的重要性评估，但把两个 AIA query 改为 recall-first 发现：使用完整市场名称以及中性的官方文档形态和事件类别召回潜在相关候选，重要性统一留到后续评估阶段判断。监管和竞争者 query 继续避免写入反馈历史、具体案例、命名监管机构或案例衍生的优先类别。最终 brief 没有最低数量目标或最高条数上限。
 - 新增 `asia-news-aia-primary`，把两个 AIA 专题从共享的 corporate configuration 中独立出来；同时增加一个只覆盖六家主要竞争者的官方来源 query。
-- 两次端到端运行已完成 7/7 搜索和总结，因此云端已删除 `asia-news-corporate-exchange` 中与新 AIA 配置重复的 AIA、Amplify Health 和直接 HKEX news 域名。
+- 多次端到端运行已完成 7/7 搜索和总结，因此云端已删除 `asia-news-corporate-exchange` 中与新 AIA 配置重复的 AIA、Amplify Health 和直接 HKEX news 域名。
 - `asia-news-aia-primary` 现在独占 AIA 官方来源、`www.amplifyhealth.com` 和 `www.hkexnews.hk` / `www1.hkexnews.hk` / `www2.hkexnews.hk`；`asia-news-corporate-exchange` 保留六家主要竞争者、`www.hkex.com.hk`、其他交易所和保险协会来源。当前云端分组已与本地 Rule Pack 一致。
-- 清理后的真实运行 `poc-20261014T090848Z-8e84b6` 完成 7/7 搜索；竞争者官方 query 成功检索 66 个范围内原生 URL 后明确返回空候选，不是配置、引用或实体过滤失败。
+- v1.5.0 真实运行 `poc-20261015T020451Z-f004a9` 完成 7/7 搜索，得到 16 条去重候选、12 条时间窗内候选和 8 条最终事件，使用 170,490 tokens。两个 AIA query 各只接纳 1 条且是同一证券事件，说明过于抽象的 materiality 搜索词压低了 AIA 召回；这是 v1.5.1 的直接比较基线。
+- v1.5.1 真实运行 `poc-20261015T022219Z-f64a51` 完成 7/7 搜索和总结，得到 25 条 query-level 候选、23 条去重候选、19 条时间窗内候选、14 个评估事件和 11 条最终事件，使用 222,105 tokens。两个 AIA query 分别接纳 3 条和 2 条，去重后得到 4 条直接 AIA 搜索结果，最终 brief 包含 3 个 AIA 事件，说明 recall-first 调整改善了 AIA 召回。
 - 目标实现使用 25 个 Custom Bing configurations、44 次搜索，并把分析改为分组评估和最终合并两个层级。
 - 云端 configuration 由用户管理；代码不得自行创建或修改 Azure 资源。
 - 实施和离线验证不授权真实模型或 Bing 调用。每次 live run 仍需用户明确授权。
@@ -42,10 +44,10 @@
 
 每个 configuration 执行两个主题：
 
-1. `corporate`: 资本、融资、业绩、战略、合作、收购、市场进入或退出、渠道、产品以及国家或集团领导层变化。
-2. `health-innovation-impact`: 研究、健康与长寿生态、技术创新、有实质内容的客户或社会项目、可信认可，以及可验证的社会或行业影响。
+1. `corporate-market`: 使用官方新闻、新闻稿、公告和披露等文档形态，搜索业绩、资本或融资、交易、治理、组织、领导层、市场进入或退出以及重大运营变化。
+2. `business-publications-initiatives`: 使用官方新闻稿、报告、出版物和公告等文档形态，搜索产品、服务、客户主张、分销、合作、技术、运营以及面向行业的项目。
 
-用户反馈中出现的具体名称只用于说明什么类型的内容可能有效，不构成关键词白名单、优先级、配额或必选项。搜索和总结不得要求找到任何特定活动、平台或报告；没有找到某个例子不代表覆盖失败。所有同类事件统一按照实质内容和潜在影响判断。
+两个主题采用 recall-first 方式返回潜在相关并带引用的候选，仅用于覆盖不同的信息形态，不在搜索阶段要求模型判断 executive materiality，也不为任何子类型设置自动优先级、配额或必选项。所有事件统一在后续阶段按照实质内容和潜在影响判断。
 
 拟议 configurations：
 
@@ -85,10 +87,10 @@
 
 ### 3.2 监管官方来源：9 个 configurations，18 次搜索
 
-每个市场执行两个主题：
+每个市场执行两个泛化发现 query，而不按用户反馈中的政策细节拆主题：
 
-1. `prudential-governance`: 公司治理、董事独立性、关键任命、资本、偿付能力、投资、财务报告和系统性监管。
-2. `conduct-operations`: 产品销售、fact finding、needs-based assessment、适当性、可负担性、分销、消费者保护、数据、AI/技术和运营韧性。
+1. `regulatory-material-developments`: 搜索对保险机构具有潜在市场或行业影响的拟议、正式或新近生效的要求、咨询、监管预期、执法发展和实施变化。
+2. `regulatory-material-developments-local`: 使用市场适用的本地语言或等价的第二种宽口径表达执行同一发现任务，不增加具体政策关键词。
 
 拟议 configurations：
 
@@ -104,10 +106,10 @@
 
 前八个 configuration 使用当前 Rule Pack 中相应市场的监管机构、中央银行、政府、公报和数据保护机构域名。`asia-news-reg-asia-standards` 使用 IAIS、IMF、ADB、BIS、FSB、FATF 和 IFRS 等区域或国际标准来源。
 
-监管筛选原则保持通用，不能只适配已知的 MAS 或 BNM 案例：
+监管搜索和分析的责任分开：
 
-- 对行业具有普遍适用性、可能改变治理、产品、销售、资本或运营要求的咨询和正式规则属于有效信号。
-- 单独处罚个别从业人员通常是 Low，除非形成行业先例、揭示系统性控制缺陷，或直接涉及 AIA 或指定竞争者。
+- 搜索 query 只表达市场、日期、保险监管范围和广义的行业影响，不写入反馈案例、命名机构或董事独立性、fact finding、可负担性等具体政策机制。
+- 搜索阶段不预先排除个案执法。分析阶段再将缺乏行业先例或系统性意义的个案判为 Low；如具有更广泛影响，则仍可按证据评估。
 - 所有再保险公司和再保险市场新闻继续排除。
 
 ### 3.3 主要竞争者官方来源：6 个 configurations，6 次搜索
@@ -121,14 +123,13 @@
 5. `asia-news-competitor-sunlife`
 6. `asia-news-competitor-prudential`
 
-每个 configuration 执行一个 `material-moves` query，范围包括亚洲市场的重大收购、出售、市场进入或退出、资本动作、实质性合作、渠道变化、重要技术部署、产品战略和区域或市场 CEO 变化。
+每个 configuration 执行一个 `material-moves` query，统一搜索对亚洲保险业务具有潜在战略、财务、组织、运营或市场意义的重大变化，不把某一类交易、产品或人事事件固定为优先类别。
 
 来源应限于经过验证的集团、投资者关系、当地官方站点和适用的交易所披露域名。新增域名必须先验证确为官方来源，再同时加入云端 configuration 和本地 Rule Pack allowlist。
 
 以下内容不进入竞争者搜索范围：
 
-- Marsh；它不是本项目定义的竞争者。
-- 六家名单以外的本地保险公司或所谓本地龙头。
+- 六家名单以外的公司，包括本地保险公司或所谓本地龙头。
 - 再保险公司及再保险市场动态。
 - 普通任命、常规推广、通用奖项和缺乏结构性意义的产品新闻。
 
@@ -167,8 +168,8 @@ Rule Pack 不需要手写 44 段完全重复的长提示，而应保存可审计
 
 建议的 query ID 规则：
 
-- AIA：`<configuration-id>-corporate` 和 `<configuration-id>-health-innovation-impact`
-- 监管：`<configuration-id>-prudential-governance` 和 `<configuration-id>-conduct-operations`
+- AIA：`<configuration-id>-corporate-market` 和 `<configuration-id>-business-publications-initiatives`
+- 监管：`<configuration-id>-regulatory-material-developments` 和 `<configuration-id>-regulatory-material-developments-local`
 - 竞争者：`<configuration-id>-material-moves`
 - 媒体：`<configuration-id>-aia-material` 和 `<configuration-id>-competitor-industry-material`
 
@@ -258,7 +259,7 @@ Rule Pack 不需要手写 44 段完全重复的长提示，而应保存可审计
 1. 按 `event_key` 合并同一事件的多来源报道，同时保留所有合格 native citations。
 2. 再次检查竞争者名单、再保险排除和日期资格。
 3. 不设置最终 10 条或 6–8 条上限；所有符合重要性标准的事件都进入 brief。
-4. `minimum_expected_items = 6` 仅为 coverage warning，不允许用 Low 事件凑数。
+4. 不设置最低数量目标，不允许为了达到任何条数把 Low 事件提升为 Medium。
 5. 每个最终事件应包括：
    - 简明标题；
    - 发生了什么；
@@ -307,7 +308,7 @@ Rule Pack 不需要手写 44 段完全重复的长提示，而应保存可审计
 
 - 25 个 configuration 和 44 个展开 query 的数量、ID 和映射测试。
 - 云端 instance name 重复、未知 configuration、空 source group 的拒绝测试。
-- competitor allowlist、Marsh 排除、本地龙头排除和 reinsurance 全局排除测试。
+- competitor allowlist、名单外公司排除和 reinsurance 全局排除测试。
 - 每个候选恰好评估一次的 completeness 测试。
 - High/Medium 全部进入最终 brief、Low 不用于凑数的测试。
 - 跨批次相同 `event_key` 的合并测试。
@@ -323,7 +324,7 @@ Rule Pack 不需要手写 44 段完全重复的长提示，而应保存可审计
 - 所有接受候选都具有 native in-scope citation。
 - 每个 `in_window` 候选被评估恰好一次。
 - 每个 High/Medium 事件在最终 brief 中恰好出现一次。
-- 没有 Marsh、名单外本地保险公司或再保险内容。
+- 没有名单外公司或再保险内容。
 - AIA、监管和六家竞争者的覆盖可按 configuration/query 追溯。
 - 实际 Bing 计费请求数可由 `tool_usage.web_search.num_requests` 汇总，而不是由 action 数猜测。
 
