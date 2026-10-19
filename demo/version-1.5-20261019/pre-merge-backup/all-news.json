@@ -1,0 +1,774 @@
+{
+  "schema_version": "1.2.0",
+  "run_id": "poc-20261019T054801Z-ff1bfb",
+  "status": "partial",
+  "generated_at": "2026-10-19T05:51:26.129353+00:00",
+  "rule": {
+    "rule_id": "asia-executive-news",
+    "version": "1.5.7",
+    "sha256": "7217d0004ff3bd46eeec7a977bdff45346ae7dc386b29e41b59ceb3945bf8bf1"
+  },
+  "search": {
+    "approach": "custom-bing",
+    "custom_configurations": [
+      {
+        "configuration_id": "regulatory-official",
+        "instance_name": "asia-news-regulatory-official"
+      },
+      {
+        "configuration_id": "aia-primary",
+        "instance_name": "asia-news-aia-primary"
+      },
+      {
+        "configuration_id": "corporate-exchange",
+        "instance_name": "asia-news-corporate-exchange"
+      },
+      {
+        "configuration_id": "authoritative-media",
+        "instance_name": "asia-news-authoritative-media"
+      }
+    ]
+  },
+  "topic": "Material developments affecting AIA, its 18 markets, insurance regulation, or its named major competitors",
+  "search_window": {
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-19",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "window": {
+    "start_date": "2026-10-12",
+    "end_date": "2026-10-19",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "counts": {
+    "total": 16,
+    "in_window": 3,
+    "out_of_window": 13,
+    "unknown_date": 0,
+    "eligible_for_brief": 3
+  },
+  "items": [
+    {
+      "source_item_id": "src-0d37f7b0bbdc",
+      "title": "Manulife launches proprietary enterprise AI platform across global operations",
+      "publisher": "Manulife",
+      "published_date": "2026-10-13",
+      "grounded_note": "Manulife launched a proprietary enterprise AI platform providing a common operating environment for teams to build, deploy and manage AI solutions across its markets and jurisdictions. The platform embeds reusable components and security, risk and governance controls so previously approved use cases can be deployed more rapidly. Manulife said enterprise AI had generated US$300 million in value by year-end 2025 and is expected to produce US$1 billion in cumulative value by 2027 through expense reductions, revenue uplift, fraud reduction and growth absorption.",
+      "query_ids": [
+        "competitor-official-material-moves"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.manulife.com/ca/en/about-us/news/manulife-launches-enterprise-ai-platform",
+          "title": "Manulife launches proprietary enterprise AI platform across global operations",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "corporate-exchange",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "asia",
+      "market": "Global, including Manulife's Asian markets",
+      "entities": [
+        "Manulife",
+        "Manulife Financial",
+        "Manulife Asia"
+      ],
+      "topic": "external_environment",
+      "signal_type": "technology_operational_risk",
+      "subject_type": "competitor",
+      "content_type": "corporate",
+      "event_scope": "group_regional",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-ccbf7610a338",
+      "title": "Manulife Asia promotes Andy Bruce to Chief Information Officer",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-10-12",
+      "grounded_note": "Manulife Asia promoted Andy Bruce to Chief Information Officer, making the appointment at the regional level. Bruce previously served as Manulife's Chief Information Officer for Hong Kong and Macau, where he led a major technology-delivery portfolio. The promotion places an executive with experience in technology delivery and team development into Manulife Asia's senior information-technology leadership.",
+      "query_ids": [
+        "competitor-authoritative-media"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97199",
+          "title": "Manulife Asia promotes Andy Bruce to Chief Information Officer",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Asia Pacific",
+      "entities": [
+        "Manulife",
+        "Manulife Asia",
+        "Andy Bruce"
+      ],
+      "topic": "external_environment",
+      "signal_type": "leadership_change",
+      "subject_type": "competitor",
+      "content_type": "leadership",
+      "event_scope": "individual",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-a2c1e1541c04",
+      "title": "AXA Future Risks Report ranks AI and big-data risks first among experts",
+      "publisher": "AXA",
+      "published_date": "2026-10-12",
+      "grounded_note": "AXA published its 13th Future Risks Report with Ipsos, reporting that artificial-intelligence and big-data risks ranked first among surveyed experts for the first time, rising from fourth place in 2025 and overtaking climate change. Among experts who placed AI among their leading risks, 54% viewed it as rapidly emerging while 9% believed public authorities were well prepared. The report also linked ageing, lower birth rates, longevity and changing family structures to evolving insurance needs in health, dependency protection, savings, retirement and wealth transfer.",
+      "query_ids": [
+        "competitor-official-material-moves"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.axa.com/en/press/press-releases/axa-future-risks-report-2026-artificial-intelligence-becomes-%20experts-top-concern-ahead-of-climate-change",
+          "title": "AXA Future Risks Report ranks AI and big-data risks first among experts",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "global",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "corporate-exchange",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "global",
+      "market": "Global, with relevance to Asian insurance markets",
+      "entities": [
+        "AXA",
+        "AXA Group",
+        "Ipsos"
+      ],
+      "topic": "external_environment",
+      "signal_type": "technology_operational_risk",
+      "subject_type": "competitor",
+      "content_type": "research_thought_leadership",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "in_window",
+      "eligible_for_brief": true,
+      "ineligibility_reason": null
+    },
+    {
+      "source_item_id": "src-860704820003",
+      "title": "Mainland China issues Property Insurance Company Insurance Product Development Management Provisions",
+      "publisher": "National Financial Regulatory Administration",
+      "published_date": "2026-10-09",
+      "grounded_note": "The National Financial Regulatory Administration issued rules governing property insurers’ product-development organization, responsibilities and workflows. Property insurers must establish internal product-development management systems covering organizational structure, division of functions, processes, assessment and incentives; the rules also encourage products aligned with public protection needs and social development. The provisions take effect on November 1, 2026, replacing the 2016 product-development guidelines and a 2014 emergency notice on property-insurance product development and sales.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1274236&itemId=928",
+          "title": "Mainland China issues Property Insurance Company Insurance Product Development Management Provisions",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "mainland_china",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "mainland_china",
+      "market": "Mainland China",
+      "entities": [
+        "National Financial Regulatory Administration"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "final_rule",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-47dc5523d35c",
+      "title": "BNM confirms January 2027 MediAsas rollout and supporting Budget 2027 measures",
+      "publisher": "Bank Negara Malaysia",
+      "published_date": "2026-10-09",
+      "grounded_note": "Bank Negara Malaysia announced that MediAsas, a voluntary standardized medical and health insurance/takaful plan, will be rolled out publicly in January 2027. Premiums or contributions paid for the plan will qualify for income-tax relief when coverage is purchased for the taxpayer or immediate family members. Budget 2027 also allocates RM40 million for MediAsas vouchers for employees of SMEs with fewer than 75 employees, targeting workers who may have limited or no medical and health insurance/takaful coverage.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.bnm.gov.my/-/belanjawan2027",
+          "title": "BNM confirms January 2027 MediAsas rollout and supporting Budget 2027 measures",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "central_bank",
+          "market": "malaysia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "central_bank",
+      "source_market": "malaysia",
+      "market": "Malaysia",
+      "entities": [
+        "Bank Negara Malaysia",
+        "Government of Malaysia",
+        "Ministry of Finance Malaysia"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "product_distribution",
+      "subject_type": "industry",
+      "content_type": "product_distribution",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-723d737472f1",
+      "title": "AIA launches EverBliss Annuity Insurance Plan to redefine retirement planning beyond financial security",
+      "publisher": "AIA Hong Kong & Macau",
+      "published_date": "2026-10-09",
+      "grounded_note": "AIA Hong Kong & Macau launched EverBliss, a participating whole-life annuity plan combining lifelong guaranteed monthly income, policy flexibility and healthy-ageing support. The associated RetireSmart Health Service covers cognitive wellness, vision health and mobility strength, positioning the proposition around both financial security and continued independence in retirement. The company described the health service as a first-in-market offering in Hong Kong.",
+      "query_ids": [
+        "aia-business-publications-initiatives"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.aia.com.hk/en/about-aia/about-us/media-centre/press-releases/2026/aia-press-release-20261009",
+          "title": "AIA launches EverBliss Annuity Insurance Plan to redefine retirement planning beyond financial security",
+          "configuration_id": "aia-primary",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "aia-primary",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "hong_kong",
+      "market": "Hong Kong and Macau",
+      "entities": [
+        "AIA",
+        "AIA Hong Kong & Macau"
+      ],
+      "topic": "external_environment",
+      "signal_type": "product_distribution",
+      "subject_type": "aia",
+      "content_type": "product_distribution",
+      "event_scope": "firm_specific",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-a920274fcf77",
+      "title": "Manulife appoints Sinéad O’Connor as Chief Actuary and Executive Leadership Team member",
+      "publisher": "Manulife",
+      "published_date": "2026-10-08",
+      "grounded_note": "Manulife appointed Sinéad O’Connor as Chief Actuary effective October 12, 2026, reporting to the group CEO and joining the Executive Leadership Team. Her remit covers actuarial leadership and includes experience relevant to capital management, enterprise risk, in-force optimization, operational transformation and reinsurance strategy. Derek Houle will act as Appointed Actuary until O’Connor completes the required Canadian accreditation, while Manulife plans to name a new Global Head of Inforce Management.",
+      "query_ids": [
+        "competitor-official-material-moves"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.manulife.com/ca/en/about-us/news/manulife-appoints-sinead-oconnor-as-chief-actuary",
+          "title": "Manulife appoints Sinéad O’Connor as Chief Actuary and Executive Leadership Team member",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "corporate-exchange",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "asia",
+      "market": "Global, including Manulife's Asian businesses",
+      "entities": [
+        "Manulife",
+        "Manulife Financial",
+        "Sinéad O’Connor",
+        "Derek Houle"
+      ],
+      "topic": "external_environment",
+      "signal_type": "leadership_change",
+      "subject_type": "competitor",
+      "content_type": "leadership",
+      "event_scope": "individual",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-a0510ec6d8c4",
+      "title": "Manulife appoints Andy Bruce as Chief Information Officer of Manulife Asia",
+      "publisher": "Manulife",
+      "published_date": "2026-10-08",
+      "grounded_note": "Manulife promoted Andy Bruce to Chief Information Officer of Manulife Asia, effective October 1, 2026. Bruce previously served as CIO for Manulife Hong Kong and Macau, where the company said he led a major technology-delivery portfolio, strengthened operational stability and risk management, and advanced modernization and AI initiatives. His regional mandate includes strengthening digital capabilities and scaling AI across Manulife's Asian operations.",
+      "query_ids": [
+        "competitor-official-material-moves"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.manulife.com/ca/en/about-us/news/manulife-announces-asia-technology-leadership-announcement",
+          "title": "Manulife appoints Andy Bruce as Chief Information Officer of Manulife Asia",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "corporate-exchange",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "asia",
+      "market": "Asia",
+      "entities": [
+        "Manulife",
+        "Manulife Asia",
+        "Andy Bruce"
+      ],
+      "topic": "external_environment",
+      "signal_type": "leadership_change",
+      "subject_type": "competitor",
+      "content_type": "leadership",
+      "event_scope": "individual",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-f9dc3e4a4952",
+      "title": "AIA Alta launches exclusive Hong Kong longevity-services collaboration with Chi Longevity",
+      "publisher": "Bastille Post / Media OutReach Newswire",
+      "published_date": "2026-10-08",
+      "grounded_note": "AIA Hong Kong & Macau's AIA Alta proposition entered an exclusive Hong Kong collaboration with Chi Longevity Singapore for eligible high-net-worth customers. The arrangement gives those customers privileged access to longevity-science solutions focused on healthy ageing and precision geromedicine, adding a health component to AIA Alta's integrated health, wealth and lifestyle ecosystem. AIA linked the initiative to its High-Net-Worth Optimal Longevity Index, which reported stronger awareness of longevity challenges than preparedness to address them.",
+      "query_ids": [
+        "competitor-authoritative-media"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.bastillepost.com/global/article/6232539-aia-alta-announces-exclusive-collaboration-with-chi-longevity-in-hong-kong",
+          "title": "AIA Alta launches exclusive Hong Kong longevity-services collaboration with Chi Longevity",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "AIA",
+        "AIA Hong Kong & Macau",
+        "AIA Alta",
+        "Chi Longevity Singapore"
+      ],
+      "topic": "external_environment",
+      "signal_type": "product_distribution",
+      "subject_type": "aia",
+      "content_type": "product_distribution",
+      "event_scope": "firm_specific",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-7002df19c520",
+      "title": "AIA Alta announces exclusive collaboration with Chi Longevity in Hong Kong",
+      "publisher": "AIA Hong Kong & Macau",
+      "published_date": "2026-10-08",
+      "grounded_note": "AIA Alta, AIA Hong Kong & Macau's proposition for high-net-worth customers, announced an exclusive Hong Kong collaboration with healthy-longevity medicine provider Chi Longevity Singapore. The arrangement includes the planned launch of an AIA Alta longevity centre later in 2026, through which eligible customers are expected to receive privileged access to evidence-based healthy-ageing and precision-geromedicine solutions. The collaboration integrates these services into AIA Alta's health, wealth and lifestyle ecosystem.",
+      "query_ids": [
+        "aia-business-publications-initiatives"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.aia.com.hk/en/about-aia/about-us/media-centre/press-releases/2026/aia-press-release-20261008",
+          "title": "AIA Alta announces exclusive collaboration with Chi Longevity in Hong Kong",
+          "configuration_id": "aia-primary",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "aia-primary",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "hong_kong",
+      "market": "Hong Kong",
+      "entities": [
+        "AIA",
+        "AIA Hong Kong & Macau",
+        "AIA Alta",
+        "Chi Longevity Singapore"
+      ],
+      "topic": "external_environment",
+      "signal_type": "product_distribution",
+      "subject_type": "aia",
+      "content_type": "product_distribution",
+      "event_scope": "firm_specific",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-58892c11a38e",
+      "title": "MAS issues Guidelines on Artificial Intelligence Risk Management for Financial Institutions",
+      "publisher": "Monetary Authority of Singapore",
+      "published_date": "2026-10-07",
+      "grounded_note": "MAS issued supervisory guidelines covering all forms of artificial intelligence used by financial institutions, including life, general, composite and captive insurers and insurance brokers. The guidelines require institutions to manage AI-related risks using approaches proportionate to their risk profiles and the scale and nature of their AI use. They were published on 7 October 2026 and will take effect on 7 October 2027.",
+      "query_ids": [
+        "regulatory-southeast-asia"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.mas.gov.sg/regulation/guidelines/guidelines-on-artificial-intelligence-risk-management-for-financial-institutions",
+          "title": "MAS issues Guidelines on Artificial Intelligence Risk Management for Financial Institutions",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "singapore",
+      "market": "Singapore",
+      "entities": [
+        "Monetary Authority of Singapore"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-b930962e63e8",
+      "title": "Taiwan strengthens supervisory follow-up for firms with persistently weak fair-treatment assessments",
+      "publisher": "Financial Supervisory Commission, Taiwan",
+      "published_date": "2026-10-06",
+      "grounded_note": "Taiwan’s Financial Supervisory Commission completed its 2026 fair-treatment assessment of financial institutions, including 20 life insurers and 19 property insurers. The 130-point methodology assigns 100 points to implementation of ten fair-treatment principles and consumer-dispute outcomes, and 30 points to board-level leadership, with inspection and ongoing-supervision findings used as an additional deduction. Beginning with the 2026 assessment, firms placed in the bottom 20% for a second consecutive year must submit improvement plans and attend regulator-led special guidance meetings; AIA’s Taiwan branch was separately identified as the life insurer receiving the best-improvement distinction.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610060003&dtable=News&id=96&mcustomize=news_view.jsp&parentpath=0%2C6",
+          "title": "Taiwan strengthens supervisory follow-up for firms with persistently weak fair-treatment assessments",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission, Taiwan",
+        "Insurance Bureau, Taiwan",
+        "AIA"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-d383a19fdc4a",
+      "title": "Taiwan proposes changes permitting insurers to maintain investment ratios after venture-investment businesses become publicly issued companies",
+      "publisher": "Financial Supervisory Commission, Taiwan",
+      "published_date": "2026-10-06",
+      "grounded_note": "Taiwan’s Financial Supervisory Commission proposed amendments to the rules governing insurers’ special-use investments in public and social-welfare enterprises. The draft deletes the obsolete category of “emerging important strategic enterprises” and would allow an insurer whose investment subsequently falls under specified Insurance Act investment categories to participate in capital increases at its original investment ratio even where that ratio exceeds the otherwise applicable statutory limits. The proposal was released for public comment under Taiwan’s administrative rulemaking process.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610060002&dtable=News&id=96&mcustomize=news_view.jsp&parentpath=0%2C2",
+          "title": "Taiwan proposes changes permitting insurers to maintain investment ratios after venture-investment businesses become publicly issued companies",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission, Taiwan",
+        "Insurance Bureau, Taiwan"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "consultation",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-77c32367d5b0",
+      "title": "Taiwan expands the health and welfare businesses open to insurance-company investment",
+      "publisher": "Financial Supervisory Commission, Taiwan",
+      "published_date": "2026-10-06",
+      "grounded_note": "Taiwan’s Financial Supervisory Commission said it would issue an interpretation permitting insurers to invest in a broader range of health-promotion, long-term-care and related service businesses. Eligible activities include health-management and nutrition services, pharmacies, medical-data and digital-health platforms, software and connected devices, long-term-care support, accessibility services, specialized food and integrated service or distribution platforms. The interpretation also removes the previous requirement that each qualifying business have a direct connection with policyholders, insurance products, claims or insurance benefits, with classification instead based on its actual operations.",
+      "query_ids": [
+        "regulatory-greater-china"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610060001&dtable=News&id=96&mcustomize=news_view.jsp&parentpath=0%2C6",
+          "title": "Taiwan expands the health and welfare businesses open to insurance-company investment",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "taiwan",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "regulatory-official",
+      "source_tier": "primary",
+      "source_type": "regulator",
+      "source_market": "taiwan",
+      "market": "Taiwan",
+      "entities": [
+        "Financial Supervisory Commission, Taiwan",
+        "Insurance Bureau, Taiwan"
+      ],
+      "topic": "government_regulatory",
+      "signal_type": "guidance",
+      "subject_type": "regulator",
+      "content_type": "regulatory",
+      "event_scope": "market_sector",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-c514aed48932",
+      "title": "Prudential plc appoints regional CEO for Indonesia and the Philippines with group-wide health and product responsibilities",
+      "publisher": "Asia Insurance Review",
+      "published_date": "2026-09-25",
+      "grounded_note": "Prudential plc appointed Naveed Irshad as Regional CEO for Indonesia and the Philippines, effective October 26, 2026. He will also assume enterprise-wide responsibility for Prudential's health and product businesses and join the Group Executive Committee. The role therefore combines leadership of two major Asian markets with group-level oversight of core product and health operations; the publication date falls outside the requested window, but the effective date follows it.",
+      "query_ids": [
+        "competitor-authoritative-media"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97004",
+          "title": "Prudential plc appoints regional CEO for Indonesia and the Philippines with group-wide health and product responsibilities",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "authoritative-media",
+      "source_tier": "authoritative_media",
+      "source_type": "media",
+      "source_market": "asia",
+      "market": "Indonesia and Philippines",
+      "entities": [
+        "Prudential plc",
+        "Naveed Irshad",
+        "Prudential Group Executive Committee"
+      ],
+      "topic": "external_environment",
+      "signal_type": "leadership_change",
+      "subject_type": "competitor",
+      "content_type": "leadership",
+      "event_scope": "individual",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    },
+    {
+      "source_item_id": "src-96fd46c9425f",
+      "title": "AIA HealthShield Gold Max plan and rider revisions effective 1 October 2026",
+      "publisher": "AIA Singapore",
+      "published_date": "2026-08-26",
+      "grounded_note": "AIA Singapore revised AIA HealthShield Gold Max plans and associated riders for new purchases and renewals effective 1 October 2026. Changes include expanded cataract-procedure coverage for additional intraocular lenses at preferred providers, new high-cost drug and stereotactic radiosurgery benefits, revised outpatient pro-ration and annual limits for specified plans, and selected premium revisions. Certain Plan A riders also gain extended post-hospitalisation treatment at AIA Partner Facilities, while AIA HealthShield Gold Max Standard remains unchanged.",
+      "query_ids": [
+        "aia-business-publications-initiatives"
+      ],
+      "languages": [
+        "English"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.aia.com.sg/content/dam/sg-wise/en/docs/help-support/healthshieldsupport/faqs-on-HSG-changes-effective-1oct2026.pdf",
+          "title": "AIA HealthShield Gold Max plan and rider revisions effective 1 October 2026",
+          "configuration_id": "aia-primary",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "singapore",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "configuration_id": "aia-primary",
+      "source_tier": "primary",
+      "source_type": "company",
+      "source_market": "singapore",
+      "market": "Singapore",
+      "entities": [
+        "AIA",
+        "AIA Singapore",
+        "AIA Partner Facility"
+      ],
+      "topic": "external_environment",
+      "signal_type": "product_distribution",
+      "subject_type": "aia",
+      "content_type": "product_distribution",
+      "event_scope": "firm_specific",
+      "url_specificity": "specific_article",
+      "source_quality_note": "At least one native citation appears to target a specific article or release.",
+      "freshness_status": "out_of_window",
+      "eligible_for_brief": false,
+      "ineligibility_reason": "outside_brief_window"
+    }
+  ],
+  "warnings": [
+    "Search regulatory-greater-china reported partial coverage.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: bimabharosa.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: bimabharosa.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: igmsuat.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search aia-corporate-markets reported partial coverage.",
+    "Search aia-business-publications-initiatives reported partial coverage.",
+    "Search competitor-official-material-moves reported partial coverage."
+  ],
+  "disclaimer": "This briefing is based on Bing-grounded public information from approved primary and authoritative-media websites. Native source URLs were matched locally, but article content, publication dates and applicability were not independently verified against downloaded original text. Non-public regulator engagement and feedback are outside public-Web coverage.",
+  "raw_response_retained": false
+}

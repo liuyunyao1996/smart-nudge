@@ -1,0 +1,465 @@
+{
+  "schema_version": "1.9.0",
+  "run_id": "poc-20261019T054801Z-ff1bfb",
+  "status": "partial",
+  "generated_at": "2026-10-19T05:59:52.636921+00:00",
+  "rule": {
+    "rule_id": "asia-executive-news",
+    "version": "1.5.7",
+    "sha256": "7217d0004ff3bd46eeec7a977bdff45346ae7dc386b29e41b59ceb3945bf8bf1"
+  },
+  "search": {
+    "approach": "custom-bing",
+    "custom_configurations": [
+      {
+        "configuration_id": "regulatory-official",
+        "instance_name": "asia-news-regulatory-official"
+      },
+      {
+        "configuration_id": "aia-primary",
+        "instance_name": "asia-news-aia-primary"
+      },
+      {
+        "configuration_id": "corporate-exchange",
+        "instance_name": "asia-news-corporate-exchange"
+      },
+      {
+        "configuration_id": "authoritative-media",
+        "instance_name": "asia-news-authoritative-media"
+      }
+    ]
+  },
+  "topic": "Material developments affecting AIA, its 18 markets, insurance regulation, or its named major competitors",
+  "search_window": {
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-19",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "window": {
+    "start_date": "2026-10-12",
+    "end_date": "2026-10-19",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "coverage": {
+    "status": "partial",
+    "queries_requested": 7,
+    "queries_succeeded": 7,
+    "queries_failed": 0,
+    "queries_checked": 3,
+    "queries_partial": 4,
+    "queries_unavailable": 0
+  },
+  "title": "AIA Executive Briefing | Consolidated 12–19 October 2026",
+  "executive_summary": "Across three live searches, eight distinct date-eligible developments were selected. Manulife's governed enterprise AI platform is the sole High-attention item, while the FSB supervisory-modernisation consultation, FWD's planned return to Hong Kong general insurance, Sun Life's integrated-support research and AXA's emerging-risk report provide the main regulatory, competitive and customer signals. The remaining items cover Hong Kong intermediary enforcement, regional technology leadership and Sun Life's global brand refresh.",
+  "items": [
+    {
+      "rank": 1,
+      "attention_level": "high",
+      "signal_type": "technology_operational_risk",
+      "content_type": "corporate",
+      "published_date": "2026-10-13",
+      "publishers": [
+        "Manulife"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.manulife.com/ca/en/about-us/news/manulife-launches-enterprise-ai-platform",
+          "title": "Manulife launches proprietary enterprise AI platform across global operations",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-0d37f7b0bbdc"
+      ],
+      "title": "Manulife launches group-wide enterprise AI platform",
+      "summary": "Manulife announced on 13 October 2026 that it had launched a proprietary enterprise AI platform providing a common environment for teams to build, deploy and manage AI solutions across markets and jurisdictions. The platform combines reusable components with embedded security, risk and governance controls, enabling previously approved use cases to be deployed more rapidly. Manulife attributed US$300 million of value to enterprise AI by year-end 2025 and expects cumulative value of US$1 billion by 2027.",
+      "detail_bullets": [
+        "The platform spans Manulife’s global operations, including its Asian markets, rather than being limited to a single business or jurisdiction.",
+        "Value is expected to arise from expense reductions, revenue uplift, fraud reduction and the absorption of business growth.",
+        "The common operating environment is intended to standardise AI development and management while retaining embedded control mechanisms."
+      ],
+      "potential_impact": "The platform could strengthen Manulife’s ability to scale AI across markets with greater speed and consistency, potentially affecting operating efficiency, fraud management and customer or distribution capabilities. Its quantified value targets also establish a visible competitor benchmark for enterprise-wide AI investment and value realisation.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 2,
+      "attention_level": "medium",
+      "signal_type": "informational",
+      "content_type": "research_thought_leadership",
+      "published_date": "2026-10-15",
+      "publishers": [
+        "Sun Life Financial"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.sunlife.com/en/newsroom/news-releases/announcement/landmark-sunlife-global-research-finds-65-of-people-want-connected-support-across-their-health-finances-and-protection-as-navigating-these-needs-has-become-increasingly-complex/124141/",
+          "title": "Sun Life global survey identifies demand for integrated health, financial and protection support",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-46b3304a7481"
+      ],
+      "title": "Sun Life survey finds demand for integrated support",
+      "summary": "Company-published Sun Life research across eight North American and Asian markets found that 65% of adults wanted support treating health, finances and protection as interconnected. However, only 33% reported having a complete plan for unexpected illness or accident costs, and 31% had a complete plan for family security. The Asian coverage comprised Hong Kong, the Philippines, Vietnam, Indonesia, Malaysia and Singapore.",
+      "detail_bullets": [
+        "Sixty-one percent of respondents believed their health affected their financial position.",
+        "Fifty-nine percent believed their financial position affected their health.",
+        "The findings indicate a gap between demand for holistic support and respondents’ reported preparedness for health shocks and family-protection needs."
+      ],
+      "potential_impact": "The findings support the potential relevance of propositions that connect health services, financial planning and protection, while identifying sizable preparedness gaps across several markets shared by Sun Life and AIA.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 3,
+      "attention_level": "medium",
+      "signal_type": "consultation",
+      "content_type": "regulatory",
+      "published_date": "2026-10-14",
+      "publishers": [
+        "Financial Stability Board"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.fsb.org/2026/10/regulatory-and-supervisory-modernisation-principles-consultation-report/",
+          "title": "FSB consults on high-level principles for regulatory and supervisory modernisation",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "international_body",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.fsb.org/2026/10/fsb-consults-on-high-level-principles-for-regulatory-and-supervisory-modernisation/",
+          "title": "FSB consults on high-level principles for regulatory and supervisory modernisation",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "international_body",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-c03e643aca8e"
+      ],
+      "title": "FSB consults on modernising regulatory and supervisory frameworks",
+      "summary": "On 14 October 2026, the Financial Stability Board proposed eight high-level principles for more effective, efficient, risk-focused, coherent and forward-looking regulatory and supervisory frameworks. The cross-sector consultation includes insurance supervision in FSB jurisdictions and addresses how frameworks respond to new vulnerabilities, technologies, financial offerings and economic conditions while preserving financial-system resilience. Comments are due by 8 January 2027, and the FSB plans to issue its final report in the first half of 2027.",
+      "detail_bullets": [
+        "The principles are directed at financial authorities and are intended to operate consistently with each jurisdiction’s laws and circumstances.",
+        "The proposed framework links supervisory modernisation with responsiveness to emerging risks and changes in technology, products and economic conditions.",
+        "The consultation remains at the principles stage and does not itself impose jurisdiction-specific implementation requirements."
+      ],
+      "potential_impact": "The final principles could shape the direction of supervisory reform across multiple AIA markets, potentially affecting supervisory methods, regulatory coherence and the treatment of technology-enabled products and emerging vulnerabilities. The practical effect will depend on subsequent adoption and implementation by individual jurisdictions.",
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 4,
+      "attention_level": "medium",
+      "signal_type": "technology_operational_risk",
+      "content_type": "research_thought_leadership",
+      "published_date": "2026-10-12",
+      "publishers": [
+        "AXA"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.axa.com/en/press/press-releases/axa-future-risks-report-2026-artificial-intelligence-becomes-%20experts-top-concern-ahead-of-climate-change",
+          "title": "AXA Future Risks Report ranks AI and big-data risks first among experts",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "global",
+          "url_specificity": "specific_article"
+        },
+        {
+          "url": "https://www.axa.com/en/press/publications/future-risks-report-2026-report",
+          "title": "AXA Future Risks Report ranks AI and big-data risks ahead of climate change",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "global",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-a2c1e1541c04"
+      ],
+      "title": "AXA report ranks AI and big-data risks first",
+      "summary": "AXA’s company-issued 13th Future Risks Report, produced with Ipsos and published on 12 October 2026, ranked AI and big-data risks first among surveyed experts for the first time. The category rose from fourth place in 2025 and overtook climate change. The report also connected ageing, lower birth rates, longevity and changing family structures with evolving insurance needs across health, dependency protection, savings, retirement and wealth transfer.",
+      "detail_bullets": [
+        "Among experts who ranked AI among their leading risks, 54% regarded it as rapidly emerging.",
+        "Only 9% of those experts considered public authorities well prepared for AI-related risks.",
+        "The demographic findings span multiple insurance propositions and long-term financial needs rather than a single product segment."
+      ],
+      "potential_impact": "The findings indicate potential growth in customer and institutional concern about AI-related exposures while reinforcing demand drivers associated with ageing and longevity. For the wider insurance sector, these trends could influence product design, underwriting considerations, risk communication and long-term savings propositions.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 5,
+      "attention_level": "medium",
+      "signal_type": "competitor_market_move",
+      "content_type": "corporate",
+      "published_date": "2026-10-12",
+      "publishers": [
+        "InsuranceAsia News"
+      ],
+      "source_links": [
+        {
+          "url": "https://insuranceasianews.com/fwd-to-acquire-25-of-hong-kong-pc-carrier-bolttech-insurance-for-us21m/",
+          "title": "FWD to acquire 25% of bolttech Insurance Hong Kong and re-enter general insurance",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "unknown"
+        }
+      ],
+      "source_item_ids": [
+        "src-cd1f88eb8ace"
+      ],
+      "title": "FWD plans return to Hong Kong general insurance",
+      "summary": "FWD Group agreed to acquire a 25% stake in bolttech Insurance (Hong Kong) for a base consideration of US$20.72 million. The transaction would return FWD to Hong Kong’s property-and-casualty market after it divested the former FWD General Insurance business to bolttech in 2020. The minority investment represents a strategic expansion beyond FWD’s core Hong Kong life-insurance operations.",
+      "detail_bullets": [
+        "The proposed holding is 25%, leaving bolttech Insurance (Hong Kong) outside FWD’s full ownership.",
+        "The investment reconnects FWD with a business that previously operated as FWD General Insurance.",
+        "The supplied information establishes an agreed transaction but does not specify completion timing or regulatory approvals."
+      ],
+      "potential_impact": "FWD’s renewed participation in general insurance could support broader customer propositions and cross-product distribution in Hong Kong, modestly increasing competitive pressure in a market where life insurers are seeking deeper customer relationships.",
+      "topic": "external_environment",
+      "source_specificity": "unknown",
+      "source_positioning": null
+    },
+    {
+      "rank": 6,
+      "attention_level": "low",
+      "signal_type": "competitor_market_move",
+      "content_type": "corporate",
+      "published_date": "2026-10-15",
+      "publishers": [
+        "Sun Life Financial"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.sunlife.com/en/newsroom/news-releases/announcement/sunlife-unveils-new-global-brand/124140/",
+          "title": "Sun Life introduces a unified global brand identity under the name Sunlife",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-5355b277d6f5"
+      ],
+      "title": "Sun Life adopts unified Sunlife global identity",
+      "summary": "Sun Life Financial introduced a refreshed global brand under the unified name “Sunlife,” accompanied by a modernized, digitally oriented logo and the tagline “Making life brighter.” The company said the identity is intended to provide greater consistency across its insurance, health, wealth and asset-management operations worldwide. Its underlying corporate purpose and client commitments remain unchanged.",
+      "detail_bullets": [
+        "The identity consolidates the company name into the single-word presentation “Sunlife.”",
+        "The refresh applies across global operations, including Asia, and spans multiple financial-services business lines.",
+        "The announcement concerns brand expression and does not identify changes to products, corporate structure or customer commitments."
+      ],
+      "potential_impact": "A more consistent global identity could strengthen Sun Life’s cross-business brand recognition and digital presentation, but the absence of an accompanying operating or product change limits the immediate competitive significance for AIA.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 7,
+      "attention_level": "low",
+      "signal_type": "enforcement",
+      "content_type": "regulatory",
+      "published_date": "2026-10-14",
+      "publishers": [
+        "Insurance Authority, Hong Kong"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.ia.org.hk/en/infocenter/press_releases/20261014_1.html",
+          "title": "Hong Kong Insurance Authority disciplines six intermediaries for AML/CFT control breaches",
+          "configuration_id": "regulatory-official",
+          "source_tier": "primary",
+          "source_type": "regulator",
+          "market": "hong_kong",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-750d5642a24f"
+      ],
+      "title": "Hong Kong disciplines six intermediaries over AML/CFT control breaches",
+      "summary": "On 14 October 2026, Hong Kong’s Insurance Authority announced bans or suspensions of six individuals from acting as insurance intermediaries for periods ranging from six to 13 months. The authority found that they helped customers falsely declare that they had purchased bank drafts while purchasing the drafts on the customers’ behalf, circumventing appointing insurers’ internal controls. The conduct involved approximately HK$7.3 million in premium payments and reinforced intermediaries’ obligation to comply with insurers’ AML/CFT controls.",
+      "detail_bullets": [
+        "The sanctions applied to six named individuals rather than insurers or the wider intermediary market.",
+        "The prohibited conduct involved false customer declarations concerning who had purchased bank drafts used for premium payments.",
+        "The disciplinary periods ranged from six months to 13 months.",
+        "The case concerned approximately HK$7.3 million in associated premium payments."
+      ],
+      "potential_impact": "Although isolated, the case demonstrates the Hong Kong regulator’s willingness to sanction intermediaries whose payment-handling practices bypass insurer controls. It may reinforce industry attention to the integrity of premium-payment declarations and intermediary adherence to AML/CFT procedures.",
+      "topic": "government_regulatory",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 8,
+      "attention_level": "low",
+      "signal_type": "leadership_change",
+      "content_type": "leadership",
+      "published_date": "2026-10-12",
+      "publishers": [
+        "Asia Insurance Review"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97199",
+          "title": "Manulife Asia promotes Andy Bruce to Chief Information Officer",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-ccbf7610a338"
+      ],
+      "title": "Manulife Asia promotes Andy Bruce to CIO",
+      "summary": "Manulife Asia promoted Andy Bruce to regional Chief Information Officer, according to a 12 October 2026 report. Bruce previously served as Manulife’s CIO for Hong Kong and Macau, where he led a major technology-delivery portfolio. The appointment moves an executive with local-market delivery experience into senior regional technology leadership.",
+      "detail_bullets": [
+        "The role covers Manulife Asia rather than an individual market.",
+        "Bruce’s previous remit included technology delivery in Hong Kong and Macau.",
+        "The available information does not identify an associated restructuring, investment programme or change in technology strategy."
+      ],
+      "potential_impact": "The promotion may support continuity between Manulife’s market-level technology execution and its regional agenda, but the supplied facts do not establish a material strategic or operational change.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    }
+  ],
+  "selection": {
+    "evaluated_events": 8,
+    "included_events": 8,
+    "importance_counts": {
+      "high": 1,
+      "medium": 4,
+      "low": 3
+    },
+    "included_attention_levels": [
+      "high",
+      "medium"
+    ],
+    "supplemental_attention_level": "low",
+    "target_items": 10,
+    "supplemental_low_items": 3,
+    "item_cap": null
+  },
+  "evaluations": [
+    {
+      "source_item_ids": [
+        "src-0d37f7b0bbdc"
+      ],
+      "importance_level": "high",
+      "importance_reason": "Manulife has made a structural, group-wide technology move with embedded governance controls and quantified financial ambitions, creating credible strategic and operational implications for a named competitor across Asia and other markets."
+    },
+    {
+      "source_item_ids": [
+        "src-46b3304a7481"
+      ],
+      "importance_level": "medium",
+      "importance_reason": "The survey covers six Asian insurance markets and identifies material gaps between demand for integrated health, financial and protection support and customers’ preparedness for illness, accidents and family security."
+    },
+    {
+      "source_item_ids": [
+        "src-c03e643aca8e"
+      ],
+      "importance_level": "medium",
+      "importance_reason": "The consultation could influence the future direction of insurance supervision across FSB jurisdictions, particularly the treatment of emerging risks, technologies and financial offerings, but it establishes high-level principles rather than immediate binding requirements."
+    },
+    {
+      "source_item_ids": [
+        "src-a2c1e1541c04"
+      ],
+      "importance_level": "medium",
+      "importance_reason": "AXA’s research provides substantive evidence of changing expert risk priorities and connects demographic shifts to several core insurance needs, although it does not represent an operational or regulatory change."
+    },
+    {
+      "source_item_ids": [
+        "src-cd1f88eb8ace"
+      ],
+      "importance_level": "medium",
+      "importance_reason": "FWD’s proposed acquisition represents a strategic return to Hong Kong property and casualty insurance and an expansion beyond its core life business, although the transaction is a minority investment of limited disclosed size."
+    },
+    {
+      "source_item_ids": [
+        "src-5355b277d6f5"
+      ],
+      "importance_level": "low",
+      "importance_reason": "Sun Life’s unified identity may improve global brand consistency, but the announcement does not change its stated purpose, client commitments, products or operating structure."
+    },
+    {
+      "source_item_ids": [
+        "src-750d5642a24f"
+      ],
+      "importance_level": "low",
+      "importance_reason": "The action is limited to six individuals and does not establish a broad new regulatory requirement, although it reinforces expectations concerning intermediary compliance with insurers’ AML/CFT controls."
+    },
+    {
+      "source_item_ids": [
+        "src-ccbf7610a338"
+      ],
+      "importance_level": "low",
+      "importance_reason": "The regional promotion is relevant to Manulife Asia’s technology leadership but remains a routine individual appointment without evidence of a wider structural change."
+    }
+  ],
+  "summarization": {
+    "status": "succeeded",
+    "request_id": "0557145c-b534-4c77-889b-c62085c8d6ef",
+    "response_id": "resp_0c159df0e754f8fd016ad5afe009d88196b6f69ed17e7700db",
+    "usage": {
+      "input_tokens": 2600,
+      "output_tokens": 1257,
+      "total_tokens": 3857
+    }
+  },
+  "warnings": [
+    "Search regulatory-greater-china reported partial coverage.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: bimabharosa.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: bimabharosa.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: igmsuat.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search aia-corporate-markets reported partial coverage.",
+    "Search aia-business-publications-initiatives reported partial coverage.",
+    "Search competitor-official-material-moves reported partial coverage.",
+    "Manually consolidated unique brief items from prior runs poc-20261019T053232Z-6d55ee and poc-20261019T054049Z-ffdf95 into base run poc-20261019T054801Z-ff1bfb.",
+    "Coverage and summarization request metadata describe the base run; added cards retain the earlier runs' model assessments and were not re-summarized.",
+    "The repeated AXA Future Risks Report carried publication dates of 2026-10-12 and 2026-10-13 across runs; the base-run date of 2026-10-12 was retained."
+  ],
+  "disclaimer": "This briefing is based on Bing-grounded public information from approved primary and authoritative-media websites. Native source URLs were matched locally, but article content, publication dates and applicability were not independently verified against downloaded original text. Non-public regulator engagement and feedback are outside public-Web coverage.",
+  "raw_response_retained": false
+}

@@ -1,0 +1,233 @@
+{
+  "schema_version": "1.9.0",
+  "run_id": "poc-20261019T054801Z-ff1bfb",
+  "status": "partial",
+  "generated_at": "2026-10-19T05:51:41.531149+00:00",
+  "rule": {
+    "rule_id": "asia-executive-news",
+    "version": "1.5.7",
+    "sha256": "7217d0004ff3bd46eeec7a977bdff45346ae7dc386b29e41b59ceb3945bf8bf1"
+  },
+  "search": {
+    "approach": "custom-bing",
+    "custom_configurations": [
+      {
+        "configuration_id": "regulatory-official",
+        "instance_name": "asia-news-regulatory-official"
+      },
+      {
+        "configuration_id": "aia-primary",
+        "instance_name": "asia-news-aia-primary"
+      },
+      {
+        "configuration_id": "corporate-exchange",
+        "instance_name": "asia-news-corporate-exchange"
+      },
+      {
+        "configuration_id": "authoritative-media",
+        "instance_name": "asia-news-authoritative-media"
+      }
+    ]
+  },
+  "topic": "Material developments affecting AIA, its 18 markets, insurance regulation, or its named major competitors",
+  "search_window": {
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-19",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "window": {
+    "start_date": "2026-10-12",
+    "end_date": "2026-10-19",
+    "timezone": "Asia/Hong_Kong"
+  },
+  "coverage": {
+    "status": "partial",
+    "queries_requested": 7,
+    "queries_succeeded": 7,
+    "queries_failed": 0,
+    "queries_checked": 3,
+    "queries_partial": 4,
+    "queries_unavailable": 0
+  },
+  "title": "AIA Executive Briefing | 12–19 October 2026",
+  "executive_summary": "Manulife’s global enterprise AI platform is the most consequential development in the period, combining reusable technology with embedded governance and a stated US$1 billion cumulative value ambition. AXA’s company-issued risk research highlights the growing prominence of AI, big-data and demographic risks, while Manulife Asia’s CIO promotion is a lower-impact regional leadership development.",
+  "items": [
+    {
+      "rank": 1,
+      "attention_level": "high",
+      "signal_type": "technology_operational_risk",
+      "content_type": "corporate",
+      "published_date": "2026-10-13",
+      "publishers": [
+        "Manulife"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.manulife.com/ca/en/about-us/news/manulife-launches-enterprise-ai-platform",
+          "title": "Manulife launches proprietary enterprise AI platform across global operations",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-0d37f7b0bbdc"
+      ],
+      "title": "Manulife launches group-wide enterprise AI platform",
+      "summary": "Manulife announced on 13 October 2026 that it had launched a proprietary enterprise AI platform providing a common environment for teams to build, deploy and manage AI solutions across markets and jurisdictions. The platform combines reusable components with embedded security, risk and governance controls, enabling previously approved use cases to be deployed more rapidly. Manulife attributed US$300 million of value to enterprise AI by year-end 2025 and expects cumulative value of US$1 billion by 2027.",
+      "detail_bullets": [
+        "The platform spans Manulife’s global operations, including its Asian markets, rather than being limited to a single business or jurisdiction.",
+        "Value is expected to arise from expense reductions, revenue uplift, fraud reduction and the absorption of business growth.",
+        "The common operating environment is intended to standardise AI development and management while retaining embedded control mechanisms."
+      ],
+      "potential_impact": "The platform could strengthen Manulife’s ability to scale AI across markets with greater speed and consistency, potentially affecting operating efficiency, fraud management and customer or distribution capabilities. Its quantified value targets also establish a visible competitor benchmark for enterprise-wide AI investment and value realisation.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 2,
+      "attention_level": "medium",
+      "signal_type": "technology_operational_risk",
+      "content_type": "research_thought_leadership",
+      "published_date": "2026-10-12",
+      "publishers": [
+        "AXA"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.axa.com/en/press/press-releases/axa-future-risks-report-2026-artificial-intelligence-becomes-%20experts-top-concern-ahead-of-climate-change",
+          "title": "AXA Future Risks Report ranks AI and big-data risks first among experts",
+          "configuration_id": "corporate-exchange",
+          "source_tier": "primary",
+          "source_type": "company",
+          "market": "global",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-a2c1e1541c04"
+      ],
+      "title": "AXA report ranks AI and big-data risks first",
+      "summary": "AXA’s company-issued 13th Future Risks Report, produced with Ipsos and published on 12 October 2026, ranked AI and big-data risks first among surveyed experts for the first time. The category rose from fourth place in 2025 and overtook climate change. The report also connected ageing, lower birth rates, longevity and changing family structures with evolving insurance needs across health, dependency protection, savings, retirement and wealth transfer.",
+      "detail_bullets": [
+        "Among experts who ranked AI among their leading risks, 54% regarded it as rapidly emerging.",
+        "Only 9% of those experts considered public authorities well prepared for AI-related risks.",
+        "The demographic findings span multiple insurance propositions and long-term financial needs rather than a single product segment."
+      ],
+      "potential_impact": "The findings indicate potential growth in customer and institutional concern about AI-related exposures while reinforcing demand drivers associated with ageing and longevity. For the wider insurance sector, these trends could influence product design, underwriting considerations, risk communication and long-term savings propositions.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    },
+    {
+      "rank": 3,
+      "attention_level": "low",
+      "signal_type": "leadership_change",
+      "content_type": "leadership",
+      "published_date": "2026-10-12",
+      "publishers": [
+        "Asia Insurance Review"
+      ],
+      "source_links": [
+        {
+          "url": "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily&id=97199",
+          "title": "Manulife Asia promotes Andy Bruce to Chief Information Officer",
+          "configuration_id": "authoritative-media",
+          "source_tier": "authoritative_media",
+          "source_type": "media",
+          "market": "asia",
+          "url_specificity": "specific_article"
+        }
+      ],
+      "source_item_ids": [
+        "src-ccbf7610a338"
+      ],
+      "title": "Manulife Asia promotes Andy Bruce to CIO",
+      "summary": "Manulife Asia promoted Andy Bruce to regional Chief Information Officer, according to a 12 October 2026 report. Bruce previously served as Manulife’s CIO for Hong Kong and Macau, where he led a major technology-delivery portfolio. The appointment moves an executive with local-market delivery experience into senior regional technology leadership.",
+      "detail_bullets": [
+        "The role covers Manulife Asia rather than an individual market.",
+        "Bruce’s previous remit included technology delivery in Hong Kong and Macau.",
+        "The available information does not identify an associated restructuring, investment programme or change in technology strategy."
+      ],
+      "potential_impact": "The promotion may support continuity between Manulife’s market-level technology execution and its regional agenda, but the supplied facts do not establish a material strategic or operational change.",
+      "topic": "external_environment",
+      "source_specificity": "specific_article",
+      "source_positioning": null
+    }
+  ],
+  "selection": {
+    "evaluated_events": 3,
+    "included_events": 3,
+    "importance_counts": {
+      "high": 1,
+      "medium": 1,
+      "low": 1
+    },
+    "included_attention_levels": [
+      "high",
+      "medium"
+    ],
+    "supplemental_attention_level": "low",
+    "target_items": 10,
+    "supplemental_low_items": 1,
+    "item_cap": null
+  },
+  "evaluations": [
+    {
+      "source_item_ids": [
+        "src-0d37f7b0bbdc"
+      ],
+      "importance_level": "high",
+      "importance_reason": "Manulife has made a structural, group-wide technology move with embedded governance controls and quantified financial ambitions, creating credible strategic and operational implications for a named competitor across Asia and other markets."
+    },
+    {
+      "source_item_ids": [
+        "src-a2c1e1541c04"
+      ],
+      "importance_level": "medium",
+      "importance_reason": "AXA’s research provides substantive evidence of changing expert risk priorities and connects demographic shifts to several core insurance needs, although it does not represent an operational or regulatory change."
+    },
+    {
+      "source_item_ids": [
+        "src-ccbf7610a338"
+      ],
+      "importance_level": "low",
+      "importance_reason": "The regional promotion is relevant to Manulife Asia’s technology leadership but remains a routine individual appointment without evidence of a wider structural change."
+    }
+  ],
+  "summarization": {
+    "status": "succeeded",
+    "request_id": "0557145c-b534-4c77-889b-c62085c8d6ef",
+    "response_id": "resp_0c159df0e754f8fd016ad5afe009d88196b6f69ed17e7700db",
+    "usage": {
+      "input_tokens": 2600,
+      "output_tokens": 1257,
+      "total_tokens": 3857
+    }
+  },
+  "warnings": [
+    "Search regulatory-greater-china reported partial coverage.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: www.ifsca.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: bimabharosa.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: agencyportal.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: bimabharosa.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: igmsuat.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search regulatory-india-regional ignored an out-of-scope action source host: cbr.irdai.gov.in.",
+    "Search aia-corporate-markets reported partial coverage.",
+    "Search aia-business-publications-initiatives reported partial coverage.",
+    "Search competitor-official-material-moves reported partial coverage."
+  ],
+  "disclaimer": "This briefing is based on Bing-grounded public information from approved primary and authoritative-media websites. Native source URLs were matched locally, but article content, publication dates and applicability were not independently verified against downloaded original text. Non-public regulator engagement and feedback are outside public-Web coverage.",
+  "raw_response_retained": false
+}
