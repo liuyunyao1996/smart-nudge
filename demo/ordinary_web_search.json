@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0.0",
+  "method_id": "ordinary_web_search",
+  "label": "AI Foundry ordinary Web Search",
+  "scope_control": "Prompt and site: expression (soft constraint)",
+  "azure_inputs": {
+    "project_endpoint_env": "FOUNDRY_PROJECT_ENDPOINT",
+    "agent_name_env": "FOUNDRY_WEB_SEARCH_AGENT_NAME",
+    "agent_version_env": "FOUNDRY_WEB_SEARCH_AGENT_VERSION",
+    "authentication": "AzureCliCredential",
+    "token_scope": "https://ai.azure.com/.default",
+    "endpoint_type": "Prompt Agent dedicated Responses endpoint"
+  },
+  "search_input": {
+    "topic": "material recent developments in Hong Kong insurance and financial-services regulation",
+    "lookback_days": 30,
+    "result_limit": 5,
+    "target_hosts": [
+      "www.ia.org.hk",
+      "www.hkma.gov.hk",
+      "www.sfc.hk",
+      "apps.sfc.hk",
+      "www.fstb.gov.hk",
+      "www.gov.hk"
+    ],
+    "prompt_template": [
+      "Perform one public-web search and answer in English.",
+      "Task: find up to {result_limit} {topic}.",
+      "Publication window: {start_date} through {end_date}, inclusive.",
+      "For each result, provide its title, publication date, one-sentence description, and native source citation.",
+      "Search method: ordinary Web Search, with no Custom Search configuration attached.",
+      "Target websites: {target_hosts}.",
+      "Use this scope expression for the search: ({site_expression}).",
+      "To make ordinary Web Search behavior fully visible, do not hide candidates returned by this search from the final answer.",
+      "Return up to {result_limit} candidates actually obtained by this search, even if a candidate comes from outside the target websites.",
+      "An off-site candidate is not compliant; the local report will mark each candidate's website-scope compliance.",
+      "Do not perform a supplemental search without the scope expression, and do not invent or rewrite source URLs. Report no results only if this search returned no candidates."
+    ]
+  },
+  "request": {
+    "input_role": "user",
+    "tool_choice": "required",
+    "max_tool_calls": 1,
+    "include": ["web_search_call.action.sources"],
+    "max_output_tokens": 1800,
+    "parallel_tool_calls": false,
+    "store": false
+  }
+}

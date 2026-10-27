@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "method_id": "custom_bing_search",
+  "label": "Bing Custom Search",
+  "scope_control": "Custom Search configuration (configuration-level scope)",
+  "azure_inputs": {
+    "project_endpoint_env": "FOUNDRY_PROJECT_ENDPOINT",
+    "model_deployment_env": "FOUNDRY_MODEL_DEPLOYMENT_NAME",
+    "project_connection_id_env": "BING_CUSTOM_SEARCH_PROJECT_CONNECTION_ID",
+    "authentication": "AzureCliCredential",
+    "token_scope": "https://ai.azure.com/.default",
+    "endpoint_type": "Project Responses endpoint"
+  },
+  "search_input": {
+    "topic": "material recent developments in Hong Kong insurance and financial-services regulation",
+    "lookback_days": 30,
+    "result_limit": 5,
+    "target_hosts": [
+      "www.ia.org.hk",
+      "www.hkma.gov.hk",
+      "www.sfc.hk",
+      "apps.sfc.hk",
+      "www.fstb.gov.hk",
+      "www.gov.hk"
+    ],
+    "instructions": "Complete the user's search task exactly and preserve native web source citations.",
+    "prompt_template": [
+      "Perform one public-web search and answer in English.",
+      "Task: find up to {result_limit} {topic}.",
+      "Publication window: {start_date} through {end_date}, inclusive.",
+      "For each result, provide its title, publication date, one-sentence description, and native source citation.",
+      "Search method: Bing Custom Search, with the search tool bound to a preconfigured website scope.",
+      "Expected configured websites: {target_hosts}.",
+      "Search directly within the Custom Search configuration. Do not rely on a site: expression in this prompt to enforce website filtering.",
+      "Do not use information outside the configured scope to fill the result count. State clearly if no result is found."
+    ]
+  },
+  "request": {
+    "tool": {
+      "type": "web_search",
+      "custom_search_configuration": {
+        "project_connection_id_env": "BING_CUSTOM_SEARCH_PROJECT_CONNECTION_ID",
+        "instance_name": "hk-financial-regulators-test"
+      }
+    },
+    "tool_choice": "required",
+    "include": ["web_search_call.action.sources"],
+    "reasoning": {"effort": "low"},
+    "max_output_tokens": 1800,
+    "parallel_tool_calls": false,
+    "store": false
+  }
+}

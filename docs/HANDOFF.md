@@ -1,5 +1,17 @@
 # Smart Nudge：当前进度与交接
 
+## 2026-10-20 update: standalone search-boundary comparison demo
+
+- Historical demonstration artifacts were moved by the user from `demo/` to `results/` and are preserved there.
+- `demo/` now contains a standalone, lightweight comparison for software governance reviewers. The implementation is split into two presentation-friendly method configurations and runners (`ordinary_web_search.json` / `run_ordinary_web_search.py` and `custom_bing_search.json` / `run_custom_bing_search.py`), plus the offline `build_report.py` report stage. `compare_search.py` remains as a thin convenience wrapper over those three stages.
+- The default command is an offline dry run and does not read `.env`. `--execute-live` is required for two external requests (one per path), with no automatic retries.
+- Each method runner writes its own normalized, timestamped JSON result. The offline report stage validates that both results used the same topic, window, limit and target-host list before producing timestamped comparison JSON and a plain English HTML report under `.tmp/search-comparison/`. The HTML shows only what was searched, how each path searched, and the two paths' outputs; it retains per-source website-scope labels but omits the previous title banner, verdict panel, metric cards and interpretation section.
+- The report displays the exact request-level prompts for both paths. Each path uses one search tool call. Ordinary Web Search retains every native candidate returned by its single `site:`-scoped search, including off-site candidates, but does not perform an unscoped fallback search. Every native source is marked as inside or outside the requested host list; this mark does not claim content/date verification.
+- All demo configuration text, request prompts, CLI messages, documentation and report/presentation labels are English for an English-speaking audience. The top-level comparison configuration is `demo/comparison.json`.
+- New comparison run IDs and output-directory suffixes use compact UTC timestamps such as `search-compare-20261020T031245Z` instead of random identifiers.
+- The report distinguishes an observed result difference from the architectural boundary: `site:` and host instructions are soft constraints for ordinary Web Search, while Custom Bing applies its configured website set at retrieval. If both paths happen to return in-scope sources, the report does not overstate that single run as proof of equivalent controls.
+- Existing standalone live result JSON files are available under `.tmp/search-comparison/search-compare-20261020T064959Z/`. On 22 October, they were reused to generate simplified HTML reports offline. Any new real search still requires explicit authorization.
+
 ## 2026-10-15 update: deterministic classification, coverage and market admission
 
 - Asia Rule Pack v1.5.7 adds `allowed_source_markets` to the three generalized regulatory queries. The runtime narrows the shared `asia-news-regulatory-official` host allowlist per query and repeats the market check during local item admission. Greater China, Southeast Asia and India/regional searches can no longer accept a purely out-of-group source merely because it exists in the same cloud configuration.

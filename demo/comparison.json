@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0.0",
+  "title": "AI Foundry Web Search vs Bing Custom Search",
+  "subtitle": "The same search task and target websites, tested through two implementation paths",
+  "ordinary_web_search_config": "ordinary_web_search.json",
+  "custom_bing_search_config": "custom_bing_search.json",
+  "limitations": [
+    "Native source URLs and model answers were not independently checked against downloaded original pages.",
+    "Each compliance marker checks only whether the native source host is in the target list. It does not verify relevance, publication date, or factual accuracy.",
+    "The site: expression and allowed-site list for ordinary Web Search are prompt-level constraints, not hard domain filtering by the search service.",
+    "The local Custom Bing website list comes from demo/custom_bing_search.json. Reconcile it with the Portal if the cloud configuration changes.",
+    "The two paths may use different model and Agent system settings, so this demonstration compares source-scope control only."
+  ]
+}
