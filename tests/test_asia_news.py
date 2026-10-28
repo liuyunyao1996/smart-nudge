@@ -192,15 +192,15 @@ class AsiaNewsTests(unittest.TestCase):
             "content": [{"type": "output_text", "text": json.dumps(document)}],
         }]}
 
-    def test_dry_run_has_four_instances_seven_queries_and_rejects_agent(self):
-        self.assertEqual(self.rule.version, "1.5.7")
+    def test_dry_run_has_four_instances_twelve_queries_and_rejects_agent(self):
+        self.assertEqual(self.rule.version, "1.6.0")
         output = StringIO()
         with redirect_stdout(output):
             status = main(["--rule", "config/rules/asia-executive-news.json"])
         document = json.loads(output.getvalue())
         self.assertEqual(status, 0)
         self.assertEqual(document["live_request_limit"], {
-            "search": 7, "summarization": 1, "total": 8, "automatic_retries": 0
+            "search": 12, "summarization": 1, "total": 13, "automatic_retries": 0
         })
         search_start = datetime.fromisoformat(document["search_window"]["start_date"]).date()
         search_end = datetime.fromisoformat(document["search_window"]["end_date"]).date()
@@ -292,7 +292,10 @@ class AsiaNewsTests(unittest.TestCase):
     def test_regulatory_queries_use_generalized_discovery_language(self):
         queries = [
             item for item in self.rule.document["search"]["queries"]
-            if item["query_id"].startswith("regulatory-")
+            if item["query_id"] in (
+                "regulatory-greater-china", "regulatory-southeast-asia",
+                "regulatory-india-regional",
+            )
         ]
         self.assertEqual(len(queries), 3)
         disallowed = (
@@ -310,6 +313,121 @@ class AsiaNewsTests(unittest.TestCase):
 
         exclusions = " ".join(self.rule.document["search"]["exclusion_rules"]).lower()
         self.assertNotIn("individual financial representatives", exclusions)
+
+    def test_policy_searches_scope_local_language_discovery_to_each_market(self):
+        tasks = {
+            task.query.query_id: task
+            for task in build_search_tasks(
+                self.rule,
+                self.rule.render_queries(self.rule.default_topic, NOW.date(), 14),
+                CUSTOM_BING_APPROACH,
+            )
+        }
+        expected = {
+            "regulatory-china-policy-zh": ("mainland_china", "Simplified Chinese"),
+            "regulatory-china-policy-forums": ("mainland_china", "Simplified Chinese"),
+            "regulatory-hong-kong-policy-forums": ("hong_kong", "Traditional Chinese"),
+            "regulatory-singapore-policy-forums": ("singapore", "English"),
+        }
+        for query_id, (market, language) in expected.items():
+            with self.subTest(query_id=query_id):
+                task = tasks[query_id]
+                self.assertEqual(task.query.language, language)
+                self.assertEqual(task.query.allowed_source_markets, (market,))
+                self.assertTrue(all(
+                    self.rule.source_metadata(host)["market"] == market
+                    for host in task.allowed_hosts
+                ))
+                self.assertFalse(task.query.required_entities_any)
+        china_hosts = tasks["regulatory-china-policy-forums"].allowed_hosts
+        self.assertTrue({
+            "www.nfra.gov.cn", "www.iachina.cn", "www.nhsa.gov.cn",
+            "www.financialstreetforum.com",
+        }.issubset(china_hosts))
+        self.assertIn("www.ia.org.hk", tasks["regulatory-hong-kong-policy-forums"].allowed_hosts)
+        self.assertIn("www.mas.gov.sg", tasks["regulatory-singapore-policy-forums"].allowed_hosts)
+
+    def test_policy_sources_preserve_native_citations_and_publisher_type(self):
+        pipeline = PocPipeline(ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW)
+        task = next(
+            task for task in build_search_tasks(
+                self.rule,
+                self.rule.render_queries(self.rule.default_topic, NOW.date(), 14),
+                CUSTOM_BING_APPROACH,
+            ) if task.query.query_id == "regulatory-china-policy-forums"
+        )
+        for host, source_type in (
+            ("www.iachina.cn", "association"),
+            ("www.nhsa.gov.cn", "government"),
+            ("www.financialstreetforum.com", "forum"),
+        ):
+            with self.subTest(host=host):
+                body = search_body(
+                    f"https://{host}/news/policy-statement.html", "2026-09-10",
+                    title="Public policy priorities", publisher="Publishing institution",
+                    market="Mainland China", signal_type="informational",
+                    topic="government_regulatory", subject_type="industry",
+                    content_type="regulatory", event_scope="market_sector",
+                    entities=["Public speaker"],
+                )
+                items, _, _ = pipeline._convert_search(
+                    task.query, body, allowed_hosts=task.allowed_hosts,
+                    configuration_id=task.configuration_id,
+                )
+                self.assertEqual(len(items), 1)
+                self.assertEqual(items[0]["source_type"], source_type)
+                self.assertEqual(items[0]["signal_type"], "informational")
+                self.assertEqual(items[0]["source_links"][0]["source_type"], source_type)
+                pipeline._classify_source_quality(items)
+                pipeline._classify_freshness(items, {"start_date": "2026-09-06", "end_date": "2026-09-13"})
+                pipeline._all_news({
+                    "run_id": "test", "status": "completed", "generated_at": NOW.isoformat(),
+                    "rule": pipeline._rule_record(), "search": pipeline._search_record(),
+                    "topic": self.rule.default_topic,
+                    "search_window": {"start_date": "2026-08-30", "end_date": "2026-09-13"},
+                    "window": {"start_date": "2026-09-06", "end_date": "2026-09-13"},
+                    "items": items, "warnings": [],
+                })
+                body["output"][0]["action"]["sources"] = []
+                rejected, warnings, _ = pipeline._convert_search(
+                    task.query, body, allowed_hosts=task.allowed_hosts,
+                    configuration_id=task.configuration_id,
+                )
+                self.assertEqual(rejected, [])
+                self.assertTrue(any("no native in-scope citation" in warning for warning in warnings))
+
+    def test_regulatory_media_accepts_policy_statements_without_company_mentions(self):
+        pipeline = PocPipeline(ROOT, self.rule, FakeAdapter([]), self.configs, clock=lambda: NOW)
+        queries = {
+            query.query_id: query
+            for query in self.rule.render_queries(self.rule.default_topic, NOW.date(), 14)
+        }
+        hosts = tuple(
+            source["host"] for source in self.rule.bing_configuration("authoritative-media")["sources"]
+        )
+        for subject, expected_count in (("regulator", 1), ("industry", 1), ("competitor", 0)):
+            with self.subTest(subject=subject):
+                body = search_body(
+                    "https://www.news.cn/finance/policy-forum.html", "2026-09-10",
+                    title="Regulator sets insurance policy priorities", publisher="Xinhua",
+                    market="Mainland China", signal_type="informational",
+                    topic="government_regulatory", subject_type=subject,
+                    content_type="regulatory", event_scope="market_sector", entities=["NFRA"],
+                )
+                items, _, _ = pipeline._convert_search(
+                    queries["regulatory-authoritative-media"], body,
+                    allowed_hosts=hosts, configuration_id="authoritative-media",
+                )
+                self.assertEqual(len(items), expected_count)
+                if subject == "regulator":
+                    old_route, _, _ = pipeline._convert_search(
+                        queries["competitor-authoritative-media"], body,
+                        allowed_hosts=hosts, configuration_id="authoritative-media",
+                    )
+                    self.assertEqual(old_route, [])
+        summary = pipeline._summary_payload([], self.rule.default_topic, {})["instructions"]
+        self.assertIn("non-binding policy intentions", summary)
+        self.assertIn("do not downgrade them solely", summary)
 
     def test_regulatory_queries_admit_only_their_configured_market_groups(self):
         rendered = self.rule.render_queries(self.rule.default_topic, NOW.date(), 14)
@@ -1027,7 +1145,16 @@ class AsiaNewsTests(unittest.TestCase):
         adapter = FakeAdapter([
             regulatory, regulatory_checked, regulatory_checked,
             corporate, corporate_unknown, media_old, media_old
-        ])
+        ] + [{
+            "status": "completed",
+            "output": [
+                {"type": "web_search_call", "status": "completed", "action": {"type": "search", "sources": []}},
+                {"type": "message", "role": "assistant", "content": [{
+                    "type": "output_text",
+                    "text": json.dumps({"schema_version": "1.2.0", "coverage_status": "checked", "items": []}),
+                }]},
+            ],
+        }] * 5)
         run = PocPipeline(
             ROOT, self.rule, adapter, self.configs, clock=lambda: NOW
         ).run()
@@ -1038,10 +1165,10 @@ class AsiaNewsTests(unittest.TestCase):
         self.assertEqual(run.brief["status"], "partial")
         self.assertEqual(run.brief["coverage"], {
             "status": "partial",
-            "queries_requested": 7,
-            "queries_succeeded": 7,
+            "queries_requested": 12,
+            "queries_succeeded": 12,
             "queries_failed": 0,
-            "queries_checked": 6,
+            "queries_checked": 11,
             "queries_partial": 1,
             "queries_unavailable": 0,
         })
@@ -1055,7 +1182,7 @@ class AsiaNewsTests(unittest.TestCase):
             "end_date": "2026-09-13",
             "timezone": "Asia/Hong_Kong",
         })
-        self.assertEqual(run.all_news["schema_version"], "1.2.0")
+        self.assertEqual(run.all_news["schema_version"], "1.3.0")
         self.assertEqual(run.all_news["search_window"], run.search_results["search_window"])
         self.assertEqual(run.all_news["counts"], {
             "total": 4,
@@ -1072,7 +1199,21 @@ class AsiaNewsTests(unittest.TestCase):
             "asia-news-regulatory-official", "asia-news-aia-primary",
             "asia-news-aia-primary", "asia-news-corporate-exchange",
             "asia-news-authoritative-media",
+            "asia-news-regulatory-official", "asia-news-regulatory-official",
+            "asia-news-regulatory-official", "asia-news-regulatory-official",
+            "asia-news-authoritative-media",
         ])
+        source_coverage = {
+            source["host"]: source for source in run.search_results["source_coverage"]["sources"]
+        }
+        self.assertEqual(source_coverage["www.hkma.gov.hk"]["native_urls_observed"], 1)
+        self.assertEqual(source_coverage["www.hkma.gov.hk"]["candidates_accepted"], 1)
+        self.assertEqual(source_coverage["www.hkma.gov.hk"]["eligible_for_brief"], 1)
+        self.assertEqual(source_coverage["www.hkma.gov.hk"]["sources_in_brief"], 1)
+        self.assertEqual(source_coverage["www.hkma.gov.hk"]["limited_coverage_query_ids"], ["regulatory-greater-china"])
+        self.assertEqual(source_coverage["www.aia.com"]["outside_brief_window"], 1)
+        self.assertEqual(source_coverage["www.aia.com"]["unknown_publication_date"], 1)
+        self.assertEqual(source_coverage["www.nhsa.gov.cn"]["candidates_accepted"], 0)
         self.assertTrue(all(
             record["citation_diagnostics"]["envelope_checks"]["schema_version_valid"]
             for record in run.search_results["queries"]
@@ -1089,7 +1230,7 @@ class AsiaNewsTests(unittest.TestCase):
         self.assertIn("**Brief window:** 2026-09-06 to 2026-09-13", run.markdown)
         self.assertIn("**Search window:** 2026-08-30 to 2026-09-13", run.markdown)
         self.assertIn(
-            "**Coverage:** PARTIAL (checked 6, partial 1, unavailable 0, failed 0)",
+            "**Coverage:** PARTIAL (checked 11, partial 1, unavailable 0, failed 0)",
             run.markdown,
         )
         self.assertNotIn("Attention rationale", run.markdown)

@@ -1,5 +1,26 @@
 # Smart Nudge：当前进度与交接
 
+## 2026-10-28 update: per-run briefing window override
+
+- The user reported completing the cloud website additions and authorized one live test with briefing eligibility from last Monday through today: 19–28 October 2026, inclusive, in Hong Kong time.
+- Added `--brief-days` (1–90) to the CLI and pipeline. It changes the run's brief window independently of retrieval, without editing the Rule Pack defaults. Invalid parameters are checked before live configuration loading. The requested command uses `--brief-days 9`; search remains 14–28 October. All 84 offline tests pass, all Rule Packs validate and `pip check` passes.
+- Authorized live run `poc-20261028T064753Z-f8be4a` completed in approximately 8 minutes 26 seconds. Eleven of twelve searches completed, with seven checked and four partial coverage; `regulatory-authoritative-media` timed out without retry. The no-tool summary succeeded. Overall status remains partial.
+- The run produced 34 deduplicated source items, 20 date-eligible sources, 17 evaluated events and 14 final cards (2 High, 12 Medium), including 11 government/regulatory cards. The brief window is exactly 19–28 October, search window 14–28 October. Offline artifact checks confirmed English narrative and in-window item dates.
+- The brief includes NHSA innovative-drug list and payment/data updates, NFRA Financial Street Forum policy direction and International Advisory Council priorities, the Insurance Association of China's industry-development framework, Hong Kong IA market statistics and MAS complaints-management/digital-finance developments. Native citations were admitted from all three newly configured hosts. This confirms observed retrieval, not exhaustive coverage.
+- Known usage was 380,108 tokens (367,125 search; 12,983 summary); the timed-out request may have additional unreported usage. Artifacts are in `.tmp/poc-runs/poc-20261028T064753Z-f8be4a/`. No retry or second run was performed.
+- Quality limitation: the NFRA forum card cites an NFRA `ItemList.html` directory and the forum homepage. The current URL-shape heuristic incorrectly labels that NFRA directory `specific_article`; do not interpret its classification as article-level or independently verified evidence. Saved live artifacts were not rewritten to hide this issue.
+
+## 2026-10-28 update: regulatory policy and forum coverage
+
+- Asia Rule Pack v1.6.0 retains the seven existing searches and adds five: Chinese mainland policy discovery, mainland/Hong Kong/Singapore public policy and forum statements, and an independent regulatory-media route without required AIA or competitor mentions. The plan is 12 searches and at most one no-tool summary, with no automatic retries, using the existing four cloud configurations.
+- Local `regulatory-official` sources add `www.iachina.cn`, `www.nhsa.gov.cn` and `www.financialstreetforum.com`. The forum has its own source type. Rule Pack schema v1.5.0 and normalized all-news contract v1.3.0 support this metadata.
+- Search and summary rules cover substantive policy intentions, strategic priorities, speeches, forums, meetings and industry self-regulation. Statements must be distinguished from binding rules; institutions and forums receive no automatic inclusion. No forum year is hardcoded.
+- Date behavior is deliberately unchanged at the user's request: rolling 14-day search and 7-day brief eligibility. `--days` still changes retrieval only.
+- Search-results contract v1.2.0 adds `source_coverage`: per-host native URLs, admitted/eligible sources, date exclusions, sources used in the brief and query limitations. Counts do not prove exhaustive coverage or absence of updates.
+- At the initial offline implementation stage, cloud synchronization was pending user action: add the three new roots to the existing `asia-news-regulatory-official` configuration and save/publish as applicable. No new resource, connection, model deployment or Portal Agent is needed. See [the exact cloud checklist](REGULATORY_COVERAGE_CLOUD_UPDATE.md). Local edits do not synchronize the cloud.
+- The initial implementation stage was offline; the later authorized live result is recorded above. Historical `results/` and separate `demo/` artifacts are preserved. Commit and push require explicit user instruction.
+- Offline validation passed: all four Rule Packs validate, all 82 unit tests pass, `pip check` reports no broken requirements and the Asia dry run confirms 12 searches plus at most one summary with unchanged 14/7-day windows. `git diff --check` passed.
+
 ## 2026-10-20 update: standalone search-boundary comparison demo
 
 - Historical demonstration artifacts were moved by the user from `demo/` to `results/` and are preserved there.

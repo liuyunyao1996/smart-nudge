@@ -2,6 +2,8 @@
 
 更新时间：2026-10-15（Asia/Shanghai）
 
+> 2026-10-28 implementation update: the active intermediate plan is now Rule Pack v1.6.0 with 4 configurations, 12 searches and at most 1 summary. Five policy/forum routes and three mainland source hosts were added; date rules remain 14-day retrieval / 7-day brief eligibility. Cloud additions are pending user action; see [the cloud checklist](REGULATORY_COVERAGE_CLOUD_UPDATE.md). The 7-query intermediate-stage notes below are historical; the 25-configuration / 44-query target remains a proposal.
+
 ## 1. 文档状态与目标
 
 本文记录 Asia Executive News 工作流的下一阶段设计。目标是在不提高单次搜索最多返回 10 条候选、也不逐站穷举全部新闻的前提下，通过缩小每个 Custom Bing configuration 的来源范围并增加搜索调用次数，提高 AIA、监管和主要竞争者重要事件的召回率。

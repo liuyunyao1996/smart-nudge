@@ -353,7 +353,7 @@ class PocPipeline:
         if isinstance(search_config, AgentSearchConfig) and tuple(search_config.allowed_hosts) != rule.allowed_hosts:
             raise PocError("configuration", "Search allowed hosts do not match the Rule Pack.")
 
-    def run(self, *, topic: str | None = None, days: int | None = None) -> PocRun:
+    def run(self, *, topic: str | None = None, days: int | None = None, brief_days: int | None = None) -> PocRun:
         started = self._now()
         local_date = started.astimezone(REGIONAL_TIME).date()
         topic = topic or self.rule.default_topic
@@ -367,7 +367,7 @@ class PocPipeline:
             "timezone": "Asia/Hong_Kong",
         }
         brief_window = {
-            "start_date": self.rule.brief_start_date(local_date, days).isoformat(),
+            "start_date": self.rule.brief_start_date(local_date, days, brief_days=brief_days).isoformat(),
             "end_date": local_date.isoformat(),
             "timezone": "Asia/Hong_Kong",
         }
@@ -484,7 +484,7 @@ class PocPipeline:
             else "completed"
         )
         search_results = {
-            "schema_version": "1.1.0" if self.rule.is_asia_executive_news else "1.0.0",
+            "schema_version": "1.2.0" if self.rule.is_asia_executive_news else "1.0.0",
             "run_id": run_id,
             "status": search_status,
             "generated_at": self._now().isoformat(),
@@ -498,6 +498,8 @@ class PocPipeline:
             "warnings": list(warnings),
             "raw_response_retained": False,
         }
+        if self.rule.is_asia_executive_news:
+            search_results["source_coverage"] = self._source_coverage(search_results)
         all_news = self._all_news(search_results) if self.rule.is_asia_executive_news else None
         if succeeded == 0:
             return PocRun(search_results, None, None, all_news)
@@ -557,7 +559,89 @@ class PocPipeline:
             "disclaimer": self._disclaimer(),
             "raw_response_retained": False,
         }
+        if self.rule.is_asia_executive_news:
+            search_results["source_coverage"] = self._source_coverage(search_results, brief)
         return PocRun(search_results, brief, render_markdown(brief), all_news)
+
+    def _source_coverage(self, search_results: dict, brief: dict | None = None) -> dict:
+        selected_ids = {
+            source_id
+            for item in (brief or {}).get("items", [])
+            for source_id in item["source_item_ids"]
+        }
+        hosts = {}
+        for config in self.rule.bing_configurations:
+            for source in config["sources"]:
+                hosts[source["host"]] = {
+                    "host": source["host"],
+                    "configuration_id": config["configuration_id"],
+                    "source_type": source["source_type"],
+                    "market": source["market"],
+                    "query_ids": [],
+                    "failed_query_ids": [],
+                    "limited_coverage_query_ids": [],
+                    "native_url_ids": set(),
+                    "candidate_ids": set(),
+                    "eligible_ids": set(),
+                    "outside_window_ids": set(),
+                    "unknown_date_ids": set(),
+                    "selected_ids": set(),
+                }
+        for query in search_results["queries"]:
+            for host in query.get("target_hosts", []):
+                if host in hosts:
+                    row = hosts[host]
+                    row["query_ids"].append(query["query_id"])
+                    if query["status"] == "failed":
+                        row["failed_query_ids"].append(query["query_id"])
+                    elif query.get("coverage_status") != "checked":
+                        row["limited_coverage_query_ids"].append(query["query_id"])
+            for reference in query.get("citation_diagnostics", {}).get("references", []):
+                if reference.get("origin") != "action_source" or not reference.get("used_for_matching"):
+                    continue
+                host = urlsplit(reference.get("url", "")).hostname
+                if host in hosts:
+                    hosts[host]["native_url_ids"].add(reference["url_sha256"])
+        for item in search_results["items"]:
+            for host in {urlsplit(link["url"]).hostname for link in item["source_links"]}:
+                if host not in hosts:
+                    continue
+                row = hosts[host]
+                source_id = item["source_item_id"]
+                row["candidate_ids"].add(source_id)
+                if item["eligible_for_brief"]:
+                    row["eligible_ids"].add(source_id)
+                elif item["ineligibility_reason"] == "outside_brief_window":
+                    row["outside_window_ids"].add(source_id)
+                else:
+                    row["unknown_date_ids"].add(source_id)
+                if source_id in selected_ids:
+                    row["selected_ids"].add(source_id)
+        rows = []
+        for row in hosts.values():
+            for key, field in (
+                ("native_url_ids", "native_urls_observed"),
+                ("candidate_ids", "candidates_accepted"),
+                ("eligible_ids", "eligible_for_brief"),
+                ("outside_window_ids", "outside_brief_window"),
+                ("unknown_date_ids", "unknown_publication_date"),
+                ("selected_ids", "sources_in_brief"),
+            ):
+                row[field] = len(row.pop(key))
+            rows.append(row)
+        return {
+            "schema_version": "1.0.0",
+            "interpretation": (
+                "Per-host observations, not proof that each website was exhaustively searched. "
+                "Zero candidates does not mean no updates exist. Counts use unique admitted source items; "
+                "one item may cite multiple hosts. Native URL counts may be lower bounds when diagnostics are truncated."
+            ),
+            "diagnostics_truncated": any(
+                query.get("citation_diagnostics", {}).get("references_truncated", False)
+                for query in search_results["queries"]
+            ),
+            "sources": rows,
+        }
 
     def _now(self) -> datetime:
         value = self.clock()
@@ -1163,7 +1247,7 @@ class PocPipeline:
     def _all_news(self, search_results: dict) -> dict:
         items = deepcopy(search_results["items"])
         document = {
-            "schema_version": "1.2.0",
+            "schema_version": "1.3.0",
             "run_id": search_results["run_id"],
             "status": search_results["status"],
             "generated_at": search_results["generated_at"],

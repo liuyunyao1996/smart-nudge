@@ -2,6 +2,7 @@ from contextlib import redirect_stdout
 from io import StringIO
 import json
 import unittest
+from unittest.mock import patch
 
 from scripts.run_poc import main
 
@@ -95,6 +96,36 @@ class CliTests(unittest.TestCase):
         document = json.loads(output.getvalue())
         self.assertEqual(status, 1)
         self.assertEqual(document["code"], "invalid_days")
+
+    def test_brief_lookback_override_preserves_search_and_rule_defaults(self):
+        from datetime import date
+        from pathlib import Path
+        from smart_nudge.rules import RulePack
+
+        root = Path(__file__).resolve().parents[1]
+        rule = RulePack.load(root / "config/rules/asia-executive-news.json", root)
+        self.assertEqual(rule.brief_start_date(date(2026, 10, 28), 14, brief_days=9), date(2026, 10, 19))
+        self.assertEqual(rule.brief_start_date(date(2026, 10, 28), 14), date(2026, 10, 21))
+        output = StringIO()
+        with redirect_stdout(output):
+            status = main(["--rule", "config/rules/asia-executive-news.json", "--brief-days", "9"])
+        document = json.loads(output.getvalue())
+        self.assertEqual(status, 0)
+        self.assertEqual(document["days"], 14)
+        end = date.fromisoformat(document["brief_window"]["end_date"])
+        start = date.fromisoformat(document["brief_window"]["start_date"])
+        self.assertEqual((end - start).days, 9)
+        self.assertEqual(document["live_request_limit"]["total"], 13)
+
+    def test_invalid_live_brief_lookback_fails_before_configuration_loading(self):
+        for days in ("0", "91"):
+            with self.subTest(days=days):
+                output = StringIO()
+                with patch("scripts.run_poc.FoundryConfig.load") as loader, redirect_stdout(output):
+                    status = main(["--execute-live", "--brief-days", days])
+                loader.assert_not_called()
+                self.assertEqual(status, 1)
+                self.assertEqual(json.loads(output.getvalue())["code"], "invalid_brief_days")
 
 
 

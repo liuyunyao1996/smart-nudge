@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["schema_version", "rule_id", "version", "name", "bing", "search", "summarization"],
   "properties": {
-    "schema_version": {"enum": ["1.1.0", "1.2.0", "1.3.0", "1.4.0"]},
+    "schema_version": {"enum": ["1.1.0", "1.2.0", "1.3.0", "1.4.0", "1.5.0"]},
     "workflow": {"enum": ["regulatory_pulse", "asia_executive_news"]},
     "rule_id": {"$ref": "#/$defs/id"},
     "version": {"$ref": "#/$defs/version"},
@@ -188,7 +188,7 @@
             "required": ["host", "source_type", "market"],
             "properties": {
               "host": {"type": "string", "pattern": "^[a-z0-9-]+(?:\\.[a-z0-9-]+)+$"},
-              "source_type": {"enum": ["regulator", "government", "central_bank", "exchange", "company", "association", "international_body", "public_media", "state_media", "media"]},
+              "source_type": {"enum": ["regulator", "government", "central_bank", "exchange", "company", "association", "forum", "international_body", "public_media", "state_media", "media"]},
               "market": {"$ref": "#/$defs/id"}
             }
           }

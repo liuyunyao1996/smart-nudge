@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.4.0",
+  "schema_version": "1.5.0",
   "workflow": "asia_executive_news",
   "rule_id": "asia-executive-news",
-  "version": "1.5.7",
+  "version": "1.6.0",
   "name": "Asia Insurance Executive News",
   "bing": {
     "configurations": [
@@ -27,6 +27,9 @@
           {"host": "www.gld.gov.hk", "source_type": "government", "market": "hong_kong"},
           {"host": "www.pcpd.org.hk", "source_type": "regulator", "market": "hong_kong"},
           {"host": "www.nfra.gov.cn", "source_type": "regulator", "market": "mainland_china"},
+          {"host": "www.iachina.cn", "source_type": "association", "market": "mainland_china"},
+          {"host": "www.nhsa.gov.cn", "source_type": "government", "market": "mainland_china"},
+          {"host": "www.financialstreetforum.com", "source_type": "forum", "market": "mainland_china"},
           {"host": "www.pbc.gov.cn", "source_type": "central_bank", "market": "mainland_china"},
           {"host": "www.safe.gov.cn", "source_type": "regulator", "market": "mainland_china"},
           {"host": "www.csrc.gov.cn", "source_type": "regulator", "market": "mainland_china"},
@@ -156,7 +159,7 @@
     ]
   },
   "search": {
-    "default_topic": "Material developments affecting AIA, its 18 markets, insurance regulation, or its named major competitors",
+    "default_topic": "Substantive developments affecting AIA, its 18 markets, insurance regulation and policy direction, or its named major competitors",
     "default_days": 14,
     "brief_window": "rolling_days",
     "brief_days": 7,
@@ -228,11 +231,64 @@
         "allowed_subject_types": ["aia", "competitor"],
         "required_entities_any": ["AIA", "AXA", "Manulife", "Ping An", "FWD", "Sun Life", "Prudential plc"],
         "template": "{topic}; AIA AXA Manulife Ping An FWD Sun Life and Prudential plc only; material Asia insurance developments with potential strategic, financial, organizational, operational or market significance; Prudential plc is the intended insurance group and Prudential Financial Inc is a separate out-of-scope company; exclude companies outside the named list; from {date_from} to {date_to}"
+      },
+      {
+        "query_id": "regulatory-china-policy-zh",
+        "configuration_id": "regulatory-official",
+        "language": "Simplified Chinese",
+        "market": "mainland_china",
+        "set_lang": "zh-hans",
+        "allowed_source_markets": ["mainland_china"],
+        "allowed_subject_types": ["regulator", "industry"],
+        "template": "{topic}；中国大陆；国家金融监督管理总局、国家医疗保障局、中国保险行业协会及其他相关机构的保险、商业健康保险、医疗保障、养老金融政策和行业自律更新；查找政策文件、征求意见、实施安排、政策解读、新闻发布会及行业标准，保留可能相关且有原生引用的候选，重要性留待后续评估；从 {date_from} 到 {date_to}"
+      },
+      {
+        "query_id": "regulatory-china-policy-forums",
+        "configuration_id": "regulatory-official",
+        "language": "Simplified Chinese",
+        "market": "mainland_china",
+        "set_lang": "zh-hans",
+        "allowed_source_markets": ["mainland_china"],
+        "allowed_subject_types": ["regulator", "industry"],
+        "template": "{topic}；中国大陆；监管机构、政府部门、保险行业协会在金融论坛、年会、工作会议、座谈会和新闻发布会上的公开讲话、政策方向、战略重点及监管优先事项，包括金融街论坛；优先查找发布方原文、讲话稿和会议通稿，返回与保险、商业健康保险、医疗保障、养老金融或保险资金运用有关的实质性表态；区分政策意向和已发布规则，不将会议预告或一般活动报道当成政策变化，重要性留待后续评估；从 {date_from} 到 {date_to}"
+      },
+      {
+        "query_id": "regulatory-hong-kong-policy-forums",
+        "configuration_id": "regulatory-official",
+        "language": "Traditional Chinese",
+        "market": "hong_kong",
+        "set_lang": "zh-hant",
+        "allowed_source_markets": ["hong_kong"],
+        "allowed_subject_types": ["regulator", "industry"],
+        "template": "{topic}；香港；保險業監管局及相關金融監管和政府機構的政策方向、策略重點和監管優先事項；查找公開演辭、論壇及會議發言、新聞發布會、政策聲明和會議通稿，包括英文或中文的官方材料；保留對保險市場、保障、退休、健康、分銷或保險資金運用有實質內容的候選，區分公開表態與具約束力的要求，重要性留待後續評估；從 {date_from} 到 {date_to}"
+      },
+      {
+        "query_id": "regulatory-singapore-policy-forums",
+        "configuration_id": "regulatory-official",
+        "language": "English",
+        "market": "singapore",
+        "set_lang": "en",
+        "allowed_source_markets": ["singapore"],
+        "allowed_subject_types": ["regulator", "industry"],
+        "template": "{topic}; Singapore; Monetary Authority of Singapore and relevant government authorities; substantive policy directions, strategy and supervisory priorities in public speeches, forums, meetings, press conferences and policy statements with implications for insurance, protection, health, retirement, distribution or insurers' investments; return potentially relevant cited candidates for later materiality assessment; distinguish stated intentions from binding requirements and exclude event logistics without substantive policy content; from {date_from} to {date_to}"
+      },
+      {
+        "query_id": "regulatory-authoritative-media",
+        "configuration_id": "authoritative-media",
+        "language": "English and Chinese",
+        "market": "asia",
+        "set_lang": "en",
+        "allowed_subject_types": ["regulator", "industry"],
+        "template": "{topic}; Mainland China Hong Kong Singapore; substantive insurance, health-insurance, healthcare-financing and retirement policy developments and industry self-regulation; regulators' public statements about policy directions, strategy or priorities at forums, meetings and press conferences, including the Financial Street Forum; search English and Chinese reports naming the issuing institution and speaker when available; no AIA or competitor mention is required; distinguish reported statements from enacted requirements, exclude event logistics and generic macro commentary without an insurance transmission path, and return cited candidates for later materiality assessment; from {date_from} to {date_to}"
       }
     ],
     "inclusion_rules": [
       "Collect substantive, potentially decision-relevant AIA developments across its markets for later importance assessment; discovery should not require the search stage to assign an executive importance level.",
       "Collect material sector-wide regulatory consultations, final rules, supervisory expectations, enforcement developments and implementation changes with decision value for insurers.",
+      "Collect substantive public policy directions, strategy and priorities stated by regulators, governments and insurance associations in speeches, forums, meetings, press conferences and policy statements; a final rule or a named-company mention is not required, and materiality is assessed later.",
+      "Include healthcare-financing and industry self-regulatory developments when the supplied evidence establishes a plausible transmission path to commercial insurance, protection, retirement or insurers' investments.",
+      "For public statements, capture the issuing institution, speaker, forum or meeting, stated priorities, policy status and supported timing when available; do not invent missing details or treat an agenda or attendance report as a substantive policy announcement.",
+      "Classify regulatory policy statements as topic=government_regulatory and content_type=regulatory; use signal_type=informational for non-binding priorities or intentions unless the evidence supports a more specific signal. Association self-regulation uses subject_type=industry; publication on a forum website does not make the forum the regulator or the speaker.",
       "For competitor coverage, include only AXA, Manulife, Ping An, FWD, Sun Life and Prudential plc, and only when the development is structurally or strategically material.",
       "Retain a candidate even when its publication date is outside the requested window or unknown; local logic decides final date eligibility.",
       "Prefer the specific article, release, filing, circular or notice URL over a home page or listing page."
@@ -253,6 +309,7 @@
       "Rank High before Medium before any supplemental Low; within each attention level, rank by direct relevance to AIA, breadth of affected market or sector, strategic or operational consequence, and executive decision value.",
       "AIA developments may be material at Group, regional or single-market level; judge their substance and likely effect rather than their content category alone.",
       "Evaluate regulatory proposals and implementation requirements using the same materiality dimensions as other events; proposal or final-rule status alone neither qualifies nor disqualifies an event.",
+      "Assess substantive policy directions, regulator speeches and industry self-regulation by their supported insurance-market implications; do not downgrade them solely because no binding rule or implementation deadline has been announced, and do not automatically select a named institution or forum.",
       "For competitors, consider only AXA, Manulife, Ping An, FWD, Sun Life and Prudential plc; routine appointments or announcements are Low unless they represent a structural move.",
       "Rank specific article or release URLs above otherwise comparable homepage or listing-page evidence."
     ],
@@ -267,6 +324,7 @@
       "For each included event, write a substantive two-to-four-sentence summary explaining what happened, what changed, who or what is affected, and the event's supported context.",
       "Add two to four non-overlapping detail bullets with concrete sourced facts such as scope, mechanism, affected products or processes, transaction structure, quantitative terms, implementation status, effective dates or deadlines; do not repeat the title or summary in generic language.",
       "For regulatory, policy or rule developments, explain the substance and scope of the proposed, final or effective change; apply equivalent specificity to corporate, product, financial, leadership, research and market developments.",
+      "For speeches, forums and meetings, identify the institution and speaker, event and supported timing when supplied, then explain the concrete stated priorities and insurance relevance; distinguish binding rules, consultations, non-binding policy intentions and association self-regulation, and attribute media reports explicitly.",
       "Integrate supported timing facts into the summary or detail bullets and do not create a separate timing or action section.",
       "Do not recommend actions or tell AIA what it should do; describe explicit source-stated obligations as facts, and keep potential impact analytical rather than prescriptive.",
       "Label implications as potential when they are analytical rather than explicit in the supplied source note.",

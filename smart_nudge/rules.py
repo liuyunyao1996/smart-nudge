@@ -296,7 +296,11 @@ class RulePack:
     def brief_days(self) -> int | None:
         return self.document["search"].get("brief_days")
 
-    def brief_start_date(self, end_date: date, search_days: int) -> date:
+    def brief_start_date(self, end_date: date, search_days: int, *, brief_days: int | None = None) -> date:
+        if brief_days is not None:
+            if type(brief_days) is not int or not 1 <= brief_days <= 90:
+                raise RulePackError("invalid_brief_days", "Briefing lookback must be between 1 and 90 days.")
+            return end_date - timedelta(days=brief_days)
         if self.brief_window_mode == "rolling_days":
             return end_date - timedelta(days=self.brief_days)
         return end_date - timedelta(days=search_days)

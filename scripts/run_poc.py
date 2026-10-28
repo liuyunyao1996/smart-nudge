@@ -43,6 +43,7 @@ def _parser():
     parser.add_argument("--rule", default=str(DEFAULT_RULE), help="Rule Pack under config/rules.")
     parser.add_argument("--topic", help="Optional natural-language topic override.")
     parser.add_argument("--days", type=int, help="Optional search window override (1-90).")
+    parser.add_argument("--brief-days", type=int, help="Optional briefing lookback override (1-90); does not change the search window.")
     parser.add_argument(
         "--search-approach",
         choices=(CUSTOM_BING_APPROACH, FOUNDRY_AGENT_APPROACH),
@@ -79,6 +80,7 @@ def _dry_run(
     topic: str | None,
     days: int | None,
     search_approach: str,
+    brief_days: int | None = None,
 ) -> dict:
     selected_topic = topic or rule.default_topic
     selected_days = rule.default_days if days is None else days
@@ -91,7 +93,7 @@ def _dry_run(
         "timezone": "Asia/Hong_Kong",
     }
     brief_window = {
-        "start_date": rule.brief_start_date(today, selected_days).isoformat(),
+        "start_date": rule.brief_start_date(today, selected_days, brief_days=brief_days).isoformat(),
         "end_date": today.isoformat(),
         "timezone": "Asia/Hong_Kong",
     }
@@ -168,13 +170,14 @@ def main(argv=None) -> int:
         if not args.execute_live:
             print(
                 json.dumps(
-                    _dry_run(rule, args.topic, args.days, args.search_approach),
+                    _dry_run(rule, args.topic, args.days, args.search_approach, args.brief_days),
                     ensure_ascii=False,
                     indent=2,
                 )
             )
             return 0
 
+        _dry_run(rule, args.topic, args.days, args.search_approach, args.brief_days)
         foundry = FoundryConfig.load(ROOT / ".env")
         search_config = (
             BingConfig.load_all(ROOT / ".env", rule, foundry)
@@ -182,7 +185,7 @@ def main(argv=None) -> int:
             else AgentSearchConfig.load(ROOT / ".env", rule)
         )
         pipeline = PocPipeline(ROOT, rule, FoundryAdapter(foundry), search_config)
-        run = pipeline.run(topic=args.topic, days=args.days)
+        run = pipeline.run(topic=args.topic, days=args.days, brief_days=args.brief_days)
         run_directory = ROOT / ".tmp" / "poc-runs" / run.search_results["run_id"]
         run_directory.mkdir(parents=True, exist_ok=False)
         _write_atomic(
