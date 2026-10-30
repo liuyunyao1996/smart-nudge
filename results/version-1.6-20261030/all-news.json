@@ -1,0 +1,702 @@
+﻿{
+    "schema_version":  "merged-all-news-v1.0.0",
+    "merge_id":  "merged-poc-20261030T021854Z",
+    "status":  "partial",
+    "generated_at":  "2026-10-30T02:24:20.2836211+00:00",
+    "source_runs":  [
+                        "poc-20261030T020017Z-947915",
+                        "poc-20261030T021058Z-94a94f"
+                    ],
+    "search_window":  {
+                          "start_date":  "2026-10-16",
+                          "end_date":  "2026-10-30",
+                          "timezone":  "Asia/Hong_Kong"
+                      },
+    "window":  {
+                   "start_date":  "2026-10-19",
+                   "end_date":  "2026-10-30",
+                   "timezone":  "Asia/Hong_Kong"
+               },
+    "counts":  {
+                   "eligible_source_item_id_union":  39,
+                   "semantic_events":  30,
+                   "included_events":  22,
+                   "excluded_events":  8
+               },
+    "deduplication_boundary":  "Semantic event-level merge over date-eligible retained candidates; original source-level artifacts remain unchanged in each run directory.",
+    "events":  [
+                   {
+                       "title":  "AIA reports lower third-quarter VONB but stronger margin",
+                       "published_date":  "2026-10-30",
+                       "decision":  "included",
+                       "attention_level":  "high",
+                       "source_item_ids":  [
+                                               "src-7a496cea5acc",
+                                               "src-2c399661a701"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915",
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/1030/2026103000001.pdf",
+                                                "title":  "AIA reports third-quarter 2026 new business results",
+                                                "configuration_id":  "aia-primary",
+                                                "source_tier":  "primary",
+                                                "source_type":  "exchange",
+                                                "market":  "hong_kong",
+                                                "url_specificity":  "specific_article"
+                                            },
+                                            {
+                                                "url":  "https://www.aia.com/en/media-centre/press-releases/2026/aia-group-press-release-20261030",
+                                                "title":  "AIA reports third-quarter 2026 new business results",
+                                                "configuration_id":  "aia-primary",
+                                                "source_tier":  "primary",
+                                                "source_type":  "company",
+                                                "market":  "asia",
+                                                "url_specificity":  "specific_article"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "NFRA outlines full-coverage supervision and insurance growth priorities",
+                       "published_date":  "2026-10-19",
+                       "decision":  "included",
+                       "attention_level":  "high",
+                       "source_item_ids":  [
+                                               "src-49c9d404fa7c",
+                                               "src-2b8f9051c52f",
+                                               "src-90a70a5655ad",
+                                               "src-7b9bce56f4f1"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915",
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1275202\u0026itemId=919",
+                                                "title":  "NFRA sets out stronger supervision, market-order and insurance-development priorities at the 2026 Financial Street Forum"
+                                            },
+                                            {
+                                                "url":  "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1275202\u0026generaltype=0\u0026itemId=919",
+                                                "title":  "NFRA sets out risk-based supervision, market-order reform and insurance policy priorities"
+                                            },
+                                            {
+                                                "url":  "https://www.news.cn/fortune/20261019/cef7e5d057744dec9e0ac7b1ed5bc9fc/c.html",
+                                                "title":  "NFRA sets out priorities for full-coverage supervision and financial-risk control"
+                                            },
+                                            {
+                                                "url":  "https://www.news.cn/20261020/f0aea4884bd14c52bcc0d4bd845e451e/c.html",
+                                                "title":  "China’s financial regulator sets out risk-control and full-coverage supervisory priorities at Financial Street Forum"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "OJK approves transfer of AIA Indonesia’s sharia portfolio",
+                       "published_date":  "2026-10-21",
+                       "decision":  "included",
+                       "attention_level":  "high",
+                       "source_item_ids":  [
+                                               "src-68a090154ef6"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.aia-financial.co.id/id/about-aia/media-center/press-release/2026/press-release-20261021-pt-aia-financial-peroleh-persetujuan-ojk-untuk-pengalihan-portofolio-unit-usaha-syariah-kepada-pt-aia-syariah-insurance",
+                                                "title":  "OJK approves transfer of AIA Financial\u0027s sharia portfolio to AIA Syariah Insurance",
+                                                "configuration_id":  "aia-primary",
+                                                "source_tier":  "primary",
+                                                "source_type":  "company",
+                                                "market":  "indonesia",
+                                                "url_specificity":  "specific_article"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "IFSCA mandates cyber-security certification for regulated-entity personnel",
+                       "published_date":  "2026-10-27",
+                       "decision":  "included",
+                       "attention_level":  "high",
+                       "source_item_ids":  [
+                                               "src-fe55e6c7e380"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://ifsca.gov.in/CommonDirect/ViewFile?fileName=Circular_DCS_Mandating_IFSCA_NISM_Cyber_Security_Certification_F_20261027_0536.pdf\u0026id=850da50e42b9c192894a42a7d2a1cd1d",
+                                                "title":  "IFSCA mandates cyber-security certification framework for designated officers and specified employees of IFSC regulated entities"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Taiwan FSC changes insurers’ internal-audit reporting",
+                       "published_date":  "2026-10-20",
+                       "decision":  "included",
+                       "attention_level":  "high",
+                       "source_item_ids":  [
+                                               "src-f6470804fce6"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915",
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610210002\u0026dtable=NewsLaw\u0026id=128\u0026mcustomize=lawnew_view.jsp\u0026parentpath=0%2C2",
+                                                "title":  "Taiwan FSC changes insurers’ internal-audit reporting requirements and formats",
+                                                "configuration_id":  "regulatory-official",
+                                                "source_tier":  "primary",
+                                                "source_type":  "regulator",
+                                                "market":  "taiwan",
+                                                "url_specificity":  "specific_article"
+                                            },
+                                            {
+                                                "url":  "https://www.fsc.gov.tw/en/home.jsp?dataserno=202610210002\u0026dtable=Law\u0026id=74\u0026mcustomize=multimessage_view.jsp\u0026parentpath=0%2C2",
+                                                "title":  "Taiwan FSC changes insurers’ internal-audit reporting requirements and formats",
+                                                "configuration_id":  "regulatory-official",
+                                                "source_tier":  "primary",
+                                                "source_type":  "regulator",
+                                                "market":  "taiwan",
+                                                "url_specificity":  "specific_article"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Hong Kong regulators examine tighter premium-financing safeguards",
+                       "published_date":  "2026-10-26",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-8a314c634467",
+                                               "src-a84e68f7d0df"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f",
+                                           "poc-20261030T020017Z-947915"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://global.hk01.com/%E8%B4%A2%E7%BB%8F%E5%BF%AB%E8%AE%AF/60403143/%E4%BF%9D%E8%B4%B9%E8%9E%8D%E8%B5%84%E5%B9%B3%E6%B0%91%E5%8C%96-%E6%83%8A%E7%8E%B0%E9%80%BE9%E5%80%8D%E6%9D%A0%E6%9D%86-%E4%BF%9D%E7%9B%91%E5%B1%80%E8%AD%A6%E5%91%8A-%E5%AD%98%E5%9B%9B%E5%A4%A7%E9%A3%8E%E9%99%A9",
+                                                "title":  "Hong Kong regulators examine safeguards as premium-financing leverage exceeds nine times"
+                                            },
+                                            {
+                                                "url":  "https://www.scmp.com/topics/insurance",
+                                                "title":  "Hong Kong authorities prepare tighter oversight of premium financing after risk concerns"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "AIA appoints Edward Moncreiffe to lead four markets",
+                       "published_date":  "2026-10-23",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-2b04efb9955f",
+                                               "src-92a2dc2d1a04",
+                                               "src-38eb959fb6ec"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915",
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.asiainsurancereview.com/News/View-NewsLetter-Article?Type=eDaily\u0026id=97338",
+                                                "title":  "AIA appoints Edward Moncreiffe as Regional Chief Executive for four markets"
+                                            },
+                                            {
+                                                "url":  "https://www.aia.com/en/media-centre/press-releases/2026/aia-group-press-release-20261023",
+                                                "title":  "AIA appoints Edward Moncreiffe as Regional Chief Executive"
+                                            },
+                                            {
+                                                "url":  "https://www.aia.com/content/dam/group-wise/en/docs/press-release/2026/AIA%20Group%20Press%20Release_ENG_23%20October%202026.pdf",
+                                                "title":  "AIA appoints Edward Moncreiffe as Regional Chief Executive"
+                                            },
+                                            {
+                                                "url":  "https://insuranceasianews.com/edward-moncreiffe-joins-aia-as-regional-ceo-for-india-sri-lanka-australia-and-new-zealand/",
+                                                "title":  "AIA appoints Edward Moncreiffe as regional chief executive for four markets"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "AXA reports nine-month growth across property-casualty and life and health",
+                       "published_date":  "2026-10-29",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-ef0d25547f0c"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.axa.com/en/press/press-releases/9m26-activity-indicators",
+                                                "title":  "AXA reports 9M 2026 growth across property-casualty and life and health businesses"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Ping An reports earnings growth and broad AI deployment",
+                       "published_date":  "2026-10-28",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-a828298daf30"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915",
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://group.pingan.com/media/news/2026/9m26-press-release.html",
+                                                "title":  "Ping An reports 8.3% operating-profit growth for the first nine months of 2026",
+                                                "configuration_id":  "corporate-exchange",
+                                                "source_tier":  "primary",
+                                                "source_type":  "company",
+                                                "market":  "mainland_china",
+                                                "url_specificity":  "specific_article"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "MAS sets out supervisory observations on complaints management",
+                       "published_date":  "2026-10-20",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-cb73a4167c48"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.mas.gov.sg/publications/monographs-or-information-paper/2026/information-paper-on-complaints-management-practices",
+                                                "title":  "MAS Information Paper on Complaints Management Practices"
+                                            },
+                                            {
+                                                "url":  "https://www.mas.gov.sg/-/media/mas-media-library/publications/monographs-or-information-paper/imd/2026/information-paper-on-complaints-management-practices.pdf",
+                                                "title":  "MAS Information Paper on Complaints Management Practices"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "NFRA links financial opening with stronger AI and risk controls",
+                       "published_date":  "2026-10-21",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-c2977857bb5d"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915",
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1275468\u0026itemId=922",
+                                                "title":  "NFRA sets out risk control, stronger supervision and financial opening priorities at its 2026 International Advisory Council meeting",
+                                                "configuration_id":  "regulatory-official",
+                                                "source_tier":  "primary",
+                                                "source_type":  "regulator",
+                                                "market":  "mainland_china",
+                                                "url_specificity":  "specific_article"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Hong Kong insurance premiums rise 35.5% in the first half of 2026",
+                       "published_date":  "2026-10-23",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-3449e69758bc"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.ia.org.hk/en/infocenter/press_releases/20261023.html",
+                                                "title":  "Hong Kong insurance premiums rose 35.5% in the first half of 2026"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Hong Kong reportedly schedules expanded MPF portability from 21 December",
+                       "published_date":  "2026-10-25",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-709e67764f27"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.scmp.com/topics/collections/wealth-management",
+                                                "title":  "Hong Kong schedules full portability of eligible MPF contributions from December 21"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "China insurance association proposes 2026–2030 sector metrics",
+                       "published_date":  "2026-10-22",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-263ed57409ed",
+                                               "src-e0501a49d142"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915",
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.iachina.cn/art/2026/10/22/art_22_109335.html",
+                                                "title":  "China Insurance Association publishes research framework for insurance-sector development during the 15th Five-Year Plan",
+                                                "configuration_id":  "regulatory-official",
+                                                "source_tier":  "primary",
+                                                "source_type":  "association",
+                                                "market":  "mainland_china",
+                                                "url_specificity":  "specific_article"
+                                            },
+                                            {
+                                                "url":  "https://www.xinhuanet.com/money/20261021/c64f85e2a9bc46d9b30c3e4b69cf1e07/c.html",
+                                                "title":  "China Insurance Association publishes research framework for insurance development during the 15th Five-Year Plan",
+                                                "configuration_id":  "authoritative-media",
+                                                "source_tier":  "authoritative_media",
+                                                "source_type":  "state_media",
+                                                "market":  "mainland_china",
+                                                "url_specificity":  "specific_article"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Taiwan FSC reinforces equal insurance access for disabled customers",
+                       "published_date":  "2026-10-29",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-fb8bf4ec57a3"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915",
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610290001\u0026dtable=News\u0026id=96\u0026mcustomize=news_view.jsp\u0026parentpath=0u00252C2",
+                                                "title":  "Taiwan FSC reinforces equal insurance access and underwriting treatment for persons with disabilities",
+                                                "configuration_id":  "regulatory-official",
+                                                "source_tier":  "primary",
+                                                "source_type":  "regulator",
+                                                "market":  "taiwan",
+                                                "url_specificity":  "specific_article"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Taiwan FSC promotes cyber-insurance adoption and describes available coverage",
+                       "published_date":  "2026-10-29",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-e9e568845a6e",
+                                               "src-90cbc57852b7"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f",
+                                           "poc-20261030T020017Z-947915"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610290002\u0026dtable=News\u0026id=96\u0026mcustomize=news_view.jsp\u0026parentpath=0%2C2",
+                                                "title":  "Taiwan FSC promotes cyber-insurance uptake and details available coverage"
+                                            },
+                                            {
+                                                "url":  "https://www.fsc.gov.tw/ch/home.jsp?dataserno=202610290002\u0026dtable=News\u0026id=96\u0026mcustomize=news_view.jsp\u0026parentpath=0",
+                                                "title":  "Taiwan FSC promotes cyber-insurance adoption and details available commercial coverage"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "AIA Australia and Allianz Retire+ form retirement-solutions partnership",
+                       "published_date":  "2026-10-21",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-2260a051ecf2"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.aia.com.au/en/about-aia/about-us/media-centre/press-releases/2026/aia-australia-allianz-retirement-partnership",
+                                                "title":  "AIA Australia and Allianz Retire+ form retirement-solutions partnership"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "China completes negotiations for 2026 health-insurance drug lists",
+                       "published_date":  "2026-10-20",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-d57636e7210e"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915",
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.nhsa.gov.cn/art/2026/10/20/art_14_23170.html",
+                                                "title":  "NHSA reports completion of price negotiations for the 2026 basic medical insurance and commercial health insurance drug lists",
+                                                "configuration_id":  "regulatory-official",
+                                                "source_tier":  "primary",
+                                                "source_type":  "government",
+                                                "market":  "mainland_china",
+                                                "url_specificity":  "specific_article"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "HKMA reiterates sustainable-finance priorities at One Earth Summit",
+                       "published_date":  "2026-10-28",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-526c4c13602c"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.hkma.gov.hk/eng/news-and-media/speeches/2026/10/20261028-1/",
+                                                "title":  "HKMA sets out sustainable-finance priorities at One Earth Summit 2026"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "IAIS emphasises implementation of global standards and cross-border supervision",
+                       "published_date":  "2026-10-22",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-97d26907a8b3"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.iais.org/2026/10/speech-international-insurance-regulation-in-a-fast-changing-world/",
+                                                "title":  "IAIS outlines implementation focus for global insurance standards and cross-border supervision"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "IAIS launches resource for reducing natural-catastrophe protection gaps",
+                       "published_date":  "2026-10-22",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-7f77a37849c4"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.iais.org/2026/10/iais-launches-practical-resource-on-natural-catastrophe-protection-gaps/",
+                                                "title":  "IAIS launches practical library for reducing natural-catastrophe insurance protection gaps"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "CSRC outlines long-term-capital, AI and market-reform priorities",
+                       "published_date":  "2026-10-19",
+                       "decision":  "included",
+                       "attention_level":  "medium",
+                       "source_item_ids":  [
+                                               "src-14fec406cea1"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.csrc.gov.cn/csrc/c106311/c7665578/content.shtml",
+                                                "title":  "CSRC sets out long-term-capital, artificial-intelligence and capital-market reform priorities relevant to insurance investors"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Prudential partnership summit",
+                       "published_date":  "2026-10-28",
+                       "decision":  "low",
+                       "attention_level":  "low",
+                       "reason":  "The event described a summit and existing partnership network but did not announce a structural transaction, new partnership or implementation change.",
+                       "source_item_ids":  [
+                                               "src-dcc1a5da43f7"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.prudentialplc.com/en/newsroom/company-news/2026/Prudential-convenes-inaugural-Partnership-Summit--to-shape-the-next-era-of-customer-and-business-growth/",
+                                                "title":  "Prudential convenes inaugural summit around bancassurance, technology and cross-border customer needs"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Financial Street Forum insurance conference overview",
+                       "published_date":  "2026-10-26",
+                       "decision":  "low",
+                       "attention_level":  "low",
+                       "reason":  "General conference coverage without a distinct additional rule, commitment or strategic development beyond separately retained events.",
+                       "source_item_ids":  [
+                                               "src-2c105e0096ce"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915",
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.iachina.cn/art/2026/10/26/art_22_109336.html",
+                                                "title":  "2026 Financial Street Forum Insurance Conference outlines sector priorities in technology, inclusion and pensions"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Sun Life family-business succession research",
+                       "published_date":  "2026-10-26",
+                       "decision":  "low",
+                       "attention_level":  "low",
+                       "reason":  "Potentially useful customer research but insufficient executive decision value relative to the retained regulatory, financial and operating developments.",
+                       "source_item_ids":  [
+                                               "src-0d8408deb990"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.sunlife.com/en/newsroom/news-releases/announcement/two-thirds-of-family-businesses-in-asia-say-fair-inheritance-does-not-mean-equal-inheritance/124148/",
+                                                "title":  "Sunlife Asia research identifies succession-planning gaps among Asian family businesses"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Prudential chair commentary on insurance transparency",
+                       "published_date":  "2026-10-23",
+                       "decision":  "low",
+                       "attention_level":  "low",
+                       "reason":  "General industry commentary with no supported structural move or implementation consequence.",
+                       "source_item_ids":  [
+                                               "src-b40d5e955d5f"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://insuranceasianews.com/changing-economics-of-insurance-call-for-transparency-long-term-view/",
+                                                "title":  "Prudential chair calls for greater risk transparency and a long-term insurance model"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Hong Kong life sales and mainland tax uncertainty report",
+                       "published_date":  "2026-10-23",
+                       "decision":  "excluded_evidence_overlap",
+                       "attention_level":  "low",
+                       "reason":  "The retained URL is a section page, while the official Insurance Authority statistics event provides stronger evidence for the overlapping market-growth claim.",
+                       "source_item_ids":  [
+                                               "src-e37ad74ec40c"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T021058Z-94a94f"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.scmp.com/business/money",
+                                                "title":  "Hong Kong life-insurance new business rises sharply as mainland tax enforcement creates uncertainty"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "Insurance Association anti-fraud data-elements submission draft",
+                       "published_date":  "2026-10-28",
+                       "decision":  "low",
+                       "attention_level":  "low",
+                       "reason":  "An early association standards-process step without formal publication, effectiveness or supported implementation obligations.",
+                       "source_item_ids":  [
+                                               "src-346a0739f5c8"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.iachina.cn/art/2026/10/28/art_22_109363.html",
+                                                "title":  "Insurance Association of China standards committee approves anti-insurance-fraud data submission draft"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "HKMA Global Financial Leaders\u0027 Investment Summit agenda",
+                       "published_date":  "2026-10-26",
+                       "decision":  "low",
+                       "attention_level":  "low",
+                       "reason":  "Primarily future event agenda and logistics; concrete policy and market developments are covered separately.",
+                       "source_item_ids":  [
+                                               "src-b128d0f740e5"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.hkma.gov.hk/chi/news-and-media/insight/2026/10/20261026/",
+                                                "title":  "HKMA sets agenda for 2026 Global Financial Leaders’ Investment Summit around resilience, AI and changing financial-market structures"
+                                            }
+                                        ]
+                   },
+                   {
+                       "title":  "AIA Cambodia breast-cancer initiative",
+                       "published_date":  "2026-10-25",
+                       "decision":  "low",
+                       "attention_level":  "low",
+                       "reason":  "Substantive social-impact activity but limited Group-level strategic, financial, governance or operational consequence for this executive brief.",
+                       "source_item_ids":  [
+                                               "src-86b70995e1e0"
+                                           ],
+                       "source_runs":  [
+                                           "poc-20261030T020017Z-947915"
+                                       ],
+                       "source_links":  [
+                                            {
+                                                "url":  "https://www.aia.com.kh/en/about-aia/about-us/media-centre/press-releases/2026/AIA-Pink-Run",
+                                                "title":  "AIA Cambodia concludes breast-cancer initiative after providing approximately 5,578 free screenings"
+                                            }
+                                        ]
+                   }
+               ],
+    "disclaimer":  "This is an offline editorial merge of two Bing-grounded runs. Native source URLs were retained, but source content, dates and applicability were not independently verified. The second run\u0027s model summarization timed out, so newly selected second-run events were assessed manually from retained grounded notes under the versioned Rule Pack criteria."
+}
